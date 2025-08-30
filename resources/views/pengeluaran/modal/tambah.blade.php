@@ -11,25 +11,24 @@
              <div class="modal-body">
                  <form class="row g-3 needs-validation" novalidate>
                      <div class="col-md-12">
-                         <label for="bsValidation3" class="form-label">Nama Pengeluaran</label>
-                         <input type="text" class="form-control" id="bsValidation3"
-                             placeholder="Nama" required>
+                         <label for="bsValidation8" class="form-label">Tanggal</label>
+                         <input type="date" class="form-control" id="bsValidation8" name="tanggal_pengeluaran" required>
                          <div class="invalid-feedback">
-                             Masukkan Nama Pengeluaran
+                            Pilih Tanggal
                          </div>
                      </div>
                      <div class="col-md-12">
                          <label for="bsValidation4" class="form-label">Nominal</label>
                          <input type="number" class="form-control" id="bsValidation4"
-                             placeholder="Masukkan Nominal" required>
+                             placeholder="Masukkan Nominal" name="nominal_pengeluaran" required>
                          <div class="invalid-feedback">
-                             Masukkan Nominal 
+                             Masukkan Nominal
                          </div>
                      </div>
                      <div class="col-md-12">
                          <label for="bsValidation5" class="form-label">Keterangan</label>
                          <input type="text" class="form-control" id="bsValidation5"
-                             placeholder=" Masukkan Keterangan" required>
+                             placeholder=" Masukkan Keterangan" name="keterangan_pengeluaran" required>
                          <div class="invalid-feedback">
                              Masukkan Keterangan
                          </div>

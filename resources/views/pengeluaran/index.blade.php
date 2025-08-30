@@ -31,16 +31,18 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Nama Pengeluaran</th>
+                            <th>Tanggal</th>
                             <th>Nominal</th>
+                            <th>Keterangan</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>1</td>
-                            <td>Beli Plastik</td>
+                            <td>18-08-20245</td>
                             <td>Rp12.0000</td>
+                            <td>Beli Tanah Di Pondok Indah 17 hektar</td>
                             <td class="text-center">
                                 <button class="btn btn-danger">
                                     <i class="fadeIn animated bx bx-trash text-light"></i>
@@ -55,8 +57,9 @@
                     <tfoot>
                         <tr>
                             <th>No</th>
-                            <th>Nama Pengeluaran</th>
+                            <th>Tanggal</th>
                             <th>Nominal</th>
+                            <th>Keterangan</th>
                             <th>Aksi</th>
                         </tr>
                     </tfoot>
