@@ -39,6 +39,9 @@
     <link href="{{ asset('template/assets/plugins/datatable/css/dataTables.bootstrap5.min.css') }}"
         rel="stylesheet">
 
+    <link href="{{ asset('template/assets/plugins/fancy-file-uploader/fancy_fileupload.css') }}"
+        rel="stylesheet">
+
 </head>
 
 <body>
@@ -1547,7 +1550,15 @@
     <script src="{{ asset('template/assets/plugins/simplebar/js/simplebar.min.js') }}"></script>
 
     {{-- validation --}}
-	<script src="{{ asset('template/assets/plugins/validation/validation-script.js') }}"></script>
+    <script src="{{ asset('template/assets/plugins/validation/validation-script.js') }}"></script>
+
+    {{-- upload --}}
+    <script src="{{ asset('template/assets/plugins/fancy-file-uploader/jquery.ui.widget.js') }}"></script>
+    <script src="{{ asset('template/assets/plugins/fancy-file-uploader/jquery.fileupload.js') }}"></script>
+    <script src="{{ asset('template/assets/plugins/fancy-file-uploader/jquery.iframe-transport.js') }}">
+    </script>
+    <script src="{{ asset('template/assets/plugins/fancy-file-uploader/jquery.fancy-fileupload.js') }}">
+    </script>
 
     @stack('scripts')
 </body>
