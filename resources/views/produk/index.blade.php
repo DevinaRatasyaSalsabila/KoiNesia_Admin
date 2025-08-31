@@ -16,13 +16,19 @@
         </div>
     </div>
     <!--end breadcrumb-->
+
+    <a href="{{ url('produk/tambah') }}" class="btn btn-warning btn-sm px-3 shadow-sm my-2" data-bs-toggle="tooltip"
+        data-bs-placement="top" title="Tambah Produk">
+        <i class="bx bx-plus fs-5 text-light"></i>
+    </a>
+
     <div class="row row-cols-1 row-cols-xl-3 g-4 mb-3">
         <div class="col">
             <div class="card shadow-sm border-0 rounded-4 overflow-hidden h-100">
                 <div class="row g-0 align-items-center">
                     <div class="col-md-4 text-center p-3">
-                        <img src="{{ asset('template/assets/images/projects/koi1.png') }}"
-                            class="img-fluid rounded" alt="Produk">
+                        <img src="{{ asset('template/assets/images/projects/koi1.png') }}" class="img-fluid rounded"
+                            alt="Produk">
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
@@ -37,22 +43,19 @@
                                 </span>
                             </h6>
                             <div class="d-flex gap-2">
-                                <button
+                                <a href="{{ url('produk/detail') }}"
                                     class="btn btn-primary btn-sm px-3 shadow-sm d-flex align-items-center gap-2"
-                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                    title="Detail Produk">
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Detail Produk">
                                     <i class="bx bx-info-circle fs-5"></i>
-                                </button>
-                                <button class="btn btn-warning btn-sm px-3 shadow-sm"
-                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                    title="Edit Produk">
+                                </a>
+                                <a href="{{ url('produk/edit') }}" class="btn btn-warning btn-sm px-3 shadow-sm"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Produk">
                                     <i class="bx bx-pencil fs-5 text-light"></i>
-                                </button>
-                                <button class="btn btn-danger btn-sm px-3 shadow-sm"
-                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                    title="Hapus Produk">
+                                </a>
+                                <a href="#" class="btn btn-danger btn-sm px-3 shadow-sm" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="Hapus Produk">
                                     <i class="bx bx-trash fs-5 text-light"></i>
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -63,8 +66,8 @@
             <div class="card shadow-sm border-0 rounded-4 overflow-hidden h-100">
                 <div class="row g-0 align-items-center">
                     <div class="col-md-4 text-center p-3">
-                        <img src="{{ asset('template/assets/images/projects/koi1.png') }}"
-                            class="img-fluid rounded" alt="Produk">
+                        <img src="{{ asset('template/assets/images/projects/koi1.png') }}" class="img-fluid rounded"
+                            alt="Produk">
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
@@ -79,22 +82,19 @@
                                 </span>
                             </h6>
                             <div class="d-flex gap-2">
-                                <button
+                                <a href="{{ url('produk/detail') }}"
                                     class="btn btn-primary btn-sm px-3 shadow-sm d-flex align-items-center gap-2"
-                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                    title="Detail Produk">
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Detail Produk">
                                     <i class="bx bx-info-circle fs-5"></i>
-                                </button>
-                                <button class="btn btn-warning btn-sm px-3 shadow-sm"
-                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                    title="Edit Produk">
+                                </a>
+                                <a href="{{ url('produk/edit') }}" class="btn btn-warning btn-sm px-3 shadow-sm"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Produk">
                                     <i class="bx bx-pencil fs-5 text-light"></i>
-                                </button>
-                                <button class="btn btn-danger btn-sm px-3 shadow-sm"
-                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                    title="Hapus Produk">
+                                </a>
+                                <a href="#" class="btn btn-danger btn-sm px-3 shadow-sm" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="Hapus Produk">
                                     <i class="bx bx-trash fs-5 text-light"></i>
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -105,8 +105,8 @@
             <div class="card shadow-sm border-0 rounded-4 overflow-hidden h-100">
                 <div class="row g-0 align-items-center">
                     <div class="col-md-4 text-center p-3">
-                        <img src="{{ asset('template/assets/images/projects/koi1.png') }}"
-                            class="img-fluid rounded" alt="Produk">
+                        <img src="{{ asset('template/assets/images/projects/koi1.png') }}" class="img-fluid rounded"
+                            alt="Produk">
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
@@ -121,22 +121,19 @@
                                 </span>
                             </h6>
                             <div class="d-flex gap-2">
-                                <button
+                                <a href="{{ url('produk/detail') }}"
                                     class="btn btn-primary btn-sm px-3 shadow-sm d-flex align-items-center gap-2"
-                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                    title="Detail Produk">
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Detail Produk">
                                     <i class="bx bx-info-circle fs-5"></i>
-                                </button>
-                                <button class="btn btn-warning btn-sm px-3 shadow-sm"
-                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                    title="Edit Produk">
+                                </a>
+                                <a href="{{ url('produk/edit') }}" class="btn btn-warning btn-sm px-3 shadow-sm"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Produk">
                                     <i class="bx bx-pencil fs-5 text-light"></i>
-                                </button>
-                                <button class="btn btn-danger btn-sm px-3 shadow-sm"
-                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                    title="Hapus Produk">
+                                </a>
+                                <a href="#" class="btn btn-danger btn-sm px-3 shadow-sm" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="Hapus Produk">
                                     <i class="bx bx-trash fs-5 text-light"></i>
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>
