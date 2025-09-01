@@ -6,6 +6,7 @@ use App\Http\Controllers\DasboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PengeluaranController;
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\RiwayatController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/main', function () {
@@ -33,3 +34,6 @@ Route::get('/produk', [ProdukController::class, 'index']);
 Route::get('/produk/tambah', [ProdukController::class, 'create']);
 Route::get('/produk/detail', [ProdukController::class, 'show']);
 Route::get('/produk/edit', [ProdukController::class, 'edit']);
+
+//Riwayat Transaksi
+Route::get('riwayat-transaksi', [RiwayatController::class, 'index']);
