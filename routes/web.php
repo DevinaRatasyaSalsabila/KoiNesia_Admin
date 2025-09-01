@@ -31,6 +31,7 @@ Route::get('/barang-masuk', [BarangMasukController::class, 'index']);
 //daftar produk
 Route::get('/produk', [ProdukController::class, 'index']);
 Route::get('/produk/tambah', [ProdukController::class, 'create']);
+Route::post('/produk/add', [ProdukController::class, 'store'])->name('produk.add');
 Route::get('/produk/detail', [ProdukController::class, 'show']);
 Route::get('/produk/edit', [ProdukController::class, 'edit']);
 
