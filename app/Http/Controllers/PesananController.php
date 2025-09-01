@@ -35,7 +35,7 @@ class PesananController extends Controller
      */
     public function show()
     {
-        return view('pesanan.detail');
+        return view('pesanan.modal.detail');
     }
 
     /**

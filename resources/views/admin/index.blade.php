@@ -19,8 +19,12 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Daftar Admin</h5>
+<<<<<<< Updated upstream
             <button type="button" class="btn btn-success" data-bs-toggle="modal"
                 data-bs-target="#tambah_admin">
+=======
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambah_admin">
+>>>>>>> Stashed changes
                 <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
             </button>
         </div>
@@ -37,6 +41,7 @@
                         </tr>
                     </thead>
                     <tbody>
+<<<<<<< Updated upstream
                         <tr>
                             <td>1</td>
                             <td>James John</td>
@@ -51,6 +56,30 @@
                                 </button>
                             </td>
                         </tr>
+=======
+                        @foreach ($admin as $adm)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $adm->nama }}</td>
+                                <td>{{ $adm->email }}</td>
+                                <td class="text-center">
+                                    <form action="{{ route('admin.delete', $adm->id_user) }}" method="POST"
+                                        onsubmit="return confirm('Yakin mau hapus admin ini? 😥')" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">
+                                            <i class="fadeIn animated bx bx-trash text-light"></i>
+                                        </button>
+                                    </form>
+                                    <button class="btn btn-warning d-inline" data-bs-toggle="modal"
+                                        data-bs-target="#edit_admin_{{ $adm->id_user }}">
+                                        <i class="fadeIn animated bx bx-pencil text-light"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            @include('admin.modal.edit')
+                        @endforeach
+>>>>>>> Stashed changes
                     </tbody>
                     <tfoot>
                         <tr>
@@ -66,7 +95,10 @@
     </div>
 
     @include('admin.modal.tambah')
+<<<<<<< Updated upstream
     @include('admin.modal.edit')
+=======
+>>>>>>> Stashed changes
 
     @push('scripts')
         <script>

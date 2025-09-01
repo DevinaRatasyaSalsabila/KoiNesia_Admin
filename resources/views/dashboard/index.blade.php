@@ -15,7 +15,11 @@
     </div>
     <!--end breadcrumb-->
 
-
+    @if (Auth::check())
+        <p>udh login</p>
+    @else
+        <p>belum login</p>
+    @endif
     <div class="row">
         <!-- Kiri: 2 Card -->
         <div class="col-12 col-xl-4 d-flex flex-column gap-3">
