@@ -19,12 +19,8 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Daftar Pengeluaran</h5>
-<<<<<<< Updated upstream
             <button type="button" class="btn btn-success" data-bs-toggle="modal"
                 data-bs-target="#tambah_pengeluaran">
-=======
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambah_pengeluaran">
->>>>>>> Stashed changes
                 <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
             </button>
         </div>
@@ -35,34 +31,13 @@
                     <thead>
                         <tr>
                             <th>No</th>
-<<<<<<< Updated upstream
-                            <th>Tanggal</th>
-                            <th>Nominal</th>
-                            <th>Keterangan</th>
-=======
                             <th>Nama Pengeluaran</th>
                             <th>Nominal</th>
->>>>>>> Stashed changes
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-<<<<<<< Updated upstream
-                            <td>1</td>
-                            <td>18-08-20245</td>
-                            <td>Rp12.0000</td>
-                            <td>Beli Tanah Di Pondok Indah 17 hektar</td>
-                            <td class="text-center">
-                                <button class="btn btn-danger">
-                                    <i class="fadeIn animated bx bx-trash text-light"></i>
-                                </button>
-                                <button class="btn btn-warning" data-bs-toggle="modal"
-                                    data-bs-target="#edit_pengeluaran">
-                                    <i class="fadeIn animated bx bx-pencil text-light"></i>
-                                </button>
-                            </td>
-=======
                             @foreach ($pengeluaran as $item)
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->nama_pengeluaran }}</td>
@@ -83,20 +58,13 @@
                                 </td>
                                 @include('pengeluaran.modal.edit')
                             @endforeach
->>>>>>> Stashed changes
                         </tr>
                     </tbody>
                     <tfoot>
                         <tr>
                             <th>No</th>
-<<<<<<< Updated upstream
-                            <th>Tanggal</th>
-                            <th>Nominal</th>
-                            <th>Keterangan</th>
-=======
                             <th>Nama Pengeluaran</th>
                             <th>Nominal</th>
->>>>>>> Stashed changes
                             <th>Aksi</th>
                         </tr>
                     </tfoot>
@@ -106,10 +74,6 @@
     </div>
 
     @include('pengeluaran.modal.tambah')
-<<<<<<< Updated upstream
-    @include('pengeluaran.modal.edit')
-=======
->>>>>>> Stashed changes
 
     @push('scripts')
         <script>

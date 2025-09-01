@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-<<<<<<< Updated upstream
-=======
 use App\Models\Pengeluaran;
->>>>>>> Stashed changes
 use Illuminate\Http\Request;
 
 class PengeluaranController extends Controller
@@ -15,12 +12,8 @@ class PengeluaranController extends Controller
      */
     public function index()
     {
-<<<<<<< Updated upstream
-        return view('pengeluaran.index');
-=======
         $pengeluaran = Pengeluaran::all();
         return view('pengeluaran.index', compact('pengeluaran'));
->>>>>>> Stashed changes
     }
 
     /**
@@ -36,9 +29,6 @@ class PengeluaranController extends Controller
      */
     public function store(Request $request)
     {
-<<<<<<< Updated upstream
-        //
-=======
         $request->validate([
             'nama_pengeluaran' => 'required|string|max:255',
             'tanggal' => 'required|date',
@@ -62,11 +52,10 @@ class PengeluaranController extends Controller
             'keterangan' => $request->keterangan,
             'nominal' => $request->nominal,
         ]);
-
+        // dd($pengeluaran);
         $pengeluaran->save();
 
         return back()->with('success', 'Pengeluaran Berhasil Disimpan');
->>>>>>> Stashed changes
     }
 
     /**
@@ -90,9 +79,6 @@ class PengeluaranController extends Controller
      */
     public function update(Request $request, string $id)
     {
-<<<<<<< Updated upstream
-        //
-=======
         $pengeluaran = Pengeluaran::findOrFail($id);
 
         $request->validate([
@@ -106,7 +92,7 @@ class PengeluaranController extends Controller
             ->where('tanggal', $request->tanggal)
             ->where('keterangan', $request->keterangan)
             ->where('nominal', $request->nominal)
-            ->where('id', '!=', $id) 
+            ->where('id', '!=', $id)
             ->exists();
 
         if ($duplikat) {
@@ -121,7 +107,6 @@ class PengeluaranController extends Controller
         $pengeluaran->save();
 
         return back()->with('success', 'Data pengeluaran berhasil diperbarui');
->>>>>>> Stashed changes
     }
 
     /**
@@ -129,6 +114,7 @@ class PengeluaranController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Pengeluaran::find($id)->delete();
+        return redirect()->back()->with('success', 'Pengeluaran Berhasil Dihapus');
     }
 }
