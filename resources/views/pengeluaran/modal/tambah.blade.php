@@ -1,32 +1,9 @@
  <!-- Modal -->
-<<<<<<< Updated upstream
- <div class="modal fade" id="tambah_pengeluaran" tabindex="-1" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-=======
  <div class="modal fade" id="tambah_pengeluaran" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
->>>>>>> Stashed changes
      <div class="modal-dialog">
          <div class="modal-content">
              <div class="modal-header">
                  <h5 class="modal-title" id="exampleModalLabel">Tambah Data Pengeluran</h5>
-<<<<<<< Updated upstream
-                 <button type="button" class="btn-close" data-bs-dismiss="modal"
-                     aria-label="Close"></button>
-             </div>
-             <div class="modal-body">
-                 <form class="row g-3 needs-validation" novalidate>
-                     <div class="col-md-12">
-                         <label for="bsValidation8" class="form-label">Tanggal</label>
-                         <input type="date" class="form-control" id="bsValidation8" name="tanggal_pengeluaran" required>
-                         <div class="invalid-feedback">
-                            Pilih Tanggal
-                         </div>
-                     </div>
-                     <div class="col-md-12">
-                         <label for="bsValidation4" class="form-label">Nominal</label>
-                         <input type="number" class="form-control" id="bsValidation4"
-                             placeholder="Masukkan Nominal" name="nominal_pengeluaran" required>
-=======
                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
              </div>
              <form class="row g-3 needs-validation" action={{ route('pengeluaran.add') }} method="POST">
@@ -50,37 +27,18 @@
                          <label for="bsValidation4" class="form-label">Nominal</label>
                          <input type="number" class="form-control" id="bsValidation4" name="nominal" placeholder="Masukkan Nominal"
                              required>
->>>>>>> Stashed changes
                          <div class="invalid-feedback">
                              Masukkan Nominal
                          </div>
                      </div>
-<<<<<<< Updated upstream
-                     <div class="col-md-12">
-                         <label for="bsValidation5" class="form-label">Keterangan</label>
-                         <input type="text" class="form-control" id="bsValidation5"
-                             placeholder=" Masukkan Keterangan" name="keterangan_pengeluaran" required>
-=======
                      <div class="col-md-12 px-3 mt-2">
                          <label for="bsValidation5" class="form-label">Keterangan</label>
                          <input type="text" class="form-control" name="keterangan" id="bsValidation5"
                              placeholder=" Masukkan Keterangan" required>
->>>>>>> Stashed changes
                          <div class="invalid-feedback">
                              Masukkan Keterangan
                          </div>
                      </div>
-<<<<<<< Updated upstream
-             </div>
-             <div class="modal-footer">
-                 <button type="reset" class="btn btn-secondary">
-                     Reset
-                 </button>
-                 <button type="submit" class="btn btn-primary" name="submit2">
-                     Simpan
-                 </button>
-             </div>
-=======
                  </div>
                  <div class="modal-footer">
                      <button type="reset" class="btn btn-secondary">
@@ -90,7 +48,6 @@
                          Simpan
                      </button>
                  </div>
->>>>>>> Stashed changes
              </form>
          </div>
      </div>

@@ -19,12 +19,7 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Daftar Admin</h5>
-<<<<<<< Updated upstream
-            <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                data-bs-target="#tambah_admin">
-=======
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambah_admin">
->>>>>>> Stashed changes
                 <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
             </button>
         </div>
@@ -41,22 +36,6 @@
                         </tr>
                     </thead>
                     <tbody>
-<<<<<<< Updated upstream
-                        <tr>
-                            <td>1</td>
-                            <td>James John</td>
-                            <td>james@gmail.com</td>
-                            <td class="text-center">
-                                <button class="btn btn-danger">
-                                    <i class="fadeIn animated bx bx-trash text-light"></i>
-                                </button>
-                                <button class="btn btn-warning" data-bs-toggle="modal"
-                                    data-bs-target="#edit_admin">
-                                    <i class="fadeIn animated bx bx-pencil text-light"></i>
-                                </button>
-                            </td>
-                        </tr>
-=======
                         @foreach ($admin as $adm)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
@@ -79,7 +58,6 @@
                             </tr>
                             @include('admin.modal.edit')
                         @endforeach
->>>>>>> Stashed changes
                     </tbody>
                     <tfoot>
                         <tr>
@@ -95,10 +73,6 @@
     </div>
 
     @include('admin.modal.tambah')
-<<<<<<< Updated upstream
-    @include('admin.modal.edit')
-=======
->>>>>>> Stashed changes
 
     @push('scripts')
         <script>

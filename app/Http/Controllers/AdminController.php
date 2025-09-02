@@ -2,13 +2,9 @@
 
 namespace App\Http\Controllers;
 
-<<<<<<< Updated upstream
-use Illuminate\Http\Request;
-=======
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
->>>>>>> Stashed changes
 
 class AdminController extends Controller
 {
@@ -17,34 +13,20 @@ class AdminController extends Controller
      */
     public function index()
     {
-<<<<<<< Updated upstream
-        return view('admin.index');
-=======
         $admin = User::all();
         return view('admin.index', compact('admin'));
->>>>>>> Stashed changes
     }
 
     /**
      * Show the form for creating a new resource.
      */
-<<<<<<< Updated upstream
-    public function create()
-    {
-        //
-    }
-=======
     public function create() {}
->>>>>>> Stashed changes
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-<<<<<<< Updated upstream
-        //
-=======
         // Validasi dasar dulu
         $request->validate([
             'nama' => 'required|string|max:255',
@@ -89,7 +71,6 @@ class AdminController extends Controller
         $newUser->save();
 
         return back()->with('success', 'Pengguna Berhasil Disimpan');
->>>>>>> Stashed changes
     }
 
     /**
@@ -111,19 +92,6 @@ class AdminController extends Controller
     /**
      * Update the specified resource in storage.
      */
-<<<<<<< Updated upstream
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-=======
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
@@ -165,6 +133,5 @@ class AdminController extends Controller
     {
         User::find($id)->delete();
         return redirect()->back()->with('success', 'Admin Berhasil Dihapus');
->>>>>>> Stashed changes
     }
 }

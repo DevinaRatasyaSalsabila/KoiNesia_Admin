@@ -1,25 +1,9 @@
  <!-- Modal -->
-<<<<<<< Updated upstream
- <div class="modal fade" id="edit_pengeluaran" tabindex="-1" aria-labelledby="exampleModalLabel"
-=======
  <div class="modal fade" id="edit_admin_{{ $adm->id_user }}" tabindex="-1" aria-labelledby="exampleModalLabel"
->>>>>>> Stashed changes
      aria-hidden="true">
      <div class="modal-dialog">
          <div class="modal-content">
              <div class="modal-header">
-<<<<<<< Updated upstream
-                 <h5 class="modal-title" id="exampleModalLabel">Tambah Data Admin</h5>
-                 <button type="button" class="btn-close" data-bs-dismiss="modal"
-                     aria-label="Close"></button>
-             </div>
-             <div class="modal-body">
-                 <form class="row g-3 needs-validation" novalidate>
-                     <div class="col-md-12">
-                         <label for="bsValidation3" class="form-label">Nama</label>
-                         <input type="text" class="form-control" id="bsValidation3"
-                             placeholder="Nama" required>
-=======
                  <h5 class="modal-title" id="exampleModalLabel">Edit Data Admin</h5>
                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
              </div>
@@ -31,28 +15,18 @@
                          <label for="bsValidation3" class="form-label">Nama</label>
                          <input type="text" class="form-control" id="bsValidation3" value="{{ $adm->nama }}"
                              name="nama" placeholder="Nama" required>
->>>>>>> Stashed changes
                          <div class="invalid-feedback">
                              Masukkan Nama
                          </div>
                      </div>
-<<<<<<< Updated upstream
-                     <div class="col-md-12">
-                         <label for="bsValidation4" class="form-label">Email</label>
-                         <input type="email" class="form-control" id="bsValidation4"
-                             placeholder="Email" required>
-=======
                      <div class="col-md-12 px-2 mt-2">
                          <label for="bsValidation4" class="form-label">Email</label>
                          <input type="email" class="form-control" name="email" value="{{ $adm->email }}"
                              id="bsValidation4" placeholder="Email" required>
->>>>>>> Stashed changes
                          <div class="invalid-feedback">
                              Masukkan Email
                          </div>
                      </div>
-<<<<<<< Updated upstream
-=======
                      <div class="col-md-12 px-2 mt-2">
                          <label for="inputChoosePassword" class="form-label">Kata Sandi</label>
                          <div class="input-group" id="password_hide{{$adm->id_user}}">
@@ -70,7 +44,6 @@
                              Masukkan Role
                          </div>
                      </div>
->>>>>>> Stashed changes
                      {{-- <div class="col-md-12">
                          <label for="bsValidation5" class="form-label">Keterangan</label>
                          <input type="text" class="form-control" id="bsValidation5"
@@ -79,17 +52,6 @@
                              Masukkan Keterangan
                          </div>
                      </div> --}}
-<<<<<<< Updated upstream
-             </div>
-             <div class="modal-footer">
-                 <button type="reset" class="btn btn-secondary">
-                     Reset
-                 </button>
-                 <button type="submit" class="btn btn-primary" name="submit2">
-                     Simpan
-                 </button>
-             </div>
-=======
                  </div>
                  <div class="modal-footer">
                      <button type="reset" class="btn btn-secondary">
@@ -99,7 +61,6 @@
                          Simpan
                      </button>
                  </div>
->>>>>>> Stashed changes
              </form>
          </div>
      </div>
@@ -109,13 +70,8 @@
 
  @push('scripts')
      <script>
-<<<<<<< Updated upstream
-         $('#edit_pengeluaran').on('shown.bs.modal', function() {
-             var forms = document.querySelectorAll('#edit_pengeluaran .needs-validation')
-=======
          $('#edit_admin_{{ $adm->id_user }}').on('shown.bs.modal', function() {
              var forms = document.querySelectorAll('#edit_admin_{{ $adm->id_user }} .needs-validation')
->>>>>>> Stashed changes
              Array.prototype.slice.call(forms)
                  .forEach(function(form) {
                      form.addEventListener('submit', function(event) {
@@ -127,10 +83,7 @@
                      }, false)
                  })
          })
-<<<<<<< Updated upstream
-     </script>
-=======
-         
+
         $(document).ready(function() {
             $("#password_hide{{ $adm->id_user }} a").on('click', function(event) {
                 event.preventDefault();
@@ -146,5 +99,4 @@
             });
         });
     </script>
->>>>>>> Stashed changes
  @endpush
