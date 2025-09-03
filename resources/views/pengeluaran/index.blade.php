@@ -19,8 +19,7 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Daftar Pengeluaran</h5>
-            <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                data-bs-target="#tambah_pengeluaran">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambah_pengeluaran">
                 <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
             </button>
         </div>

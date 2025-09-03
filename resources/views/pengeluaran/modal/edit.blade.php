@@ -40,15 +40,15 @@
                              Masukkan Keterangan
                          </div>
                      </div>
-             </div>
-             <div class="modal-footer">
-                 <button type="reset" class="btn btn-secondary">
-                     Reset
-                 </button>
-                 <button type="submit" class="btn btn-primary" name="submit2">
-                     Simpan
-                 </button>
-             </div>
+                 </div>
+                 <div class="modal-footer">
+                     <button type="reset" class="btn btn-secondary">
+                         Reset
+                     </button>
+                     <button type="submit" class="btn btn-primary" name="submit2">
+                         Simpan
+                     </button>
+                 </div>
              </form>
          </div>
      </div>
@@ -58,8 +58,8 @@
 
  @push('scripts')
      <script>
-         $('#edit_pengeluaran').on('shown.bs.modal', function() {
-             var forms = document.querySelectorAll('#edit_pengeluaran .needs-validation')
+         $('#tambah_pengeluaran').on('shown.bs.modal', function() {
+             var forms = document.querySelectorAll('#tambah_pengeluaran .needs-validation')
              Array.prototype.slice.call(forms)
                  .forEach(function(form) {
                      form.addEventListener('submit', function(event) {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Produk;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProdukController extends Controller
 {
@@ -19,30 +20,59 @@ class ProdukController extends Controller
 
     public function store(Request $request)
     {
-        $produk = Produk::create([
-            'nama_produk'  => $request->nama_produk,
-            'harga_satuan' => $request->harga_produk,
-            'stok'         => "2",
-            'ukuran'       => $request->ukuran,
-            'deskripsi'    => $request->deskripsi_produk,
-            'kode_produk'  => "200K",
+        $request->validate([
+            'nama_produk' => 'required|string|max:255',
+            'deskripsi_produk' => 'required|string',
+            'gambar' => 'nullable|array',
+            'kode_produk' => 'required|string|max:100',
+            'stok_produk' => 'required|integer',
+            'ukuran_produk' => 'required|string|max:50',
+            'harga_produk' => 'required|integer',
         ]);
 
-        if ($request->hasFile('gambar')) {
-            foreach ($request->file('gambar') as $file) {
-                $filename = time() . '-' . $file->getClientOriginalName();
-                $path = $file->storeAs('produk', $filename, 'public');
+        $finalPaths = [];
 
-                $gambar[] = $path;
+        if ($request->has('gambar')) {
+            foreach ($request->gambar as $tempPath) {
+                // pindahin dari temp ke final
+                $filename = basename($tempPath);
+                $newPath = "produk/final/" . $filename;
+
+                if (Storage::disk('public')->exists($tempPath)) {
+                    Storage::disk('public')->move($tempPath, $newPath);
+                    $finalPaths[] = $newPath;
+                }
             }
+        }
+        dd($request->all());
 
-            $produk->update([
-                'gambar' => json_encode($gambar ?? [])
+        Produk::create([
+            'nama_produk' => $request->nama_produk,
+            'deskripsi_produk' => $request->deskripsi_produk,
+            'gambar_produk' => json_encode($finalPaths),
+            'kode_produk' => $request->kode_produk,
+            'stok_produk' => $request->stok_produk,
+            'ukuran_produk' => $request->ukuran_produk,
+            'harga_satuan' => $request->harga_produk,
+        ]);
+
+        return redirect()->route('produk.index')->with('success', 'Produk berhasil ditambahkan!');
+    }
+
+    public function uploadTemp(Request $request)
+    {
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $path = $file->storeAs('produk/temp', $filename, 'public');
+
+            return response()->json([
+                'success' => true,
+                'path' => $path
             ]);
         }
 
-        dd($request->all());
-        return back()->with('success', 'Produk berhasil disimpan');
+        return response()->json(['success' => false], 400);
     }
 
 

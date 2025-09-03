@@ -13,30 +13,23 @@ Route::get('/main', function () {
     return view('main');
 });
 
-//login
-Route::get('/', [LoginController::class, 'index']);
-
 //dashboard
 Route::get('/dashboard', [DasboardController::class, 'index']);
-
-//daftar-admin
-Route::get('/daftar-admin', [AdminController::class, 'index']);
-
-//daftar-pengeluaran
-Route::get('/pengeluaran', [PengeluaranController::class, 'index']);
 
 //daftar barang masuk
 Route::get('/barang-masuk', [BarangMasukController::class, 'index']);
 
 //daftar produk
-Route::get('/produk', [ProdukController::class, 'index']);
-Route::get('/produk/tambah', [ProdukController::class, 'create']);
-Route::post('/produk/add', [ProdukController::class, 'store'])->name('produk.add');
+Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
+Route::get('/produk/tambah', [ProdukController::class, 'create'])->name('produk.create');
+Route::post('/produk/store', [ProdukController::class, 'store'])->name('produk.store');
+Route::post('/produk/upload-temp', [ProdukController::class, 'uploadTemp'])->name('produk.upload-gambar');
 Route::get('/produk/detail', [ProdukController::class, 'show']);
 Route::get('/produk/edit', [ProdukController::class, 'edit']);
 
 // pesanan
 Route::get('/pesanan', [PesananController::class, 'index']);
+
 // Login
 Route::get('/', [LoginController::class, 'index'])->name('login');
 Route::post('/loginsubmit', [LoginController::class, 'submit'])->name('login.submit');

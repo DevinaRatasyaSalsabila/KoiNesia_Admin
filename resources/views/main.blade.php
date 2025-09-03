@@ -6,23 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>KoiNesia</title>
     <!--favicon-->
-    <link rel="icon" href="{{ asset('template/assets/images/favicon-32x32.png') }}"
-        type="image/png">
+    <link rel="icon" href="{{ asset('template/assets/images/favicon-32x32.png') }}" type="image/png">
 
     <!--plugins-->
-    <link href="{{ asset('template/assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css') }}"
-        rel="stylesheet">
-    <link href="{{ asset('template/assets/plugins/metismenu/metisMenu.min.css') }}"
-        rel="stylesheet">
+    <link href="{{ asset('template/assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css') }}" rel="stylesheet">
+    <link href="{{ asset('template/assets/plugins/metismenu/metisMenu.min.css') }}" rel="stylesheet">
     <link href="{{ asset('template/assets/plugins/metismenu/mm-vertical.css') }}" rel="stylesheet">
-    <link href="{{ asset('template/assets/plugins/simplebar/css/simplebar.css') }}"
-        rel="stylesheet">
+    <link href="{{ asset('template/assets/plugins/simplebar/css/simplebar.css') }}" rel="stylesheet">
 
     <!--bootstrap css-->
     <link href="{{ asset('template/assets/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Material+Icons+Outlined" rel="stylesheet">
 
     <!--main css-->
@@ -36,13 +30,15 @@
     <link rel="stylesheet" href="{{ asset('template/assets/css/extra-icons.css') }}">
 
     {{-- datatable --}}
-    <link href="{{ asset('template/assets/plugins/datatable/css/dataTables.bootstrap5.min.css') }}"
-        rel="stylesheet">
+    <link href="{{ asset('template/assets/plugins/datatable/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet">
 
-    <link href="{{ asset('template/assets/plugins/fancy-file-uploader/fancy_fileupload.css') }}"
-        rel="stylesheet">
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    {{-- <link href="{{ asset('template/assets/plugins/fancy-file-uploader/fancy_fileupload.css') }}" rel="stylesheet"> --}}
 
+    {{-- <link rel="stylesheet" href="{{ asset('template/assets/css/extra-icons.css') }}"> --}}
+    <link href="{{ asset('template/assets/plugins/fancy-file-uploader/fancy_fileupload.css') }}" rel="stylesheet">
+    {{-- datatable --}}
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 </head>
 
@@ -50,24 +46,24 @@
 
     <!--start header-->
     <header class="top-header">
-        <nav class="navbar navbar-expand align-items-center gap-4">
+        <nav class="gap-4 navbar navbar-expand align-items-center">
             <div class="btn-toggle">
                 <a href="javascript:;"><i class="material-icons-outlined">menu</i></a>
             </div>
             <div class="search-bar flex-grow-1">
                 <div class="position-relative">
-                    <input class="form-control rounded-5 px-5 search-control d-lg-block d-none"
-                        type="text" placeholder="Search">
+                    <input class="form-control rounded-5 px-5 search-control d-lg-block d-none" type="text"
+                        placeholder="Search">
                     <span
                         class="material-icons-outlined position-absolute d-lg-block d-none ms-3 translate-middle-y start-0 top-50">search</span>
                     <span
                         class="material-icons-outlined position-absolute me-3 translate-middle-y end-0 top-50 search-close">close</span>
-                    <div class="search-popup p-3">
-                        <div class="card rounded-4 overflow-hidden">
+                    <div class="p-3 search-popup">
+                        <div class="overflow-hidden card rounded-4">
                             <div class="card-header d-lg-none">
                                 <div class="position-relative">
-                                    <input class="form-control rounded-5 px-5 mobile-search-control"
-                                        type="text" placeholder="Search">
+                                    <input class="form-control rounded-5 px-5 mobile-search-control" type="text"
+                                        placeholder="Search">
                                     <span
                                         class="material-icons-outlined position-absolute ms-3 translate-middle-y start-0 top-50">search</span>
                                     <span
@@ -76,22 +72,17 @@
                             </div>
                             <div class="card-body search-content">
                                 <p class="search-title">Recent Searches</p>
-                                <div
-                                    class="d-flex align-items-start flex-wrap gap-2 kewords-wrapper">
+                                <div class="d-flex align-items-start flex-wrap gap-2 kewords-wrapper">
                                     <a href="javascript:;" class="kewords"><span>Angular
-                                            Template</span><i
-                                            class="material-icons-outlined fs-6">search</i></a>
+                                            Template</span><i class="material-icons-outlined fs-6">search</i></a>
                                     <a href="javascript:;" class="kewords"><span>Dashboard</span><i
                                             class="material-icons-outlined fs-6">search</i></a>
                                     <a href="javascript:;" class="kewords"><span>Admin
-                                            Template</span><i
-                                            class="material-icons-outlined fs-6">search</i></a>
+                                            Template</span><i class="material-icons-outlined fs-6">search</i></a>
                                     <a href="javascript:;" class="kewords"><span>Bootstrap 5
-                                            Admin</span><i
-                                            class="material-icons-outlined fs-6">search</i></a>
+                                            Admin</span><i class="material-icons-outlined fs-6">search</i></a>
                                     <a href="javascript:;" class="kewords"><span>Html
-                                            eCommerce</span><i
-                                            class="material-icons-outlined fs-6">search</i></a>
+                                            eCommerce</span><i class="material-icons-outlined fs-6">search</i></a>
                                     <a href="javascript:;" class="kewords"><span>Sass</span><i
                                             class="material-icons-outlined fs-6">search</i></a>
                                     <a href="javascript:;" class="kewords"><span>laravel 9</span><i
@@ -99,8 +90,8 @@
                                 </div>
                                 <hr>
                                 <p class="search-title">Tutorials</p>
-                                <div class="search-list d-flex flex-column gap-2">
-                                    <div class="search-list-item d-flex align-items-center gap-3">
+                                <div class="gap-2 search-list d-flex flex-column">
+                                    <div class="gap-3 search-list-item d-flex align-items-center">
                                         <div class="list-icon">
                                             <i class="material-icons-outlined fs-5">play_circle</i>
                                         </div>
@@ -109,10 +100,9 @@
                                             </h5>
                                         </div>
                                     </div>
-                                    <div class="search-list-item d-flex align-items-center gap-3">
+                                    <div class="gap-3 search-list-item d-flex align-items-center">
                                         <div class="list-icon">
-                                            <i
-                                                class="material-icons-outlined fs-5">shopping_basket</i>
+                                            <i class="material-icons-outlined fs-5">shopping_basket</i>
                                         </div>
                                         <div class="">
                                             <h5 class="mb-0 search-list-title">eCommerce Website
@@ -120,7 +110,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="search-list-item d-flex align-items-center gap-3">
+                                    <div class="gap-3 search-list-item d-flex align-items-center">
                                         <div class="list-icon">
                                             <i class="material-icons-outlined fs-5">laptop</i>
                                         </div>
@@ -134,34 +124,31 @@
                                 <hr>
                                 <p class="search-title">Members</p>
 
-                                <div class="search-list d-flex flex-column gap-2">
-                                    <div class="search-list-item d-flex align-items-center gap-3">
+                                <div class="gap-2 search-list d-flex flex-column">
+                                    <div class="gap-3 search-list-item d-flex align-items-center">
                                         <div class="memmber-img">
-                                            <img src="assets/images/avatars/01.png" width="32"
-                                                height="32" class="rounded-circle"
-                                                alt="">
+                                            <img src="assets/images/avatars/01.png" width="32" height="32"
+                                                class="rounded-circle" alt="">
                                         </div>
                                         <div class="">
                                             <h5 class="mb-0 search-list-title ">Andrew Stark</h5>
                                         </div>
                                     </div>
 
-                                    <div class="search-list-item d-flex align-items-center gap-3">
+                                    <div class="gap-3 search-list-item d-flex align-items-center">
                                         <div class="memmber-img">
-                                            <img src="assets/images/avatars/02.png" width="32"
-                                                height="32" class="rounded-circle"
-                                                alt="">
+                                            <img src="assets/images/avatars/02.png" width="32" height="32"
+                                                class="rounded-circle" alt="">
                                         </div>
                                         <div class="">
                                             <h5 class="mb-0 search-list-title ">Snetro Jhonia</h5>
                                         </div>
                                     </div>
 
-                                    <div class="search-list-item d-flex align-items-center gap-3">
+                                    <div class="gap-3 search-list-item d-flex align-items-center">
                                         <div class="memmber-img">
-                                            <img src="assets/images/avatars/03.png" width="32"
-                                                height="32" class="rounded-circle"
-                                                alt="">
+                                            <img src="assets/images/avatars/03.png" width="32" height="32"
+                                                class="rounded-circle" alt="">
                                         </div>
                                         <div class="">
                                             <h5 class="mb-0 search-list-title">Michle Clark</h5>
@@ -178,27 +165,26 @@
                     </div>
                 </div>
             </div>
-            <ul class="navbar-nav gap-1 nav-right-links align-items-center">
+            <ul class="gap-1 navbar-nav nav-right-links align-items-center">
                 <li class="nav-item d-lg-none mobile-search-btn">
-                    <a class="nav-link" href="javascript:;"><i
-                            class="material-icons-outlined">search</i></a>
+                    <a class="nav-link" href="javascript:;"><i class="material-icons-outlined">search</i></a>
                 </li>
                 <li class="nav-item dropdown position-static">
-                    <a class="nav-link dropdown-toggle dropdown-toggle-nocaret"
-                        data-bs-auto-close="outside" data-bs-toggle="dropdown"
-                        href="javascript:;"><i class="material-icons-outlined">done_all</i></a>
+                    <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-bs-auto-close="outside"
+                        data-bs-toggle="dropdown" href="javascript:;"><i
+                            class="material-icons-outlined">done_all</i></a>
                     <div class="dropdown-menu dropdown-menu-end mega-menu shadow-lg p-4 p-lg-5">
                         <div class="mega-menu-widgets">
                             <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-3 g-4 g-lg-5">
                                 <div class="col">
-                                    <div class="card rounded-4 shadow-none border mb-0">
+                                    <div class="mb-0 border shadow-none card rounded-4">
                                         <div class="card-body">
-                                            <div class="d-flex align-items-start gap-3">
-                                                <!-- <div class="mega-menu-icon flex-shrink-0">
+                                            <div class="gap-3 d-flex align-items-start">
+                                                <!-- <div class="flex-shrink-0 mega-menu-icon">
                         <i class="material-icons-outlined">question_answer</i>
                       </div> -->
-                                                <img src="assets/images/megaIcons/06.png"
-                                                    width="40" alt="">
+                                                <img src="assets/images/megaIcons/06.png" width="40"
+                                                    alt="">
                                                 <div class="mega-menu-content">
                                                     <h5>Marketing</h5>
                                                     <p class="mb-0 f-14">In publishing and graphic
@@ -212,11 +198,11 @@
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="card rounded-4 shadow-none border mb-0">
+                                    <div class="mb-0 border shadow-none card rounded-4">
                                         <div class="card-body">
                                             <div class="d-flex align-items-start gap-3">
-                                                <img src="assets/images/megaIcons/02.png"
-                                                    width="40" alt="">
+                                                <img src="assets/images/megaIcons/02.png" width="40"
+                                                    alt="">
                                                 <div class="mega-menu-content">
                                                     <h5>Website</h5>
                                                     <p class="mb-0 f-14">In publishing and graphic
@@ -230,11 +216,11 @@
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="card rounded-4 shadow-none border mb-0">
+                                    <div class="mb-0 border shadow-none card rounded-4">
                                         <div class="card-body">
                                             <div class="d-flex align-items-start gap-3">
-                                                <img src="assets/images/megaIcons/03.png"
-                                                    width="40" alt="">
+                                                <img src="assets/images/megaIcons/03.png" width="40"
+                                                    alt="">
                                                 <div class="mega-menu-content">
                                                     <h5>Subscribers</h5>
                                                     <p class="mb-0 f-14">In publishing and graphic
@@ -248,11 +234,11 @@
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="card rounded-4 shadow-none border mb-0">
+                                    <div class="mb-0 border shadow-none card rounded-4">
                                         <div class="card-body">
                                             <div class="d-flex align-items-start gap-3">
-                                                <img src="assets/images/megaIcons/01.png"
-                                                    width="40" alt="">
+                                                <img src="assets/images/megaIcons/01.png" width="40"
+                                                    alt="">
                                                 <div class="mega-menu-content">
                                                     <h5>Hubspot</h5>
                                                     <p class="mb-0 f-14">In publishing and graphic
@@ -266,11 +252,11 @@
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="card rounded-4 shadow-none border mb-0">
+                                    <div class="mb-0 border shadow-none card rounded-4">
                                         <div class="card-body">
                                             <div class="d-flex align-items-start gap-3">
-                                                <img src="assets/images/megaIcons/11.png"
-                                                    width="40" alt="">
+                                                <img src="assets/images/megaIcons/11.png" width="40"
+                                                    alt="">
                                                 <div class="mega-menu-content">
                                                     <h5>Templates</h5>
                                                     <p class="mb-0 f-14">In publishing and graphic
@@ -284,11 +270,11 @@
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="card rounded-4 shadow-none border mb-0">
+                                    <div class="mb-0 border shadow-none card rounded-4">
                                         <div class="card-body">
                                             <div class="d-flex align-items-start gap-3">
-                                                <img src="assets/images/megaIcons/13.png"
-                                                    width="40" alt="">
+                                                <img src="assets/images/megaIcons/13.png" width="40"
+                                                    alt="">
                                                 <div class="mega-menu-content">
                                                     <h5>Ebooks</h5>
                                                     <p class="mb-0 f-14">In publishing and graphic
@@ -302,11 +288,11 @@
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="card rounded-4 shadow-none border mb-0">
+                                    <div class="mb-0 border shadow-none card rounded-4">
                                         <div class="card-body">
                                             <div class="d-flex align-items-start gap-3">
-                                                <img src="assets/images/megaIcons/12.png"
-                                                    width="40" alt="">
+                                                <img src="assets/images/megaIcons/12.png" width="40"
+                                                    alt="">
                                                 <div class="mega-menu-content">
                                                     <h5>Sales</h5>
                                                     <p class="mb-0 f-14">In publishing and graphic
@@ -320,11 +306,11 @@
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="card rounded-4 shadow-none border mb-0">
+                                    <div class="mb-0 border shadow-none card rounded-4">
                                         <div class="card-body">
                                             <div class="d-flex align-items-start gap-3">
-                                                <img src="assets/images/megaIcons/08.png"
-                                                    width="40" alt="">
+                                                <img src="assets/images/megaIcons/08.png" width="40"
+                                                    alt="">
                                                 <div class="mega-menu-content">
                                                     <h5>Tools</h5>
                                                     <p class="mb-0 f-14">In publishing and graphic
@@ -338,11 +324,11 @@
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="card rounded-4 shadow-none border mb-0">
+                                    <div class="mb-0 border shadow-none card rounded-4">
                                         <div class="card-body">
                                             <div class="d-flex align-items-start gap-3">
-                                                <img src="assets/images/megaIcons/09.png"
-                                                    width="40" alt="">
+                                                <img src="assets/images/megaIcons/09.png" width="40"
+                                                    alt="">
                                                 <div class="mega-menu-content">
                                                     <h5>Academy</h5>
                                                     <p class="mb-0 f-14">In publishing and graphic
@@ -360,17 +346,15 @@
                     </div>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle dropdown-toggle-nocaret"
-                        data-bs-auto-close="outside" data-bs-toggle="dropdown"
-                        href="javascript:;"><i class="material-icons-outlined">apps</i></a>
+                    <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-bs-auto-close="outside"
+                        data-bs-toggle="dropdown" href="javascript:;"><i class="material-icons-outlined">apps</i></a>
                     <div class="dropdown-menu dropdown-menu-end dropdown-apps shadow-lg p-3">
                         <div class="border rounded-4 overflow-hidden">
                             <div class="row row-cols-3 g-0 border-bottom">
                                 <div class="col border-end">
-                                    <div class="app-wrapper d-flex flex-column gap-2 text-center">
+                                    <div class="gap-2 text-center app-wrapper d-flex flex-column">
                                         <div class="app-icon">
-                                            <img src="assets/images/apps/01.png" width="36"
-                                                alt="">
+                                            <img src="assets/images/apps/01.png" width="36" alt="">
                                         </div>
                                         <div class="app-name">
                                             <p class="mb-0">Gmail</p>
@@ -378,10 +362,9 @@
                                     </div>
                                 </div>
                                 <div class="col border-end">
-                                    <div class="app-wrapper d-flex flex-column gap-2 text-center">
+                                    <div class="gap-2 text-center app-wrapper d-flex flex-column">
                                         <div class="app-icon">
-                                            <img src="assets/images/apps/02.png" width="36"
-                                                alt="">
+                                            <img src="assets/images/apps/02.png" width="36" alt="">
                                         </div>
                                         <div class="app-name">
                                             <p class="mb-0">Skype</p>
@@ -389,10 +372,9 @@
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="app-wrapper d-flex flex-column gap-2 text-center">
+                                    <div class="gap-2 text-center app-wrapper d-flex flex-column">
                                         <div class="app-icon">
-                                            <img src="assets/images/apps/03.png" width="36"
-                                                alt="">
+                                            <img src="assets/images/apps/03.png" width="36" alt="">
                                         </div>
                                         <div class="app-name">
                                             <p class="mb-0">Slack</p>
@@ -403,10 +385,9 @@
 
                             <div class="row row-cols-3 g-0 border-bottom">
                                 <div class="col border-end">
-                                    <div class="app-wrapper d-flex flex-column gap-2 text-center">
+                                    <div class="gap-2 text-center app-wrapper d-flex flex-column">
                                         <div class="app-icon">
-                                            <img src="assets/images/apps/04.png" width="36"
-                                                alt="">
+                                            <img src="assets/images/apps/04.png" width="36" alt="">
                                         </div>
                                         <div class="app-name">
                                             <p class="mb-0">YouTube</p>
@@ -414,10 +395,9 @@
                                     </div>
                                 </div>
                                 <div class="col border-end">
-                                    <div class="app-wrapper d-flex flex-column gap-2 text-center">
+                                    <div class="gap-2 text-center app-wrapper d-flex flex-column">
                                         <div class="app-icon">
-                                            <img src="assets/images/apps/05.png" width="36"
-                                                alt="">
+                                            <img src="assets/images/apps/05.png" width="36" alt="">
                                         </div>
                                         <div class="app-name">
                                             <p class="mb-0">Google</p>
@@ -425,10 +405,9 @@
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="app-wrapper d-flex flex-column gap-2 text-center">
+                                    <div class="gap-2 text-center app-wrapper d-flex flex-column">
                                         <div class="app-icon">
-                                            <img src="assets/images/apps/06.png" width="36"
-                                                alt="">
+                                            <img src="assets/images/apps/06.png" width="36" alt="">
                                         </div>
                                         <div class="app-name">
                                             <p class="mb-0">Instagram</p>
@@ -439,10 +418,9 @@
 
                             <div class="row row-cols-3 g-0 border-bottom">
                                 <div class="col border-end">
-                                    <div class="app-wrapper d-flex flex-column gap-2 text-center">
+                                    <div class="gap-2 text-center app-wrapper d-flex flex-column">
                                         <div class="app-icon">
-                                            <img src="assets/images/apps/07.png" width="36"
-                                                alt="">
+                                            <img src="assets/images/apps/07.png" width="36" alt="">
                                         </div>
                                         <div class="app-name">
                                             <p class="mb-0">Spotify</p>
@@ -450,10 +428,9 @@
                                     </div>
                                 </div>
                                 <div class="col border-end">
-                                    <div class="app-wrapper d-flex flex-column gap-2 text-center">
+                                    <div class="gap-2 text-center app-wrapper d-flex flex-column">
                                         <div class="app-icon">
-                                            <img src="assets/images/apps/08.png" width="36"
-                                                alt="">
+                                            <img src="assets/images/apps/08.png" width="36" alt="">
                                         </div>
                                         <div class="app-name">
                                             <p class="mb-0">Yahoo</p>
@@ -461,10 +438,9 @@
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="app-wrapper d-flex flex-column gap-2 text-center">
+                                    <div class="gap-2 text-center app-wrapper d-flex flex-column">
                                         <div class="app-icon">
-                                            <img src="assets/images/apps/09.png" width="36"
-                                                alt="">
+                                            <img src="assets/images/apps/09.png" width="36" alt="">
                                         </div>
                                         <div class="app-name">
                                             <p class="mb-0">Facebook</p>
@@ -475,10 +451,9 @@
 
                             <div class="row row-cols-3 g-0">
                                 <div class="col border-end">
-                                    <div class="app-wrapper d-flex flex-column gap-2 text-center">
+                                    <div class="gap-2 text-center app-wrapper d-flex flex-column">
                                         <div class="app-icon">
-                                            <img src="assets/images/apps/10.png" width="36"
-                                                alt="">
+                                            <img src="assets/images/apps/10.png" width="36" alt="">
                                         </div>
                                         <div class="app-name">
                                             <p class="mb-0">Figma</p>
@@ -486,10 +461,9 @@
                                     </div>
                                 </div>
                                 <div class="col border-end">
-                                    <div class="app-wrapper d-flex flex-column gap-2 text-center">
+                                    <div class="gap-2 text-center app-wrapper d-flex flex-column">
                                         <div class="app-icon">
-                                            <img src="assets/images/apps/11.png" width="36"
-                                                alt="">
+                                            <img src="assets/images/apps/11.png" width="36" alt="">
                                         </div>
                                         <div class="app-name">
                                             <p class="mb-0">Paypal</p>
@@ -497,10 +471,9 @@
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="app-wrapper d-flex flex-column gap-2 text-center">
+                                    <div class="gap-2 text-center app-wrapper d-flex flex-column">
                                         <div class="app-icon">
-                                            <img src="assets/images/apps/12.png" width="36"
-                                                alt="">
+                                            <img src="assets/images/apps/12.png" width="36" alt="">
                                         </div>
                                         <div class="app-name">
                                             <p class="mb-0">Photo</p>
@@ -513,47 +486,43 @@
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative"
-                        data-bs-auto-close="outside" data-bs-toggle="dropdown"
-                        href="javascript:;"><i class="material-icons-outlined">notifications</i>
+                        data-bs-auto-close="outside" data-bs-toggle="dropdown" href="javascript:;"><i
+                            class="material-icons-outlined">notifications</i>
                         <span class="badge-notify">5</span>
                     </a>
                     <div class="dropdown-menu dropdown-notify dropdown-menu-end shadow">
-                        <div
-                            class="px-3 py-1 d-flex align-items-center justify-content-between border-bottom">
+                        <div class="px-3 py-1 d-flex align-items-center justify-content-between border-bottom">
                             <h5 class="notiy-title mb-0">Notifications</h5>
                             <div class="dropdown">
-                                <button
-                                    class="btn btn-secondary dropdown-toggle dropdown-toggle-nocaret option"
-                                    type="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
+                                <button class="btn btn-secondary dropdown-toggle dropdown-toggle-nocaret option"
+                                    type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <span class="material-icons-outlined">
                                         more_vert
                                     </span>
                                 </button>
-                                <div
-                                    class="dropdown-menu dropdown-option dropdown-menu-end shadow">
+                                <div class="dropdown-menu dropdown-option dropdown-menu-end shadow">
                                     <div><a class="dropdown-item d-flex align-items-center gap-2 py-2"
                                             href="javascript:;"><i
                                                 class="material-icons-outlined fs-6">inventory_2</i>Archive
                                             All</a>
                                     </div>
-                                    <div><a class="dropdown-item d-flex align-items-center gap-2 py-2"
+                                    <div><a class="gap-2 py-2 dropdown-item d-flex align-items-center"
                                             href="javascript:;"><i
                                                 class="material-icons-outlined fs-6">done_all</i>Mark
                                             all as read</a>
                                     </div>
-                                    <div><a class="dropdown-item d-flex align-items-center gap-2 py-2"
+                                    <div><a class="gap-2 py-2 dropdown-item d-flex align-items-center"
                                             href="javascript:;"><i
                                                 class="material-icons-outlined fs-6">mic_off</i>Disable
                                             Notifications</a></div>
-                                    <div><a class="dropdown-item d-flex align-items-center gap-2 py-2"
+                                    <div><a class="gap-2 py-2 dropdown-item d-flex align-items-center"
                                             href="javascript:;"><i
                                                 class="material-icons-outlined fs-6">grade</i>What's
                                             new ?</a></div>
                                     <div>
                                         <hr class="dropdown-divider">
                                     </div>
-                                    <div><a class="dropdown-item d-flex align-items-center gap-2 py-2"
+                                    <div><a class="gap-2 py-2 dropdown-item d-flex align-items-center"
                                             href="javascript:;"><i
                                                 class="material-icons-outlined fs-6">leaderboard</i>Reports</a>
                                     </div>
@@ -562,12 +531,11 @@
                         </div>
                         <div class="notify-list">
                             <div>
-                                <a class="dropdown-item border-bottom py-2" href="javascript:;">
-                                    <div class="d-flex align-items-center gap-3">
+                                <a class="py-2 dropdown-item border-bottom" href="javascript:;">
+                                    <div class="gap-3 d-flex align-items-center">
                                         <div class="">
-                                            <img src="assets/images/avatars/01.png"
-                                                class="rounded-circle" width="45"
-                                                height="45" alt="">
+                                            <img src="assets/images/avatars/01.png" class="rounded-circle"
+                                                width="45" height="45" alt="">
                                         </div>
                                         <div class="">
                                             <h5 class="notify-title">Congratulations Jhon</h5>
@@ -584,8 +552,7 @@
                             <div>
                                 <a class="dropdown-item border-bottom py-2" href="javascript:;">
                                     <div class="d-flex align-items-center gap-3">
-                                        <div
-                                            class="user-wrapper bg-primary text-primary bg-opacity-10">
+                                        <div class="user-wrapper bg-primary text-primary bg-opacity-10">
                                             <span>RS</span>
                                         </div>
                                         <div class="">
@@ -601,12 +568,11 @@
                                 </a>
                             </div>
                             <div>
-                                <a class="dropdown-item border-bottom py-2" href="javascript:;">
-                                    <div class="d-flex align-items-center gap-3">
+                                <a class="py-2 dropdown-item border-bottom" href="javascript:;">
+                                    <div class="gap-3 d-flex align-items-center">
                                         <div class="">
-                                            <img src="assets/images/apps/13.png"
-                                                class="rounded-circle" width="45"
-                                                height="45" alt="">
+                                            <img src="assets/images/apps/13.png" class="rounded-circle"
+                                                width="45" height="45" alt="">
                                         </div>
                                         <div class="">
                                             <h5 class="notify-title">Payment Recived</h5>
@@ -621,12 +587,11 @@
                                 </a>
                             </div>
                             <div>
-                                <a class="dropdown-item border-bottom py-2" href="javascript:;">
-                                    <div class="d-flex align-items-center gap-3">
+                                <a class="py-2 dropdown-item border-bottom" href="javascript:;">
+                                    <div class="gap-3 d-flex align-items-center">
                                         <div class="">
-                                            <img src="assets/images/apps/14.png"
-                                                class="rounded-circle" width="45"
-                                                height="45" alt="">
+                                            <img src="assets/images/apps/14.png" class="rounded-circle"
+                                                width="45" height="45" alt="">
                                         </div>
                                         <div class="">
                                             <h5 class="notify-title">New Order Recived</h5>
@@ -641,12 +606,11 @@
                                 </a>
                             </div>
                             <div>
-                                <a class="dropdown-item border-bottom py-2" href="javascript:;">
-                                    <div class="d-flex align-items-center gap-3">
+                                <a class="py-2 dropdown-item border-bottom" href="javascript:;">
+                                    <div class="gap-3 d-flex align-items-center">
                                         <div class="">
-                                            <img src="assets/images/avatars/06.png"
-                                                class="rounded-circle" width="45"
-                                                height="45" alt="">
+                                            <img src="assets/images/avatars/06.png" class="rounded-circle"
+                                                width="45" height="45" alt="">
                                         </div>
                                         <div class="">
                                             <h5 class="notify-title">Congratulations Jhon</h5>
@@ -663,8 +627,7 @@
                             <div>
                                 <a class="dropdown-item py-2" href="javascript:;">
                                     <div class="d-flex align-items-center gap-3">
-                                        <div
-                                            class="user-wrapper bg-danger text-danger bg-opacity-10">
+                                        <div class="user-wrapper bg-danger text-danger bg-opacity-10">
                                             <span>PK</span>
                                         </div>
                                         <div class="">
@@ -683,46 +646,47 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link position-relative" data-bs-toggle="offcanvas"
-                        href="#offcanvasCart"><i class="material-icons-outlined">shopping_cart</i>
+                    <a class="nav-link position-relative" data-bs-toggle="offcanvas" href="#offcanvasCart"><i
+                            class="material-icons-outlined">shopping_cart</i>
                         <span class="badge-notify bg-dark">8</span>
                     </a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a href="javascrpt:;" class="dropdown-toggle dropdown-toggle-nocaret"
-                        data-bs-toggle="dropdown">
-                        <img src="assets/images/avatars/01.png" class="rounded-circle p-1 border"
-                            width="45" height="45">
+                    <a href="javascrpt:;" class="dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown">
+                        <img src="assets/images/avatars/01.png" class="rounded-circle p-1 border" width="45"
+                            height="45">
                     </a>
-                    <div class="dropdown-menu dropdown-user dropdown-menu-end shadow">
-                        <a class="dropdown-item  gap-2 py-2" href="javascript:;">
+                    <div class="shadow dropdown-menu dropdown-user dropdown-menu-end">
+                        <a class="gap-2 py-2 dropdown-item" href="javascript:;">
                             <div class="text-center">
-                                <img src="assets/images/avatars/01.png"
-                                    class="rounded-circle p-1 shadow mb-3" width="90"
-                                    height="90" alt="">
-                                <h5 class="user-name mb-0 fw-bold">Hello, Jhon</h5>
+                                <img src="assets/images/avatars/01.png" class="rounded-circle p-1 shadow mb-3"
+                                    width="90" height="90" alt="">
+                                <h5 class="user-name mb-0 fw-bold">
+                                    @if (Auth::check())
+                                        <p>Hai, {{ Auth::user()->nama }} 👋</p>
+                                    @else
+                                        <p>Hai, Pengguna 👋</p>
+                                    @endif
+                                </h5>
                             </div>
                         </a>
                         <hr class="dropdown-divider">
-                        <a class="dropdown-item d-flex align-items-center gap-2 py-2"
-                            href="javascript:;"><i
+                        <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:;"><i
                                 class="material-icons-outlined">person_outline</i>Profile</a>
-                        <a class="dropdown-item d-flex align-items-center gap-2 py-2"
-                            href="javascript:;"><i
+                        <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:;"><i
                                 class="material-icons-outlined">local_bar</i>Setting</a>
-                        <a class="dropdown-item d-flex align-items-center gap-2 py-2"
-                            href="javascript:;"><i
+                        <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:;"><i
                                 class="material-icons-outlined">dashboard</i>Dashboard</a>
-                        <a class="dropdown-item d-flex align-items-center gap-2 py-2"
-                            href="javascript:;"><i
+                        <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:;"><i
                                 class="material-icons-outlined">account_balance</i>Earning</a>
-                        <a class="dropdown-item d-flex align-items-center gap-2 py-2"
-                            href="javascript:;"><i
+                        <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:;"><i
                                 class="material-icons-outlined">cloud_download</i>Downloads</a>
                         <hr class="dropdown-divider">
-                        <a class="dropdown-item d-flex align-items-center gap-2 py-2"
-                            href="javascript:;"><i
-                                class="material-icons-outlined">power_settings_new</i>Logout</a>
+                        <form action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="dropdown-item d-flex align-items-center gap-2 py-2"><i
+                                    class="material-icons-outlined">power_settings_new</i>Logout</button>
+                        </form>
                     </div>
                 </li>
             </ul>
@@ -756,11 +720,9 @@
                         <div class="menu-title">Dashboard</div>
                     </a>
                     <ul>
-                        <li><a href="index.html"><i
-                                    class="material-icons-outlined">arrow_right</i>eCommerce</a>
+                        <li><a href="index.html"><i class="material-icons-outlined">arrow_right</i>eCommerce</a>
                         </li>
-                        <li><a href="index2.html"><i
-                                    class="material-icons-outlined">arrow_right</i>Alternate</a>
+                        <li><a href="index2.html"><i class="material-icons-outlined">arrow_right</i>Alternate</a>
                         </li>
                     </ul>
                 </li>
@@ -771,8 +733,7 @@
                         <div class="menu-title">Widgets</div>
                     </a>
                     <ul>
-                        <li><a href="widgets-data.html"><i
-                                    class="material-icons-outlined">arrow_right</i>Data</a>
+                        <li><a href="widgets-data.html"><i class="material-icons-outlined">arrow_right</i>Data</a>
                         </li>
                         <li><a href="widgets-advance.html"><i
                                     class="material-icons-outlined">arrow_right</i>Advance</a>
@@ -782,8 +743,7 @@
                 <li class="menu-label">UI Elements</li>
                 <li>
                     <a href="javascript:;" class="has-arrow">
-                        <div class="parent-icon"><i
-                                class="material-icons-outlined">inventory_2</i>
+                        <div class="parent-icon"><i class="material-icons-outlined">inventory_2</i>
                         </div>
                         <div class="menu-title">Cards</div>
                     </a>
@@ -802,14 +762,12 @@
 
                 <li>
                     <a href="javascript:;" class="has-arrow">
-                        <div class="parent-icon"><i
-                                class="material-icons-outlined">shopping_bag</i>
+                        <div class="parent-icon"><i class="material-icons-outlined">shopping_bag</i>
                         </div>
                         <div class="menu-title">eCommerce</div>
                     </a>
                     <ul>
-                        <li><a href="ecommerce-add-product.html"><i
-                                    class="material-icons-outlined">arrow_right</i>Add
+                        <li><a href="ecommerce-add-product.html"><i class="material-icons-outlined">arrow_right</i>Add
                                 Product</a>
                         </li>
                         <li><a href="ecommerce-products.html"><i
@@ -833,8 +791,7 @@
                 </li>
                 <li>
                     <a class="has-arrow" href="javascript:;">
-                        <div class="parent-icon"><i
-                                class="material-icons-outlined">card_giftcard</i>
+                        <div class="parent-icon"><i class="material-icons-outlined">card_giftcard</i>
                         </div>
                         <div class="menu-title">Components</div>
                     </a>
@@ -861,8 +818,7 @@
                         <li><a href="component-modals.html"><i
                                     class="material-icons-outlined">arrow_right</i>Modals</a>
                         </li>
-                        <li><a href="component-navs-tabs.html"><i
-                                    class="material-icons-outlined">arrow_right</i>Navs
+                        <li><a href="component-navs-tabs.html"><i class="material-icons-outlined">arrow_right</i>Navs
                                 & Tabs</a>
                         </li>
                         <li><a href="component-navbar.html"><i
@@ -898,14 +854,12 @@
                 </li>
                 <li>
                     <a class="has-arrow" href="javascript:;">
-                        <div class="parent-icon"><i
-                                class="material-icons-outlined">view_agenda</i>
+                        <div class="parent-icon"><i class="material-icons-outlined">view_agenda</i>
                         </div>
                         <div class="menu-title">Icons</div>
                     </a>
                     <ul>
-                        <li><a href="icons-line-icons.html"><i
-                                    class="material-icons-outlined">arrow_right</i>Line
+                        <li><a href="icons-line-icons.html"><i class="material-icons-outlined">arrow_right</i>Line
                                 Icons</a>
                         </li>
                         <li><a href="icons-boxicons.html"><i
@@ -925,43 +879,35 @@
                         <div class="menu-title">Forms</div>
                     </a>
                     <ul>
-                        <li><a href="form-elements.html"><i
-                                    class="material-icons-outlined">arrow_right</i>Form
+                        <li><a href="form-elements.html"><i class="material-icons-outlined">arrow_right</i>Form
                                 Elements</a>
                         </li>
-                        <li><a href="form-input-group.html"><i
-                                    class="material-icons-outlined">arrow_right</i>Input
+                        <li><a href="form-input-group.html"><i class="material-icons-outlined">arrow_right</i>Input
                                 Groups</a>
                         </li>
                         <li><a href="form-radios-and-checkboxes.html"><i
                                     class="material-icons-outlined">arrow_right</i>Radios &
                                 Checkboxes</a>
                         </li>
-                        <li><a href="form-layouts.html"><i
-                                    class="material-icons-outlined">arrow_right</i>Forms
+                        <li><a href="form-layouts.html"><i class="material-icons-outlined">arrow_right</i>Forms
                                 Layouts</a>
                         </li>
-                        <li><a href="form-validations.html"><i
-                                    class="material-icons-outlined">arrow_right</i>Form
+                        <li><a href="form-validations.html"><i class="material-icons-outlined">arrow_right</i>Form
                                 Validation</a>
                         </li>
-                        <li><a href="form-wizard.html"><i
-                                    class="material-icons-outlined">arrow_right</i>Form
+                        <li><a href="form-wizard.html"><i class="material-icons-outlined">arrow_right</i>Form
                                 Wizard</a>
                         </li>
-                        <li><a href="form-file-upload.html"><i
-                                    class="material-icons-outlined">arrow_right</i>File
+                        <li><a href="form-file-upload.html"><i class="material-icons-outlined">arrow_right</i>File
                                 Upload</a>
                         </li>
                         <li><a href="form-date-time-pickes.html"><i
                                     class="material-icons-outlined">arrow_right</i>Date
                                 Pickers</a>
                         </li>
-                        <li><a href="form-select2.html"><i
-                                    class="material-icons-outlined">arrow_right</i>Select2</a>
+                        <li><a href="form-select2.html"><i class="material-icons-outlined">arrow_right</i>Select2</a>
                         </li>
-                        <li><a href="form-repeater.html"><i
-                                    class="material-icons-outlined">arrow_right</i>Form
+                        <li><a href="form-repeater.html"><i class="material-icons-outlined">arrow_right</i>Form
                                 Repeater</a>
                         </li>
                     </ul>
@@ -973,12 +919,10 @@
                         <div class="menu-title">Tables</div>
                     </a>
                     <ul>
-                        <li><a href="table-basic-table.html"><i
-                                    class="material-icons-outlined">arrow_right</i>Basic
+                        <li><a href="table-basic-table.html"><i class="material-icons-outlined">arrow_right</i>Basic
                                 Table</a>
                         </li>
-                        <li><a href="table-datatable.html"><i
-                                    class="material-icons-outlined">arrow_right</i>Data
+                        <li><a href="table-datatable.html"><i class="material-icons-outlined">arrow_right</i>Data
                                 Table</a>
                         </li>
                     </ul>
@@ -993,11 +937,9 @@
                         <li><a href="app-fullcalender.html"><i
                                     class="material-icons-outlined">arrow_right</i>Calendar</a>
                         </li>
-                        <li><a href="app-to-do.html"><i
-                                    class="material-icons-outlined">arrow_right</i>To do</a>
+                        <li><a href="app-to-do.html"><i class="material-icons-outlined">arrow_right</i>To do</a>
                         </li>
-                        <li><a href="app-invoice.html"><i
-                                    class="material-icons-outlined">arrow_right</i>Invoice</a>
+                        <li><a href="app-invoice.html"><i class="material-icons-outlined">arrow_right</i>Invoice</a>
                         </li>
                     </ul>
                 </li>
@@ -1078,8 +1020,7 @@
                 </li>
                 <li>
                     <a class="has-arrow" href="javascript:;">
-                        <div class="parent-icon"><i
-                                class="material-icons-outlined">report_problem</i>
+                        <div class="parent-icon"><i class="material-icons-outlined">report_problem</i>
                         </div>
                         <div class="menu-title">Pages</div>
                     </a>
@@ -1102,16 +1043,14 @@
                 </li>
                 <li>
                     <a href="faq.html">
-                        <div class="parent-icon"><i
-                                class="material-icons-outlined">help_outline</i>
+                        <div class="parent-icon"><i class="material-icons-outlined">help_outline</i>
                         </div>
                         <div class="menu-title">FAQ</div>
                     </a>
                 </li>
                 <li>
                     <a href="pricing-table.html">
-                        <div class="parent-icon"><i
-                                class="material-icons-outlined">sports_football</i>
+                        <div class="parent-icon"><i class="material-icons-outlined">sports_football</i>
                         </div>
                         <div class="menu-title">Pricing</div>
                     </a>
@@ -1134,18 +1073,15 @@
                 </li>
                 <li>
                     <a class="has-arrow" href="javascript:;">
-                        <div class="parent-icon"><i
-                                class="material-icons-outlined">sports_football</i>
+                        <div class="parent-icon"><i class="material-icons-outlined">sports_football</i>
                         </div>
                         <div class="menu-title">Maps</div>
                     </a>
                     <ul>
-                        <li><a href="map-google-maps.html"><i
-                                    class="material-icons-outlined">arrow_right</i>Google
+                        <li><a href="map-google-maps.html"><i class="material-icons-outlined">arrow_right</i>Google
                                 Maps</a>
                         </li>
-                        <li><a href="map-vector-maps.html"><i
-                                    class="material-icons-outlined">arrow_right</i>Vector
+                        <li><a href="map-vector-maps.html"><i class="material-icons-outlined">arrow_right</i>Vector
                                 Maps</a>
                         </li>
                     </ul>
@@ -1178,8 +1114,7 @@
                 </li>
                 <li>
                     <a href="javascrpt:;">
-                        <div class="parent-icon"><i
-                                class="material-icons-outlined">description</i>
+                        <div class="parent-icon"><i class="material-icons-outlined">description</i>
                         </div>
                         <div class="menu-title">Documentation</div>
                     </a>
@@ -1194,7 +1129,7 @@
             </ul>
             <!--end navigation-->
         </div>
-        <div class="sidebar-bottom gap-4">
+        <div class="gap-4 sidebar-bottom">
             <div class="dark-mode">
                 <a href="javascript:;" class="footer-icon dark-mode-icon">
                     <i class="material-icons-outlined">dark_mode</i>
@@ -1202,81 +1137,67 @@
             </div>
             <div class="dropdown dropup-center dropup dropdown-laungauge">
                 <a class="dropdown-toggle dropdown-toggle-nocaret footer-icon" href="avascript:;"
-                    data-bs-toggle="dropdown"><img src="assets/images/county/02.png"
-                        width="22" alt="">
+                    data-bs-toggle="dropdown"><img src="assets/images/county/02.png" width="22" alt="">
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item d-flex align-items-center py-2"
-                            href="javascript:;"><img src="assets/images/county/01.png"
-                                width="20" alt=""><span
+                    <li><a class="dropdown-item d-flex align-items-center py-2" href="javascript:;"><img
+                                src="assets/images/county/01.png" width="20" alt=""><span
                                 class="ms-2">English</span></a>
                     </li>
-                    <li><a class="dropdown-item d-flex align-items-center py-2"
-                            href="javascript:;"><img src="assets/images/county/02.png"
-                                width="20" alt=""><span
+                    <li><a class="dropdown-item d-flex align-items-center py-2" href="javascript:;"><img
+                                src="assets/images/county/02.png" width="20" alt=""><span
                                 class="ms-2">Catalan</span></a>
                     </li>
-                    <li><a class="dropdown-item d-flex align-items-center py-2"
-                            href="javascript:;"><img src="assets/images/county/03.png"
-                                width="20" alt=""><span
+                    <li><a class="dropdown-item d-flex align-items-center py-2" href="javascript:;"><img
+                                src="assets/images/county/03.png" width="20" alt=""><span
                                 class="ms-2">French</span></a>
                     </li>
-                    <li><a class="dropdown-item d-flex align-items-center py-2"
-                            href="javascript:;"><img src="assets/images/county/04.png"
-                                width="20" alt=""><span
+                    <li><a class="dropdown-item d-flex align-items-center py-2" href="javascript:;"><img
+                                src="assets/images/county/04.png" width="20" alt=""><span
                                 class="ms-2">Belize</span></a>
                     </li>
-                    <li><a class="dropdown-item d-flex align-items-center py-2"
-                            href="javascript:;"><img src="assets/images/county/05.png"
-                                width="20" alt=""><span
+                    <li><a class="dropdown-item d-flex align-items-center py-2" href="javascript:;"><img
+                                src="assets/images/county/05.png" width="20" alt=""><span
                                 class="ms-2">Colombia</span></a>
                     </li>
-                    <li><a class="dropdown-item d-flex align-items-center py-2"
-                            href="javascript:;"><img src="assets/images/county/06.png"
-                                width="20" alt=""><span
+                    <li><a class="dropdown-item d-flex align-items-center py-2" href="javascript:;"><img
+                                src="assets/images/county/06.png" width="20" alt=""><span
                                 class="ms-2">Spanish</span></a>
                     </li>
-                    <li><a class="dropdown-item d-flex align-items-center py-2"
-                            href="javascript:;"><img src="assets/images/county/07.png"
-                                width="20" alt=""><span
+                    <li><a class="dropdown-item d-flex align-items-center py-2" href="javascript:;"><img
+                                src="assets/images/county/07.png" width="20" alt=""><span
                                 class="ms-2">Georgian</span></a>
                     </li>
-                    <li><a class="dropdown-item d-flex align-items-center py-2"
-                            href="javascript:;"><img src="assets/images/county/08.png"
-                                width="20" alt=""><span
+                    <li><a class="dropdown-item d-flex align-items-center py-2" href="javascript:;"><img
+                                src="assets/images/county/08.png" width="20" alt=""><span
                                 class="ms-2">Hindi</span></a>
                     </li>
                 </ul>
             </div>
             <div class="dropdown dropup-center dropup dropdown-help">
-                <a class="footer-icon  dropdown-toggle dropdown-toggle-nocaret option"
-                    href="javascript:;" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="footer-icon  dropdown-toggle dropdown-toggle-nocaret option" href="javascript:;"
+                    data-bs-toggle="dropdown" aria-expanded="false">
                     <span class="material-icons-outlined">
                         info
                     </span>
                 </a>
                 <div class="dropdown-menu dropdown-option dropdown-menu-end shadow">
-                    <div><a class="dropdown-item d-flex align-items-center gap-2 py-2"
-                            href="javascript:;"><i
+                    <div><a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:;"><i
                                 class="material-icons-outlined fs-6">inventory_2</i>Archive All</a>
                     </div>
-                    <div><a class="dropdown-item d-flex align-items-center gap-2 py-2"
-                            href="javascript:;"><i
+                    <div><a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:;"><i
                                 class="material-icons-outlined fs-6">done_all</i>Mark all as
                             read</a></div>
-                    <div><a class="dropdown-item d-flex align-items-center gap-2 py-2"
-                            href="javascript:;"><i
+                    <div><a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:;"><i
                                 class="material-icons-outlined fs-6">mic_off</i>Disable
                             Notifications</a></div>
-                    <div><a class="dropdown-item d-flex align-items-center gap-2 py-2"
-                            href="javascript:;"><i
+                    <div><a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:;"><i
                                 class="material-icons-outlined fs-6">grade</i>What's new ?</a>
                     </div>
                     <div>
                         <hr class="dropdown-divider">
                     </div>
-                    <div><a class="dropdown-item d-flex align-items-center gap-2 py-2"
-                            href="javascript:;"><i
+                    <div><a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:;"><i
                                 class="material-icons-outlined fs-6">leaderboard</i>Reports</a>
                     </div>
                 </div>
@@ -1313,146 +1234,130 @@
                 <i class="material-icons-outlined">close</i>
             </a>
         </div>
-        <div class="offcanvas-body p-0">
+        <div class="p-0 offcanvas-body">
             <div class="order-list">
-                <div class="order-item d-flex align-items-center gap-3 p-3 border-bottom">
+                <div class="gap-3 p-3 order-item d-flex align-items-center border-bottom">
                     <div class="order-img">
-                        <img src="assets/images/orders/01.png" class="img-fluid rounded-3"
-                            width="75" alt="">
+                        <img src="assets/images/orders/01.png" class="img-fluid rounded-3" width="75"
+                            alt="">
                     </div>
                     <div class="order-info flex-grow-1">
                         <h5 class="mb-1 order-title">White Men Shoes</h5>
                         <p class="mb-0 order-price">$289</p>
                     </div>
                     <div class="d-flex">
-                        <a class="order-delete"><span
-                                class="material-icons-outlined">delete</span></a>
-                        <a class="order-delete"><span
-                                class="material-icons-outlined">visibility</span></a>
+                        <a class="order-delete"><span class="material-icons-outlined">delete</span></a>
+                        <a class="order-delete"><span class="material-icons-outlined">visibility</span></a>
                     </div>
                 </div>
 
-                <div class="order-item d-flex align-items-center gap-3 p-3 border-bottom">
+                <div class="gap-3 p-3 order-item d-flex align-items-center border-bottom">
                     <div class="order-img">
-                        <img src="assets/images/orders/02.png" class="img-fluid rounded-3"
-                            width="75" alt="">
+                        <img src="assets/images/orders/02.png" class="img-fluid rounded-3" width="75"
+                            alt="">
                     </div>
                     <div class="order-info flex-grow-1">
                         <h5 class="mb-1 order-title">Red Airpods</h5>
                         <p class="mb-0 order-price">$149</p>
                     </div>
                     <div class="d-flex">
-                        <a class="order-delete"><span
-                                class="material-icons-outlined">delete</span></a>
-                        <a class="order-delete"><span
-                                class="material-icons-outlined">visibility</span></a>
+                        <a class="order-delete"><span class="material-icons-outlined">delete</span></a>
+                        <a class="order-delete"><span class="material-icons-outlined">visibility</span></a>
                     </div>
                 </div>
 
-                <div class="order-item d-flex align-items-center gap-3 p-3 border-bottom">
+                <div class="gap-3 p-3 order-item d-flex align-items-center border-bottom">
                     <div class="order-img">
-                        <img src="assets/images/orders/03.png" class="img-fluid rounded-3"
-                            width="75" alt="">
+                        <img src="assets/images/orders/03.png" class="img-fluid rounded-3" width="75"
+                            alt="">
                     </div>
                     <div class="order-info flex-grow-1">
                         <h5 class="mb-1 order-title">Men Polo Tshirt</h5>
                         <p class="mb-0 order-price">$139</p>
                     </div>
                     <div class="d-flex">
-                        <a class="order-delete"><span
-                                class="material-icons-outlined">delete</span></a>
-                        <a class="order-delete"><span
-                                class="material-icons-outlined">visibility</span></a>
+                        <a class="order-delete"><span class="material-icons-outlined">delete</span></a>
+                        <a class="order-delete"><span class="material-icons-outlined">visibility</span></a>
                     </div>
                 </div>
 
-                <div class="order-item d-flex align-items-center gap-3 p-3 border-bottom">
+                <div class="gap-3 p-3 order-item d-flex align-items-center border-bottom">
                     <div class="order-img">
-                        <img src="assets/images/orders/04.png" class="img-fluid rounded-3"
-                            width="75" alt="">
+                        <img src="assets/images/orders/04.png" class="img-fluid rounded-3" width="75"
+                            alt="">
                     </div>
                     <div class="order-info flex-grow-1">
                         <h5 class="mb-1 order-title">Blue Jeans Casual</h5>
                         <p class="mb-0 order-price">$485</p>
                     </div>
                     <div class="d-flex">
-                        <a class="order-delete"><span
-                                class="material-icons-outlined">delete</span></a>
-                        <a class="order-delete"><span
-                                class="material-icons-outlined">visibility</span></a>
+                        <a class="order-delete"><span class="material-icons-outlined">delete</span></a>
+                        <a class="order-delete"><span class="material-icons-outlined">visibility</span></a>
                     </div>
                 </div>
 
-                <div class="order-item d-flex align-items-center gap-3 p-3 border-bottom">
+                <div class="gap-3 p-3 order-item d-flex align-items-center border-bottom">
                     <div class="order-img">
-                        <img src="assets/images/orders/05.png" class="img-fluid rounded-3"
-                            width="75" alt="">
+                        <img src="assets/images/orders/05.png" class="img-fluid rounded-3" width="75"
+                            alt="">
                     </div>
                     <div class="order-info flex-grow-1">
                         <h5 class="mb-1 order-title">Fancy Shirts</h5>
                         <p class="mb-0 order-price">$758</p>
                     </div>
                     <div class="d-flex">
-                        <a class="order-delete"><span
-                                class="material-icons-outlined">delete</span></a>
-                        <a class="order-delete"><span
-                                class="material-icons-outlined">visibility</span></a>
+                        <a class="order-delete"><span class="material-icons-outlined">delete</span></a>
+                        <a class="order-delete"><span class="material-icons-outlined">visibility</span></a>
                     </div>
                 </div>
 
-                <div class="order-item d-flex align-items-center gap-3 p-3 border-bottom">
+                <div class="gap-3 p-3 order-item d-flex align-items-center border-bottom">
                     <div class="order-img">
-                        <img src="assets/images/orders/06.png" class="img-fluid rounded-3"
-                            width="75" alt="">
+                        <img src="assets/images/orders/06.png" class="img-fluid rounded-3" width="75"
+                            alt="">
                     </div>
                     <div class="order-info flex-grow-1">
                         <h5 class="mb-1 order-title">Home Sofa Set </h5>
                         <p class="mb-0 order-price">$546</p>
                     </div>
                     <div class="d-flex">
-                        <a class="order-delete"><span
-                                class="material-icons-outlined">delete</span></a>
-                        <a class="order-delete"><span
-                                class="material-icons-outlined">visibility</span></a>
+                        <a class="order-delete"><span class="material-icons-outlined">delete</span></a>
+                        <a class="order-delete"><span class="material-icons-outlined">visibility</span></a>
                     </div>
                 </div>
 
-                <div class="order-item d-flex align-items-center gap-3 p-3 border-bottom">
+                <div class="gap-3 p-3 order-item d-flex align-items-center border-bottom">
                     <div class="order-img">
-                        <img src="assets/images/orders/07.png" class="img-fluid rounded-3"
-                            width="75" alt="">
+                        <img src="assets/images/orders/07.png" class="img-fluid rounded-3" width="75"
+                            alt="">
                     </div>
                     <div class="order-info flex-grow-1">
                         <h5 class="mb-1 order-title">Black iPhone</h5>
                         <p class="mb-0 order-price">$1049</p>
                     </div>
                     <div class="d-flex">
-                        <a class="order-delete"><span
-                                class="material-icons-outlined">delete</span></a>
-                        <a class="order-delete"><span
-                                class="material-icons-outlined">visibility</span></a>
+                        <a class="order-delete"><span class="material-icons-outlined">delete</span></a>
+                        <a class="order-delete"><span class="material-icons-outlined">visibility</span></a>
                     </div>
                 </div>
 
-                <div class="order-item d-flex align-items-center gap-3 p-3 border-bottom">
+                <div class="gap-3 p-3 order-item d-flex align-items-center border-bottom">
                     <div class="order-img">
-                        <img src="assets/images/orders/08.png" class="img-fluid rounded-3"
-                            width="75" alt="">
+                        <img src="assets/images/orders/08.png" class="img-fluid rounded-3" width="75"
+                            alt="">
                     </div>
                     <div class="order-info flex-grow-1">
                         <h5 class="mb-1 order-title">Goldan Watch</h5>
                         <p class="mb-0 order-price">$689</p>
                     </div>
                     <div class="d-flex">
-                        <a class="order-delete"><span
-                                class="material-icons-outlined">delete</span></a>
-                        <a class="order-delete"><span
-                                class="material-icons-outlined">visibility</span></a>
+                        <a class="order-delete"><span class="material-icons-outlined">delete</span></a>
+                        <a class="order-delete"><span class="material-icons-outlined">visibility</span></a>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="offcanvas-footer h-70 p-3 border-top">
+        <div class="p-3 offcanvas-footer h-70 border-top">
             <div class="d-grid">
                 <button type="button" class="btn btn-dark" data-bs-dismiss="offcanvas">View
                     Products</button>
@@ -1463,14 +1368,12 @@
 
 
     <!--start switcher-->
-    <button
-        class="btn btn-primary position-fixed bottom-0 end-0 m-3 d-flex align-items-center gap-2"
-        type="button" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop">
+    <button class="btn btn-primary position-fixed bottom-0 end-0 m-3 d-flex align-items-center gap-2" type="button"
+        data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop">
         <i class="material-icons-outlined">tune</i>Customize
     </button>
 
-    <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1"
-        id="staticBackdrop">
+    <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="staticBackdrop">
         <div class="offcanvas-header border-bottom h-70 justify-content-between">
             <div class="">
                 <h5 class="mb-0">Theme Customizer</h5>
@@ -1486,40 +1389,36 @@
 
                 <div class="row g-3">
                     <div class="col-12 col-xl-6">
-                        <input type="radio" class="btn-check" name="theme-options"
-                            id="LightTheme" checked>
+                        <input type="radio" class="btn-check" name="theme-options" id="LightTheme" checked>
                         <label
-                            class="btn btn-outline-secondary d-flex flex-column gap-1 align-items-center justify-content-center p-4"
+                            class="gap-1 p-4 btn btn-outline-secondary d-flex flex-column align-items-center justify-content-center"
                             for="LightTheme">
                             <span class="material-icons-outlined">light_mode</span>
                             <span>Light</span>
                         </label>
                     </div>
                     <div class="col-12 col-xl-6">
-                        <input type="radio" class="btn-check" name="theme-options"
-                            id="DarkTheme">
+                        <input type="radio" class="btn-check" name="theme-options" id="DarkTheme">
                         <label
-                            class="btn btn-outline-secondary d-flex flex-column gap-1 align-items-center justify-content-center p-4"
+                            class="gap-1 p-4 btn btn-outline-secondary d-flex flex-column align-items-center justify-content-center"
                             for="DarkTheme">
                             <span class="material-icons-outlined">dark_mode</span>
                             <span>Dark</span>
                         </label>
                     </div>
                     <div class="col-12 col-xl-6">
-                        <input type="radio" class="btn-check" name="theme-options"
-                            id="SemiDarkTheme">
+                        <input type="radio" class="btn-check" name="theme-options" id="SemiDarkTheme">
                         <label
-                            class="btn btn-outline-secondary d-flex flex-column gap-1 align-items-center justify-content-center p-4"
+                            class="gap-1 p-4 btn btn-outline-secondary d-flex flex-column align-items-center justify-content-center"
                             for="SemiDarkTheme">
                             <span class="material-icons-outlined">contrast</span>
                             <span>Semi Dark</span>
                         </label>
                     </div>
                     <div class="col-12 col-xl-6">
-                        <input type="radio" class="btn-check" name="theme-options"
-                            id="BoderedTheme">
+                        <input type="radio" class="btn-check" name="theme-options" id="BoderedTheme">
                         <label
-                            class="btn btn-outline-secondary d-flex flex-column gap-1 align-items-center justify-content-center p-4"
+                            class="gap-1 p-4 btn btn-outline-secondary d-flex flex-column align-items-center justify-content-center"
                             for="BoderedTheme">
                             <span class="material-icons-outlined">border_style</span>
                             <span>Bordered</span>
@@ -1536,8 +1435,7 @@
 
     <!--plugins-->
     <script src="{{ asset('template/assets/js/jquery.min.js') }}"></script>
-    <script src="{{ asset('template/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js') }}">
-    </script>
+    <script src="{{ asset('template/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js') }}"></script>
     <script src="{{ asset('template/assets/plugins/metismenu/metisMenu.min.js') }}"></script>
     <script src="{{ asset('template/assets/plugins/simplebar/js/simplebar.min.js') }}"></script>
 
@@ -1545,10 +1443,8 @@
     <script src="{{ asset('template/assets/js/main.js') }}"></script>
 
     {{-- datatable --}}
-    <script src="{{ asset('template/assets/plugins/datatable/js/jquery.dataTables.min.js') }}">
-    </script>
-    <script src="{{ asset('template/assets/plugins/datatable/js/dataTables.bootstrap5.min.js') }}">
-    </script>
+    <script src="{{ asset('template/assets/plugins/datatable/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('template/assets/plugins/datatable/js/dataTables.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('template/assets/plugins/simplebar/js/simplebar.min.js') }}"></script>
 
     {{-- validation --}}
@@ -1557,11 +1453,8 @@
     {{-- upload --}}
     <script src="{{ asset('template/assets/plugins/fancy-file-uploader/jquery.ui.widget.js') }}"></script>
     <script src="{{ asset('template/assets/plugins/fancy-file-uploader/jquery.fileupload.js') }}"></script>
-    <script src="{{ asset('template/assets/plugins/fancy-file-uploader/jquery.iframe-transport.js') }}">
-    </script>
-    <script src="{{ asset('template/assets/plugins/fancy-file-uploader/jquery.fancy-fileupload.js') }}">
-    </script>
-
+    <script src="{{ asset('template/assets/plugins/fancy-file-uploader/jquery.iframe-transport.js') }}"></script>
+    <script src="{{ asset('template/assets/plugins/fancy-file-uploader/jquery.fancy-fileupload.js') }}"></script>
     @stack('scripts')
 </body>
 
