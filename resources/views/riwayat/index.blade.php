@@ -48,9 +48,9 @@
                             <td>James John</td>
                             <td>Rp12.0000</td>
                             <td class="text-center">
-                                <button class="btn btn-warning">
+                                <a href="{{url('riwayat-transaksi/detail')}}" class="btn btn-warning">
                                     <i class="fadeIn animated bx bx-clipboard text-light"></i>
-                                </button>
+                                </a>
                             </td>
                         </tr>
                     </tbody>
@@ -67,4 +67,18 @@
             </div>
         </div>
     </div>
+
+    @push('scripts')
+        <script>
+            $(document).ready(function() {
+                var table = $('#example2').DataTable({
+                    lengthChange: false,
+                    buttons: ['copy', 'excel', 'pdf', 'print']
+                });
+
+                table.buttons().container()
+                    .appendTo('#example2_wrapper .col-md-6:eq(0)');
+            });
+        </script>
+    @endpush
 @endsection

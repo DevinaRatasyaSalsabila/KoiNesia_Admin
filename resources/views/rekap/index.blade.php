@@ -2,7 +2,7 @@
 @section('content')
     <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">Barang Masuk </div>
+        <div class="breadcrumb-title pe-3">Rekap</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
@@ -15,13 +15,10 @@
             </nav>
         </div>
     </div>
-    <!--end breadcrumb-->
+
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Daftar Barang Masuk</h5>
-            <a href="{{ url('barang-masuk/tambah') }}" class="btn btn-success">
-                <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
-            </a>
+            <h5 class="mb-0">Rekap</h5>
         </div>
 
         <div class="card-body">
@@ -31,37 +28,24 @@
                         <tr>
                             <th>No</th>
                             <th>Tanggal</th>
-                            <th>Nama Produk</th>
-                            <th>Jumlah</th>
-                            <th>Keterangan</th>
-                            <th>Aksi</th>
+                            <th>Penjualan</th>
+                            <th>Pengeluaran</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>1</td>
                             <td>18-08-20245</td>
-                            <td>Ikan Koi</td>
-                            <td>30</td>
-                            <td>Dari Palembang</td>
-                            <td class="text-center">
-                                <button class="btn btn-danger">
-                                    <i class="fadeIn animated bx bx-trash text-light"></i>
-                                </button>
-                                <a href="{{ url('barang-masuk/edit') }}" class="btn btn-warning">
-                                    <i class="fadeIn animated bx bx-pencil text-light"></i>
-                                </a>
-                            </td>
+                            <td>RP90.000</td>
+                            <td>Rp12.0000</td>
                         </tr>
                     </tbody>
                     <tfoot>
                         <tr>
                             <th>No</th>
                             <th>Tanggal</th>
-                            <th>Nama Produk</th>
-                            <th>Jumlah</th>
-                            <th>Keterangan</th>
-                            <th>Aksi</th>
+                            <th>Penjualan</th>
+                            <th>Pengeluaran</th>
                         </tr>
                     </tfoot>
                 </table>

@@ -13,6 +13,9 @@
     <link href="{{ asset('template/assets/plugins/metismenu/metisMenu.min.css') }}" rel="stylesheet">
     <link href="{{ asset('template/assets/plugins/metismenu/mm-vertical.css') }}" rel="stylesheet">
     <link href="{{ asset('template/assets/plugins/simplebar/css/simplebar.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css">
 
     <!--bootstrap css-->
     <link href="{{ asset('template/assets/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -741,13 +744,14 @@
                         <div class="menu-title">Laporan</div>
                     </a>
                     <ul>
-                        <li><a href="#">
+                        <li>
+                            <a href="{{ url('riwayat-transaksi') }}">
                                 <i class="material-icons-outlined">arrow_right</i>
                                 Riwayat Transaksi
                             </a>
                         </li>
                         <li>
-                            <a href="#">
+                            <a href="{{ url('rekap') }}">
                                 <i class="material-icons-outlined">arrow_right</i>
                                 Rekap Penjualan
                             </a>
@@ -847,7 +851,7 @@
     <!--end overlay-->
 
     <!--start footer-->
-    <footer class="page-footer">
+    <footer class="page-footer bg-light text-center border-top fixed-bottom">
         <p class="mb-0">Copyright © 2025. CodeWave.</p>
     </footer>
     <!--top footer-->
@@ -1061,6 +1065,9 @@
 
     <!--plugins-->
     <script src="{{ asset('template/assets/js/jquery.min.js') }}"></script>
+    {{-- select 2 --}}
+    <script src="{{ asset('template/assets/plugins/select2/js/select2-custom.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="{{ asset('template/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js') }}"></script>
     <script src="{{ asset('template/assets/plugins/metismenu/metisMenu.min.js') }}"></script>
     <script src="{{ asset('template/assets/plugins/simplebar/js/simplebar.min.js') }}"></script>
@@ -1073,6 +1080,7 @@
     <script src="{{ asset('template/assets/plugins/datatable/js/dataTables.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('template/assets/plugins/simplebar/js/simplebar.min.js') }}"></script>
 
+
     {{-- validation --}}
     <script src="{{ asset('template/assets/plugins/validation/validation-script.js') }}"></script>
 
@@ -1081,6 +1089,9 @@
     <script src="{{ asset('template/assets/plugins/fancy-file-uploader/jquery.fileupload.js') }}"></script>
     <script src="{{ asset('template/assets/plugins/fancy-file-uploader/jquery.iframe-transport.js') }}"></script>
     <script src="{{ asset('template/assets/plugins/fancy-file-uploader/jquery.fancy-fileupload.js') }}"></script>
+
+    <script src="{{ asset('template/assets/plugins/form-repeater/repeater.js') }}"></script>
+
 
     @stack('scripts')
 </body>
