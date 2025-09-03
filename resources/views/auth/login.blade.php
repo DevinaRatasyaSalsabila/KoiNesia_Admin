@@ -41,8 +41,8 @@
 
                     <div class="card rounded-0 mb-0 border-0 shadow-none bg-transparent">
                         <div class="card-body">
-                            <img src="{{asset('template/assets/images/auth/login1.png')}}" class="img-fluid auth-img-cover-login"
-                                width="650" alt="">
+                            <img src="{{ asset('template/assets/images/auth/login1.png') }}"
+                                class="img-fluid auth-img-cover-login" width="650" alt="">
                         </div>
                     </div>
 
@@ -53,23 +53,29 @@
                         <div class="card-body p-sm-5">
                             <img src="assets/images/logo1.png" class="mb-4" width="145" alt="">
                             <h2 class="fw-bold text-center">Login</h2>
+                            @if ($errors->has('login_error'))
+                                <div class="alert alert-danger">
+                                    {{ $errors->first('login_error') }}
+                                </div>
+                            @endif
                             <p class="mb-0 text-center">Masukkan Email dan Password</p>
                             <div class="separator section-padding">
                                 <div class="line mt-2"></div>
                             </div>
 
                             <div class="form-body mt-4">
-                                <form class="row g-3">
+                                <form class="row g-3" action="{{ route('login.submit') }}" method="POST">
+                                    @csrf
                                     <div class="col-12">
                                         <label for="inputEmailAddress" class="form-label">Email</label>
                                         <input type="email" class="form-control" id="inputEmailAddress"
-                                            placeholder="Masukkan Email">
+                                            placeholder="Masukkan Email" name="email">
                                     </div>
                                     <div class="col-12">
                                         <label for="inputChoosePassword" class="form-label">Kata Sandi</label>
                                         <div class="input-group" id="password_hide">
                                             <input type="password" class="form-control" id="inputChoosePassword"
-                                                value="12345678" placeholder="Masukkan Kata Sandi">
+                                                name="password" value="12345678" placeholder="Masukkan Kata Sandi">
                                             <a href="javascript:;" class="input-group-text bg-transparent"><i
                                                     class="bi bi-eye-slash-fill"></i></a>
                                         </div>
@@ -81,11 +87,9 @@
                                     </div>
                                 </form>
                             </div>
-
                         </div>
                     </div>
                 </div>
-
             </div>
             <!--end row-->
         </div>
@@ -94,7 +98,7 @@
     <!--authentication-->
 
     <!--plugins-->
-    <script src="{{asset('template/assets/js/jquery.min.js')}}"></script>
+    <script src="{{ asset('template/assets/js/jquery.min.js') }}"></script>
 
     <script>
         $(document).ready(function() {

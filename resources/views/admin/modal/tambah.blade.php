@@ -1,29 +1,44 @@
  <!-- Modal -->
- <div class="modal fade" id="tambah_admin" tabindex="-1" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
+ <div class="modal fade" id="tambah_admin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
      <div class="modal-dialog">
          <div class="modal-content">
              <div class="modal-header">
                  <h5 class="modal-title" id="exampleModalLabel">Tambah Data Admin</h5>
-                 <button type="button" class="btn-close" data-bs-dismiss="modal"
-                     aria-label="Close"></button>
+                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
              </div>
              <div class="modal-body">
-                 <form class="row g-3 needs-validation" novalidate>
+                 <form class="row g-3 needs-validation" action="{{ route('admin.add') }}" method="POST">
+                     @csrf
                      <div class="col-md-12">
                          <label for="bsValidation3" class="form-label">Nama</label>
-                         <input type="text" class="form-control" id="bsValidation3"
-                             placeholder="Nama" required>
+                         <input type="text" class="form-control" id="bsValidation3" placeholder="Nama" name="nama"
+                             required>
                          <div class="invalid-feedback">
                              Masukkan Nama
                          </div>
                      </div>
                      <div class="col-md-12">
                          <label for="bsValidation4" class="form-label">Email</label>
-                         <input type="email" class="form-control" id="bsValidation4"
+                         <input type="email" name="email" class="form-control" id="bsValidation4"
                              placeholder="Email" required>
                          <div class="invalid-feedback">
                              Masukkan Email
+                         </div>
+                     </div>
+                     <div class="col-md-12">
+                         <label for="bsValidation4" class="form-label">Password</label>
+                         <input type="password" name="password" class="form-control" id="bsValidation4"
+                             placeholder="Password" required>
+                         <div class="invalid-feedback">
+                             Masukkan Password
+                         </div>
+                     </div>
+                     <div class="col-md-12">
+                         <label for="bsValidation4" class="form-label">Role</label>
+                         <input type="text" name="role" class="form-control" id="bsValidation4"
+                             placeholder="Password" required value="Admin" readonly>
+                         <div class="invalid-feedback">
+                             Masukkan Role
                          </div>
                      </div>
                      {{-- <div class="col-md-12">

@@ -19,8 +19,7 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Daftar Pengeluaran</h5>
-            <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                data-bs-target="#tambah_pengeluaran">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambah_pengeluaran">
                 <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
             </button>
         </div>
@@ -31,35 +30,40 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Tanggal</th>
+                            <th>Nama Pengeluaran</th>
                             <th>Nominal</th>
-                            <th>Keterangan</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>1</td>
-                            <td>18-08-20245</td>
-                            <td>Rp12.0000</td>
-                            <td>Beli Tanah Di Pondok Indah 17 hektar</td>
-                            <td class="text-center">
-                                <button class="btn btn-danger">
-                                    <i class="fadeIn animated bx bx-trash text-light"></i>
-                                </button>
-                                <button class="btn btn-warning" data-bs-toggle="modal"
-                                    data-bs-target="#edit_pengeluaran">
-                                    <i class="fadeIn animated bx bx-pencil text-light"></i>
-                                </button>
-                            </td>
+                            @foreach ($pengeluaran as $item)
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $item->nama_pengeluaran }}</td>
+                                <td>Rp{{ number_format($item->nominal, 2, ',', '.') }}</td>
+                                <td class="text-center">
+                                    <form action="{{ route('pengeluaran.delete', $item->id) }}" method="POST"
+                                        onsubmit="return confirm('Yakin mau hapus pengeluaran ini? 😥')" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">
+                                            <i class="fadeIn animated bx bx-trash text-light"></i>
+                                        </button>
+                                    </form>
+                                    <button class="btn btn-warning" data-bs-toggle="modal"
+                                        data-bs-target="#edit_pengeluaran_{{ $item->id }}">
+                                        <i class="fadeIn animated bx bx-pencil text-light"></i>
+                                    </button>
+                                </td>
+                                @include('pengeluaran.modal.edit')
+                            @endforeach
                         </tr>
                     </tbody>
                     <tfoot>
                         <tr>
                             <th>No</th>
-                            <th>Tanggal</th>
+                            <th>Nama Pengeluaran</th>
                             <th>Nominal</th>
-                            <th>Keterangan</th>
                             <th>Aksi</th>
                         </tr>
                     </tfoot>
@@ -69,7 +73,6 @@
     </div>
 
     @include('pengeluaran.modal.tambah')
-    @include('pengeluaran.modal.edit')
 
     @push('scripts')
         <script>
