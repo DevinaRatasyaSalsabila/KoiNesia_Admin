@@ -40,7 +40,7 @@ class PengeluaranController extends Controller
             ->where('tanggal', $request->tanggal)
             ->where('keterangan', $request->keterangan)
             ->where('nominal', $request->nominal)
-          ->exists();
+            ->exists();
 
         if ($pengeluaranada) {
             return back()->withErrors(['msg' => 'Pengeluaran sudah tersimpan.']);

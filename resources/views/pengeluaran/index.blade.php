@@ -42,7 +42,7 @@
                                 <td>{{ $item->nama_pengeluaran }}</td>
                                 <td>Rp{{ number_format($item->nominal, 2, ',', '.') }}</td>
                                 <td class="text-center">
-                                   <form action="{{ route('pengeluaran.delete', $item->id) }}" method="POST"
+                                    <form action="{{ route('pengeluaran.delete', $item->id) }}" method="POST"
                                         onsubmit="return confirm('Yakin mau hapus pengeluaran ini? 😥')" class="d-inline">
                                         @csrf
                                         @method('DELETE')

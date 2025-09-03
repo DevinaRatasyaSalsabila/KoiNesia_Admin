@@ -1,20 +1,18 @@
  <!-- Modal -->
- <div class="modal fade" id="tambah_admin" tabindex="-1" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
+ <div class="modal fade" id="tambah_admin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
      <div class="modal-dialog">
          <div class="modal-content">
              <div class="modal-header">
                  <h5 class="modal-title" id="exampleModalLabel">Tambah Data Admin</h5>
-                 <button type="button" class="btn-close" data-bs-dismiss="modal"
-                     aria-label="Close"></button>
+                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
              </div>
              <div class="modal-body">
                  <form class="row g-3 needs-validation" action="{{ route('admin.add') }}" method="POST">
                      @csrf
                      <div class="col-md-12">
                          <label for="bsValidation3" class="form-label">Nama</label>
-                         <input type="text" class="form-control" id="bsValidation3"
-                             placeholder="Nama" name="nama" required>
+                         <input type="text" class="form-control" id="bsValidation3" placeholder="Nama" name="nama"
+                             required>
                          <div class="invalid-feedback">
                              Masukkan Nama
                          </div>

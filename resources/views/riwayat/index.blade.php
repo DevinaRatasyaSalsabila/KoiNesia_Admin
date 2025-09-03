@@ -2,7 +2,7 @@
 @section('content')
     <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">Barang Masuk </div>
+        <div class="breadcrumb-title pe-3">Riwayat Transaksi</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
@@ -15,13 +15,18 @@
             </nav>
         </div>
     </div>
+
+    <div class="card">
+        <div class="card-body d-flex justify-content-between align-items-center">
+            <h5>Total Penjualan :</h5>
+            <h6>Rp900.000,00</h6>
+        </div>
+    </div>
+
     <!--end breadcrumb-->
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Daftar Barang Masuk</h5>
-            <a href="{{ url('barang-masuk/tambah') }}" class="btn btn-success">
-                <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
-            </a>
+            <h5 class="mb-0">Riwayat Transaksi</h5>
         </div>
 
         <div class="card-body">
@@ -31,9 +36,8 @@
                         <tr>
                             <th>No</th>
                             <th>Tanggal</th>
-                            <th>Nama Produk</th>
-                            <th>Jumlah</th>
-                            <th>Keterangan</th>
+                            <th>Nama Pembeli</th>
+                            <th>Total Pembelian</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -41,15 +45,11 @@
                         <tr>
                             <td>1</td>
                             <td>18-08-20245</td>
-                            <td>Ikan Koi</td>
-                            <td>30</td>
-                            <td>Dari Palembang</td>
+                            <td>James John</td>
+                            <td>Rp12.0000</td>
                             <td class="text-center">
-                                <button class="btn btn-danger">
-                                    <i class="fadeIn animated bx bx-trash text-light"></i>
-                                </button>
-                                <a href="{{ url('barang-masuk/edit') }}" class="btn btn-warning">
-                                    <i class="fadeIn animated bx bx-pencil text-light"></i>
+                                <a href="{{url('riwayat-transaksi/detail')}}" class="btn btn-warning">
+                                    <i class="fadeIn animated bx bx-clipboard text-light"></i>
                                 </a>
                             </td>
                         </tr>
@@ -58,8 +58,7 @@
                         <tr>
                             <th>No</th>
                             <th>Tanggal</th>
-                            <th>Nama Produk</th>
-                            <th>Jumlah</th>
+                            <th>Nominal</th>
                             <th>Keterangan</th>
                             <th>Aksi</th>
                         </tr>

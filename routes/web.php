@@ -7,6 +7,8 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PengeluaranController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\PesananController;
+use App\Http\Controllers\RekapController;
+use App\Http\Controllers\RiwayatController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/main', function () {
@@ -55,3 +57,10 @@ Route::delete('/delete-pengeluaran/{id}', [PengeluaranController::class, 'destro
 Route::get('/pesanan', [PesananController::class, 'index']);
 Route::get('/pesanan', [PesananController::class, 'index'])->name('pesanan.add');
 Route::get('/detail', [PesananController::class, 'show']);
+
+//Riwayat Transaksi
+Route::get('riwayat-transaksi', [RiwayatController::class, 'index']);
+Route::get('riwayat-transaksi/detail', [RiwayatController::class, 'show']);
+
+//rekap 
+Route::get('rekap', [RekapController::class, 'index']);
