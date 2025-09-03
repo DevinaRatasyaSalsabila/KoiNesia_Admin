@@ -11,22 +11,24 @@
                  <div class="modal-body">
                      <div class="col-md-12 px-3 mt-2">
                          <label for="bsValidation3" class="form-label">Tanggal</label>
-                         <input type="date" class="form-control" id="bsValidation3" name="tanggal" value="{{ date('Y-m-d') }}" placeholder="Tanggal" required>
+                         <input type="date" class="form-control" id="bsValidation3" name="tanggal"
+                             value="{{ date('Y-m-d') }}" placeholder="Tanggal" required>
                          <div class="invalid-feedback">
                              Masukkan Tanggal
                          </div>
                      </div>
                      <div class="col-md-12 px-3 mt-2">
                          <label for="bsValidation3" class="form-label">Nama Pengeluaran</label>
-                         <input type="text" class="form-control" id="bsValidation3" name="nama_pengeluaran" placeholder="Nama" required>
+                         <input type="text" class="form-control" id="bsValidation3" name="nama_pengeluaran"
+                             placeholder="Nama" required>
                          <div class="invalid-feedback">
                              Masukkan Nama Pengeluaran
                          </div>
                      </div>
                      <div class="col-md-12 px-3 mt-2">
                          <label for="bsValidation4" class="form-label">Nominal</label>
-                         <input type="number" class="form-control" id="bsValidation4" name="nominal" placeholder="Masukkan Nominal"
-                             required>
+                         <input type="number" class="form-control" id="bsValidation4" name="nominal"
+                             placeholder="Masukkan Nominal" required>
                          <div class="invalid-feedback">
                              Masukkan Nominal
                          </div>
