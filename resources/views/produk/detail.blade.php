@@ -18,7 +18,7 @@
         <div class="col-12">
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
-                    <img src="{{ asset('template/assets/images/projects/koi1.png') }}"
+                    <img src="{{ asset('storage/produk/final/' . $produk->gambar_produk) }}"
                         alt="Koi Kohaku Jumbo" class="img-fluid rounded-3"
                         style="max-height: 280px; object-fit: cover;">
                 </div>
@@ -84,9 +84,9 @@
     <!-- Tombol Kembali -->
     <div class="row mb-3">
         <div class="col-12 text-center">
-            <a href="produk" class="btn btn-outline-secondary px-4 rounded-pill shadow-sm">
+            <button onclick="window.history.back()" class="btn btn-outline-secondary px-4 rounded-pill shadow-sm">
                 <i class="bi bi-arrow-left me-2"></i> Kembali ke Daftar Produk
-            </a>
+            </button>
         </div>
     </div>
 @endsection

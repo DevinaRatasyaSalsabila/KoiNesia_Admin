@@ -28,7 +28,7 @@
                 <div class="card shadow-sm border-0 rounded-4 overflow-hidden h-100">
                     <div class="row g-0 align-items-center">
                         <div class="col-md-4 text-center p-3">
-                            <img src="{{ asset('uploads/produk/' . $item->gambar_produk[0]) }}" class="img-fluid rounded"
+                            <img src="{{ asset('storage/produk/final/' . $item->gambar_produk) }}" class="img-fluid rounded"
                                 alt="{{ $item->nama_produk }}">
                         </div>
                         <div class="col-md-8">
@@ -54,7 +54,7 @@
                                         data-bs-placement="top" title="Edit Produk">
                                         <i class="bx bx-pencil fs-5 text-light"></i>
                                     </a>
-                                    <form action="{{ url('produk/delete', $item->id_produk) }}" method="POST"
+                                    <form action="{{ route('produk.delete', $item->id_produk) }}" method="POST"
                                         onsubmit="return confirm('Yakin hapus produk ini?')">
                                         @csrf
                                         @method('DELETE')

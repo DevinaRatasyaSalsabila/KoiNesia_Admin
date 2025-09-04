@@ -20,6 +20,8 @@ Route::get('/dashboard', [DasboardController::class, 'index']);
 
 //daftar barang masuk
 Route::get('/barang-masuk', [BarangMasukController::class, 'index']);
+Route::get('/barang-masuk/edit', [BarangMasukController::class, 'edit']);
+Route::get('/barang-masuk/tambah', [BarangMasukController::class, 'create']);
 
 //daftar produk
 Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
@@ -29,6 +31,7 @@ Route::post('/produk/gambar', [ProdukController::class, 'upload'])->name('produk
 Route::get('/produk/detail/{id}', [ProdukController::class, 'show'])->name('produk.detail');
 Route::get('/produk/edit/{id}', [ProdukController::class, 'edit'])->name('produk.edit');
 Route::put('/produk/update/{id}', [ProdukController::class, 'update'])->name('produk.update');
+Route::delete('/produk/delete/{id}', [ProdukController::class, 'destroy'])->name('produk.delete');
 
 // pesanan
 Route::get('/pesanan', [PesananController::class, 'index']);
@@ -62,5 +65,5 @@ Route::get('/detail', [PesananController::class, 'show']);
 Route::get('riwayat-transaksi', [RiwayatController::class, 'index']);
 Route::get('riwayat-transaksi/detail', [RiwayatController::class, 'show']);
 
-//rekap 
+//rekap
 Route::get('rekap', [RekapController::class, 'index']);

@@ -26,7 +26,7 @@
                         <div class="mb-4">
                             <h5 class="mb-3">Nama Produk</h5>
                             <input type="text" name="nama_produk" class="form-control" placeholder="Masukkan Nama Produk"
-                                value="{{$produk->nama_produk}}" required>
+                                value="{{ $produk->nama_produk }}" required>
                             <div class="invalid-feedback">
                                 Nama produk wajib diisi.
                             </div>
@@ -35,7 +35,7 @@
                         <div class="mb-4">
                             <h5 class="mb-3">Deskripsi Produk</h5>
                             <textarea name="deskripsi_produk" class="form-control" cols="4" rows="6"
-                                placeholder="Masukkan Deskripsi Produk" required>{{$produk->deskripsi_produk}}</textarea>
+                                placeholder="Masukkan Deskripsi Produk" required>{{ $produk->deskripsi_produk }}</textarea>
                             <div class="invalid-feedback">
                                 Deskripsi wajib diisi.
                             </div>
@@ -43,12 +43,21 @@
 
                         <div class="mb-4">
                             <h5 class="mb-3">Gambar Produk</h5>
-                            <input id="fancy-file-upload" type="file" name="gambar_produk"
-                                accept=".jpg, .png, image/jpeg, image/png" multiple>
+
+                            {{-- Input file untuk upload baru --}}
+                            <input type="file" name="gambar_produk" accept=".jpg, .png, image/jpeg, image/png" multiple>
                             <div class="invalid-feedback">
                                 Gambar produk harus diupload.
                             </div>
-                            <small class="text-muted">Gambar saat ini: kohaku-jumbo.png</small>
+
+                            {{-- Preview gambar lama --}}
+                            @if ($produk->gambar_produk)
+                                <div class="mt-2">
+                                    <p class="text-muted">Gambar saat ini:</p>
+                                    <img src="{{ asset('storage/produk/final/' . $produk->gambar_produk) }}"
+                                        alt="Gambar Produk" style="max-width: 200px; height: auto;">
+                                </div>
+                            @endif
                         </div>
                 </div>
             </div>
@@ -83,7 +92,7 @@
                             </label>
                             <input type="text" class="form-control" name="kode_produk"
                                 style="background-color: rgb(232, 227, 227)" id="kode_produk"
-                                value="{{$produk->kode_produk}}">
+                                value="{{ $produk->kode_produk }}">
                         </div>
                         <div class="col-12">
                             <label for="stok_produk" class="form-label">
@@ -91,14 +100,14 @@
                             </label>
                             <input type="text" class="form-control" name="stok_produk"
                                 style="background-color: rgb(232, 227, 227)" id="stok_produk"
-                                value="{{$produk->stok_produk}}">
+                                value="{{ $produk->stok_produk }}">
                         </div>
                         <div class="col-12">
                             <label for="ukuran" class="form-label">
                                 Ukuran
                             </label>
                             <input type="text" class="form-control" id="Collection" name="ukuran_produk"
-                                placeholder="Masukkan Ukuran Produk" value="{{$produk->ukuran_produk}}" required>
+                                placeholder="Masukkan Ukuran Produk" value="{{ $produk->ukuran_produk }}" required>
                             <div class="invalid-feedback">
                                 Ukuran wajib diisi.
                             </div>
@@ -106,7 +115,7 @@
                         <div class="col-12">
                             <label for="harga_produk" class="form-label">Harga Produk</label>
                             <input type="number" class="form-control" id="harga_produk" name="harga_produk"
-                                placeholder="Masukkan Harga Produk" value="{{$produk->harga_Satuan}}" required>
+                                placeholder="Masukkan Harga Produk" value="{{ $produk->harga_Satuan }}" required>
                             <div class="invalid-feedback">
                                 Harga produk wajib diisi.
                             </div>
@@ -129,12 +138,12 @@
             });
 
             // bsValidation4 init
-            (function () {
+            (function() {
                 'use strict'
                 const forms = document.querySelectorAll('#formAddProduct')
                 Array.prototype.slice.call(forms)
-                    .forEach(function (form) {
-                        form.addEventListener('submit', function (event) {
+                    .forEach(function(form) {
+                        form.addEventListener('submit', function(event) {
                             if (!form.checkValidity()) {
                                 event.preventDefault()
                                 event.stopPropagation()
@@ -142,7 +151,7 @@
                             form.classList.add('was-validated')
                         }, false)
 
-                        form.addEventListener('reset', function () {
+                        form.addEventListener('reset', function() {
                             form.classList.remove('was-validated')
                         }, false)
                     })

@@ -50,11 +50,6 @@ class ProdukController extends Controller
 
     public function store(Request $request)
     {
-        Log::info("📥 store() dipanggil", [
-            'all_request' => $request->all(),
-            'gambar_dari_hidden' => $request->gambar_produk ?? [],
-        ]);
-
         $request->validate([
             'nama_produk'      => 'required|string|max:255',
             'deskripsi_produk' => 'required|string',
@@ -64,33 +59,32 @@ class ProdukController extends Controller
             'harga_produk'     => 'required|integer',
         ]);
 
-        $produk = Produk::create([
-            'nama_produk'      => $request->nama_produk,
-            'deskripsi_produk' => $request->deskripsi_produk,
-            'gambar_produk'    => json_encode($request->gambar_produk ?? []),
-            'kode_produk'      => $request->kode_produk,
-            'stok_produk'      => $request->stok_produk,
-            'ukuran_produk'    => $request->ukuran_produk,
-            'harga_satuan'     => $request->harga_produk,
-        ]);
 
-        Log::info("🎉 Produk berhasil disimpan", [
-            'id'   => $produk->id_produk,
-            'nama' => $produk->nama_produk,
-            'gambar' => $produk->gambar_produk,
-        ]);
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = $file->getClientOriginalName();
+            $path = $file->storeAs('produk/final', $filename, 'public');
+
+            $produk = Produk::create([
+                'nama_produk'      => $request->nama_produk,
+                'deskripsi_produk' => $request->deskripsi_produk,
+                'gambar_produk'    => $filename,
+                'kode_produk'      => $request->kode_produk,
+                'stok_produk'      => $request->stok_produk,
+                'ukuran_produk'    => $request->ukuran_produk,
+                'harga_satuan'     => $request->harga_produk,
+            ]);
+        }
 
         return redirect()->route('produk.index')->with('success', 'Produk berhasil ditambahkan!');
     }
 
-    // public function show(string $id)
     public function show(string $id)
     {
         $produk = Produk::findOrFail($id);
         return view('produk.detail', compact('produk'));
     }
 
-    // public function edit(string $id)
     public function edit(string $id)
     {
         $produk = Produk::findOrFail($id);
@@ -109,20 +103,45 @@ class ProdukController extends Controller
         ]);
 
         $produk = Produk::findOrFail($id);
-        $produk->update([
+
+        $data = [
             'nama_produk'      => $request->nama_produk,
             'deskripsi_produk' => $request->deskripsi_produk,
-            'gambar_produk'    => json_encode($request->gambar_produk ?? []),
             'kode_produk'      => $request->kode_produk,
             'stok_produk'      => $request->stok_produk,
             'ukuran_produk'    => $request->ukuran_produk,
             'harga_satuan'     => $request->harga_produk,
-        ]);
+        ];
+
+        if ($request->hasFile('gambar_produk')) {
+            $file = $request->file('gambar_produk');
+
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+
+            $file->storeAs('produk/final', $filename, 'public');
+
+            $data['gambar_produk'] = $filename;
+        }
+
+        $produk->update($data);
 
         return redirect()->route('produk.index')->with('success', 'Produk berhasil diperbarui!');
     }
+
     public function destroy(string $id)
     {
-        //
+        $produk = Produk::findOrFail($id);
+
+        if ($produk->gambar_produk) {
+            $filePath = 'produk/final/' . $produk->gambar_produk;
+
+            if (Storage::disk('public')->exists($filePath)) {
+                Storage::disk('public')->delete($filePath);
+            }
+        }
+
+        $produk->delete();
+
+        return redirect()->route('produk.index')->with('success', 'Produk berhasil dihapus!');
     }
 }

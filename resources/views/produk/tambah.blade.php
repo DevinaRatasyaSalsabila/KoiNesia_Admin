@@ -32,8 +32,7 @@
                         <div class="mb-4">
                             <h5 class="mb-3">Deskripsi Produk</h5>
                             <textarea name="deskripsi_produk" class="form-control" cols="4" rows="6"
-                                placeholder="Masukkan Deskripsi Produk" required>
-                                                    </textarea>
+                                placeholder="Masukkan Deskripsi Produk" required></textarea>
                             <div class="invalid-feedback">
                                 Deskripsi wajib diisi.
                             </div>
@@ -41,8 +40,7 @@
 
                         <div class="mb-4">
                             <h5 class="mb-3">Gambar Produk</h5>
-                            <input id="fancy-file-upload" type="file" multiple>
-                            <div id="hidden-gambar"></div>
+                            <input type="file" multiple name="file">
                             <div class="invalid-feedback">
                                 Gambar produk harus diupload.
                             </div>
@@ -56,7 +54,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex align-items-center gap-3">
-                        <button type="button" class="btn btn-outline-secondary flex-fill" onclick="window.history.back()">
+                        <button type="button" class="btn btn-outline-secondary flex-fill" onclick=".history.back()">
                             <i class="bi bi-arrow-left-circle me-2"></i>
                             Batal
                         </button>
@@ -122,7 +120,7 @@
                 params: {
                     _token: $('meta[name="csrf-token"]').attr('content')
                 },
-                uploadcompleted: function (e, data) {
+                uploadcompleted: function(e, data) {
                     console.log("✅ Upload selesai:", data.result);
 
                     if (data.result && data.result.path) {
@@ -133,12 +131,12 @@
                 }
             });
 
-            (function () {
+            (function() {
                 'use strict'
                 const forms = document.querySelectorAll('#formAddProduct')
                 Array.prototype.slice.call(forms)
-                    .forEach(function (form) {
-                        form.addEventListener('submit', function (event) {
+                    .forEach(function(form) {
+                        form.addEventListener('submit', function(event) {
                             if (!form.checkValidity()) {
                                 event.preventDefault()
                                 event.stopPropagation()
@@ -146,7 +144,7 @@
                             form.classList.add('was-validated')
                         }, false)
 
-                        form.addEventListener('reset', function () {
+                        form.addEventListener('reset', function() {
                             form.classList.remove('was-validated')
                         }, false)
                     })
