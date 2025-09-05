@@ -65,20 +65,35 @@
 
 
 
- @push('scripts')
-     <script>
-         $('#tambah_admin').on('shown.bs.modal', function() {
-             var forms = document.querySelectorAll('#tambah_admin .needs-validation')
-             Array.prototype.slice.call(forms)
-                 .forEach(function(form) {
-                     form.addEventListener('submit', function(event) {
-                         if (!form.checkValidity()) {
-                             event.preventDefault()
-                             event.stopPropagation()
-                         }
-                         form.classList.add('was-validated')
-                     }, false)
-                 })
-         })
-     </script>
- @endpush
+@push('scripts')
+    <script>
+        $('#tambah_admin').on('shown.bs.modal', function () {
+            var forms = document.querySelectorAll('#tambah_admin .needs-validation')
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })
+
+        $(document).ready(function () {
+            $("#password_hide a").on('click', function (event) {
+                event.preventDefault();
+                if ($('#password_hide{{ $adm->id_user }} input').attr("type") == "text") {
+                    $('#password_hide{{ $adm->id_user }} input').attr('type', 'password');
+                    $('#password_hide{{ $adm->id_user }} i').addClass("bi-eye-slash-fill");
+                    $('#password_hide{{ $adm->id_user }} i').removeClass("bi-eye-fill");
+                } else if ($('#password_hide{{ $adm->id_user }} input').attr("type") == "password") {
+                    $('#password_hide{{ $adm->id_user }} input').attr('type', 'text');
+                    $('#password_hide{{ $adm->id_user }} i').removeClass("bi-eye-slash-fill");
+                    $('#password_hide{{ $adm->id_user }} i').addClass("bi-eye-fill");
+                }
+            });
+        });
+    </script>
+@endpush
