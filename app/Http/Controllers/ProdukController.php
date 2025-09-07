@@ -22,34 +22,25 @@ class ProdukController extends Controller
 
     public function upload(Request $request)
     {
-        Log::info("📥 upload() dipanggil", [
-            'has_file'   => $request->hasFile('file'),
-            'all_files'  => $request->allFiles(),
-        ]);
+        // if ($request->hasFile('file')) {
+        //     $file = $request->file('file');
+        //     $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+        //     $path = $file->storeAs('produk/final', $filename, 'public');
 
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('produk/final', $filename, 'public');
+        //     return response()->json([
+        //         'success' => true,
+        //         'path'    => 'storage/' . $path,   // buat hidden input
+        //         'url'     => asset('storage/' . $path), // buat preview kalau mau
+        //     ]);
+        // }
 
-            Log::info("✅ File berhasil diupload", [
-                'original_name' => $file->getClientOriginalName(),
-                'stored_as'     => $path,
-                'public_url'    => asset('storage/' . $path)
-            ]);
-
-            return response()->json([
-                'success' => true,
-                'path'    => 'storage/' . $path
-            ]);
-        }
-
-        Log::warning("⚠️ Tidak ada file diterima di upload()");
-        return response()->json(['success' => false], 400);
+        // return response()->json(['success' => false], 400);
     }
 
     public function store(Request $request)
     {
+        Log::info('📦 Data diterima store()', $request->all());
+
         $request->validate([
             'nama_produk'      => 'required|string|max:255',
             'deskripsi_produk' => 'required|string',
@@ -57,24 +48,35 @@ class ProdukController extends Controller
             'stok_produk'      => 'required|integer',
             'ukuran_produk'    => 'required|string|max:50',
             'harga_produk'     => 'required|integer',
+            'gambar_produk'    => 'required|array',
         ]);
 
+        $paths = [];
 
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $filename = $file->getClientOriginalName();
-            $path = $file->storeAs('produk/final', $filename, 'public');
+        foreach ($request->gambar_produk as $base64) {
+            if (preg_match('/^data:image\/(\w+);base64,/', $base64, $type)) {
+                $image = substr($base64, strpos($base64, ',') + 1);
+                $type = strtolower($type[1]);
 
-            $produk = Produk::create([
-                'nama_produk'      => $request->nama_produk,
-                'deskripsi_produk' => $request->deskripsi_produk,
-                'gambar_produk'    => $filename,
-                'kode_produk'      => $request->kode_produk,
-                'stok_produk'      => $request->stok_produk,
-                'ukuran_produk'    => $request->ukuran_produk,
-                'harga_satuan'     => $request->harga_produk,
-            ]);
+                $image = base64_decode($image);
+                $filename = uniqid() . '.' . $type;
+                $path = 'produk/final/' . $filename;
+
+                Storage::disk('public')->put($path, $image);
+
+                $paths[] = $filename; 
+            }
         }
+
+        $produk = Produk::create([
+            'nama_produk'      => $request->nama_produk,
+            'deskripsi_produk' => $request->deskripsi_produk,
+            'gambar_produk'    => json_encode($paths),
+            'kode_produk'      => $request->kode_produk,
+            'stok_produk'      => $request->stok_produk,
+            'ukuran_produk'    => $request->ukuran_produk,
+            'harga_satuan'     => $request->harga_produk,
+        ]);
 
         return redirect()->route('produk.index')->with('success', 'Produk berhasil ditambahkan!');
     }
@@ -110,17 +112,20 @@ class ProdukController extends Controller
             'kode_produk'      => $request->kode_produk,
             'stok_produk'      => $request->stok_produk,
             'ukuran_produk'    => $request->ukuran_produk,
-            'harga_satuan'     => $request->harga_produk,
+            'harga_Satuan'     => $request->harga_produk,
         ];
 
-        if ($request->hasFile('gambar_produk')) {
-            $file = $request->file('gambar_produk');
+        // handle gambar baru
+        if ($request->has('gambar_produk')) {
+            $filenames = [];
+            foreach ($request->gambar_produk as $img) {
+                $image = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $img));
+                $filename = uniqid() . '.png';
+                Storage::disk('public')->put('produk/final/' . $filename, $image);
+                $filenames[] = $filename;
+            }
 
-            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
-
-            $file->storeAs('produk/final', $filename, 'public');
-
-            $data['gambar_produk'] = $filename;
+            $data['gambar_produk'] = json_encode($filenames);
         }
 
         $produk->update($data);

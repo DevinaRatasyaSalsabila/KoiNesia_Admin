@@ -37,14 +37,13 @@
                                 Deskripsi wajib diisi.
                             </div>
                         </div>
-
                         <div class="mb-4">
                             <h5 class="mb-3">Gambar Produk</h5>
-                            <input type="file" multiple name="file">
+                            <input id="fancy-file-upload" type="file" name="gambar_produk" multiple name="file">
+                            <div id="hidden-gambar"></div>
                             <div class="invalid-feedback">
                                 Gambar produk harus diupload.
                             </div>
-                            <div id="hidden-gambar"></div>
                         </div>
                 </div>
             </div>
@@ -115,19 +114,26 @@
     @push('scripts')
         <script>
             $('#fancy-file-upload').FancyFileUpload({
-                url: "{{ route('produk.upload') }}",
-                method: 'POST',
-                params: {
-                    _token: $('meta[name="csrf-token"]').attr('content')
-                },
-                uploadcompleted: function(e, data) {
-                    console.log("✅ Upload selesai:", data.result);
+                url: '', // kosongin karena kita ga pake ajax upload
+                autoUpload: false, // jangan auto upload
+                added: function(e, data) {
+                    let file = data.files[0];
+                    let reader = new FileReader();
 
-                    if (data.result && data.result.path) {
-                        $('#hidden-gambar').append(
-                            `<input type="hidden" name="gambar_produk[]" value="${data.result.path}">`
-                        );
-                    }
+                    reader.onload = function(evt) {
+                        // base64 string
+                        let base64 = evt.target.result;
+
+                        let input = $('<input>')
+                            .attr('type', 'hidden')
+                            .attr('name', 'gambar_produk[]')
+                            .val(base64);
+
+                        $('#hidden-gambar').append(input);
+                        console.log("📸 Base64 ditambahkan:", base64.substring(0, 50) + "...");
+                    };
+
+                    reader.readAsDataURL(file);
                 }
             });
 

@@ -94,7 +94,6 @@
         </div>
     </div>
 
-    @include('admin.modal.tambah')
     @include('pesanan.modal.edit')
     @include('pesanan.modal.tambah')
     @push('scripts')

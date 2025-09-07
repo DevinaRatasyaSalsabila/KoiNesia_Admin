@@ -12,7 +12,25 @@
             </nav>
         </div>
     </div>
-    <!--end breadcrumb-->
+    
+    @php
+        $gambarArray = json_decode($produk->gambar_produk, true);
+    @endphp
+
+    <div class="row mb-4 text-center">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    @if (!empty($gambarArray))
+                        @foreach ($gambarArray as $gambar)
+                            <img src="{{ asset('storage/produk/final/' . $gambar) }}" alt="Koi Kohaku Jumbo"
+                                class="img-fluid rounded-3" style="max-height: 280px; object-fit: cover;">
+                        @endforeach
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-12 col-lg-8">
@@ -45,19 +63,11 @@
                             <h5 class="mb-3">Gambar Produk</h5>
 
                             {{-- Input file untuk upload baru --}}
-                            <input type="file" name="gambar_produk" accept=".jpg, .png, image/jpeg, image/png" multiple>
+                            <input id="fancy-file-upload" type="file" name="gambar_produk" accept=".jpg, .png, image/jpeg, image/png" multiple>
+                             <div id="hidden-gambar"></div>
                             <div class="invalid-feedback">
                                 Gambar produk harus diupload.
                             </div>
-
-                            {{-- Preview gambar lama --}}
-                            @if ($produk->gambar_produk)
-                                <div class="mt-2">
-                                    <p class="text-muted">Gambar saat ini:</p>
-                                    <img src="{{ asset('storage/produk/final/' . $produk->gambar_produk) }}"
-                                        alt="Gambar Produk" style="max-width: 200px; height: auto;">
-                                </div>
-                            @endif
                         </div>
                 </div>
             </div>
@@ -129,15 +139,30 @@
 
     @push('scripts')
         <script>
-            // Fancy file upload init
             $('#fancy-file-upload').FancyFileUpload({
-                params: {
-                    action: 'fileuploader'
-                },
-                maxfilesize: 1000000
-            });
+                url: '', // kosongin karena kita ga pake ajax upload
+                autoUpload: false, // jangan auto upload
+                added: function(e, data) {
+                    let file = data.files[0];
+                    let reader = new FileReader();
 
-            // bsValidation4 init
+                    reader.onload = function(evt) {
+                        // base64 string
+                        let base64 = evt.target.result;
+
+                        let input = $('<input>')
+                            .attr('type', 'hidden')
+                            .attr('name', 'gambar_produk[]')
+                            .val(base64);
+
+                        $('#hidden-gambar').append(input);
+                        console.log("📸 Base64 ditambahkan:", base64.substring(0, 50) + "...");
+                    };
+
+                    reader.readAsDataURL(file);
+                }
+            });
+            
             (function() {
                 'use strict'
                 const forms = document.querySelectorAll('#formAddProduct')

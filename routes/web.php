@@ -26,8 +26,8 @@ Route::get('/barang-masuk/tambah', [BarangMasukController::class, 'create']);
 //daftar produk
 Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
 Route::get('/produk/tambah', [ProdukController::class, 'create'])->name('produk.create');
-Route::post('/produk/store', [ProdukController::class, 'store'])->name('produk.store');
 Route::post('/produk/gambar', [ProdukController::class, 'upload'])->name('produk.upload');
+Route::post('/produk/store', [ProdukController::class, 'store'])->name('produk.store');
 Route::get('/produk/detail/{id}', [ProdukController::class, 'show'])->name('produk.detail');
 Route::get('/produk/edit/{id}', [ProdukController::class, 'edit'])->name('produk.edit');
 Route::put('/produk/update/{id}', [ProdukController::class, 'update'])->name('produk.update');

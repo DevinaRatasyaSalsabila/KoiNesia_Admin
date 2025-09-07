@@ -24,16 +24,26 @@
 
     <div class="row row-cols-1 row-cols-md-3 g-4 mb-3">
         @foreach ($produk as $item)
+        @php
+            $gambarArray = json_decode($item->gambar_produk, true);
+        @endphp
             <div class="col">
                 <div class="card shadow-sm border-0 rounded-4 overflow-hidden h-100">
                     <div class="row g-0 align-items-center">
                         <div class="col-md-4 text-center p-3">
-                            <img src="{{ asset('storage/produk/final/' . $item->gambar_produk) }}" class="img-fluid rounded"
-                                alt="{{ $item->nama_produk }}">
+                            {{-- <img src="{{ asset('storage/produk/final/' . $item->gambar_produk) }}" class="img-fluid rounded"
+                            alt="{{ $item->nama_produk }}"> --}}
+                            @if (!empty($gambarArray))
+                                @foreach ($gambarArray as $gambar)
+                                    <img src="{{ asset('storage/produk/final/' . $gambar) }}" class="img-fluid rounded"
+                                        alt="{{ $item->nama_produk }}">
+                                @endforeach
+                            @endif
                         </div>
                         <div class="col-md-8">
                             <div class="card-body">
-                                <h5 class="card-title fw-bold text-dark">{{ $item->nama_produk }} Ukuran {{ $item->ukuran_produk }}</h5>
+                                <h5 class="card-title fw-bold text-dark">{{ $item->nama_produk }} Ukuran
+                                    {{ $item->ukuran_produk }}</h5>
                                 <span class="badge bg-secondary mb-2 px-3 p-1 fs-6 shadow-sm">
                                     Stok: {{ $item->stok_produk }}
                                 </span>
