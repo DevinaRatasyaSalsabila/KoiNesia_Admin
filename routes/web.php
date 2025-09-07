@@ -20,6 +20,8 @@ Route::get('/dashboard', [DasboardController::class, 'index']);
 
 //daftar barang masuk
 Route::get('/barang-masuk', [BarangMasukController::class, 'index']);
+Route::get('/barang-masuk/edit', [BarangMasukController::class, 'edit']);
+Route::get('/barang-masuk/tambah', [BarangMasukController::class, 'create']);
 
 //daftar produk
 Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
