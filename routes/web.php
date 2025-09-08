@@ -27,9 +27,10 @@ Route::get('/barang-masuk/tambah', [BarangMasukController::class, 'create']);
 Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
 Route::get('/produk/tambah', [ProdukController::class, 'create'])->name('produk.create');
 Route::post('/produk/store', [ProdukController::class, 'store'])->name('produk.store');
-Route::post('/produk/upload-temp', [ProdukController::class, 'uploadTemp'])->name('produk.upload-gambar');
-Route::get('/produk/detail', [ProdukController::class, 'show']);
-Route::get('/produk/edit', [ProdukController::class, 'edit']);
+Route::post('/produk/gambar', [ProdukController::class, 'upload'])->name('produk.upload');
+Route::get('/produk/detail/{id}', [ProdukController::class, 'show'])->name('produk.detail');
+Route::get('/produk/edit/{id}', [ProdukController::class, 'edit'])->name('produk.edit');
+Route::put('/produk/update/{id}', [ProdukController::class, 'update'])->name('produk.update');
 
 // pesanan
 Route::get('/pesanan', [PesananController::class, 'index']);

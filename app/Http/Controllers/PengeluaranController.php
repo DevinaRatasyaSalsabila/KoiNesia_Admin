@@ -52,7 +52,7 @@ class PengeluaranController extends Controller
             'keterangan' => $request->keterangan,
             'nominal' => $request->nominal,
         ]);
-
+        // dd($pengeluaran);
         $pengeluaran->save();
 
         return back()->with('success', 'Pengeluaran Berhasil Disimpan');
@@ -114,6 +114,7 @@ class PengeluaranController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Pengeluaran::find($id)->delete();
+        return redirect()->back()->with('success', 'Pengeluaran Berhasil Dihapus');
     }
 }

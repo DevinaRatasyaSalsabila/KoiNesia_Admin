@@ -7,12 +7,11 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"></li>
-                    <li class="breadcrumb-item active" aria-current="page">KoiNesia</li>
+                    <li class="breadcrumb-item active" aria-current="page">Azza Koi Farm</li>
                 </ol>
             </nav>
         </div>
     </div>
-    <!--end breadcrumb-->
 
     <div class="row">
         <div class="col-12 col-lg-8">
@@ -34,7 +33,7 @@
                             <h5 class="mb-3">Deskripsi Produk</h5>
                             <textarea name="deskripsi_produk" class="form-control" cols="4" rows="6"
                                 placeholder="Masukkan Deskripsi Produk" required>
-                            </textarea>
+                                                    </textarea>
                             <div class="invalid-feedback">
                                 Deskripsi wajib diisi.
                             </div>
@@ -42,7 +41,8 @@
 
                         <div class="mb-4">
                             <h5 class="mb-3">Gambar Produk</h5>
-                            <input id="fancy-file-upload" type="file" name="file" multiple>
+                            <input id="fancy-file-upload" type="file" multiple>
+                            <div id="hidden-gambar"></div>
                             <div class="invalid-feedback">
                                 Gambar produk harus diupload.
                             </div>
@@ -117,31 +117,28 @@
     @push('scripts')
         <script>
             $('#fancy-file-upload').FancyFileUpload({
+                url: "{{ route('produk.upload') }}",
+                method: 'POST',
                 params: {
-                    _token: '{{ csrf_token() }}'
+                    _token: $('meta[name="csrf-token"]').attr('content')
                 },
-                maxfilesize: 1000000,
-                url: '{{ route('produk.upload-gambar') }}',
-                success: function(e, data) {
-                    let filePath = data.result.path;
+                uploadcompleted: function (e, data) {
+                    console.log("✅ Upload selesai:", data.result);
 
-                    // debug
-                    console.log("Uploaded path:", filePath);
-
-                    // bikin hidden input otomatis
-                    $('#hidden-gambar').append(
-                        `<input type="hidden" name="gambar[]" value="${filePath}">`
-                    );
+                    if (data.result && data.result.path) {
+                        $('#hidden-gambar').append(
+                            `<input type="hidden" name="gambar_produk[]" value="${data.result.path}">`
+                        );
+                    }
                 }
             });
 
-            // bsValidation4 init
-            (function() {
+            (function () {
                 'use strict'
                 const forms = document.querySelectorAll('#formAddProduct')
                 Array.prototype.slice.call(forms)
-                    .forEach(function(form) {
-                        form.addEventListener('submit', function(event) {
+                    .forEach(function (form) {
+                        form.addEventListener('submit', function (event) {
                             if (!form.checkValidity()) {
                                 event.preventDefault()
                                 event.stopPropagation()
@@ -149,8 +146,7 @@
                             form.classList.add('was-validated')
                         }, false)
 
-                        // Reset button handling
-                        form.addEventListener('reset', function() {
+                        form.addEventListener('reset', function () {
                             form.classList.remove('was-validated')
                         }, false)
                     })

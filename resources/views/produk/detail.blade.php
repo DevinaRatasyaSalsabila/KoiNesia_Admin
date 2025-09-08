@@ -1,13 +1,12 @@
 @extends('main')
 @section('content')
-    <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
         <div class="breadcrumb-title pe-3">Detail Produk</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"></li>
-                    <li class="breadcrumb-item active" aria-current="page">KoiNesia</li>
+                    <li class="breadcrumb-item active" aria-current="page">Azza Koi Farm</li>
                 </ol>
             </nav>
         </div>
@@ -37,17 +36,17 @@
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Kode Produk</label>
-                        <input type="text" class="form-control bg-light" value="KN-9034" readonly>
+                        <input type="text" class="form-control bg-light" value="{{$produk->kode_produk}}" readonly>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Stok</label>
-                        <input type="text" class="form-control bg-light" value="15" readonly>
+                        <input type="text" class="form-control bg-light" value="{{$produk->stok_produk}}" readonly>
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Harga</label>
                         <div class="p-3 text-white rounded text-center fs-5 fw-bold" style="background-color: rgb(43, 115, 214)">
-                            Rp 3.500.000
+                          {{$produk->harga_Satuan}}
                         </div>
                     </div>
                 </div>
@@ -62,20 +61,19 @@
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Nama Produk</label>
-                        <input type="text" class="form-control bg-light" value="Koi Kohaku Jumbo"
+                        <input type="text" class="form-control bg-light" value="{{$produk->nama_produk}}"
                             readonly>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Ukuran</label>
-                        <input type="text" class="form-control bg-light" value="50 cm" readonly>
+                        <input type="text" class="form-control bg-light" value="{{$produk->ukuran_produk}}" readonly>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Deskripsi</label>
                         <div class="p-3 bg-light rounded" style="min-height: 120px;">
-                            Koi Kohaku berkualitas tinggi dengan corak merah dan putih simetris.
-                            Cocok untuk kontes maupun koleksi pribadi.
+                         {{$produk->deskripsi_produk}}
                         </div>
                     </div>
                 </div>

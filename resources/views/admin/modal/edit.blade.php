@@ -31,7 +31,7 @@
                          <label for="inputChoosePassword" class="form-label">Kata Sandi</label>
                          <div class="input-group" id="password_hide{{$adm->id_user}}">
                              <input type="password" name="password" class="form-control" id="bsValidation4"
-                                 placeholder="Password" required>
+                                 placeholder="Password">
                              <a href="javascript:;" class="input-group-text bg-transparent"><i
                                      class="bi bi-eye-slash-fill"></i></a>
                          </div>
@@ -44,14 +44,6 @@
                              Masukkan Role
                          </div>
                      </div>
-                     {{-- <div class="col-md-12">
-                         <label for="bsValidation5" class="form-label">Keterangan</label>
-                         <input type="text" class="form-control" id="bsValidation5"
-                             placeholder="Masukkan Keterangan" required>
-                         <div class="invalid-feedback">
-                             Masukkan Keterangan
-                         </div>
-                     </div> --}}
                  </div>
                  <div class="modal-footer">
                      <button type="reset" class="btn btn-secondary">
@@ -65,8 +57,6 @@
          </div>
      </div>
  </div>
-
-
 
  @push('scripts')
      <script>

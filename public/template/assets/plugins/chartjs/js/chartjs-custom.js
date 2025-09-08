@@ -8,7 +8,7 @@ $(function() {
         data: {
             labels: ['Jan', 'Feb', 'Mar', 'Th', 'Fr', 'Sa', 'Su'],
             datasets: [{
-                label: 'Google',
+                label: 'Penjualan',
                 data: [10, 20, 35, 10, 27, 11, 20],
                 backgroundColor: [
                     '#008cff'
@@ -27,7 +27,7 @@ $(function() {
 				  }, 
              },
             {
-                label: 'Facebook',
+                label: 'Barang Keluar',
                 data: [5, 30, 16, 23, 18, 14, 5],
                 backgroundColor: [
                     '#fc185a'

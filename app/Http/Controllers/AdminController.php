@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
@@ -17,14 +17,6 @@ class AdminController extends Controller
         return view('admin.index', compact('admin'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create() {}
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         // Validasi dasar dulu
@@ -93,37 +85,33 @@ class AdminController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id)
-    {
-        $user = User::findOrFail($id);
+{
+    $user = User::findOrFail($id);
 
-        $request->validate([
-            'nama' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'password' => 'required|string|min:5',
-        ]);
+    $request->validate([
+        'nama' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+        'password' => 'nullable|string|min:5',
+    ]);
 
-        $existsEmailPassword = User::where('id_user', '!=', $user->id_user)
-            ->where('email', $request->email)
-            ->get()
-            ->first(function ($u) use ($request) {
-                return Hash::check($request->password, $u->password);
-            });
-
-        if ($existsEmailPassword) {
-            return back()->withErrors(['msg' => 'Pengguna dengan Email dan Password tsb sudah terdaftar.']);
-        }
-
-        $user->nama = $request->nama;
-        $user->email = $request->email;
-
-        if (!Hash::check($request->password, $user->password)) {
-            $user->password = Hash::make($request->password);
-        }
-
-        $user->save();
-
-        return back()->with('success', 'Data admin berhasil diperbarui');
+    // cek email unik
+    if (User::where('email', $request->email)
+            ->where('id_user', '!=', $user->id_user)
+            ->exists()) {
+        return back()->withErrors(['msg' => 'Email sudah terdaftar.']);
     }
+
+    $user->nama = $request->nama;
+    $user->email = $request->email;
+
+    if ($request->filled('password')) {
+        $user->password = Hash::make($request->password);
+    }
+
+    $user->save();
+
+    return back()->with('success', 'Data admin berhasil diperbarui');
+}
 
 
     /**
