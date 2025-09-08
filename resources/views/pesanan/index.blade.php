@@ -42,7 +42,7 @@
                         <tr>
                             <th>Tanggal</th>
                             <th>Nama Pembeli</th>
-                            <th>Total Pembelian</th>
+                            <th>Nominal Pembelian</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
@@ -60,27 +60,27 @@
                                         </option>
                                     </select>
                                 </td>
-
                                 <td>
-                                    <a href="{{ url('detail') }}" class="text-decoration-none text-dark">
+                                    <a href="{{ route('pesanan.detail', $item->id_pesanan) }}"
+                                        class="text-decoration-none text-dark">
                                         <i class="material-icons-outlined">content_paste</i>
                                     </a>
                                     <a href="#" class="text-decoration-none text-dark">
                                         <i class="material-icons-outlined">delete</i>
                                     </a>
-                                    <button type="button" class="btn" data-bs-toggle="modal"
-                                        data-bs-target="#edit_pesanan">
+                                    <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#edit_pesanan_{{$item->id_pesanan}}">
                                         <i class="material-icons-outlined">edit</i>
                                     </button>
                                 </td>
                             </tr>
+                            @include('pesanan.modal.edit')
                         @endforeach
                     </tbody>
                     <tfoot>
                         <tr>
                             <th>Tanggal</th>
                             <th>Nama Pembeli</th>
-                            <th>Total Pembelian</th>
+                            <th>Nominal Pembelian</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
@@ -90,13 +90,12 @@
         </div>
     </div>
 
-    @include('pesanan.modal.edit')
     @include('pesanan.modal.tambah')
     @include('pesanan.modal.modalPembeli.tambahPembeli')
 
     @push('scripts')
         <script>
-            $(document).ready(function() {
+            $(document).ready(function () {
                 var table = $("#tabel_pesanan").DataTable({
                     lengthChange: false,
                     buttons: ["copy", "excel", "pdf", "print"],
@@ -105,28 +104,28 @@
                 table.buttons().container().appendTo("#example2_wrapper .col-md-6:eq(0)");
             });
 
-           let updateStatusUrl = "{{ route('pesanan.updateStatus', ':id') }}";
+            let updateStatusUrl = "{{ route('pesanan.updateStatus', ':id') }}";
 
-$(document).on('change', '.update-status-select', function() {
-    let id = $(this).data('id');
-    let status = $(this).val();
-    let url = updateStatusUrl.replace(':id', id);
+            $(document).on('change', '.update-status-select', function () {
+                let id = $(this).data('id');
+                let status = $(this).val();
+                let url = updateStatusUrl.replace(':id', id);
 
-    $.ajax({
-        url: url,
-        type: 'POST',
-        data: {
-            status: status,
-            _token: '{{ csrf_token() }}'
-        },
-        success: function(res) {
-            console.log('Status updated:', res);
-        },
-        error: function(err) {
-            console.log(err.responseJSON);
-        }
-    });
-});
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {
+                        status: status,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function (res) {
+                        console.log('Status updated:', res);
+                    },
+                    error: function (err) {
+                        console.log(err.responseJSON);
+                    }
+                });
+            });
         </script>
     @endpush
 @endsection

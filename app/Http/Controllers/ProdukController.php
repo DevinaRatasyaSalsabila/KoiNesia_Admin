@@ -66,7 +66,6 @@ class ProdukController extends Controller
             }
         }
 
-        // kalau ada video file biasa
         if ($request->hasFile('video_files')) {
             foreach ($request->file('video_files') as $video) {
                 $filename = uniqid() . '.' . $video->getClientOriginalExtension();
@@ -78,7 +77,7 @@ class ProdukController extends Controller
         $produk = Produk::create([
             'nama_produk'      => $request->nama_produk,
             'deskripsi_produk' => $request->deskripsi_produk,
-            'gambar_produk'    => json_encode($filenames), // ← ini fix
+            'gambar_produk'    => json_encode($filenames),
             'kode_produk'      => $request->kode_produk,
             'stok_produk'      => $request->stok_produk,
             'ukuran_produk'    => $request->ukuran_produk,
@@ -124,7 +123,6 @@ class ProdukController extends Controller
 
         $filenames = [];
 
-        // gambar baru (base64 → file)
         if ($request->has('gambar_produk')) {
             foreach ($request->gambar_produk as $img) {
                 if (Str::startsWith($img, 'data:image')) {
@@ -136,7 +134,6 @@ class ProdukController extends Controller
             }
         }
 
-        // video baru (file upload biasa)
         if ($request->hasFile('video_files')) {
             foreach ($request->file('video_files') as $video) {
                 $videoName = uniqid() . '.' . $video->getClientOriginalExtension();
@@ -145,7 +142,6 @@ class ProdukController extends Controller
             }
         }
 
-        // kalau ada upload baru → replace field
         if (!empty($filenames)) {
             $data['gambar_produk'] = json_encode($filenames);
         }

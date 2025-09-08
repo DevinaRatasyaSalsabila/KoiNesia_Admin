@@ -58,12 +58,12 @@ Route::put('/edit-pengeluaran/{id}', [PengeluaranController::class, 'update'])->
 Route::delete('/delete-pengeluaran/{id}', [PengeluaranController::class, 'destroy'])->name('pengeluaran.delete');
 
 // pesanan
-Route::get('/pesanan', [PesananController::class, 'index']);
-Route::get('/pesanan', [PesananController::class, 'index'])->name('pesanan.add');
-Route::get('/detail', [PesananController::class, 'show']);
+Route::get('/pesanan', [PesananController::class, 'index'])->name('pesanan.index');
+Route::post('/pesanan/tambah', [PesananController::class, 'store'])->name('pesanan.add');
+Route::put('/pesanan/update/{id}', [PesananController::class, 'update'])->name('pesanan.update');
+Route::get('/detail/{id}', [PesananController::class, 'show'])->name('pesanan.detail');
 Route::post('/pesanan/{id}/status', [PesananController::class, 'updateStatus'])->name('pesanan.updateStatus');
-
-
+Route::delete('/pesanan/{id}', [PesananController::class, 'destroy'])->name('pesanan.delete');
 
 //pembeli - pesanan
 Route::post('pembeli', [PembeliController::class, 'store'])->name('pembeli.add');

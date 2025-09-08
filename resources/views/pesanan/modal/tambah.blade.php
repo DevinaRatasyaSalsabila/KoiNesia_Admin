@@ -8,10 +8,11 @@
             </div>
             <form class="row g-3 needs-validation" action="{{ route('pesanan.add') }}" method="POST">
                 @csrf
+                @method('POST')
                 <div class="modal-body">
                     <div class="px-3 mt-2 col-md-12">
                         <label class="form-label">Data Pembeli</label>
-                        <select class="form-select" name="pembeli_id" id="pembeli" required>
+                        <select class="form-select" name="id_pembeli" id="pembeli" required>
                             @foreach ($pembeli as $pemb)
                                 <option value="{{ $pemb->id_pembeli }}">{{ $pemb->nama_pembeli }}</option>
                             @endforeach
@@ -56,7 +57,7 @@
 
                 <div class="modal-footer">
                     <button type="reset" class="btn btn-secondary">Reset</button>
-                    <button type="submit" class="btn btn-primary" name="submit2">Simpan</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
             </form>
         </div>

@@ -51,16 +51,13 @@
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    // Tutup modal tambah pembeli
                     let modalPembeli = bootstrap.Modal.getInstance(document.getElementById(
                         "tambah_pembeli"));
                     modalPembeli.hide();
 
-                    // Buka modal tambah pesanan
                     let modalPesanan = new bootstrap.Modal(document.getElementById("tambah_pesanan"));
                     modalPesanan.show();
 
-                    // Tambahin pembeli baru ke select di modal tambah_pesanan
                     let select = document.getElementById('pembeli');
                     select.insertAdjacentHTML('beforeend', `
                 <option value="${data.pembeli.id_pembeli}" selected>
@@ -68,7 +65,6 @@
                 </option>
             `);
 
-                    // Reset form setelah submit
                     this.reset();
 
                     alert("Pembeli berhasil ditambah!");
