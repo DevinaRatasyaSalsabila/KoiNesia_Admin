@@ -12,15 +12,32 @@
         </div>
     </div>
     <!--end breadcrumb-->
-
+    @php
+        $gambarArray = json_decode($produk->gambar_produk, true);
+    @endphp
+    {{-- @if (!empty($gambarArray))
+        @foreach ($gambarArray as $gambar)
+            <img src="{{ asset('storage/produk/final/' . $gambar) }}" class="img-fluid rounded">
+        @endforeach
+    @endif --}}
     <!-- Gambar Produk -->
     <div class="row mb-4 text-center">
         <div class="col-12">
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
-                    <img src="{{ asset('template/assets/images/projects/koi1.png') }}"
-                        alt="Koi Kohaku Jumbo" class="img-fluid rounded-3"
-                        style="max-height: 280px; object-fit: cover;">
+                    @if (!empty($gambarArray))
+                        @foreach ($gambarArray as $file)
+                            @if (Str::endsWith($file, ['.jpg', '.jpeg', '.png']))
+                                <img src="{{ asset('storage/produk/final/' . $file) }}" class="img-fluid rounded-3"
+                                    style="max-height:280px;object-fit:cover;">
+                            @elseif(Str::endsWith($file, ['.mp4', '.webm', '.ogg']))
+                                <video width="320" height="240" controls>
+                                    <source src="{{ asset('storage/produk/final/' . $file) }}">
+                                    Browser kamu ga support video 😭
+                                </video>
+                            @endif
+                        @endforeach
+                    @endif
                 </div>
             </div>
         </div>
@@ -36,17 +53,18 @@
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Kode Produk</label>
-                        <input type="text" class="form-control bg-light" value="{{$produk->kode_produk}}" readonly>
+                        <input type="text" class="form-control bg-light" value="{{ $produk->kode_produk }}" readonly>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Stok</label>
-                        <input type="text" class="form-control bg-light" value="{{$produk->stok_produk}}" readonly>
+                        <input type="text" class="form-control bg-light" value="{{ $produk->stok_produk }}" readonly>
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Harga</label>
-                        <div class="p-3 text-white rounded text-center fs-5 fw-bold" style="background-color: rgb(43, 115, 214)">
-                          {{$produk->harga_Satuan}}
+                        <div class="p-3 text-white rounded text-center fs-5 fw-bold"
+                            style="background-color: rgb(43, 115, 214)">
+                            {{ $produk->harga_Satuan }}
                         </div>
                     </div>
                 </div>
@@ -61,19 +79,18 @@
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Nama Produk</label>
-                        <input type="text" class="form-control bg-light" value="{{$produk->nama_produk}}"
-                            readonly>
+                        <input type="text" class="form-control bg-light" value="{{ $produk->nama_produk }}" readonly>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Ukuran</label>
-                        <input type="text" class="form-control bg-light" value="{{$produk->ukuran_produk}}" readonly>
+                        <input type="text" class="form-control bg-light" value="{{ $produk->ukuran_produk }}" readonly>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Deskripsi</label>
                         <div class="p-3 bg-light rounded" style="min-height: 120px;">
-                         {{$produk->deskripsi_produk}}
+                            {{ $produk->deskripsi_produk }}
                         </div>
                     </div>
                 </div>
@@ -84,9 +101,9 @@
     <!-- Tombol Kembali -->
     <div class="row mb-3">
         <div class="col-12 text-center">
-            <a href="produk" class="btn btn-outline-secondary px-4 rounded-pill shadow-sm">
+            <button onclick="window.history.back()" class="btn btn-outline-secondary px-4 rounded-pill shadow-sm">
                 <i class="bi bi-arrow-left me-2"></i> Kembali ke Daftar Produk
-            </a>
+            </button>
         </div>
     </div>
 @endsection

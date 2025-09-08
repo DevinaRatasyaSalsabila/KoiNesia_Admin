@@ -12,7 +12,32 @@
             </nav>
         </div>
     </div>
-    <!--end breadcrumb-->
+
+    @php
+        $gambarArray = json_decode($produk->gambar_produk, true);
+    @endphp
+
+    <div class="row mb-4 text-center">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    @if (!empty($gambarArray))
+                        @foreach ($gambarArray as $file)
+                            @if (Str::endsWith($file, ['.jpg', '.jpeg', '.png']))
+                                <img src="{{ asset('storage/produk/final/' . $file) }}" class="img-fluid rounded-3"
+                                    style="max-height:280px;object-fit:cover;">
+                            @elseif(Str::endsWith($file, ['.mp4', '.webm', '.ogg']))
+                                <video width="320" height="240" controls>
+                                    <source src="{{ asset('storage/produk/final/' . $file) }}">
+                                    Browser kamu ga support video 😭
+                                </video>
+                            @endif
+                        @endforeach
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-12 col-lg-8">
@@ -26,7 +51,7 @@
                         <div class="mb-4">
                             <h5 class="mb-3">Nama Produk</h5>
                             <input type="text" name="nama_produk" class="form-control" placeholder="Masukkan Nama Produk"
-                                value="{{$produk->nama_produk}}" required>
+                                value="{{ $produk->nama_produk }}" required>
                             <div class="invalid-feedback">
                                 Nama produk wajib diisi.
                             </div>
@@ -35,7 +60,7 @@
                         <div class="mb-4">
                             <h5 class="mb-3">Deskripsi Produk</h5>
                             <textarea name="deskripsi_produk" class="form-control" cols="4" rows="6"
-                                placeholder="Masukkan Deskripsi Produk" required>{{$produk->deskripsi_produk}}</textarea>
+                                placeholder="Masukkan Deskripsi Produk" required>{{ $produk->deskripsi_produk }}</textarea>
                             <div class="invalid-feedback">
                                 Deskripsi wajib diisi.
                             </div>
@@ -43,12 +68,14 @@
 
                         <div class="mb-4">
                             <h5 class="mb-3">Gambar Produk</h5>
+
+                            {{-- Input file untuk upload baru --}}
                             <input id="fancy-file-upload" type="file" name="gambar_produk"
-                                accept=".jpg, .png, image/jpeg, image/png" multiple>
+                                accept=".jpg,.jpeg,.png,.mp4,.webm,.ogg" multiple>
+                            <div id="hidden-gambar"></div>
                             <div class="invalid-feedback">
                                 Gambar produk harus diupload.
                             </div>
-                            <small class="text-muted">Gambar saat ini: kohaku-jumbo.png</small>
                         </div>
                 </div>
             </div>
@@ -83,7 +110,7 @@
                             </label>
                             <input type="text" class="form-control" name="kode_produk"
                                 style="background-color: rgb(232, 227, 227)" id="kode_produk"
-                                value="{{$produk->kode_produk}}">
+                                value="{{ $produk->kode_produk }}">
                         </div>
                         <div class="col-12">
                             <label for="stok_produk" class="form-label">
@@ -91,14 +118,14 @@
                             </label>
                             <input type="text" class="form-control" name="stok_produk"
                                 style="background-color: rgb(232, 227, 227)" id="stok_produk"
-                                value="{{$produk->stok_produk}}">
+                                value="{{ $produk->stok_produk }}">
                         </div>
                         <div class="col-12">
                             <label for="ukuran" class="form-label">
                                 Ukuran
                             </label>
                             <input type="text" class="form-control" id="Collection" name="ukuran_produk"
-                                placeholder="Masukkan Ukuran Produk" value="{{$produk->ukuran_produk}}" required>
+                                placeholder="Masukkan Ukuran Produk" value="{{ $produk->ukuran_produk }}" required>
                             <div class="invalid-feedback">
                                 Ukuran wajib diisi.
                             </div>
@@ -106,7 +133,7 @@
                         <div class="col-12">
                             <label for="harga_produk" class="form-label">Harga Produk</label>
                             <input type="number" class="form-control" id="harga_produk" name="harga_produk"
-                                placeholder="Masukkan Harga Produk" value="{{$produk->harga_Satuan}}" required>
+                                placeholder="Masukkan Harga Produk" value="{{ $produk->harga_Satuan }}" required>
                             <div class="invalid-feedback">
                                 Harga produk wajib diisi.
                             </div>
@@ -116,25 +143,59 @@
             </div>
             </form>
         </div>
-    </div><!--end row-->
+    </div>
 
     @push('scripts')
         <script>
-            // Fancy file upload init
             $('#fancy-file-upload').FancyFileUpload({
-                params: {
-                    action: 'fileuploader'
-                },
-                maxfilesize: 1000000
+                url: '', // kosongin
+                autoUpload: false,
+                added: function(e, data) {
+                    let file = data.files[0];
+                    let type = file.type;
+
+                    console.log("📂 File ditambahkan:", file.name, "type:", type);
+
+                    if (type.startsWith("image/")) {
+                        // convert image ke base64 → hidden input
+                        let reader = new FileReader();
+                        reader.onload = function(evt) {
+                            let base64 = evt.target.result;
+                            let input = $('<input>')
+                                .attr('type', 'hidden')
+                                .attr('name', 'gambar_produk[]')
+                                .val(base64);
+
+                            $('#hidden-gambar').append(input);
+                            console.log("📸 Base64 ditambahkan:", base64.substring(0, 50) + "...");
+                        };
+                        reader.readAsDataURL(file);
+
+                    } else if (type.startsWith("video/")) {
+                        // pake DataTransfer biar Laravel bisa baca sebagai file asli
+                        let dt = new DataTransfer();
+                        dt.items.add(file);
+
+                        let videoInput = $('<input>').attr({
+                            type: 'file',
+                            name: 'video_files[]',
+                            style: 'display:none'
+                        })[0];
+
+                        videoInput.files = dt.files;
+                        $('#formAddProduct').append(videoInput);
+
+                        console.log("🎥 Video input ditambahkan:", file.name);
+                    }
+                }
             });
 
-            // bsValidation4 init
-            (function () {
+            (function() {
                 'use strict'
                 const forms = document.querySelectorAll('#formAddProduct')
                 Array.prototype.slice.call(forms)
-                    .forEach(function (form) {
-                        form.addEventListener('submit', function (event) {
+                    .forEach(function(form) {
+                        form.addEventListener('submit', function(event) {
                             if (!form.checkValidity()) {
                                 event.preventDefault()
                                 event.stopPropagation()
@@ -142,7 +203,7 @@
                             form.classList.add('was-validated')
                         }, false)
 
-                        form.addEventListener('reset', function () {
+                        form.addEventListener('reset', function() {
                             form.classList.remove('was-validated')
                         }, false)
                     })

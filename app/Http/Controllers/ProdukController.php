@@ -6,6 +6,7 @@ use App\Models\Produk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class ProdukController extends Controller
 {
@@ -22,38 +23,24 @@ class ProdukController extends Controller
 
     public function upload(Request $request)
     {
-        Log::info("📥 upload() dipanggil", [
-            'has_file'   => $request->hasFile('file'),
-            'all_files'  => $request->allFiles(),
-        ]);
+        // if ($request->hasFile('file')) {
+        //     $file = $request->file('file');
+        //     $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+        //     $path = $file->storeAs('produk/final', $filename, 'public');
 
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('produk/final', $filename, 'public');
+        //     return response()->json([
+        //         'success' => true,
+        //         'path'    => 'storage/' . $path,   // buat hidden input
+        //         'url'     => asset('storage/' . $path), // buat preview kalau mau
+        //     ]);
+        // }
 
-            Log::info("✅ File berhasil diupload", [
-                'original_name' => $file->getClientOriginalName(),
-                'stored_as'     => $path,
-                'public_url'    => asset('storage/' . $path)
-            ]);
-
-            return response()->json([
-                'success' => true,
-                'path'    => 'storage/' . $path
-            ]);
-        }
-
-        Log::warning("⚠️ Tidak ada file diterima di upload()");
-        return response()->json(['success' => false], 400);
+        // return response()->json(['success' => false], 400);
     }
 
     public function store(Request $request)
     {
-        Log::info("📥 store() dipanggil", [
-            'all_request' => $request->all(),
-            'gambar_dari_hidden' => $request->gambar_produk ?? [],
-        ]);
+        Log::info('📦 Data diterima store()', $request->all());
 
         $request->validate([
             'nama_produk'      => 'required|string|max:255',
@@ -62,35 +49,51 @@ class ProdukController extends Controller
             'stok_produk'      => 'required|integer',
             'ukuran_produk'    => 'required|string|max:50',
             'harga_produk'     => 'required|integer',
+            'gambar_produk'    => 'required|array',
         ]);
+
+        $filenames = [];
+
+        if ($request->has('gambar_produk')) {
+            foreach ($request->gambar_produk as $fileOrBase64) {
+                // kalau base64 (image)
+                if (Str::startsWith($fileOrBase64, 'data:image')) {
+                    $image = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $fileOrBase64));
+                    $filename = uniqid() . '.png';
+                    Storage::disk('public')->put('produk/final/' . $filename, $image);
+                    $filenames[] = $filename;
+                }
+            }
+        }
+
+        // kalau ada video file biasa
+        if ($request->hasFile('video_files')) {
+            foreach ($request->file('video_files') as $video) {
+                $filename = uniqid() . '.' . $video->getClientOriginalExtension();
+                $video->storeAs('produk/final', $filename, 'public');
+                $filenames[] = $filename;
+            }
+        }
 
         $produk = Produk::create([
             'nama_produk'      => $request->nama_produk,
             'deskripsi_produk' => $request->deskripsi_produk,
-            'gambar_produk'    => json_encode($request->gambar_produk ?? []),
+            'gambar_produk'    => json_encode($filenames), // ← ini fix
             'kode_produk'      => $request->kode_produk,
             'stok_produk'      => $request->stok_produk,
             'ukuran_produk'    => $request->ukuran_produk,
             'harga_satuan'     => $request->harga_produk,
         ]);
 
-        Log::info("🎉 Produk berhasil disimpan", [
-            'id'   => $produk->id_produk,
-            'nama' => $produk->nama_produk,
-            'gambar' => $produk->gambar_produk,
-        ]);
-
         return redirect()->route('produk.index')->with('success', 'Produk berhasil ditambahkan!');
     }
 
-    // public function show(string $id)
     public function show(string $id)
     {
         $produk = Produk::findOrFail($id);
         return view('produk.detail', compact('produk'));
     }
 
-    // public function edit(string $id)
     public function edit(string $id)
     {
         $produk = Produk::findOrFail($id);
@@ -109,20 +112,69 @@ class ProdukController extends Controller
         ]);
 
         $produk = Produk::findOrFail($id);
-        $produk->update([
+
+        $data = [
             'nama_produk'      => $request->nama_produk,
             'deskripsi_produk' => $request->deskripsi_produk,
-            'gambar_produk'    => json_encode($request->gambar_produk ?? []),
             'kode_produk'      => $request->kode_produk,
             'stok_produk'      => $request->stok_produk,
             'ukuran_produk'    => $request->ukuran_produk,
-            'harga_satuan'     => $request->harga_produk,
-        ]);
+            'harga_Satuan'     => $request->harga_produk,
+        ];
+
+        $filenames = [];
+
+        // gambar baru (base64 → file)
+        if ($request->has('gambar_produk')) {
+            foreach ($request->gambar_produk as $img) {
+                if (Str::startsWith($img, 'data:image')) {
+                    $image = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $img));
+                    $filename = uniqid() . '.png';
+                    Storage::disk('public')->put('produk/final/' . $filename, $image);
+                    $filenames[] = $filename;
+                }
+            }
+        }
+
+        // video baru (file upload biasa)
+        if ($request->hasFile('video_files')) {
+            foreach ($request->file('video_files') as $video) {
+                $videoName = uniqid() . '.' . $video->getClientOriginalExtension();
+                $video->storeAs('produk/final', $videoName, 'public');
+                $filenames[] = $videoName;
+            }
+        }
+
+        // kalau ada upload baru → replace field
+        if (!empty($filenames)) {
+            $data['gambar_produk'] = json_encode($filenames);
+        }
+
+        $produk->update($data);
 
         return redirect()->route('produk.index')->with('success', 'Produk berhasil diperbarui!');
     }
+
     public function destroy(string $id)
     {
-        //
+        $produk = Produk::findOrFail($id);
+
+        if ($produk->gambar_produk) {
+            $files = json_decode($produk->gambar_produk, true); // decode ke array
+
+            if (is_array($files)) {
+                foreach ($files as $file) {
+                    $filePath = 'produk/final/' . $file;
+
+                    if (Storage::disk('public')->exists($filePath)) {
+                        Storage::disk('public')->delete($filePath);
+                    }
+                }
+            }
+        }
+
+        $produk->delete();
+
+        return redirect()->route('produk.index')->with('success', 'Produk berhasil dihapus!');
     }
 }

@@ -12,8 +12,4 @@ class Produk extends Model
     protected $keyType = 'int';
 
     protected $guarded = [];
-
-    protected $casts = [
-        'gambar_produk' => 'array',
-    ];
 }

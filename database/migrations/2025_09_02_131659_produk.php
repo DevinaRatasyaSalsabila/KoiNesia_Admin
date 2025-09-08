@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('harga_Satuan');
             $table->integer('stok_produk');
             $table->text('deskripsi_produk');
-            $table->json('gambar_produk')->nullable();
+            $table->text('gambar_produk')->nullable();
             $table->string('ukuran_produk');
             $table->timestamps();
         });

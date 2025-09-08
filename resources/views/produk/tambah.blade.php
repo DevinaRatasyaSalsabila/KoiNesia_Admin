@@ -32,21 +32,18 @@
                         <div class="mb-4">
                             <h5 class="mb-3">Deskripsi Produk</h5>
                             <textarea name="deskripsi_produk" class="form-control" cols="4" rows="6"
-                                placeholder="Masukkan Deskripsi Produk" required>
-                                                    </textarea>
+                                placeholder="Masukkan Deskripsi Produk" required></textarea>
                             <div class="invalid-feedback">
                                 Deskripsi wajib diisi.
                             </div>
                         </div>
-
                         <div class="mb-4">
                             <h5 class="mb-3">Gambar Produk</h5>
-                            <input id="fancy-file-upload" type="file" multiple>
+                            <input type="file" id="fancy-file-upload" multiple accept=".jpg,.jpeg,.png,.mp4,.webm,.ogg">
                             <div id="hidden-gambar"></div>
                             <div class="invalid-feedback">
                                 Gambar produk harus diupload.
                             </div>
-                            <div id="hidden-gambar"></div>
                         </div>
                 </div>
             </div>
@@ -56,7 +53,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex align-items-center gap-3">
-                        <button type="button" class="btn btn-outline-secondary flex-fill" onclick="window.history.back()">
+                        <button type="button" class="btn btn-outline-secondary flex-fill" onclick=".history.back()">
                             <i class="bi bi-arrow-left-circle me-2"></i>
                             Batal
                         </button>
@@ -116,29 +113,59 @@
 
     @push('scripts')
         <script>
-            $('#fancy-file-upload').FancyFileUpload({
-                url: "{{ route('produk.upload') }}",
-                method: 'POST',
-                params: {
-                    _token: $('meta[name="csrf-token"]').attr('content')
-                },
-                uploadcompleted: function (e, data) {
-                    console.log("✅ Upload selesai:", data.result);
+            $(document).ready(function() {
+                $('#fancy-file-upload').FancyFileUpload({
+                    params: {
+                        action: 'fileuploader'
+                    },
+                    maxfilesize: 50 * 1024 * 1024, // 50MB
+                    edit: false,
+                    added: function(e, data) {
+                        let file = data.files[0];
+                        let type = file.type;
 
-                    if (data.result && data.result.path) {
-                        $('#hidden-gambar').append(
-                            `<input type="hidden" name="gambar_produk[]" value="${data.result.path}">`
-                        );
+                        // 🕵️ Debug log
+                        console.log("📂 File ditambahkan:");
+                        console.log("Nama:", file.name);
+                        console.log("Type:", type);
+                        console.log("Size:", file.size);
+
+                        if (type.startsWith("image/")) {
+                            // convert image ke base64 → hidden input
+                            var reader = new FileReader();
+                            reader.onload = function(e) {
+                                let hidden = $('<input>').attr({
+                                    type: 'hidden',
+                                    name: 'gambar_produk[]',
+                                    value: e.target.result
+                                });
+                                $('#formAddProduct').append(hidden);
+                            };
+                            reader.readAsDataURL(file);
+
+                        } else if (type.startsWith("video/")) {
+                            let dt = new DataTransfer();
+                            dt.items.add(file);
+
+                            let videoInput = $('<input>').attr({
+                                type: 'file',
+                                name: 'video_files[]',
+                                style: 'display:none'
+                            })[0];
+
+                            videoInput.files = dt.files;
+                            $('#formAddProduct').append(videoInput);
+                        }
                     }
-                }
+                });
             });
 
-            (function () {
+            (function() {
                 'use strict'
                 const forms = document.querySelectorAll('#formAddProduct')
                 Array.prototype.slice.call(forms)
-                    .forEach(function (form) {
-                        form.addEventListener('submit', function (event) {
+                    .forEach(function(form) {
+                        form.addEventListener('submit', function(event) {
                             if (!form.checkValidity()) {
                                 event.preventDefault()
                                 event.stopPropagation()
@@ -146,7 +173,7 @@
                             form.classList.add('was-validated')
                         }, false)
 
-                        form.addEventListener('reset', function () {
+                        form.addEventListener('reset', function() {
                             form.classList.remove('was-validated')
                         }, false)
                     })

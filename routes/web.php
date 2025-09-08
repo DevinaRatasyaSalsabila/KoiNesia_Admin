@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\DasboardController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PembeliController;
 use App\Http\Controllers\PengeluaranController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\PesananController;
@@ -20,15 +21,18 @@ Route::get('/dashboard', [DasboardController::class, 'index']);
 
 //daftar barang masuk
 Route::get('/barang-masuk', [BarangMasukController::class, 'index']);
+Route::get('/barang-masuk/edit', [BarangMasukController::class, 'edit']);
+Route::get('/barang-masuk/tambah', [BarangMasukController::class, 'create']);
 
 //daftar produk
 Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
 Route::get('/produk/tambah', [ProdukController::class, 'create'])->name('produk.create');
-Route::post('/produk/store', [ProdukController::class, 'store'])->name('produk.store');
 Route::post('/produk/gambar', [ProdukController::class, 'upload'])->name('produk.upload');
+Route::post('/produk/store', [ProdukController::class, 'store'])->name('produk.store');
 Route::get('/produk/detail/{id}', [ProdukController::class, 'show'])->name('produk.detail');
 Route::get('/produk/edit/{id}', [ProdukController::class, 'edit'])->name('produk.edit');
 Route::put('/produk/update/{id}', [ProdukController::class, 'update'])->name('produk.update');
+Route::delete('/produk/delete/{id}', [ProdukController::class, 'destroy'])->name('produk.delete');
 
 // pesanan
 Route::get('/pesanan', [PesananController::class, 'index']);
@@ -57,10 +61,16 @@ Route::delete('/delete-pengeluaran/{id}', [PengeluaranController::class, 'destro
 Route::get('/pesanan', [PesananController::class, 'index']);
 Route::get('/pesanan', [PesananController::class, 'index'])->name('pesanan.add');
 Route::get('/detail', [PesananController::class, 'show']);
+Route::post('/pesanan/{id}/status', [PesananController::class, 'updateStatus'])->name('pesanan.updateStatus');
+
+
+
+//pembeli - pesanan
+Route::post('pembeli', [PembeliController::class, 'store'])->name('pembeli.add');
 
 //Riwayat Transaksi
 Route::get('riwayat-transaksi', [RiwayatController::class, 'index']);
 Route::get('riwayat-transaksi/detail', [RiwayatController::class, 'show']);
 
-//rekap 
+//rekap
 Route::get('rekap', [RekapController::class, 'index']);
