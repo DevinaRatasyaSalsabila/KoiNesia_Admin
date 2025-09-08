@@ -26,9 +26,16 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
                     @if (!empty($gambarArray))
-                        @foreach ($gambarArray as $gambar)
-                            <img src="{{ asset('storage/produk/final/' . $gambar) }}" alt="Koi Kohaku Jumbo"
-                                class="img-fluid rounded-3" style="max-height: 280px; object-fit: cover;">
+                        @foreach ($gambarArray as $file)
+                            @if (Str::endsWith($file, ['.jpg', '.jpeg', '.png']))
+                                <img src="{{ asset('storage/produk/final/' . $file) }}" class="img-fluid rounded-3"
+                                    style="max-height:280px;object-fit:cover;">
+                            @elseif(Str::endsWith($file, ['.mp4', '.webm', '.ogg']))
+                                <video width="320" height="240" controls>
+                                    <source src="{{ asset('storage/produk/final/' . $file) }}">
+                                    Browser kamu ga support video 😭
+                                </video>
+                            @endif
                         @endforeach
                     @endif
                 </div>

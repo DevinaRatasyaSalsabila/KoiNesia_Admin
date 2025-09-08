@@ -6,6 +6,7 @@ use App\Models\Produk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class ProdukController extends Controller
 {
@@ -51,27 +52,33 @@ class ProdukController extends Controller
             'gambar_produk'    => 'required|array',
         ]);
 
-        $paths = [];
+        $filenames = [];
 
-        foreach ($request->gambar_produk as $base64) {
-            if (preg_match('/^data:image\/(\w+);base64,/', $base64, $type)) {
-                $image = substr($base64, strpos($base64, ',') + 1);
-                $type = strtolower($type[1]);
+        if ($request->has('gambar_produk')) {
+            foreach ($request->gambar_produk as $fileOrBase64) {
+                // kalau base64 (image)
+                if (Str::startsWith($fileOrBase64, 'data:image')) {
+                    $image = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $fileOrBase64));
+                    $filename = uniqid() . '.png';
+                    Storage::disk('public')->put('produk/final/' . $filename, $image);
+                    $filenames[] = $filename;
+                }
+            }
+        }
 
-                $image = base64_decode($image);
-                $filename = uniqid() . '.' . $type;
-                $path = 'produk/final/' . $filename;
-
-                Storage::disk('public')->put($path, $image);
-
-                $paths[] = $filename; 
+        // kalau ada video file biasa
+        if ($request->hasFile('video_files')) {
+            foreach ($request->file('video_files') as $video) {
+                $filename = uniqid() . '.' . $video->getClientOriginalExtension();
+                $video->storeAs('produk/final', $filename, 'public');
+                $filenames[] = $filename;
             }
         }
 
         $produk = Produk::create([
             'nama_produk'      => $request->nama_produk,
             'deskripsi_produk' => $request->deskripsi_produk,
-            'gambar_produk'    => json_encode($paths),
+            'gambar_produk'    => json_encode($filenames), // ← ini fix
             'kode_produk'      => $request->kode_produk,
             'stok_produk'      => $request->stok_produk,
             'ukuran_produk'    => $request->ukuran_produk,
@@ -115,16 +122,31 @@ class ProdukController extends Controller
             'harga_Satuan'     => $request->harga_produk,
         ];
 
-        // handle gambar baru
-        if ($request->has('gambar_produk')) {
-            $filenames = [];
-            foreach ($request->gambar_produk as $img) {
-                $image = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $img));
-                $filename = uniqid() . '.png';
-                Storage::disk('public')->put('produk/final/' . $filename, $image);
-                $filenames[] = $filename;
-            }
+        $filenames = [];
 
+        // gambar baru (base64 → file)
+        if ($request->has('gambar_produk')) {
+            foreach ($request->gambar_produk as $img) {
+                if (Str::startsWith($img, 'data:image')) {
+                    $image = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $img));
+                    $filename = uniqid() . '.png';
+                    Storage::disk('public')->put('produk/final/' . $filename, $image);
+                    $filenames[] = $filename;
+                }
+            }
+        }
+
+        // video baru (file upload biasa)
+        if ($request->hasFile('video_files')) {
+            foreach ($request->file('video_files') as $video) {
+                $videoName = uniqid() . '.' . $video->getClientOriginalExtension();
+                $video->storeAs('produk/final', $videoName, 'public');
+                $filenames[] = $videoName;
+            }
+        }
+
+        // kalau ada upload baru → replace field
+        if (!empty($filenames)) {
             $data['gambar_produk'] = json_encode($filenames);
         }
 
@@ -138,10 +160,16 @@ class ProdukController extends Controller
         $produk = Produk::findOrFail($id);
 
         if ($produk->gambar_produk) {
-            $filePath = 'produk/final/' . $produk->gambar_produk;
+            $files = json_decode($produk->gambar_produk, true); // decode ke array
 
-            if (Storage::disk('public')->exists($filePath)) {
-                Storage::disk('public')->delete($filePath);
+            if (is_array($files)) {
+                foreach ($files as $file) {
+                    $filePath = 'produk/final/' . $file;
+
+                    if (Storage::disk('public')->exists($filePath)) {
+                        Storage::disk('public')->delete($filePath);
+                    }
+                }
             }
         }
 

@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\DasboardController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PembeliController;
 use App\Http\Controllers\PengeluaranController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\PesananController;
@@ -60,6 +61,12 @@ Route::delete('/delete-pengeluaran/{id}', [PengeluaranController::class, 'destro
 Route::get('/pesanan', [PesananController::class, 'index']);
 Route::get('/pesanan', [PesananController::class, 'index'])->name('pesanan.add');
 Route::get('/detail', [PesananController::class, 'show']);
+Route::post('/pesanan/{id}/status', [PesananController::class, 'updateStatus'])->name('pesanan.updateStatus');
+
+
+
+//pembeli - pesanan
+Route::post('pembeli', [PembeliController::class, 'store'])->name('pembeli.add');
 
 //Riwayat Transaksi
 Route::get('riwayat-transaksi', [RiwayatController::class, 'index']);

@@ -16,11 +16,11 @@
         }
     </style>
 
-    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+    <div class="mb-3 page-breadcrumb d-none d-sm-flex align-items-center">
         <div class="breadcrumb-title pe-3">Pesanan</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0 p-0">
+                <ol class="p-0 mb-0 breadcrumb">
                     <li class="breadcrumb-item"></li>
                     <li class="breadcrumb-item active" aria-current="page">KoiNesia</li>
                 </ol>
@@ -37,7 +37,7 @@
 
         <div class="card-body">
             <div class="table-responsive">
-                <table id="example2" class="table table-striped table-bordered Pesanan">
+                <table id="tabel_pesanan" class="table table-striped table-bordered Pesanan">
                     <thead>
                         <tr>
                             <th>Tanggal</th>
@@ -48,37 +48,33 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>2025-20-02</td>
-                            <td>Albert Cook</td>
-                            <td>Rp5.000.000</td>
-                            <td>
-                                <div class="dropdown">
-                                    <button type="button" class="p-0 btn dropdown-toggle hide-arrow"
-                                        data-bs-toggle="dropdown">
-                                        <i class="ri-more-2-line"></i>
+                        @foreach ($pesanan as $item)
+                            <tr>
+                                <td>{{ $item->created_at }}</td>
+                                <td>{{ $item->nama_pembeli }}</td>
+                                <td>{{ $item->nominal }}</td>
+                                <td>
+                                    <select class="form-select update-status-select" data-id="{{ $item->id_pesanan }}">
+                                        <option value="baru" {{ $item->status == 'baru' ? 'selected' : '' }}>Baru</option>
+                                        <option value="proses" {{ $item->status == 'proses' ? 'selected' : '' }}>Diproses
+                                        </option>
+                                    </select>
+                                </td>
+
+                                <td>
+                                    <a href="{{ url('detail') }}" class="text-decoration-none text-dark">
+                                        <i class="material-icons-outlined">content_paste</i>
+                                    </a>
+                                    <a href="#" class="text-decoration-none text-dark">
+                                        <i class="material-icons-outlined">delete</i>
+                                    </a>
+                                    <button type="button" class="btn" data-bs-toggle="modal"
+                                        data-bs-target="#edit_pesanan">
+                                        <i class="material-icons-outlined">edit</i>
                                     </button>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item text-warning" href="javascript:void(0);"><i
-                                                class="ri-pencil-line me-1"></i> Baru</a>
-                                        <a class="dropdown-item text-primary" href="javascript:void(0);"><i
-                                                class="ri-pencil-line me-1"></i> Diproses</a>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <a href="{{ url('detail') }}" class="text-decoration-none text-dark">
-                                    <i class="material-icons-outlined">content_paste</i>
-                                </a>
-                                <a href="#" class="text-decoration-none text-dark">
-                                    <i class="material-icons-outlined">delete</i>
-                                </a>
-                                <button type="button" class="btn" data-bs-toggle="modal"
-                                    data-bs-target="#edit_pesanan">
-                                    <i class="material-icons-outlined">edit</i>
-                                </button>
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                     <tfoot>
                         <tr>
@@ -96,16 +92,41 @@
 
     @include('pesanan.modal.edit')
     @include('pesanan.modal.tambah')
+    @include('pesanan.modal.modalPembeli.tambahPembeli')
+
     @push('scripts')
         <script>
             $(document).ready(function() {
-                var table = $("#example2").DataTable({
+                var table = $("#tabel_pesanan").DataTable({
                     lengthChange: false,
                     buttons: ["copy", "excel", "pdf", "print"],
                 });
 
                 table.buttons().container().appendTo("#example2_wrapper .col-md-6:eq(0)");
             });
+
+           let updateStatusUrl = "{{ route('pesanan.updateStatus', ':id') }}";
+
+$(document).on('change', '.update-status-select', function() {
+    let id = $(this).data('id');
+    let status = $(this).val();
+    let url = updateStatusUrl.replace(':id', id);
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: {
+            status: status,
+            _token: '{{ csrf_token() }}'
+        },
+        success: function(res) {
+            console.log('Status updated:', res);
+        },
+        error: function(err) {
+            console.log(err.responseJSON);
+        }
+    });
+});
         </script>
     @endpush
 @endsection

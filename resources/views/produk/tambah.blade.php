@@ -39,7 +39,7 @@
                         </div>
                         <div class="mb-4">
                             <h5 class="mb-3">Gambar Produk</h5>
-                            <input id="fancy-file-upload" type="file" name="gambar_produk" multiple name="file">
+                            <input type="file" id="fancy-file-upload" multiple accept=".jpg,.jpeg,.png,.mp4,.webm,.ogg">
                             <div id="hidden-gambar"></div>
                             <div class="invalid-feedback">
                                 Gambar produk harus diupload.
@@ -113,28 +113,51 @@
 
     @push('scripts')
         <script>
-            $('#fancy-file-upload').FancyFileUpload({
-                url: '', // kosongin karena kita ga pake ajax upload
-                autoUpload: false, // jangan auto upload
-                added: function(e, data) {
-                    let file = data.files[0];
-                    let reader = new FileReader();
+            $(document).ready(function() {
+                $('#fancy-file-upload').FancyFileUpload({
+                    params: {
+                        action: 'fileuploader'
+                    },
+                    maxfilesize: 50 * 1024 * 1024, // 50MB
+                    edit: false,
+                    added: function(e, data) {
+                        let file = data.files[0];
+                        let type = file.type;
 
-                    reader.onload = function(evt) {
-                        // base64 string
-                        let base64 = evt.target.result;
+                        // 🕵️ Debug log
+                        console.log("📂 File ditambahkan:");
+                        console.log("Nama:", file.name);
+                        console.log("Type:", type);
+                        console.log("Size:", file.size);
 
-                        let input = $('<input>')
-                            .attr('type', 'hidden')
-                            .attr('name', 'gambar_produk[]')
-                            .val(base64);
+                        if (type.startsWith("image/")) {
+                            // convert image ke base64 → hidden input
+                            var reader = new FileReader();
+                            reader.onload = function(e) {
+                                let hidden = $('<input>').attr({
+                                    type: 'hidden',
+                                    name: 'gambar_produk[]',
+                                    value: e.target.result
+                                });
+                                $('#formAddProduct').append(hidden);
+                            };
+                            reader.readAsDataURL(file);
 
-                        $('#hidden-gambar').append(input);
-                        console.log("📸 Base64 ditambahkan:", base64.substring(0, 50) + "...");
-                    };
+                        } else if (type.startsWith("video/")) {
+                            let dt = new DataTransfer();
+                            dt.items.add(file);
 
-                    reader.readAsDataURL(file);
-                }
+                            let videoInput = $('<input>').attr({
+                                type: 'file',
+                                name: 'video_files[]',
+                                style: 'display:none'
+                            })[0];
+
+                            videoInput.files = dt.files;
+                            $('#formAddProduct').append(videoInput);
+                        }
+                    }
+                });
             });
 
             (function() {

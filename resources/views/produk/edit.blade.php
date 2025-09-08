@@ -12,7 +12,7 @@
             </nav>
         </div>
     </div>
-    
+
     @php
         $gambarArray = json_decode($produk->gambar_produk, true);
     @endphp
@@ -22,9 +22,16 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
                     @if (!empty($gambarArray))
-                        @foreach ($gambarArray as $gambar)
-                            <img src="{{ asset('storage/produk/final/' . $gambar) }}" alt="Koi Kohaku Jumbo"
-                                class="img-fluid rounded-3" style="max-height: 280px; object-fit: cover;">
+                        @foreach ($gambarArray as $file)
+                            @if (Str::endsWith($file, ['.jpg', '.jpeg', '.png']))
+                                <img src="{{ asset('storage/produk/final/' . $file) }}" class="img-fluid rounded-3"
+                                    style="max-height:280px;object-fit:cover;">
+                            @elseif(Str::endsWith($file, ['.mp4', '.webm', '.ogg']))
+                                <video width="320" height="240" controls>
+                                    <source src="{{ asset('storage/produk/final/' . $file) }}">
+                                    Browser kamu ga support video 😭
+                                </video>
+                            @endif
                         @endforeach
                     @endif
                 </div>
@@ -63,8 +70,9 @@
                             <h5 class="mb-3">Gambar Produk</h5>
 
                             {{-- Input file untuk upload baru --}}
-                            <input id="fancy-file-upload" type="file" name="gambar_produk" accept=".jpg, .png, image/jpeg, image/png" multiple>
-                             <div id="hidden-gambar"></div>
+                            <input id="fancy-file-upload" type="file" name="gambar_produk"
+                                accept=".jpg,.jpeg,.png,.mp4,.webm,.ogg" multiple>
+                            <div id="hidden-gambar"></div>
                             <div class="invalid-feedback">
                                 Gambar produk harus diupload.
                             </div>
@@ -135,34 +143,53 @@
             </div>
             </form>
         </div>
-    </div><!--end row-->
+    </div>
 
     @push('scripts')
         <script>
             $('#fancy-file-upload').FancyFileUpload({
-                url: '', // kosongin karena kita ga pake ajax upload
-                autoUpload: false, // jangan auto upload
+                url: '', // kosongin
+                autoUpload: false,
                 added: function(e, data) {
                     let file = data.files[0];
-                    let reader = new FileReader();
+                    let type = file.type;
 
-                    reader.onload = function(evt) {
-                        // base64 string
-                        let base64 = evt.target.result;
+                    console.log("📂 File ditambahkan:", file.name, "type:", type);
 
-                        let input = $('<input>')
-                            .attr('type', 'hidden')
-                            .attr('name', 'gambar_produk[]')
-                            .val(base64);
+                    if (type.startsWith("image/")) {
+                        // convert image ke base64 → hidden input
+                        let reader = new FileReader();
+                        reader.onload = function(evt) {
+                            let base64 = evt.target.result;
+                            let input = $('<input>')
+                                .attr('type', 'hidden')
+                                .attr('name', 'gambar_produk[]')
+                                .val(base64);
 
-                        $('#hidden-gambar').append(input);
-                        console.log("📸 Base64 ditambahkan:", base64.substring(0, 50) + "...");
-                    };
+                            $('#hidden-gambar').append(input);
+                            console.log("📸 Base64 ditambahkan:", base64.substring(0, 50) + "...");
+                        };
+                        reader.readAsDataURL(file);
 
-                    reader.readAsDataURL(file);
+                    } else if (type.startsWith("video/")) {
+                        // pake DataTransfer biar Laravel bisa baca sebagai file asli
+                        let dt = new DataTransfer();
+                        dt.items.add(file);
+
+                        let videoInput = $('<input>').attr({
+                            type: 'file',
+                            name: 'video_files[]',
+                            style: 'display:none'
+                        })[0];
+
+                        videoInput.files = dt.files;
+                        $('#formAddProduct').append(videoInput);
+
+                        console.log("🎥 Video input ditambahkan:", file.name);
+                    }
                 }
             });
-            
+
             (function() {
                 'use strict'
                 const forms = document.querySelectorAll('#formAddProduct')
