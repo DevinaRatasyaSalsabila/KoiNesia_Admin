@@ -47,32 +47,60 @@
                             <th>Aksi</th>
                         </tr>
                     </thead>
+                    @php
+                        $pesananGrouped = collect($pesanan)->groupBy('kode_pesanan');
+                    @endphp
                     <tbody>
-                        @foreach ($pesanan as $item)
+                        @foreach ($pesananGrouped as $kodePesanan => $items)
+                            @php
+                                $first = $items->first();
+                                $totalNominal = $items->sum(function ($r) {
+                                    return isset($r->nominal) ? (float) $r->nominal : 0;
+                                });
+                            @endphp
+
                             <tr>
-                                <td>{{ $item->created_at }}</td>
-                                <td>{{ $item->nama_pembeli }}</td>
-                                <td>{{ $item->nominal }}</td>
+                                <td>{{ $first->created_at ?? '-' }}</td>
+                                <td>{{ $first->nama_pembeli ?? $first->id_pembeli ?? '-' }}</td>
+
                                 <td>
-                                    <select class="form-select update-status-select" data-id="{{ $item->id_pesanan }}">
-                                        <option value="baru" {{ $item->status == 'baru' ? 'selected' : '' }}>Baru</option>
-                                        <option value="proses" {{ $item->status == 'proses' ? 'selected' : '' }}>Diproses
+                                    <ul style="margin:0; padding-left:1rem;">
+                                        @foreach ($items as $row)
+                                            <li>
+                                                {{ $row->kode_produk ?? ($row->kode_produk ?? '-') }}
+                                                (x{{ $row->jumlah ?? 1 }}) -
+                                                Rp{{ number_format($row->nominal ?? 0, 0, ',', '.') }}
+                                            </li>
+                                        @endforeach
+                                    </ul>
+
+                                    <div><strong>Total: Rp{{ number_format($totalNominal, 0, ',', '.') }}</strong></div>
+                                </td>
+
+                                <td>
+                                    <select class="form-select update-status-select" data-id="{{ $first->id_pesanan }}">
+                                        <option value="baru" {{ ($first->status ?? '') == 'baru' ? 'selected' : '' }}>Baru
+                                        </option>
+                                        <option value="proses" {{ ($first->status ?? '') == 'proses' ? 'selected' : '' }}>Diproses
                                         </option>
                                     </select>
                                 </td>
+
                                 <td>
-                                    <a href="{{ route('pesanan.detail', $item->id_pesanan) }}"
+                                    <a href="{{ route('pesanan.detail', $first->kode_pesanan) }}"
                                         class="text-decoration-none text-dark">
                                         <i class="material-icons-outlined">content_paste</i>
                                     </a>
                                     <a href="#" class="text-decoration-none text-dark">
                                         <i class="material-icons-outlined">delete</i>
                                     </a>
-                                    <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#edit_pesanan_{{$item->id_pesanan}}">
+                                    <button type="button" class="btn" data-bs-toggle="modal"
+                                        data-bs-target="#edit_pesanan_{{ $first->id_pesanan }}">
                                         <i class="material-icons-outlined">edit</i>
                                     </button>
                                 </td>
                             </tr>
+
                             @include('pesanan.modal.edit')
                         @endforeach
                     </tbody>

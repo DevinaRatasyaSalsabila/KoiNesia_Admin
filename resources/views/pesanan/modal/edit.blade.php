@@ -1,5 +1,13 @@
-<!-- Modal -->
-<div class="modal fade" id="edit_pesanan_{{ $item->id_pesanan }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+@php
+    // pastikan $item ada (fallback), dan buat modal id unik
+    $item = $item ?? ($first ?? null);
+    $items = $items ?? collect();
+    $produkList = $produk ?? collect();
+
+    $modalKey = $item->kode_pesanan ?? $item->id_pesanan ?? uniqid('pes_');
+    $modalId = 'edit_pesanan_' . preg_replace('/[^A-Za-z0-9_\-]/', '_', $modalKey);
+@endphp
+<div class="modal fade" id="{{ $modalId }}" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

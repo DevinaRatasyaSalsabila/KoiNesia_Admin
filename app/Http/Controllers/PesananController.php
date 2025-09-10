@@ -46,30 +46,42 @@ class PesananController extends Controller
     /**
      * Show the form for creating a new resource
      */
-        public function show(string $id)
-        {
-            $pesanan = DB::table('pesanan')
-                ->join('pembeli', 'pesanan.id_pembeli', '=', 'pembeli.id_pembeli')
-                ->select('pesanan.*', 'pembeli.nama_pembeli', 'pembeli.no_hp', 'pembeli.alamat')
-                ->where('pesanan.id_pesanan', $id)
-                ->first();
+    public function show(string $id)
+    {
+        $pesanan = Pesanan::findOrFail($id);
+        $produk = Produk::where('kode_produk', $pesanan->kode_produk);
 
-            // decode kode_produk (pastikan memang disimpan JSON)
-            $produk_ids = json_decode($pesanan->kode_produk, true);
+        // $pesanan = DB::table('pesanan')
+        //     ->join('pembeli', 'pesanan.id_pembeli', '=', 'pembeli.id_pembeli')
+        //     ->select('pesanan.*', 'pembeli.nama_pembeli', 'pembeli.no_hp', 'pembeli.alamat')
+        //     ->where('pesanan.kode_pesanan', $id)
+        //     ->first();
 
-            if ($produk_ids) {
-                $produk = DB::table('produk')
-                    ->whereIn('kode_produk', $produk_ids)
-                    ->select('kode_produk', 'nama_produk', 'harga_Satuan')
-                    ->get();
-            } else {
-                $produk = collect();
-            }
+        // if (!$pesanan) {
+        //     abort(404, 'Pesanan tidak ditemukan');
+        // }
 
-            return view('pesanan.modal.detail', compact('pesanan', 'produk'));
-        }
+        // $produk_ids = json_decode($pesanan->kode_produk, true);
+        // $jumlahs = json_decode($pesanan->jumlah, true);
 
+        // $produk = collect();
+        // if ($produk_ids) {
+        //     foreach ($produk_ids as $i => $kode) {
+        //         $p = DB::table('produk')
+        //             ->where('kode_produk', $kode)
+        //             ->select('kode_produk', 'nama_produk', 'harga_Satuan')
+        //             ->first();
 
+        //         if ($p) {
+        //             $p->jumlah = $jumlahs[$i] ?? 1; // default 1 kalau gak ada
+        //             $p->total = $p->harga_Satuan * $p->jumlah;
+        //             $produk->push($p);
+        //         }
+        //     }
+        // }
+
+        return view('pesanan.modal.detail', compact('pesanan', 'produk'));
+    }
     public function updateStatus(Request $request, $id)
     {
         $pesanan = Pesanan::findOrFail($id);
@@ -89,33 +101,33 @@ class PesananController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-public function store(Request $request)
-{
-    $produk_ids = $request->input('produk', []);
-    $jumlah     = $request->input('jumlah', []);
+    public function store(Request $request)
+    {
+        $produk_ids = $request->input('produk', []);
+        $jumlah     = $request->input('jumlah', []);
 
-    $kodePesanan = 'PESN-' . date('dm') . '-' . date('Hi') . '-' . Str::upper(Str::random(3));
+        $kodePesanan = 'PESN-' . date('dm') . '-' . date('Hi') . '-' . Str::upper(Str::random(3));
 
-    foreach ($produk_ids as $index => $idProduk) {
-        $produk = Produk::find($idProduk);
-        if (!$produk) continue;
+        foreach ($produk_ids as $index => $idProduk) {
+            $produk = Produk::find($idProduk);
+            if (!$produk) continue;
 
-        $qty = $jumlah[$index] ?? 1;
-        $subtotal = $produk->harga_Satuan * $qty;
+            $qty = $jumlah[$index] ?? 1;
+            $subtotal = $produk->harga_Satuan * $qty;
 
-        Pesanan::create([
-            'kode_pesanan' => $kodePesanan,
-            'id_pembeli'   => $request->id_pembeli,
-            'user_id'      => 1,
-            'status'       => 'baru',
-            'kode_produk'  => $produk->kode_produk, // ⬅ simpan per baris
-            'jumlah'       => $qty,
-            'nominal'      => $subtotal,            // ⬅ subtotal per produk
-        ]);
+            Pesanan::create([
+                'kode_pesanan' => $kodePesanan,
+                'id_pembeli'   => $request->id_pembeli,
+                'user_id'      => 1,
+                'status'       => 'baru',
+                'kode_produk'  => $produk->kode_produk, // ⬅ simpan per baris
+                'jumlah'       => $qty,
+                'nominal'      => $subtotal,            // ⬅ subtotal per produk
+            ]);
+        }
+
+        return redirect()->route('pesanan.index');
     }
-
-    return redirect()->route('pesanan.index');
-}
 
     /**
      * Display the specified resource.

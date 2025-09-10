@@ -65,17 +65,17 @@
                                 <th>Total</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @foreach ($produk as $i => $p)
-                                <tr>
-                                    <td>{{ $i + 1 }}</td>
-                                    <td>{{ $p->nama_produk }}</td>
-                                    <td>Rp{{ $p->harga_Satuan }}</td>
-                                    <td>{{ $pesanan->jumlah ?? '-' }}</td>
-                                    <td> Rp{{ number_format($pesanan->nominal, 0, ',', '.') }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
+                       <tbody>
+    @foreach ($produk as $i => $p)
+        <tr>
+            <td>{{ $i + 1 }}</td>
+            <td>{{ $p->nama_produk }}</td>
+            <td>Rp{{ number_format($p->harga_Satuan, 0, ',', '.') }}</td>
+            <td>{{ $p->jumlah }}</td>
+            <td>Rp{{ number_format($p->total, 0, ',', '.') }}</td>
+        </tr>
+    @endforeach
+</tbody>
                     </table>
                     <div class="d-flex justify-content-between align-items-center">
                         <a href="javascript:void(0)" class="btn btn-sm btn-danger" onclick="history.back()">
