@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('id_pesanan');
             $table->string('kode_pesanan');
             $table->unsignedBigInteger('id_pembeli');
-            $table->json('kode_produk');
+            $table->string('kode_produk');
             $table->unsignedBigInteger('user_id');
             $table->enum('status', ['baru', 'proses'])->default('baru');
             $table->integer('jumlah');
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-       Schema::dropIfExists('pesanan');
+        Schema::dropIfExists('pesanan');
     }
 };

@@ -76,15 +76,15 @@
                             <label for="kode_produk" class="form-label">
                                 Kode Produk
                             </label>
-                            <input type="text" class="form-control" name="kode_produk"
-                                style="background-color: rgb(232, 227, 227)" id="kode_produk" value="KN-9099" readonly>
+                            <input type="text" class="form-control" name="kode_produk" id="kode_produk" readonly
+                                style="background-color: rgb(232, 227, 227)">
                         </div>
                         <div class="col-12">
                             <label for="stok_produk" class="form-label">
                                 Stok Produk
                             </label>
                             <input type="text" class="form-control" name="stok_produk"
-                                style="background-color: rgb(232, 227, 227)" id="stok_produk" value="989" readonly>
+                                style="background-color: rgb(232, 227, 227)" id="stok_produk" value="0" readonly>
                         </div>
                         <div class="col-12">
                             <label for="ukuran" class="form-label">
@@ -113,14 +113,27 @@
 
     @push('scripts')
         <script>
-            $(document).ready(function() {
+            document.addEventListener("DOMContentLoaded", function () {
+                // fungsi generate kode produk
+                function generateKodeProduk() {
+                    let random = Math.floor(1000 + Math.random() * 9000); // random 4 digit
+                    return "KN-" + random;
+                }
+
+                // isi kode produk saat halaman form dibuka
+                let kode = generateKodeProduk();
+                $('#kode_produk').val(kode);
+                console.log("✅ Kode Produk Generated:", kode);
+            });
+
+            $(document).ready(function () {
                 $('#fancy-file-upload').FancyFileUpload({
                     params: {
                         action: 'fileuploader'
                     },
                     maxfilesize: 50 * 1024 * 1024, // 50MB
                     edit: false,
-                    added: function(e, data) {
+                    added: function (e, data) {
                         let file = data.files[0];
                         let type = file.type;
 
@@ -133,7 +146,7 @@
                         if (type.startsWith("image/")) {
                             // convert image ke base64 → hidden input
                             var reader = new FileReader();
-                            reader.onload = function(e) {
+                            reader.onload = function (e) {
                                 let hidden = $('<input>').attr({
                                     type: 'hidden',
                                     name: 'gambar_produk[]',
@@ -160,12 +173,12 @@
                 });
             });
 
-            (function() {
+            (function () {
                 'use strict'
                 const forms = document.querySelectorAll('#formAddProduct')
                 Array.prototype.slice.call(forms)
-                    .forEach(function(form) {
-                        form.addEventListener('submit', function(event) {
+                    .forEach(function (form) {
+                        form.addEventListener('submit', function (event) {
                             if (!form.checkValidity()) {
                                 event.preventDefault()
                                 event.stopPropagation()
@@ -173,7 +186,7 @@
                             form.classList.add('was-validated')
                         }, false)
 
-                        form.addEventListener('reset', function() {
+                        form.addEventListener('reset', function () {
                             form.classList.remove('was-validated')
                         }, false)
                     })
