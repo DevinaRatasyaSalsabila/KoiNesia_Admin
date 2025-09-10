@@ -20,7 +20,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="card-title fw-bolder">Kode Pesanan</div>
-                    <p class="card-text">{{$pesanan->id_pesanan}}</p>
+                    <p class="card-text">{{$pesanan->kode_pesanan}}</p>
                 </div>
             </div>
         </div>
@@ -43,7 +43,7 @@
         <div class="col">
             <div class="card">
                 <div class="card-body">
-                    <div class="card-title fw-bolder">Alamat</h5>
+                    <div class="card-title fw-bolder">Alamat</div>
                         <p class="card-text">{{$pesanan->alamat}}</p>
                     </div>
                 </div>

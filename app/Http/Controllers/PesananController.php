@@ -7,6 +7,7 @@ use App\Models\Pesanan;
 use App\Models\Produk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class PesananController extends Controller
 {
@@ -95,16 +96,13 @@ class PesananController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
-        // Ambil array produk_id dari form
         $produk_ids = $request->input('produk', []);
         $jumlah = $request->input('jumlah', []);
 
-        // Ambil kode_produk dari tabel produk
         $kode_produk = Produk::whereIn('id_produk', $produk_ids)
-            ->pluck('kode_produk') // ambil kode_produk
+            ->pluck('kode_produk')
             ->toArray();
 
-        // Total nominal
         $nominal = 0;
         foreach ($produk_ids as $index => $id) {
             $harga = Produk::find($id)->harga_Satuan ?? 0;
@@ -112,9 +110,12 @@ class PesananController extends Controller
             $nominal += $harga * $qty;
         }
 
+        $kodePesanan = 'PESN-' . date('dm') . '-' . date('Hi') . '-' . Str::upper(Str::random(3));
+
         $pesanan = Pesanan::create([
+            'kode_pesanan' => $kodePesanan,
             'id_pembeli' => $request->id_pembeli,
-            'kode_produk' => json_encode($kode_produk), // simpan sebagai JSON
+            'kode_produk' => json_encode($kode_produk),
             'user_id' => '1',
             'status' => 'baru',
             'jumlah' => array_sum($jumlah),

@@ -12,12 +12,5 @@ class Pesanan extends Model
     public $incrementing = true;
     protected $keyType = 'int';
 
-    protected $fillable = [
-        'kode_produk',
-        'id_pembeli',
-        'user_id',
-        'status_pesanan',
-        'nominal',
-        'jumlah',
-    ];
+    protected $guarded = [];
 }

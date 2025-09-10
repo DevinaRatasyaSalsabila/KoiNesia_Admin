@@ -70,36 +70,51 @@
     <script>
         $(document).ready(function() {
 
-            // Init select2 untuk produk pertama
             $('.produk-select').select2({
                 dropdownParent: $('#tambah_pesanan'),
                 width: '100%'
             });
-
-            // Tambah row baru
+            
             $('#tambah-produk').click(function() {
-                console.log("Tambah produk di klik ✅");
 
-                let firstRow = $('#wrapper-produk .produk-row').first();
-                let newRow = firstRow.clone();
+                let RowNew = `
+         <div class="px-3 mt-2 row produk-row">
+            <div class="col-md-9">
+                <label class="form-label">Produk</label>
+                <select class="form-select produk-select" name="produk[]" required>
+                    <option value="">Pilih Produk</option>
+                    @foreach ($produk as $item)
+                        <option value="{{ $item->id_produk }}" data-harga="{{ $item->harga_Satuan }}">
+                            {{ $item->nama_produk }} [{{ $item->harga_Satuan }}]
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+                <div class="flex-grow-1 me-2">
+                    <label class="form-label">Jumlah</label>
+                    <input type="number" class="form-control jumlah-produk" name="jumlah[]" placeholder="Masukkan Jumlah" required>
+                    <div class="invalid-feedback">Masukkan Jumlah</div>
+                </div>
+                <button type="button" class="btn btn-danger btn-sm remove-produk" style="height:40px;margin-bottom:8px;">✖</button>
+            </div>
+        </div>`;
 
-                // Reset value
-                newRow.find('select').val('');
-                newRow.find('input').val('');
+                $('#wrapper-produk').append(RowNew);
+                console.log("✅ Row baru ditambahkan ke DOM");
 
-                $('#wrapper-produk').append(newRow);
-
-                // Re-init select2 untuk row baru
-                newRow.find('.produk-select').select2({
+                // Inisialisasi select2 pada select yang baru
+                $('#wrapper-produk .produk-select').last().select2({
                     dropdownParent: $('#tambah_pesanan'),
                     width: '100%'
                 });
-
-                console.log("Row baru ditambahkan ✅");
-                hitungNominal();
+            });
+            // Hapus row produk
+            $(document).on('click', '.remove-produk', function() {
+                $(this).closest('.produk-row').remove();
+                hitungNominal(); // update nominal setelah hapus
             });
 
-            // Update nominal otomatis
             $(document).on('change', '.produk-select, .jumlah-produk', function() {
                 hitungNominal();
             });
@@ -114,23 +129,6 @@
                 $('#nominal').val(total);
                 console.log("Nominal updated:", total);
             }
-
-            // DataTable (optional)
-            $('.Pesanan').DataTable({
-                responsive: true,
-                pageLength: 5,
-                lengthMenu: [5, 10, 25, 50],
-                language: {
-                    search: "Cari:",
-                    lengthMenu: "Tampilkan _MENU_ data",
-                    info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-                    paginate: {
-                        previous: "Sebelumnya",
-                        next: "Berikutnya"
-                    }
-                }
-            });
-
         });
     </script>
 @endpush

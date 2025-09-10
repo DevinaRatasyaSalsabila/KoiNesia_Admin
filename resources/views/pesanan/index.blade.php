@@ -43,7 +43,7 @@
                             <th>Tanggal</th>
                             <th>Nama Pembeli</th>
                             <th>Nominal Pembelian</th>
-                            <th>Status</th>
+                            {{-- <th>Status</th> --}}
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -53,13 +53,13 @@
                                 <td>{{ $item->created_at }}</td>
                                 <td>{{ $item->nama_pembeli }}</td>
                                 <td>{{ $item->nominal }}</td>
-                                <td>
+                                {{-- <td>
                                     <select class="form-select update-status-select" data-id="{{ $item->id_pesanan }}">
                                         <option value="baru" {{ $item->status == 'baru' ? 'selected' : '' }}>Baru</option>
                                         <option value="proses" {{ $item->status == 'proses' ? 'selected' : '' }}>Diproses
                                         </option>
                                     </select>
-                                </td>
+                                </td> --}}
                                 <td>
                                     <a href="{{ route('pesanan.detail', $item->id_pesanan) }}"
                                         class="text-decoration-none text-dark">
@@ -81,7 +81,7 @@
                             <th>Tanggal</th>
                             <th>Nama Pembeli</th>
                             <th>Nominal Pembelian</th>
-                            <th>Status</th>
+                            {{-- <th>Status</th> --}}
                             <th>Aksi</th>
                         </tr>
                     </tfoot>
