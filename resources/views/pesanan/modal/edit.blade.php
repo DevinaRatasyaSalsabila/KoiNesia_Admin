@@ -1,70 +1,60 @@
-@php
-    // pastikan $item ada (fallback), dan buat modal id unik
-    $item = $item ?? ($first ?? null);
-    $items = $items ?? collect();
-    $produkList = $produk ?? collect();
-
-    $modalKey = $item->kode_pesanan ?? $item->id_pesanan ?? uniqid('pes_');
-    $modalId = 'edit_pesanan_' . preg_replace('/[^A-Za-z0-9_\-]/', '_', $modalKey);
-@endphp
-<div class="modal fade" id="{{ $modalId }}" tabindex="-1" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="edit_pesanan_{{ $first->id_pesanan }}" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit Pesanan {{ $item->id_pesanan }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title">Edit Pesanan {{ $first->id_pesanan }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <form class="row g-3 needs-validation" action="{{ route('pesanan.update', $item->id_pesanan) }}"
-                method="POST">
+            <form action="{{ route('pesanan.update', $first->id_pesanan) }}" method="POST">
                 @csrf
                 @method('PUT')
                 <div class="modal-body">
                     {{-- Data Pembeli --}}
-                    <div class="col-md-12 px-3 mt-2">
+                    <div class="mb-3">
                         <label class="form-label">Data Pembeli</label>
                         <select class="form-select" name="id_pembeli" required>
                             @foreach ($pembeli as $pemb)
-                                <option value="{{ $pemb->id_pembeli }}" {{ $item->id_pembeli == $pemb->id_pembeli ? 'selected' : '' }}>
+                                <option value="{{ $pemb->id_pembeli }}"
+                                    {{ $first->id_pembeli == $pemb->id_pembeli ? 'selected' : '' }}>
                                     {{ $pemb->nama_pembeli }}
                                 </option>
                             @endforeach
                         </select>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#tambah_pembeli">+ Tambah Pembeli</a>
                     </div>
 
-                    {{-- Produk & Jumlah --}}
-                    <div id="wrapper-produk">
-                        @foreach ($item->produk_detail as $prd)
-                            <div class="row px-3 mt-2">
-                                <div class="col-md-9">
-                                    <label class="form-label">Produk</label>
-                                    <select class="form-select produk-select" name="produk[]" required>
-                                        <option value="">Pilih Produk</option>
-                                        @foreach ($produk as $p)
-                                            <option value="{{ $p->kode_produk }}" {{ $prd->kode_produk == $p->kode_produk ? 'selected' : '' }}>
-                                                {{ $p->nama_produk }} [{{ $p->harga_Satuan }}]
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label">Jumlah</label>
-                                    <input type="number" class="form-control" name="jumlah[]" value="{{ $prd->jumlah }}"
-                                        required>
-                                </div>
+                    <div id="produk-container-{{ $first->id_pesanan }}">
+                        <div class="row mb-2 produk-row">
+                            <label class="form-label">Produk</label>
+                            <div class="col-6">
+                                <select name="produk[]" class="form-control">
+                                    @foreach ($produk as $p)
+                                        <option value="{{ $p->kode_produk }}"
+                                            {{ $p->kode_produk == $first->kode_produk ? 'selected' : '' }}>
+                                            {{ $p->nama_produk }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
-                        @endforeach
+                            <div class="col-4">
+                                <input type="number" name="jumlah[]" class="form-control" value="{{ $first->jumlah }}">
+                            </div>
+                            <div class="col-2">
+                                <button type="button" class="btn btn-danger btn-sm remove-produk">X</button>
+                            </div>
+                        </div>
                     </div>
 
-                    {{-- Tombol tambah produk --}}
-                    <div class="px-3 mt-2">
-                        <button type="button" class="btn btn-sm btn-primary" id="edit-produk">+ Tambah Produk</button>
-                    </div>
+                    <button type="button" class="btn btn-primary btn-sm add-produk"
+                        data-target="#produk-container-{{ $first->id_pesanan }}">
+                        + Tambah Produk
+                    </button>
 
                     {{-- Nominal --}}
-                    <div class="col-md-12 px-3 mt-2">
+                    <div class="mt-3">
                         <label class="form-label">Nominal</label>
-                        <input type="number" class="form-control" name="nominal" value="{{ $item->nominal }}" required>
+                        <input type="number" class="form-control" name="nominal" value="{{ $first->nominal }}"
+                            required>
                     </div>
                 </div>
 
@@ -77,46 +67,31 @@
     </div>
 </div>
 
+@include('pesanan.modal.modalPembeli.tambahPembeli')
+
 @push('scripts')
     <script>
-        $(document).ready(function () {
-            $('.produk-select').select2({
-                dropdownParent: $('#edit_pesanan'),
-                width: '100%'
-            });
-
-            $('#edit-produk').click(function () {
-                let modalId = $(this).closest('.modal').attr('id');
-
-                let newRow = `
-            <div class="row px-3 mt-2 produk-row align-items-end">
-                <div class="col-md-9">
-                    <select class="form-select produk-select" name="produk[]" required>
-                        @foreach ($produk as $p)
-                            <option value="{{ $p->id_produk }}">{{ $p->nama_produk }} [{{ $p->harga_Satuan }}]</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-3 d-flex">
-                    <div class="flex-grow-1 me-2">
-                        <input type="number" class="form-control" name="jumlah[]" placeholder="Jumlah" required>
-                    </div>
-                    <button type="button" class="btn btn-danger btn-sm remove-produk" style="height:40px;">✖</button>
-                </div>
-            </div>`;
-
-                $('#' + modalId + ' #wrapper-produk').append(newRow);
-
-                $('#' + modalId + ' .produk-select').last().select2({
-                    dropdownParent: $('#' + modalId),
-                    width: '100%'
-                });
-            });
-
-            $(document).on('click', '.remove-produk', function () {
-                $(this).closest('.produk-row').remove();
-            });
-
+        $(document).on("click", ".add-produk", function() {
+            let target = $($(this).data("target"));
+            let newRow = `
+        <div class="row mb-2 produk-row">
+            <div class="col-6">
+                <select name="produk[]" class="form-control" required>
+                    <option value="" disabled selected>-- Pilih Produk --</option>
+                    @foreach ($produk as $p)
+                        <option value="{{ $p->id_produk }}">{{ $p->nama_produk }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-4">
+                <input type="number" name="jumlah[]" class="form-control" placeholder="Jumlah" required>
+            </div>
+            <div class="col-2">
+                <button type="button" class="btn btn-danger btn-sm remove-produk">X</button>
+            </div>
+        </div>
+    `;
+            target.append(newRow);
         });
     </script>
 @endpush

@@ -14,7 +14,7 @@ class PesananController extends Controller
     public function index()
     {
         $pembeli = Pembeli::all();
-        $produk = Produk::all();
+        $produk = DB::table('produk')->get();
 
         $pesanan = DB::table('pesanan')
             ->join('pembeli', 'pesanan.id_pembeli', '=', 'pembeli.id_pembeli')
@@ -46,42 +46,26 @@ class PesananController extends Controller
     /**
      * Show the form for creating a new resource
      */
-    public function show(string $id)
+    public function show(string $kode)
     {
-        $pesanan = Pesanan::findOrFail($id);
-        $produk = Produk::where('kode_produk', $pesanan->kode_produk);
+        $items = Pesanan::where('kode_pesanan', $kode)
+            ->join('produk', 'pesanan.kode_produk', '=', 'produk.kode_produk')
+            ->select(
+                'produk.nama_produk',
+                'produk.harga_Satuan',
+                'pesanan.jumlah',
+                'pesanan.nominal'
+            )
+            ->get();
 
-        // $pesanan = DB::table('pesanan')
-        //     ->join('pembeli', 'pesanan.id_pembeli', '=', 'pembeli.id_pembeli')
-        //     ->select('pesanan.*', 'pembeli.nama_pembeli', 'pembeli.no_hp', 'pembeli.alamat')
-        //     ->where('pesanan.kode_pesanan', $id)
-        //     ->first();
+        $pesanan = Pesanan::where('kode_pesanan', $kode)->firstOrFail();
+        $pembeli = Pembeli::find($pesanan->id_pembeli);
 
-        // if (!$pesanan) {
-        //     abort(404, 'Pesanan tidak ditemukan');
-        // }
+        $totalKeseluruhan = $items->sum('nominal');
 
-        // $produk_ids = json_decode($pesanan->kode_produk, true);
-        // $jumlahs = json_decode($pesanan->jumlah, true);
-
-        // $produk = collect();
-        // if ($produk_ids) {
-        //     foreach ($produk_ids as $i => $kode) {
-        //         $p = DB::table('produk')
-        //             ->where('kode_produk', $kode)
-        //             ->select('kode_produk', 'nama_produk', 'harga_Satuan')
-        //             ->first();
-
-        //         if ($p) {
-        //             $p->jumlah = $jumlahs[$i] ?? 1; // default 1 kalau gak ada
-        //             $p->total = $p->harga_Satuan * $p->jumlah;
-        //             $produk->push($p);
-        //         }
-        //     }
-        // }
-
-        return view('pesanan.modal.detail', compact('pesanan', 'produk'));
+        return view('pesanan.modal.detail', compact('pesanan', 'pembeli', 'items', 'totalKeseluruhan'));
     }
+
     public function updateStatus(Request $request, $id)
     {
         $pesanan = Pesanan::findOrFail($id);
@@ -147,41 +131,43 @@ class PesananController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // Validasi
-        // $request->validate([
-        //     'id_pembeli' => 'required|exists:pembeli,id_pembeli',
-        //     'produk'     => 'required|array',
-        //     'jumlah'     => 'required|array',
-        //     'nominal'    => 'required|numeric',
-        // ]);
+        $request->validate([
+            'id_pembeli' => 'required|exists:pembeli,id_pembeli',
+            'produk'     => 'required|array',
+            'jumlah'     => 'required|array',
+            'nominal'    => 'required|numeric',
+        ]);
 
-        // // Simpan kode_produk & jumlah dalam bentuk JSON
-        // $produkData = [];
-        // foreach ($request->produk as $i => $kode) {
-        //     $produkData[] = [
-        //         'kode_produk' => $kode,
-        //         'jumlah'      => $request->jumlah[$i] ?? 1,
-        //     ];
-        // }
+        // Simpan kode_produk & jumlah dalam bentuk JSON
+        $produkData = [];
+        foreach ($request->produk as $i => $kode) {
+            $produkData[] = [
+                'kode_produk' => $kode,
+                'jumlah'      => $request->jumlah[$i] ?? 1,
+            ];
+        }
 
-        // DB::table('pesanan')
-        //     ->where('id_pesanan', $id)
-        //     ->update([
-        //         'id_pembeli'  => $request->id_pembeli,
-        //         'kode_produk' => json_encode(array_column($produkData, 'kode_produk')), // simpan kode_produk aja
-        //         'jumlah'      => json_encode(array_column($produkData, 'jumlah')),     // simpan jumlah sesuai urutan
-        //         'nominal'     => $request->nominal,
-        //         'updated_at'  => now(),
-        //     ]);
+        DB::table('pesanan')
+            ->where('id_pesanan', $id)
+            ->update([
+                'id_pembeli'  => $request->id_pembeli,
+                'kode_produk' => json_encode(array_column($produkData, 'kode_produk')), // simpan kode_produk aja
+                'jumlah'      => json_encode(array_column($produkData, 'jumlah')),     // simpan jumlah sesuai urutan
+                'nominal'     => $request->nominal,
+                'updated_at'  => now(),
+            ]);
 
-        // return redirect()->route('pesanan.index')->with('success', 'Pesanan berhasil diupdate!');
+        return redirect()->route('pesanan.index')->with('success', 'Pesanan berhasil diupdate!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $pesanan = Pesanan::findOrFail($id);
+        $pesanan->delete();
+
+        return redirect()->back()->with('success', 'Pesanan berhasil dihapus.');
     }
 }

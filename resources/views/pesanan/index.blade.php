@@ -58,17 +58,16 @@
                                     return isset($r->nominal) ? (float) $r->nominal : 0;
                                 });
                             @endphp
-
                             <tr>
                                 <td>{{ $first->created_at ?? '-' }}</td>
-                                <td>{{ $first->nama_pembeli ?? $first->id_pembeli ?? '-' }}</td>
-
+                                <td>{{ $first->nama_pembeli ?? ($first->id_pembeli ?? '-') }}</td>
                                 <td>
                                     <ul style="margin:0; padding-left:1rem;">
                                         @foreach ($items as $row)
                                             <li>
                                                 {{ $row->kode_produk ?? ($row->kode_produk ?? '-') }}
-                                                (x{{ $row->jumlah ?? 1 }}) -
+                                                (x{{ $row->jumlah ?? 1 }})
+                                                -
                                                 Rp{{ number_format($row->nominal ?? 0, 0, ',', '.') }}
                                             </li>
                                         @endforeach
@@ -76,12 +75,12 @@
 
                                     <div><strong>Total: Rp{{ number_format($totalNominal, 0, ',', '.') }}</strong></div>
                                 </td>
-
                                 <td>
                                     <select class="form-select update-status-select" data-id="{{ $first->id_pesanan }}">
                                         <option value="baru" {{ ($first->status ?? '') == 'baru' ? 'selected' : '' }}>Baru
                                         </option>
-                                        <option value="proses" {{ ($first->status ?? '') == 'proses' ? 'selected' : '' }}>Diproses
+                                        <option value="proses" {{ ($first->status ?? '') == 'proses' ? 'selected' : '' }}>
+                                            Diproses
                                         </option>
                                     </select>
                                 </td>
@@ -91,16 +90,21 @@
                                         class="text-decoration-none text-dark">
                                         <i class="material-icons-outlined">content_paste</i>
                                     </a>
-                                    <a href="#" class="text-decoration-none text-dark">
-                                        <i class="material-icons-outlined">delete</i>
-                                    </a>
+                                    <form action="{{ route('pesanan.delete', $first->kode_pesanan) }}" method="POST"
+                                        style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-link text-dark p-0"
+                                            onclick="return confirm('Yakin mau hapus pesanan ini?')">
+                                            <i class="material-icons-outlined">delete</i>
+                                        </button>
+                                    </form>
                                     <button type="button" class="btn" data-bs-toggle="modal"
                                         data-bs-target="#edit_pesanan_{{ $first->id_pesanan }}">
                                         <i class="material-icons-outlined">edit</i>
                                     </button>
                                 </td>
                             </tr>
-
                             @include('pesanan.modal.edit')
                         @endforeach
                     </tbody>
@@ -123,7 +127,7 @@
 
     @push('scripts')
         <script>
-            $(document).ready(function () {
+            $(document).ready(function() {
                 var table = $("#tabel_pesanan").DataTable({
                     lengthChange: false,
                     buttons: ["copy", "excel", "pdf", "print"],
@@ -134,7 +138,7 @@
 
             let updateStatusUrl = "{{ route('pesanan.updateStatus', ':id') }}";
 
-            $(document).on('change', '.update-status-select', function () {
+            $(document).on('change', '.update-status-select', function() {
                 let id = $(this).data('id');
                 let status = $(this).val();
                 let url = updateStatusUrl.replace(':id', id);
@@ -146,10 +150,10 @@
                         status: status,
                         _token: '{{ csrf_token() }}'
                     },
-                    success: function (res) {
+                    success: function(res) {
                         console.log('Status updated:', res);
                     },
-                    error: function (err) {
+                    error: function(err) {
                         console.log(err.responseJSON);
                     }
                 });
