@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Pembeli;
 use App\Models\Pesanan;
 use App\Models\Produk;
+use Illuminate\Container\Attributes\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log as FacadesLog;
 use Illuminate\Support\Str;
 
 class PesananController extends Controller
@@ -14,27 +16,39 @@ class PesananController extends Controller
     public function index()
     {
         $pembeli = Pembeli::all();
-        $produk = DB::table('produk')->get();
+        $produk = Produk::all();
 
         $pesanan = DB::table('pesanan')
             ->join('pembeli', 'pesanan.id_pembeli', '=', 'pembeli.id_pembeli')
-            ->select('pesanan.*', 'pembeli.nama_pembeli', 'pembeli.no_hp', 'pembeli.alamat')
+            ->select(
+                'pesanan.kode_pesanan',
+                'pesanan.id_pembeli',
+                'pesanan.user_id',
+                'pesanan.status',
+                'pesanan.nominal',
+                'pembeli.nama_pembeli',
+                'pembeli.no_hp',
+                'pembeli.alamat'
+            )
+            ->groupBy(
+                'pesanan.kode_pesanan',
+                'pesanan.id_pembeli',
+                'pesanan.user_id',
+                'pesanan.status',
+                'pesanan.nominal',
+                'pembeli.nama_pembeli',
+                'pembeli.no_hp',
+                'pembeli.alamat'
+            )
             ->get();
 
         $pesanan->transform(function ($item) {
-            $produk_ids = json_decode($item->kode_produk, true);
-            $jumlahs = json_decode($item->jumlah, true);
-
-            $produk_detail = collect();
-            if ($produk_ids) {
-                foreach ($produk_ids as $i => $kode) {
-                    $p = DB::table('produk')->where('kode_produk', $kode)->first();
-                    if ($p) {
-                        $p->jumlah = $jumlahs[$i] ?? 1;
-                        $produk_detail->push($p);
-                    }
-                }
-            }
+            // ambil semua produk yg punya kode_pesanan yg sama
+            $produk_detail = DB::table('pesanan')
+                ->join('produk', 'pesanan.kode_produk', '=', 'produk.kode_produk')
+                ->where('pesanan.kode_pesanan', $item->kode_pesanan)
+                ->select('produk.nama_produk', 'produk.kode_produk', 'pesanan.jumlah')
+                ->get();
 
             $item->produk_detail = $produk_detail;
             return $item;

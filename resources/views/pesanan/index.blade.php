@@ -76,7 +76,7 @@
                                     <div><strong>Total: Rp{{ number_format($totalNominal, 0, ',', '.') }}</strong></div>
                                 </td>
                                 <td>
-                                    <select class="form-select update-status-select" data-id="{{ $first->id_pesanan }}">
+                                    <select class="form-select update-status-select" data-id="{{ $first->kode_pesanan }}">
                                         <option value="baru" {{ ($first->status ?? '') == 'baru' ? 'selected' : '' }}>Baru
                                         </option>
                                         <option value="proses" {{ ($first->status ?? '') == 'proses' ? 'selected' : '' }}>
@@ -100,7 +100,7 @@
                                         </button>
                                     </form>
                                     <button type="button" class="btn" data-bs-toggle="modal"
-                                        data-bs-target="#edit_pesanan_{{ $first->id_pesanan }}">
+                                        data-bs-target="#edit_pesanan_{{ $first->kode_pesanan }}">
                                         <i class="material-icons-outlined">edit</i>
                                     </button>
                                 </td>
