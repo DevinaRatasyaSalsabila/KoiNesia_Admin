@@ -6,9 +6,9 @@
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
-                    <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                    <li class="breadcrumb-item">
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">KoiNesia</li>
+                    <li class="breadcrumb-item active" aria-current="page">Azza Koi Farm</li>
                 </ol>
             </nav>
         </div>
@@ -20,190 +20,112 @@
     @else
         <p>belum login</p>
     @endif
-    <div class="row">
-        <!-- Kiri: 2 Card -->
-        <div class="col-12 col-xl-4 d-flex flex-column gap-3">
+
+    <div class="row g-3">
+        <!-- Kiri -->
+        <div class="col-12 col-xl-2 d-flex flex-column gap-3">
             <!-- Card 1 -->
-            <div class="card rounded-4 w-100">
-                <div class="card-body">
-                    <div class="d-flex flex-column align-items-center text-center">
-                        <!-- ICON -->
-                        <div
-                            class="wh-48 d-flex bg-danger text-danger bg-opacity-10 align-items-center justify-content-center rounded-circle mb-2">
-                            {{-- <span class="">favorite_border</span> --}}
-                            <i class="lni lni-page-break text-danger fs-1"></i>
-                        </div>
-                        <!-- ANGKA & TEKS -->
-                        <h4 class="mb-0">45.6K</h4>
-                        <p class="mb-0">Total Produk</p>
+            <div class="card rounded-4 flex-fill">
+                <div class="card-body d-flex flex-column align-items-center text-center">
+                    <div
+                        class="wh-48 d-flex bg-danger text-danger bg-opacity-10 align-items-center justify-content-center rounded-circle mb-2">
+                        <i class="lni lni-page-break text-danger fs-1"></i>
                     </div>
+                    <h4 class="mb-0">45.6K</h4>
+                    <p class="mb-0">Total Produk</p>
                 </div>
             </div>
 
             <!-- Card 2 -->
-            <div class="card rounded-4 w-100">
-                <div class="card-body">
-                    <div class="d-flex flex-column align-items-center text-center">
-                        <!-- ICON -->
-                        <div
-                            class="wh-48 d-flex bg-danger text-danger bg-opacity-10 align-items-center justify-content-center rounded-circle mb-2">
-                            {{-- <span class="">favorite_border</span> --}}
-                            <i class="lni lni-page-break text-danger fs-1"></i>
-                        </div>
-                        <!-- ANGKA & TEKS -->
-                        <h4 class="mb-0">45.6K</h4>
-                        <p class="mb-0">Total Produk</p>
+            <div class="card rounded-4 flex-fill">
+                <div class="card-body d-flex flex-column align-items-center text-center">
+                    <div
+                        class="wh-48 d-flex bg-danger text-danger bg-opacity-10 align-items-center justify-content-center rounded-circle mb-2">
+                        <i class="lni lni-page-break text-danger fs-1"></i>
                     </div>
+                    <h4 class="mb-0">12.3K</h4>
+                    <p class="mb-0">Total Pesanan</p>
                 </div>
             </div>
         </div>
 
-        <!-- Kanan: Popular Products -->
-        <div class="col-12 col-xl-8 d-flex">
-            <div class="card w-100 rounded-4">
-                <div class="card-body">
-                    <div class="d-flex align-items-start justify-content-between mb-3">
-                        <div>
-                            <h5 class="mb-0 fw-bold">Popular Products</h5>
-                        </div>
-                        <div class="dropdown">
-                            <a href="javascript:;" class="dropdown-toggle-nocaret options dropdown-toggle"
-                                data-bs-toggle="dropdown">
-                                <span class="material-icons-outlined fs-5">more_vert</span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="javascript:;">Action</a></li>
-                                <li><a class="dropdown-item" href="javascript:;">Another action</a></li>
-                                <li><a class="dropdown-item" href="javascript:;">Something else here</a></li>
-                            </ul>
-                        </div>
+        <!-- Kanan -->
+        <div class="col-12 col-xl-10 d-flex">
+            <div class="card rounded-4 w-100 h-100">
+                <div class="card-header py-3">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h5 class="mb-0">Pendapatan Bulanan</h5>
                     </div>
-
-                    <!-- List Produk -->
-                    <div class="d-flex flex-column gap-4">
-                        <div class="d-flex align-items-center gap-3">
-                            <img src="{{ asset('template/assets/images/orders/01.png') }}" width="78" class="rounded-3"
-                                alt="">
-                            <div class="flex-grow-1">
-                                <h6 class="mb-0 fw-bold">Apple Hand Watch</h6>
-                                <p class="mb-0">Sale: 258</p>
-                            </div>
-                            <div>
-                                <h6 class="mb-0">$199</h6>
-                            </div>
-                        </div>
-
-                        <div class="d-flex align-items-center gap-3">
-                            <img src="{{ asset('template/assets/images/orders/08.png') }}" width="78" class="rounded-3"
-                                alt="">
-                            <div class="flex-grow-1">
-                                <h6 class="mb-0 fw-bold">Mobile Phone Set</h6>
-                                <p class="mb-0">Sale: 169</p>
-                            </div>
-                            <div>
-                                <h6 class="mb-0">$159</h6>
-                            </div>
-                        </div>
-
-                        <!-- Tambah produk lainnya di sini -->
+                </div>
+                <div class="card-body">
+                    <div class="chart-container1">
+                        <canvas id="chart1"></canvas>
                     </div>
                 </div>
             </div>
         </div>
     </div><!-- end row -->
 
-    <div class="row">
-        <!-- Kiri: 2 Card -->
-        <div class="col-12 col-xl-4 d-flex flex-column gap-3">
+    <div class="row g-3 mt-3">
+        <!-- Kiri -->
+        <div class="col-12 col-xl-2 d-flex flex-column gap-3">
             <!-- Card 1 -->
-            <div class="card rounded-4 w-100">
-                <div class="card-body">
-                    <div class="d-flex align-items-center justify-content-between gap-3">
-                        <div
-                            class="wh-48 d-flex bg-danger text-danger bg-opacity-10 align-items-center justify-content-center rounded-circle">
-                            <span class="material-icons-outlined">favorite_border</span>
-                        </div>
-                        <div class="">
-                            <div class="d-flex align-items-center align-self-end text-success mb-1">
-                            </div>
-                            <h4 class="mb-0">45.6K</h4>
-                            <p class="mb-0">Total Hearts</p>
-                        </div>
+            <div class="card rounded-4 flex-fill">
+                <div class="card-body d-flex flex-column align-items-center text-center">
+                    <div
+                        class="wh-48 d-flex bg-danger text-danger bg-opacity-10 align-items-center justify-content-center rounded-circle mb-2">
+                        <i class="lni lni-page-break text-danger fs-1"></i>
                     </div>
-                    <p class="mb-0">Average Weekly Sales</p>
-                    <div id="chart1"></div>
+                    <h4 class="mb-0">5.2K</h4>
+                    <p class="mb-0">Produk Terjual</p>
                 </div>
             </div>
 
             <!-- Card 2 -->
-            <div class="card rounded-4 w-100">
-                <div class="card-body">
-                    <div class="d-flex align-items-center justify-content-between gap-3">
-                        <div
-                            class="wh-48 d-flex bg-danger text-danger bg-opacity-10 align-items-center justify-content-center rounded-circle">
-                            <span class="material-icons-outlined">favorite_border</span>
-                        </div>
-                        <div class="">
-                            <div class="d-flex align-items-center align-self-end text-success mb-1">
-                            </div>
-                            <h4 class="mb-0">45.6K</h4>
-                            <p class="mb-0">Total Hearts</p>
-                        </div>
+            <div class="card rounded-4 flex-fill">
+                <div class="card-body d-flex flex-column align-items-center text-center">
+                    <div
+                        class="wh-48 d-flex bg-danger text-danger bg-opacity-10 align-items-center justify-content-center rounded-circle mb-2">
+                        <i class="lni lni-page-break text-danger fs-1"></i>
                     </div>
-                    <p class="mb-0">Monthly Revenue</p>
-                    <div id="chart2"></div>
+                    <h4 class="mb-0">1.8K</h4>
+                    <p class="mb-0">Produk Baru</p>
                 </div>
             </div>
         </div>
 
-        <!-- Kanan: Popular Products -->
-        <div class="col-12 col-xl-8 d-flex">
-            <div class="card w-100 rounded-4">
+        <!-- Kanan -->
+        <div class="col-12 col-xl-10 d-flex">
+            <div class="card rounded-4 w-100 h-100">
                 <div class="card-body">
-                    <div class="d-flex align-items-start justify-content-between mb-3">
-                        <div>
-                            <h5 class="mb-0 fw-bold">Popular Products</h5>
-                        </div>
-                        <div class="dropdown">
-                            <a href="javascript:;" class="dropdown-toggle-nocaret options dropdown-toggle"
-                                data-bs-toggle="dropdown">
-                                <span class="material-icons-outlined fs-5">more_vert</span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="javascript:;">Action</a></li>
-                                <li><a class="dropdown-item" href="javascript:;">Another action</a></li>
-                                <li><a class="dropdown-item" href="javascript:;">Something else here</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- List Produk -->
-                    <div class="d-flex flex-column gap-4">
+                    <h5 class="mb-3 fw-bold">Pesanan Terbaru</h5>
+                    <hr>
+                    <div class="d-flex flex-column gap-3">
+                        <!-- Pesanan 1 -->
                         <div class="d-flex align-items-center gap-3">
-                            <img src="{{ asset('template/assets/images/orders/01.png') }}" width="78"
-                                class="rounded-3" alt="">
+                            <img src="{{ asset('template/assets/images/orders/01.png') }}" width="70" class="rounded-3"
+                                alt="Produk">
                             <div class="flex-grow-1">
                                 <h6 class="mb-0 fw-bold">Apple Hand Watch</h6>
-                                <p class="mb-0">Sale: 258</p>
+                                <p class="mb-0">Jumlah: 2 | Tanggal: 2025-09-07</p>
                             </div>
                             <div>
-                                <h6 class="mb-0">$199</h6>
+                                <h6 class="mb-0 text-success">Rp2.500.000</h6>
                             </div>
                         </div>
-
+                        <!-- Pesanan 2 -->
                         <div class="d-flex align-items-center gap-3">
-                            <img src="{{ asset('template/assets/images/orders/08.png') }}" width="78"
-                                class="rounded-3" alt="">
+                            <img src="{{ asset('template/assets/images/orders/08.png') }}" width="70" class="rounded-3"
+                                alt="Produk">
                             <div class="flex-grow-1">
                                 <h6 class="mb-0 fw-bold">Mobile Phone Set</h6>
-                                <p class="mb-0">Sale: 169</p>
+                                <p class="mb-0">Jumlah: 1 | Tanggal: 2025-09-07</p>
                             </div>
                             <div>
-                                <h6 class="mb-0">$159</h6>
+                                <h6 class="mb-0 text-success">Rp1.800.000</h6>
                             </div>
                         </div>
-
-                        <!-- Tambah produk lainnya di sini -->
+                        <!-- Tambahkan loop dari database -->
                     </div>
                 </div>
             </div>

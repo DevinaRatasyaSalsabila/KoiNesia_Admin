@@ -4,9 +4,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>KoiNesia</title>
+    <title>Azza Koi Farm</title>
     <!--favicon-->
-    <link rel="icon" href="{{ asset('template/assets/images/favicon-32x32.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('template/assets/images/projects/logo2.jpg') }}" type="image/jpg">
 
     <!--plugins-->
     <link href="{{ asset('template/assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css') }}" rel="stylesheet">
@@ -37,6 +37,25 @@
 
     <link href="{{ asset('template/assets/plugins/fancy-file-uploader/fancy_fileupload.css') }}" rel="stylesheet">
 
+    <style>
+        .video-container {
+            width: 100%;
+            max-width: 600px;
+            aspect-ratio: 16 / 9;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .video-preview {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+    </style>
 </head>
 
 <body>
@@ -682,21 +701,21 @@
     <aside class="sidebar-wrapper">
         <div class="sidebar-header">
             <div class="logo-icon">
-                <img src="assets/images/logo-icon.png" class="logo-img" alt="">
+                <img src="{{ asset('template/assets/images/projects/logo.jpg') }}" class="logo-img" alt="">
+                {{-- <h3></h3> --}}
             </div>
             <div class="logo-name flex-grow-1">
-                <h5 class="mb-0">Metoxi</h5>
+                <h5 class="mb-0">Azza Koi Farm</h5>
             </div>
             <div class="sidebar-close">
                 <span class="material-icons-outlined">close</span>
             </div>
         </div>
         <div class="sidebar-nav" data-simplebar="true">
-
             <!--navigation-->
             <ul class="metismenu" id="sidenav">
                 <li>
-                    <a href="{{ url('dashboard') }}">
+                    <a href="{{ route('dashboard') }}">
                         <div class="parent-icon">
                             <i class="material-icons-outlined">home</i>
                         </div>
@@ -704,7 +723,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ url('produk') }}">
+                    <a href="{{ route('produk.index') }}">
                         <div class="parent-icon">
                             <i class="material-icons-outlined">widgets</i>
                         </div>
@@ -712,7 +731,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ url('barang-masuk') }}">
+                    <a href="{{ route('barang-masuk.index') }}">
                         <div class="parent-icon">
                             <i class="material-icons-outlined">inventory_2</i>
                         </div>
@@ -720,7 +739,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ url('pengeluaran') }}">
+                    <a href="{{ route('pengeluaran.index') }}">
                         <div class="parent-icon">
                             <i class="material-icons-outlined">join_right</i>
                         </div>
@@ -729,7 +748,7 @@
                 </li>
                 <li class="menu-label">Transaksi</li>
                 <li>
-                    <a href="{{ url('pengeluaran') }}">
+                    <a href="{{ route('pesanan.index') }}">
                         <div class="parent-icon">
                             <i class="material-icons-outlined">shopping_bag</i>
                         </div>
@@ -745,19 +764,21 @@
                     </a>
                     <ul>
                         <li>
-                            <a href="{{ url('riwayat-transaksi') }}">
+                            <a href="{{ route('riwayat.index') }}">
                                 <i class="material-icons-outlined">arrow_right</i>
                                 Riwayat Transaksi
                             </a>
                         </li>
                         <li>
-                            <a href="{{ url('rekap') }}">
+                            <a href="{{ route('rekap.index') }}">
                                 <i class="material-icons-outlined">arrow_right</i>
                                 Rekap Penjualan
                             </a>
                         </li>
                     </ul>
                     <!--end navigation-->
+                </li>
+            </ul>
         </div>
         <div class="sidebar-bottom gap-4">
             <div class="dark-mode">
@@ -1080,6 +1101,11 @@
     <script src="{{ asset('template/assets/plugins/datatable/js/dataTables.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('template/assets/plugins/simplebar/js/simplebar.min.js') }}"></script>
 
+    <script src="{{ asset('template/assets/plugins/chartjs/js/chart.js') }}"></script>
+    <script src="{{ asset('template/assets/plugins/chartjs/js/chartjs-custom.js') }}"></script>
+
+    <script src="/assets/plugins/simplebar/js/simplebar.min.js"></script>
+
 
     {{-- validation --}}
     <script src="{{ asset('template/assets/plugins/validation/validation-script.js') }}"></script>
@@ -1091,7 +1117,6 @@
     <script src="{{ asset('template/assets/plugins/fancy-file-uploader/jquery.fancy-fileupload.js') }}"></script>
 
     <script src="{{ asset('template/assets/plugins/form-repeater/repeater.js') }}"></script>
-
 
     @stack('scripts')
 </body>

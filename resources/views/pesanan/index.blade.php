@@ -22,7 +22,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="p-0 mb-0 breadcrumb">
                     <li class="breadcrumb-item"></li>
-                    <li class="breadcrumb-item active" aria-current="page">KoiNesia</li>
+                    <li class="breadcrumb-item active" aria-current="page">Azza Koi Farm</li>
                 </ol>
             </nav>
         </div>
@@ -59,50 +59,48 @@
                                 });
                             @endphp
                             <tr>
-                                <td>{{ $first->created_at ?? '-' }}</td>
-                                <td>{{ $first->nama_pembeli ?? ($first->id_pembeli ?? '-') }}</td>
-                                <td>
-                                    <ul style="margin:0; padding-left:1rem;">
-                                        @foreach ($items as $row)
-                                            <li>
-                                                {{ $row->kode_produk ?? ($row->kode_produk ?? '-') }}
-                                                (x{{ $row->jumlah ?? 1 }})
-                                                -
-                                                Rp{{ number_format($row->nominal ?? 0, 0, ',', '.') }}
-                                            </li>
-                                        @endforeach
-                                    </ul>
-
-                                    <div><strong>Total: Rp{{ number_format($totalNominal, 0, ',', '.') }}</strong></div>
+                                <td class="align-middle">{{ $first->created_at ?? '-' }}</td>
+                                <td class="align-middle">{{ $first->nama_pembeli ?? ($first->id_pembeli ?? '-') }}</td>
+                                <td class="align-middle">
+                                    <div>Rp{{ number_format($totalNominal, 0, ',', '.') }}</div>
                                 </td>
                                 <td>
                                     <select class="form-select update-status-select" data-id="{{ $first->kode_pesanan }}">
-                                        <option value="baru" {{ ($first->status ?? '') == 'baru' ? 'selected' : '' }}>Baru
+                                        <option value="baru" class="fw-bold"
+                                            {{ ($first->status ?? '') == 'baru' ? 'selected' : '' }}>
+                                            Baru
                                         </option>
-                                        <option value="proses" {{ ($first->status ?? '') == 'proses' ? 'selected' : '' }}>
+                                        <option value="proses" class="fw-bold"
+                                            {{ ($first->status ?? '') == 'proses' ? 'selected' : '' }}>
                                             Diproses
                                         </option>
                                     </select>
                                 </td>
 
-                                <td>
-                                    <a href="{{ route('pesanan.detail', $first->kode_pesanan) }}"
-                                        class="text-decoration-none text-dark">
-                                        <i class="material-icons-outlined">content_paste</i>
-                                    </a>
-                                    <form action="{{ route('pesanan.delete', $first->kode_pesanan) }}" method="POST"
-                                        style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="p-0 btn btn-link text-dark"
-                                            onclick="return confirm('Yakin mau hapus pesanan ini?')">
-                                            <i class="material-icons-outlined">delete</i>
+                                <td class="align-middle">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <a href="{{ route('pesanan.detail', $first->kode_pesanan) }}"
+                                            class="text-decoration-none text-dark d-flex align-items-center">
+                                            <i class="material-icons-outlined">content_paste</i>
+                                        </a>
+
+                                        <form action="{{ route('pesanan.delete', $first->kode_pesanan) }}" method="POST"
+                                            class="m-0 p-0 d-flex align-items-center">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class="btn text-dark p-0 m-0 d-flex align-items-center"
+                                                onclick="return confirm('Yakin mau hapus pesanan ini?')">
+                                                <i class="material-icons-outlined">delete</i>
+                                            </button>
+                                        </form>
+
+                                        <button type="button" class="btn p-0 d-flex align-items-center"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#edit_pesanan_{{ $first->kode_pesanan }}">
+                                            <i class="material-icons-outlined">edit</i>
                                         </button>
-                                    </form>
-                                    <button type="button" class="btn" data-bs-toggle="modal"
-                                        data-bs-target="#edit_pesanan_{{ $first->kode_pesanan }}">
-                                        <i class="material-icons-outlined">edit</i>
-                                    </button>
+                                    </div>
                                 </td>
                             </tr>
                             @include('pesanan.modal.edit')
@@ -157,6 +155,24 @@
                         console.log(err.responseJSON);
                     }
                 });
+            });
+
+            document.querySelectorAll('.update-status-select').forEach(select => {
+                const updateColor = (el) => {
+                    el.classList.remove('text-warning', 'text-primary');
+
+                    const selectedText = el.options[el.selectedIndex].text.trim();
+
+                    if (selectedText === 'Baru') {
+                        el.classList.add('text-warning');
+                    } else if (selectedText === 'Diproses') {
+                        el.classList.add('text-primary');
+                    }
+                };
+
+                updateColor(select);
+
+                select.addEventListener('change', () => updateColor(select));
             });
         </script>
     @endpush

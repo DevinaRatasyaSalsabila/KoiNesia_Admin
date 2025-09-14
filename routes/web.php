@@ -17,7 +17,7 @@ Route::get('/main', function () {
 });
 
 //dashboard
-Route::get('/dashboard', [DasboardController::class, 'index']);
+Route::get('/dashboard', [DasboardController::class, 'index'])->name('dashboard');
 
 //daftar barang masuk
 Route::get('/barang-masuk', [BarangMasukController::class, 'index'])->name('barang-masuk.index');
@@ -35,9 +35,6 @@ Route::get('/produk/edit/{id}', [ProdukController::class, 'edit'])->name('produk
 Route::put('/produk/update/{id}', [ProdukController::class, 'update'])->name('produk.update');
 Route::delete('/produk/delete/{id}', [ProdukController::class, 'destroy'])->name('produk.delete');
 
-// pesanan
-Route::get('/pesanan', [PesananController::class, 'index']);
-
 // Login
 Route::get('/', [LoginController::class, 'index'])->name('login');
 Route::post('/loginsubmit', [LoginController::class, 'submit'])->name('login.submit');
@@ -53,7 +50,7 @@ Route::put('/edit-admin/{id}', [AdminController::class, 'update'])->name('admin.
 Route::delete('/delete-admin/{id}', [AdminController::class, 'destroy'])->name('admin.delete');
 
 //daftar-pengeluaran
-Route::get('/pengeluaran', [PengeluaranController::class, 'index']);
+Route::get('/pengeluaran', [PengeluaranController::class, 'index'])->name('pengeluaran.index');
 Route::post('/tambah-pengeluaran', [PengeluaranController::class, 'store'])->name('pengeluaran.add');
 Route::put('/edit-pengeluaran/{id}', [PengeluaranController::class, 'update'])->name('pengeluaran.update');
 Route::delete('/delete-pengeluaran/{id}', [PengeluaranController::class, 'destroy'])->name('pengeluaran.delete');
@@ -70,8 +67,8 @@ Route::delete('/pesanan/{id}', [PesananController::class, 'destroy'])->name('pes
 Route::post('pembeli', [PembeliController::class, 'store'])->name('pembeli.add');
 
 //Riwayat Transaksi
-Route::get('riwayat-transaksi', [RiwayatController::class, 'index']);
+Route::get('riwayat-transaksi', [RiwayatController::class, 'index'])->name('riwayat.index');
 Route::get('riwayat-transaksi/detail', [RiwayatController::class, 'show']);
 
 //rekap
-Route::get('rekap', [RekapController::class, 'index']);
+Route::get('rekap', [RekapController::class, 'index'])->name('rekap.index');

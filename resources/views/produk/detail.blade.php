@@ -6,7 +6,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"></li>
-                    <li class="breadcrumb-item active" aria-current="page">KoiNesia</li>
+                    <li class="breadcrumb-item active" aria-current="page">Azza Koi Farm</li>
                 </ol>
             </nav>
         </div>
@@ -31,10 +31,12 @@
                                 <img src="{{ asset('storage/produk/final/' . $file) }}" class="img-fluid rounded-3"
                                     style="max-height:280px;object-fit:cover;">
                             @elseif(Str::endsWith($file, ['.mp4', '.webm', '.ogg']))
-                                <video width="320" height="240" controls>
-                                    <source src="{{ asset('storage/produk/final/' . $file) }}">
-                                    Browser kamu ga support video 😭
-                                </video>
+                                <div class="video-container">
+                                    <video class="video-preview" controls>
+                                        <source src="{{ asset('storage/produk/final/' . $file) }}">
+                                        Browser anda tidak mendukung pemutaran video 😭
+                                    </video>
+                                </div>
                             @endif
                         @endforeach
                     @endif
