@@ -94,7 +94,7 @@
                                         style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-link text-dark p-0"
+                                        <button type="submit" class="p-0 btn btn-link text-dark"
                                             onclick="return confirm('Yakin mau hapus pesanan ini?')">
                                             <i class="material-icons-outlined">delete</i>
                                         </button>

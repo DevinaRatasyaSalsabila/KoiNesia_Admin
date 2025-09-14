@@ -20,9 +20,10 @@ Route::get('/main', function () {
 Route::get('/dashboard', [DasboardController::class, 'index']);
 
 //daftar barang masuk
-Route::get('/barang-masuk', [BarangMasukController::class, 'index']);
+Route::get('/barang-masuk', [BarangMasukController::class, 'index'])->name('barang-masuk.index');
 Route::get('/barang-masuk/edit', [BarangMasukController::class, 'edit']);
 Route::get('/barang-masuk/tambah', [BarangMasukController::class, 'create']);
+Route::post('/barang-masuk/add', [BarangMasukController::class, 'store'])->name('barang-masuk.store');
 
 //daftar produk
 Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
@@ -60,7 +61,7 @@ Route::delete('/delete-pengeluaran/{id}', [PengeluaranController::class, 'destro
 // pesanan
 Route::get('/pesanan', [PesananController::class, 'index'])->name('pesanan.index');
 Route::post('/pesanan/tambah', [PesananController::class, 'store'])->name('pesanan.add');
-Route::put('/pesanan/update/{id}', [PesananController::class, 'update'])->name('pesanan.update');
+Route::put('/pesanan/update/{kode_pesanan}', [PesananController::class, 'update'])->name('pesanan.update');
 Route::get('/detail/{id}', [PesananController::class, 'show'])->name('pesanan.detail');
 Route::post('/pesanan/{id}/status', [PesananController::class, 'updateStatus'])->name('pesanan.updateStatus');
 Route::delete('/pesanan/{id}', [PesananController::class, 'destroy'])->name('pesanan.delete');

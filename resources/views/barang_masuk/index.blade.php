@@ -1,11 +1,11 @@
 @extends('main')
 @section('content')
     <!--breadcrumb-->
-    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+    <div class="mb-3 page-breadcrumb d-none d-sm-flex align-items-center">
         <div class="breadcrumb-title pe-3">Barang Masuk </div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0 p-0">
+                <ol class="p-0 mb-0 breadcrumb">
                     <li class="breadcrumb-item">
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
@@ -38,21 +38,23 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>18-08-20245</td>
-                            <td>Ikan Koi</td>
-                            <td>30</td>
-                            <td>Dari Palembang</td>
-                            <td class="text-center">
-                                <button class="btn btn-danger">
-                                    <i class="fadeIn animated bx bx-trash text-light"></i>
-                                </button>
-                                <a href="{{ url('barang-masuk/edit') }}" class="btn btn-warning">
-                                    <i class="fadeIn animated bx bx-pencil text-light"></i>
-                                </a>
-                            </td>
-                        </tr>
+                        @foreach ($barang as $item)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $item->created_at }}</td>
+                                <td>{{ $produk }}</td>
+                                <td>{{ $item->total_produk }}</td>
+                                <td>{{ $item->keterangan }}</td>
+                                <td class="text-center">
+                                    <button class="btn btn-danger">
+                                        <i class="fadeIn animated bx bx-trash text-light"></i>
+                                    </button>
+                                    <a href="{{ url('barang-masuk/edit') }}" class="btn btn-warning">
+                                        <i class="fadeIn animated bx bx-pencil text-light"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                     <tfoot>
                         <tr>

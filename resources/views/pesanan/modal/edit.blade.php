@@ -14,7 +14,8 @@
                         <label class="form-label">Data Pembeli</label>
                         <select class="form-select" name="id_pembeli" required>
                             @foreach ($pembeli as $pemb)
-                                <option value="{{ $pemb->id_pembeli }}" {{ $first->id_pembeli == $pemb->id_pembeli ? 'selected' : '' }}>
+                                <option value="{{ $pemb->id_pembeli }}"
+                                    {{ $first->id_pembeli == $pemb->id_pembeli ? 'selected' : '' }}>
                                     {{ $pemb->nama_pembeli }}
                                 </option>
                             @endforeach
@@ -28,14 +29,20 @@
                                 <div class="col-md-9">
                                     <select name="produk[]" class="form-control">
                                         @foreach ($produk as $p)
-                                            <option value="{{ $p->kode_produk }}" {{ $p->kode_produk == $pd->kode_produk ? 'selected' : '' }}>
-                                                {{ $p->nama_produk }}
+                                            {{-- @php
+                                            dd($p->harga_Satuan);
+                                        @endphp --}}
+                                            <option value="{{ $p->kode_produk }}"
+                                                {{ $p->kode_produk == $pd->kode_produk ? 'selected' : '' }}
+                                                data-harga="{{ $p->harga_Satuan }}">
+                                                {{ $p->nama_produk }} - {{ $p->harga_Satuan }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="number" name="jumlah[]" class="form-control" value="{{ $pd->jumlah }}">
+                                    <input type="number" name="jumlah[]" class="form-control"
+                                        value="{{ $pd->jumlah }}">
                                 </div>
                             </div>
                         @endforeach
@@ -49,7 +56,8 @@
                     {{-- Nominal --}}
                     <div class="mt-3">
                         <label class="form-label">Nominal</label>
-                        <input type="number" class="form-control" name="nominal" value="{{ $first->nominal }}" required>
+                        <input type="number" class="form-control" name="nominal" value="{{ $first->nominal }}"
+                            required>
                     </div>
                 </div>
 
@@ -66,28 +74,63 @@
 
 @push('scripts')
     <script>
-        $(document).on("click", ".add-produk", function () {
+        function hitungTotal(modal) {
+            let total = 0;
+            modal.find(".produk-row").each(function() {
+                let jumlah = parseInt($(this).find("input[name='jumlah[]']").val()) || 0;
+                let harga = parseInt($(this).find("select[name='produk[]'] option:selected").data("harga")) || 0;
+                total += jumlah * harga;
+            });
+            modal.find("input[name='nominal']").val(total);
+        }
+
+        $(document).on("input", "input[name='jumlah[]']", function() {
+            let modal = $(this).closest(".modal");
+            hitungTotal(modal);
+        });
+
+        $(document).on("change", "select[name='produk[]']", function() {
+            let modal = $(this).closest(".modal");
+            hitungTotal(modal);
+        });
+
+        $(document).on("click", ".add-produk", function() {
             let target = $($(this).data("target"));
             let newRow = `
-                    <div class="row mb-2 produk-row">
-                        <div class="col-md-9">
-                            <select name="produk[]" class="form-control" required>
-                                <option value="" disabled selected>-- Pilih Produk --</option>
-                                @foreach ($produk as $p)
-                                    <option value="{{ $p->id_produk }}">{{ $p->nama_produk }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    <div class="col-md-3 d-flex align-items-end">
-                            <div class="flex-grow-1 me-2">
-                                <input type="number" class="form-control jumlah-produk" name="jumlah[]" placeholder="Masukkan Jumlah" required>
-                                <div class="invalid-feedback">Masukkan Jumlah</div>
-                            </div>
-                            <button type="button" class="btn btn-danger btn-sm remove-produk" style="height:40px;">✖</button>
-                        </div>
-                    </div>
-                `;
+    <div class="row mb-2 produk-row">
+        <div class="col-md-9">
+            <select name="produk[]" class="form-control" required>
+                <option value="" disabled selected>-- Pilih Produk --</option>
+                @foreach ($produk as $p)
+                    <option value="{{ $p->kode_produk }}" data-harga="{{ $p->harga_Satuan }}">
+                        {{ $p->nama_produk }} - {{ $p->harga_Satuan }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+            <div class="flex-grow-1 me-2">
+                <input type="number" class="form-control jumlah-produk" name="jumlah[]" placeholder="Masukkan Jumlah" required>
+                <div class="invalid-feedback">Masukkan Jumlah</div>
+            </div>
+            <button type="button" class="btn btn-danger btn-sm remove-produk" style="height:40px;">✖</button>
+        </div>
+    </div>
+`;
             target.append(newRow);
+
+            let modal = $(this).closest(".modal");
+            hitungTotal(modal);
+        });
+
+        $(document).on("click", ".remove-produk", function() {
+            let modal = $(this).closest(".modal");
+            $(this).closest(".produk-row").remove();
+            hitungTotal(modal);
+        });
+
+        $(document).on("shown.bs.modal", ".modal", function() {
+            hitungTotal($(this));
         });
     </script>
 @endpush

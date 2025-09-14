@@ -28,7 +28,8 @@ class PesananController extends Controller
                 'pesanan.nominal',
                 'pembeli.nama_pembeli',
                 'pembeli.no_hp',
-                'pembeli.alamat'
+                'pembeli.alamat',
+                'pembeli.created_at'
             )
             ->groupBy(
                 'pesanan.kode_pesanan',
@@ -140,10 +141,7 @@ class PesananController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $kode_pesanan)
     {
         $request->validate([
             'id_pembeli' => 'required|exists:pembeli,id_pembeli',
@@ -152,35 +150,34 @@ class PesananController extends Controller
             'nominal'    => 'required|numeric',
         ]);
 
-        // Simpan kode_produk & jumlah dalam bentuk JSON
-        $produkData = [];
-        foreach ($request->produk as $i => $kode) {
-            $produkData[] = [
-                'kode_produk' => $kode,
-                'jumlah'      => $request->jumlah[$i] ?? 1,
-            ];
-        }
+        DB::table('pesanan')->where('kode_pesanan', $kode_pesanan)->delete();
 
-        DB::table('pesanan')
-            ->where('id_pesanan', $id)
-            ->update([
-                'id_pembeli'  => $request->id_pembeli,
-                'kode_produk' => json_encode(array_column($produkData, 'kode_produk')), // simpan kode_produk aja
-                'jumlah'      => json_encode(array_column($produkData, 'jumlah')),     // simpan jumlah sesuai urutan
-                'nominal'     => $request->nominal,
-                'updated_at'  => now(),
+        foreach ($request->produk as $i => $kodeProduk) {
+            $produk = DB::table('produk')->where('kode_produk', $kodeProduk)->first();
+            if (!$produk) continue;
+
+            $qty = $request->jumlah[$i] ?? 1;
+            $subtotal = $produk->harga_Satuan * $qty;
+
+            DB::table('pesanan')->insert([
+                'kode_pesanan' => $kode_pesanan,
+                'id_pembeli'   => $request->id_pembeli,
+                'user_id'      => 1,
+                'status'       => 'baru',
+                'kode_produk'  => $kodeProduk,
+                'jumlah'       => $qty,
+                'nominal'      => $subtotal,
+                'updated_at'   => now(),
+                'created_at'   => now(),
             ]);
+        }
 
         return redirect()->route('pesanan.index')->with('success', 'Pesanan berhasil diupdate!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
-        $pesanan = Pesanan::findOrFail($id);
-        $pesanan->delete();
+        Pesanan::where('kode_pesanan', $id)->delete();
 
         return redirect()->back()->with('success', 'Pesanan berhasil dihapus.');
     }

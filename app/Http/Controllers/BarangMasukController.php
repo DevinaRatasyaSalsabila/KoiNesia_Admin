@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BarangMasuk;
+use App\Models\Produk;
 use Illuminate\Http\Request;
 
 class BarangMasukController extends Controller
@@ -11,7 +13,11 @@ class BarangMasukController extends Controller
      */
     public function index()
     {
-        return view('barang_masuk.index');
+        $barang = BarangMasuk::all();
+        foreach ($barang as $b) {
+            $produk = Produk::where('kode_produk', $b->kode_produk)->value('nama_produk');
+        }
+        return view('barang_masuk.index', compact('barang', 'produk'));
     }
 
     /**
@@ -19,7 +25,8 @@ class BarangMasukController extends Controller
      */
     public function create()
     {
-        return view('barang_masuk.tambah');
+        $produk = Produk::all();
+        return view('barang_masuk.tambah', compact('produk'));
     }
 
     /**
@@ -27,7 +34,13 @@ class BarangMasukController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        BarangMasuk::create([
+            'kode_produk' => $request->kode_produk,
+            'total_produk' => $request->total_produk,
+            'keterangan' => $request->keterangan
+        ]);
+
+        return redirect('/barang-masuk');
     }
 
     /**

@@ -12,4 +12,27 @@ class Produk extends Model
     protected $keyType = 'int';
 
     protected $guarded = [];
+
+    protected $appends = ['gambar_url'];
+
+    public function getGambarUrlAttribute()
+    {
+        $gambarnya = $this->gambar_produk;
+
+        if ($this->isJson($gambarnya)) {
+            $arr = json_decode($gambarnya, true);
+            $gambarnya = $arr[0] ?? null;
+        }
+
+        if ($gambarnya) {
+            return asset('storage/produk/final/' . $gambarnya);
+        }
+        return null;
+    }
+
+    private function isJson($string)
+    {
+        json_decode($string);
+        return (json_last_error() == JSON_ERROR_NONE);
+    }
 }
