@@ -25,6 +25,7 @@ Route::get('/barang-masuk/edit/{id}', [BarangMasukController::class, 'edit']);
 Route::get('/barang-masuk/tambah', [BarangMasukController::class, 'create']);
 Route::post('/barang-masuk/add', [BarangMasukController::class, 'store'])->name('barang-masuk.store');
 Route::post('/barang-masuk/update/{id}', [BarangMasukController::class, 'update'])->name('barang-masuk.update');
+Route::delete('/barang-masuk/delete/{id}', [BarangMasukController::class, 'destroy'])->name('barang-masuk.destroy');
 
 //daftar produk
 Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');

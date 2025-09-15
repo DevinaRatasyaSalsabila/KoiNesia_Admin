@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BarangMasuk;
 use App\Models\Produk;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BarangMasukController extends Controller
 {
@@ -89,35 +90,41 @@ class BarangMasukController extends Controller
             'tanggal'       => 'required|date',
         ]);
 
-        // Data lama barang masuk
-        $barang = BarangMasuk::findOrFail($id);
+        DB::transaction(function () use ($request, $id) {
+            $barang = BarangMasuk::findOrFail($id);
 
-        // Kalau kode_produk sama (cuma update jumlah)
-        if ($request->kode_produk == $barang->kode_produk) {
-            // Hitung selisih
-            $selisih = $request->total_produk - $barang->total_produk;
+            $oldKode  = $barang->kode_produk;
+            $oldTotal = (int) $barang->total_produk;
+            $newKode  = $request->kode_produk;
+            $newTotal = (int) $request->total_produk;
 
-            // Update stok produk sesuai selisih
-            Produk::where('kode_produk', $barang->kode_produk)
-                ->increment('stok_produk', $selisih);
-        } else {
-            // Kalau ganti kode_produk:
-            // 1. Kurangi stok produk lama
-            Produk::where('kode_produk', $barang->kode_produk)
-                ->decrement('stok_produk', $barang->total_produk);
+            if ($oldKode === $newKode) {
+                $delta = $newTotal - $oldTotal;
 
-            // 2. Tambah stok ke produk baru
-            Produk::where('kode_produk', $request->kode_produk)
-                ->increment('stok_produk', $request->total_produk);
-        }
+                if ($delta > 0) {
+                    Produk::where('kode_produk', $oldKode)->increment('stok_produk', $delta);
+                } elseif ($delta < 0) {
+                    $decr = abs($delta);
+                    $produk = Produk::where('kode_produk', $oldKode)->firstOrFail();
+                    $produk->stok_produk = max(0, (int)$produk->stok_produk - $decr);
+                    $produk->save();
+                }
+            } else {
+                $produkLama = Produk::where('kode_produk', $oldKode)->firstOrFail();
+                $produkLama->stok_produk = max(0, (int)$produkLama->stok_produk - $oldTotal);
+                $produkLama->save();
 
-        // Update data barang masuk
-        $barang->update([
-            'kode_produk'   => $request->kode_produk,
-            'total_produk'  => $request->total_produk,
-            'keterangan'    => $request->keterangan,
-            'tanggal'       => $request->tanggal,
-        ]);
+                $produkBaru = Produk::where('kode_produk', $newKode)->firstOrFail();
+                $produkBaru->increment('stok_produk', $newTotal);
+            }
+
+            $barang->update([
+                'kode_produk'   => $newKode,
+                'total_produk'  => $newTotal,
+                'keterangan'    => $request->keterangan,
+                'tanggal'       => $request->tanggal,
+            ]);
+        });
 
         return redirect('/barang-masuk')->with('success', 'Data barang masuk berhasil diupdate!');
     }
@@ -127,6 +134,16 @@ class BarangMasukController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $barang = BarangMasuk::find($id);
+        // $barang->delete();
+
+        //iki fungsi lk  barang masok di hapus, stok produk di kurangi
+        $barang = BarangMasuk::where('kode_produk', $barang->kode_produk)->first();
+        $barangKurang = Produk::where('kode_produk', $barang->kode_produk)->first();
+        $barangKurang->stok_produk = $barangKurang->stok_produk - $barang->total_produk;
+        $barangKurang->save();
+        $barang->delete();
+        // $produk = Produk::where('kode_produk', $barang->kode_produk)->first();
+        return redirect()->back()->with('success', 'Data Barang Masuk Berhasil Dihapus');
     }
 }

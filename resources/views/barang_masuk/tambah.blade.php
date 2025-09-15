@@ -59,7 +59,9 @@
                                 name="barang_masuk[0][keterangan]" placeholder="Contoh: Dari Palembang">
                         </div>
                         <div class="col-md-2 text-end">
-                            <button type="button" class="btn btn-danger btn-remove">Hapus</button>
+                            <button type="button" class="btn btn-danger btn-remove">
+                                <i class="fadeIn animated bx bx-trash text-light"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -104,7 +106,10 @@
                                     name="barang_masuk[${rowIndex}][keterangan]" placeholder="Contoh: Dari Palembang">
                             </div>
                             <div class="col-md-2 text-end">
-                                <button type="button" class="btn btn-danger btn-remove">Hapus</button>
+
+                                <button type="button" class="btn btn-danger btn-remove">
+                                    <i class="bi bi-trash"></i>
+                                </button>
                             </div>
                         </div>
                     </div>

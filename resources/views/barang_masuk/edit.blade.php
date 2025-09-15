@@ -45,7 +45,7 @@
                             <div class="mb-3">
                                 <label for="inputTanggal1" class="form-label">Tanggal</label>
                                 <input type="date" value="{{ $barang->tanggal }}" name="tanggal" class="form-control"
-                                    id="inputTanggal1" data-name="tanggal" value="" />
+                                    id="inputTanggal1"/>
                             </div>
                             <div class="mb-3">
                                 <label for="produkEdit" class="form-label">Produk</label>
@@ -61,13 +61,13 @@
                             </div>
                             <div class="mb-3">
                                 <label for="inputJumlah1" class="form-label">Jumlah Barang</label>
-                                <input name="stok_barang" value="{{ $barang->total_produk }}" type="number"
-                                    class="form-control" id="inputJumlah1" placeholder="0" data-name="jumlah" />
+                                <input name="total_produk" value="{{ $barang->total_produk }}" type="number"
+                                    class="form-control" id="inputJumlah1" placeholder="0" />
                             </div>
                             <div class="mb-3">
                                 <label for="inputKeterangan1" class="form-label">Keterangan</label>
                                 <textarea name="keterangan" class="form-control" id="inputKeterangan1" rows="2"
-                                    placeholder="Contoh: Dari Palembang" data-name="keterangan">{{ $barang->keterangan }}</textarea>
+                                    placeholder="Contoh: Dari Palembang">{{ $barang->keterangan }}</textarea>
                             </div>
                         </div>
                     </div>

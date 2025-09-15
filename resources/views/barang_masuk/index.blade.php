@@ -38,7 +38,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($barang as $item)
+                        @forelse ($barang as $item)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->created_at }}</td>
@@ -46,15 +46,25 @@
                                 <td>{{ $item->total_produk }}</td>
                                 <td>{{ $item->keterangan }}</td>
                                 <td class="text-center">
-                                    <button class="btn btn-danger">
-                                        <i class="fadeIn animated bx bx-trash text-light"></i>
-                                    </button>
-                                    <a href="{{ url('barang-masuk/edit', $item->id_pemasukan) }}" class="btn btn-warning">
-                                        <i class="fadeIn animated bx bx-pencil text-light"></i>
-                                    </a>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <form action="{{ route('barang-masuk.destroy', $item->id_pemasukan) }}" method="post">
+                                            @csrf
+                                            @method('delete')
+                                            <button class="btn btn-danger">
+                                                <i class="fadeIn animated bx bx-trash text-light"></i>
+                                            </button>
+                                        </form>
+                                        <a href="{{ url('barang-masuk/edit', $item->id_pemasukan) }}" class="btn btn-warning">
+                                            <i class="fadeIn animated bx bx-pencil text-light"></i>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center">Tidak ada data tersedia</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                     <tfoot>
                         <tr>
@@ -73,7 +83,7 @@
 
     @push('scripts')
         <script>
-            $(document).ready(function() {
+            $(document).ready(function () {
                 var table = $('#example2').DataTable({
                     lengthChange: false,
                     buttons: ['copy', 'excel', 'pdf', 'print']
