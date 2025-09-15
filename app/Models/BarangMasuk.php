@@ -13,5 +13,10 @@ class BarangMasuk extends Model
     public $incrementing = true;
     protected $keyType = 'int';
 
-    protected $guarded = [];
+    protected $fillable = [
+        'kode_produk',
+        'total_produk',
+        'keterangan',
+        'tanggal',
+    ];
 }

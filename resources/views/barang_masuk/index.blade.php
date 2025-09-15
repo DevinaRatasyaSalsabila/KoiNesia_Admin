@@ -49,7 +49,7 @@
                                     <button class="btn btn-danger">
                                         <i class="fadeIn animated bx bx-trash text-light"></i>
                                     </button>
-                                    <a href="{{ url('barang-masuk/edit') }}" class="btn btn-warning">
+                                    <a href="{{ url('barang-masuk/edit', $item->id_pemasukan) }}" class="btn btn-warning">
                                         <i class="fadeIn animated bx bx-pencil text-light"></i>
                                     </a>
                                 </td>

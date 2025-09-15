@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id('id_pemasukan');
             $table->string('kode_produk');
             $table->integer('total_produk');
-            $table->integer('nominal');
             $table->string('keterangan');
+            $table->date('tanggal');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+         Schema::dropIfExists('barang_masuk');
     }
 };

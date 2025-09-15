@@ -21,9 +21,10 @@ Route::get('/dashboard', [DasboardController::class, 'index'])->name('dashboard'
 
 //daftar barang masuk
 Route::get('/barang-masuk', [BarangMasukController::class, 'index'])->name('barang-masuk.index');
-Route::get('/barang-masuk/edit', [BarangMasukController::class, 'edit']);
+Route::get('/barang-masuk/edit/{id}', [BarangMasukController::class, 'edit']);
 Route::get('/barang-masuk/tambah', [BarangMasukController::class, 'create']);
 Route::post('/barang-masuk/add', [BarangMasukController::class, 'store'])->name('barang-masuk.store');
+Route::post('/barang-masuk/update/{id}', [BarangMasukController::class, 'update'])->name('barang-masuk.update');
 
 //daftar produk
 Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
