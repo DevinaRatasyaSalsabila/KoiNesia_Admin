@@ -42,17 +42,23 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($pesanan as $item)
+                        @php
+                            $pembeli = App\Models\Pembeli::where('id_pembeli', $item->id_pembeli)->value('nama_pembeli');
+                            // dd($pembeli);
+                        @endphp
                         <tr>
-                            <td>1</td>
-                            <td>18-08-20245</td>
-                            <td>James John</td>
-                            <td>Rp12.0000</td>
+                            <td>{{$loop->iteration}}</td>
+                            <td>{{$item->created_at->format('d-m-Y')}}</td>
+                            <td>{{$pembeli}}</td>
+                            <td>Rp{{number_format($item->nominal, 0, ',', '.')}}</td>
                             <td class="text-center">
                                 <a href="{{url('riwayat-transaksi/detail')}}" class="btn btn-warning">
                                     <i class="fadeIn animated bx bx-clipboard text-light"></i>
                                 </a>
                             </td>
                         </tr>
+                        @endforeach
                     </tbody>
                     <tfoot>
                         <tr>

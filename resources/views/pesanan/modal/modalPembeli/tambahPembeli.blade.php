@@ -5,7 +5,7 @@
                 <h5 class="modal-title" id="exampleModalLabel">Tambah Data Pembeli</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="formTambahPembeli" class="row g-3 needs-validation">
+            <form id="formTambahPembeli" class="row g-3 needs-validation" onsubmit="return false;">
                 @csrf
                 <div class="modal-body">
                     <div class="px-3 mt-2 col-md-12">

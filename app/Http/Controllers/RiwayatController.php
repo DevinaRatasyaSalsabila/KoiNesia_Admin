@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pesanan;
 use Illuminate\Http\Request;
 
 class RiwayatController extends Controller
@@ -11,7 +12,9 @@ class RiwayatController extends Controller
      */
     public function index()
     {
-        return view('riwayat.index');
+        $pesanan = Pesanan::where('status', 'selesai')->get();
+        // dd($pesanan);
+        return view('riwayat.index', compact('pesanan'));
     }
 
     /**
