@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pesanan;
+use App\Models\Pembeli;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class RiwayatController extends Controller
@@ -12,11 +14,28 @@ class RiwayatController extends Controller
      */
     public function index()
     {
-        $pesanan = Pesanan::where('status', 'selesai')->get();
-        // dd($pesanan);
-        return view('riwayat.index', compact('pesanan'));
-    }
+        $pesanan = Pesanan::where('status', 'selesai')
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->groupBy('kode_pesanan');
 
+        $pesananData = $pesanan->map(function ($listPesanan) {
+            $first = $listPesanan->first();
+
+            $namaPembeli = Pembeli::where('id_pembeli', $first->id_pembeli)->value('nama_pembeli');
+
+            return [
+                'kode_pesanan' => $first->kode_pesanan,
+                'tanggal'      => $first->created_at->format('d-m-Y'),
+                'nama_pembeli' => $namaPembeli,
+                'total_nominal' => $listPesanan->sum('nominal'),
+            ];
+        });
+
+        return view('riwayat.index', [
+            'pesanan' => $pesananData
+        ]);
+    }
     /**
      * Show the form for creating a new resource.
      */

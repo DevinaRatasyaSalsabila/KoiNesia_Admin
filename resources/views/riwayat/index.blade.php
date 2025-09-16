@@ -43,22 +43,20 @@
                     </thead>
                     <tbody>
                         @foreach ($pesanan as $item)
-                        @php
-                            $pembeli = App\Models\Pembeli::where('id_pembeli', $item->id_pembeli)->value('nama_pembeli');
-                            // dd($pembeli);
-                        @endphp
-                        <tr>
-                            <td>{{$loop->iteration}}</td>
-                            <td>{{$item->created_at->format('d-m-Y')}}</td>
-                            <td>{{$pembeli}}</td>
-                            <td>Rp{{number_format($item->nominal, 0, ',', '.')}}</td>
-                            <td class="text-center">
-                                <a href="{{url('riwayat-transaksi/detail')}}" class="btn btn-warning">
-                                    <i class="fadeIn animated bx bx-clipboard text-light"></i>
-                                </a>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $item['tanggal'] }}</td>
+                                <td>{{ $item['nama_pembeli'] }}</td>
+                                <td>Rp{{ number_format($item['total_nominal'], 0, ',', '.') }}</td>
+                                <td class="text-center">
+                                    <a href="{{ url('riwayat-transaksi/detail/' . $item['kode_pesanan']) }}"
+                                        class="btn btn-warning">
+                                        <i class="fadeIn animated bx bx-clipboard text-light"></i>
+                                    </a>
+                                </td>
+                            </tr>
                         @endforeach
+
                     </tbody>
                     <tfoot>
                         <tr>
@@ -76,7 +74,7 @@
 
     @push('scripts')
         <script>
-            $(document).ready(function() {
+            $(document).ready(function () {
                 var table = $('#example2').DataTable({
                     lengthChange: false,
                     buttons: ['copy', 'excel', 'pdf', 'print']
