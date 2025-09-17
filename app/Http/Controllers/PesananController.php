@@ -46,7 +46,6 @@ class PesananController extends Controller
             ->get();
 
         $pesanan->transform(function ($item) {
-            // ambil semua produk yg punya kode_pesanan yg sama
             $produk_detail = DB::table('pesanan')
                 ->join('produk', 'pesanan.kode_produk', '=', 'produk.kode_produk')
                 ->where('pesanan.kode_pesanan', $item->kode_pesanan)
@@ -85,7 +84,7 @@ class PesananController extends Controller
 
     public function updateStatus(Request $request, $id)
     {
-        $pesanan = Pesanan::findOrFail($id);
+        $pesanan = Pesanan::where('kode_pesanan', $id)->firstOrFail();
 
         $status = $request->status;
         if (!in_array($status, ['baru', 'proses'])) {
@@ -95,9 +94,22 @@ class PesananController extends Controller
         $pesanan->status = $status;
         $pesanan->save();
 
+        // Ambil pembeli dari pesanan, bukan dari request
+        $pembeli = Pembeli::find($pesanan->id_pembeli);
+
+        $no_hp = $pembeli->no_hp;
+        if (substr($no_hp, 0, 1) === '0') {
+            $no_hp = '+62' . substr($no_hp, 1);
+        }
+
+        // bikin isi pesan WA
+        $pesan = "Halo *{$pembeli->nama_pembeli}*, saat ini pesanan dengan kode *{$pesanan->kode_pesanan}* statusnya sudah diupdate menjadi *{$status}* ya.\n\n"
+            . "Terima kasih sudah order di Azza Koi Farm 🐟✨";
+
+        $this->apicall($no_hp, $pesan);
+
         return response()->json(['success' => true, 'status' => $pesanan->status]);
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -109,29 +121,73 @@ class PesananController extends Controller
 
         $kodePesanan = 'PESN-' . date('dm') . '-' . date('Hi') . '-' . Str::upper(Str::random(3));
 
+        $detailPesanan = "";
+        $totalHarga    = 0;
+
         foreach ($produk_ids as $index => $idProduk) {
             $produk = Produk::find($idProduk);
             if (!$produk) continue;
 
             $qty = $jumlah[$index] ?? 1;
             $subtotal = $produk->harga_Satuan * $qty;
+            $totalHarga += $subtotal;
 
+            // simpan ke DB
             Pesanan::create([
                 'kode_pesanan' => $kodePesanan,
                 'id_pembeli'   => $request->id_pembeli,
                 'user_id'      => 1,
                 'status'       => 'baru',
                 'kode_produk'  => $produk->kode_produk,
-                'jumlah'       => $qty,          // jumlah yang dipesan
+                'jumlah'       => $qty,
                 'nominal'      => $subtotal,
             ]);
 
-            // kurangi stok produk
+            // update stok
             $produk->stok_produk -= $qty;
             $produk->save();
+
+            // format detail pesan
+            $detailPesanan .= "- {$produk->nama_produk} x{$qty} = Rp " . number_format($subtotal, 0, ',', '.') . "\n";
         }
 
+        // ambil data pembeli
+        $pembeli = Pembeli::find($request->id_pembeli);
+        $no_hp = $pembeli->no_hp;
+        if (substr($no_hp, 0, 1) === '0') {
+            $no_hp = '+62' . substr($no_hp, 1);
+        }
+
+        // bikin isi pesan WA
+        $pesan = "Halo *{$pembeli->nama_pembeli}*, terima kasih sudah order di Azza Koi Farm 🐟✨\n\n"
+            . "Kode Pesanan: {$kodePesanan}\n\n"
+            . "Detail pesanan kamu:\n"
+            . $detailPesanan . "\n"
+            . "Total: *Rp " . number_format($totalHarga, 0, ',', '.') . "*\n\n"
+            . "Pesananmu saat ini sudah masuk dan akan segera diproses ya 👍";
+
+        $this->apicall($no_hp, $pesan);
+
         return redirect()->route('pesanan.index');
+    }
+
+    private function apicall($no_hp, $pesan)
+    {
+        $client = new Client();
+        $url = 'https://apiwa.smkpgriwlingi.sch.id/api/sendBulkMessage';
+
+        $data = [
+            'apiKey'  => 'f60d05297f0af62109d4ec9ec274bd32',
+            'phone'   => json_encode([$no_hp]),
+            'message' => $pesan,
+            'delay'   => 1,
+        ];
+
+        try {
+            $client->post($url, ['form_params' => $data]);
+        } catch (\Exception $e) {
+            dd('Error: ' . $e->getMessage());
+        }
     }
 
     /**
