@@ -28,7 +28,8 @@
                                     <option value="">Pilih Produk</option>
                                     @foreach ($produk as $item)
                                         <option value="{{ $item->id_produk }}" data-harga="{{ $item->harga_Satuan }}">
-                                            {{ $item->nama_produk }} [{{ $item->harga_Satuan }}]
+                                            {{ $item->nama_produk }}
+                                            [Rp{{ number_format($item->harga_Satuan, 0, ',', '.') }}]
                                         </option>
                                     @endforeach
                                 </select>
@@ -49,7 +50,7 @@
 
                     <div class="px-3 mt-2 col-md-12">
                         <label class="form-label">Nominal</label>
-                        <input type="number" class="form-control" id="nominal" name="nominal"
+                        <input type="text" class="form-control" id="nominal" name="nominal"
                             placeholder="Masukkan Nominal" required readonly>
                         <div class="invalid-feedback">Masukkan Nominal</div>
                     </div>
@@ -70,35 +71,33 @@
     <script>
         $(document).ready(function () {
 
-            // Inisialisasi select2 untuk produk pertama
             $('.produk-select').select2({
                 dropdownParent: $('#tambah_pesanan'),
                 width: '100%'
             });
 
-            // Tambah produk
             $('#tambah-produk').click(function () {
                 let RowNew = $(`
-                    <div class="px-3 mt-2 row produk-row">
-                        <div class="col-md-9">
-                            <select class="form-select produk-select" name="produk[]" required>
-                                <option value="">Pilih Produk</option>
-                                @foreach ($produk as $item)
-                                    <option value="{{ $item->id_produk }}" data-harga="{{ $item->harga_Satuan }}">
-                                        {{ $item->nama_produk }} [{{ $item->harga_Satuan }}]
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-3 d-flex align-items-end">
-                            <div class="flex-grow-1 me-2">
-                                <input type="number" class="form-control jumlah-produk" name="jumlah[]" placeholder="Masukkan Jumlah" required>
-                                <div class="invalid-feedback">Masukkan Jumlah</div>
+                        <div class="px-3 mt-2 row produk-row">
+                            <div class="col-md-9">
+                                <select class="form-select produk-select" name="produk[]" required>
+                                    <option value="">Pilih Produk</option>
+                                    @foreach ($produk as $item)
+                                        <option value="{{ $item->id_produk }}" data-harga="{{ $item->harga_Satuan }}">
+                                            {{ $item->nama_produk }} [{{ $item->harga_Satuan }}]
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
-                            <button type="button" class="btn btn-danger btn-sm remove-produk" style="height:40px;">✖</button>
+                            <div class="col-md-3 d-flex align-items-end">
+                                <div class="flex-grow-1 me-2">
+                                    <input type="number" class="form-control jumlah-produk" name="jumlah[]" placeholder="Masukkan Jumlah" required>
+                                    <div class="invalid-feedback">Masukkan Jumlah</div>
+                                </div>
+                                <button type="button" class="btn btn-danger btn-sm remove-produk" style="height:40px;">✖</button>
+                            </div>
                         </div>
-                    </div>
-                `);
+                    `);
 
                 $('#wrapper-produk-tambah').append(RowNew);
                 console.log("✅ Row baru ditambahkan ke DOM");
@@ -108,26 +107,31 @@
                     width: '100%'
                 });
 
-                hitungNominal();
+                hitungNominalRupiah();
             });
 
             $(document).on('click', '.remove-produk', function () {
                 $(this).closest('.produk-row').remove();
-                hitungNominal();
+                hitungNominalRupiah();
             });
 
             $(document).on('change', '.produk-select, .jumlah-produk', function () {
-                hitungNominal();
+                hitungNominalRupiah();
             });
 
-            function hitungNominal() {
+            function formatUang(subject) {
+                rupiah = subject.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
+                return `Rp${rupiah}`;
+            }
+
+            function hitungNominalRupiah() {
                 let total = 0;
                 $('#wrapper-produk-tambah .produk-row').each(function () {
                     let harga = $(this).find('.produk-select option:selected').data('harga') || 0;
                     let jumlah = parseInt($(this).find('.jumlah-produk').val()) || 0;
                     total += harga * jumlah;
                 });
-                $('#nominal').val(total);
+                $('#nominal').val(formatUang(total));
                 console.log("Nominal updated:", total);
             }
         });

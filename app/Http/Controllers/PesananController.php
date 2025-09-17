@@ -8,6 +8,8 @@ use App\Models\Produk;
 use Illuminate\Container\Attributes\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Log as FacadesLog;
 use Illuminate\Support\Str;
 
@@ -119,10 +121,14 @@ class PesananController extends Controller
                 'id_pembeli'   => $request->id_pembeli,
                 'user_id'      => 1,
                 'status'       => 'baru',
-                'kode_produk'  => $produk->kode_produk, // ⬅ simpan per baris
-                'jumlah'       => $qty,
-                'nominal'      => $subtotal,            // ⬅ subtotal per produk
+                'kode_produk'  => $produk->kode_produk,
+                'jumlah'       => $qty,          // jumlah yang dipesan
+                'nominal'      => $subtotal,
             ]);
+
+            // kurangi stok produk
+            $produk->stok_produk -= $qty;
+            $produk->save();
         }
 
         return redirect()->route('pesanan.index');

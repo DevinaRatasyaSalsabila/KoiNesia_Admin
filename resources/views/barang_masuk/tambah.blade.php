@@ -128,7 +128,8 @@
              $(document).ready(function() {
                 $('#select2-produk').select2({
                     placeholder: "Pilih salah satu",
-                    allowClear: true
+                    allowClear: true,
+                     width: '100%'
                 });
             });
         </script>

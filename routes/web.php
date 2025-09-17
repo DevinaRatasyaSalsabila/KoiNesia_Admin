@@ -10,6 +10,7 @@ use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\RekapController;
 use App\Http\Controllers\RiwayatController;
+use App\Http\Controllers\SellerAPIController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/main', function () {
@@ -74,3 +75,11 @@ Route::get('riwayat-transaksi/detail', [RiwayatController::class, 'show']);
 
 //rekap
 Route::get('rekap', [RekapController::class, 'index'])->name('rekap.index');
+
+
+//tes api wa
+Route::get('/form-wa', function () {
+    return view('form-wa'); // view form nanti
+});
+
+Route::post('/kirim-wa', [SellerAPIController::class, 'pesan'])->name('kirim.wa');
