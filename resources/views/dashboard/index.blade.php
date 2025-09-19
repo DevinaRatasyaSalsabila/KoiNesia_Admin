@@ -31,7 +31,7 @@
                         class="wh-48 d-flex bg-danger text-danger bg-opacity-10 align-items-center justify-content-center rounded-circle mb-2">
                         <i class="lni lni-page-break text-danger fs-1"></i>
                     </div>
-                    <h4 class="mb-0">45.6K</h4>
+                    <h4 class="mb-0">{{$produk->count()}}</h4>
                     <p class="mb-0">Total Produk</p>
                 </div>
             </div>
@@ -43,7 +43,7 @@
                         class="wh-48 d-flex bg-danger text-danger bg-opacity-10 align-items-center justify-content-center rounded-circle mb-2">
                         <i class="lni lni-page-break text-danger fs-1"></i>
                     </div>
-                    <h4 class="mb-0">12.3K</h4>
+                    <h4 class="mb-0">{{$pesanan->count()}}</h4>
                     <p class="mb-0">Total Pesanan</p>
                 </div>
             </div>
@@ -76,7 +76,7 @@
                         class="wh-48 d-flex bg-danger text-danger bg-opacity-10 align-items-center justify-content-center rounded-circle mb-2">
                         <i class="lni lni-page-break text-danger fs-1"></i>
                     </div>
-                    <h4 class="mb-0">5.2K</h4>
+                    <h4 class="mb-0">{{$pesananSelesai->count()}}</h4>
                     <p class="mb-0">Produk Terjual</p>
                 </div>
             </div>
@@ -102,30 +102,24 @@
                     <hr>
                     <div class="d-flex flex-column gap-3">
                         <!-- Pesanan 1 -->
-                        <div class="d-flex align-items-center gap-3">
-                            <img src="{{ asset('template/assets/images/orders/01.png') }}" width="70" class="rounded-3"
-                                alt="Produk">
-                            <div class="flex-grow-1">
-                                <h6 class="mb-0 fw-bold">Apple Hand Watch</h6>
-                                <p class="mb-0">Jumlah: 2 | Tanggal: 2025-09-07</p>
+                        @foreach ($pesananNew as $item)
+                            <div class="d-flex align-items-center gap-3">
+                                <img src="{{ asset('template/assets/images/orders/01.png') }}" width="70" class="rounded-3"
+                                    alt="Produk">
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-0 fw-bold">{{ $item->kode_pesanan }}</h6>
+                                    <p class="mb-0">
+                                        Jumlah: {{ $item->total_nominal }} |
+                                        Tanggal: {{ \Carbon\Carbon::parse($item->tanggal)->format('d M Y H:i') }}
+                                    </p>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0 text-success">Rp{{ number_format($item->total_nominal, 0, ',', '.') }}</h6>
+                                </div>
                             </div>
-                            <div>
-                                <h6 class="mb-0 text-success">Rp2.500.000</h6>
-                            </div>
-                        </div>
+                        @endforeach
+
                         <!-- Pesanan 2 -->
-                        <div class="d-flex align-items-center gap-3">
-                            <img src="{{ asset('template/assets/images/orders/08.png') }}" width="70" class="rounded-3"
-                                alt="Produk">
-                            <div class="flex-grow-1">
-                                <h6 class="mb-0 fw-bold">Mobile Phone Set</h6>
-                                <p class="mb-0">Jumlah: 1 | Tanggal: 2025-09-07</p>
-                            </div>
-                            <div>
-                                <h6 class="mb-0 text-success">Rp1.800.000</h6>
-                            </div>
-                        </div>
-                        <!-- Tambahkan loop dari database -->
                     </div>
                 </div>
             </div>

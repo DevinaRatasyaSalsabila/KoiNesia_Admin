@@ -715,7 +715,7 @@
             <!--navigation-->
             <ul class="metismenu" id="sidenav">
                 <li>
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ url('/dashboard') }}">
                         <div class="parent-icon">
                             <i class="material-icons-outlined">home</i>
                         </div>

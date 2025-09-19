@@ -44,7 +44,7 @@ Route::post('/loginsubmit', [LoginController::class, 'submit'])->name('login.sub
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 //dashboard
-Route::get('/dashboard', [DasboardController::class, 'index'])->name('dashboard')->middleware('auth');
+// Route::get('/dashboard', [DasboardController::class, 'index'])->name('dashboard')->middleware('auth');
 
 //daftar-admin
 Route::get('/daftar-admin', [AdminController::class, 'index']);
