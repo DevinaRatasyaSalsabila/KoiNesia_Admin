@@ -19,11 +19,16 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Rekap</h5>
+            <div class="input-group" style="width: 220px;">
+                <label for="tanggal" class="col-form-label me-2">Filter</label>
+                <input type="date" id="tanggal" name="tanggal" value="{{ now()->toDateString() }}"
+                    class="form-control form-control-sm">
+            </div>
         </div>
 
         <div class="card-body">
             <div class="table-responsive">
-                <table id="example2" class="table table-striped table-bordered">
+                <table id="rekapTable" class="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -32,25 +37,20 @@
                             <th>Pengeluaran</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>18-08-20245</td>
-                            <td>RP90.000</td>
-                            <td>Rp12.0000</td>
-                        </tr>
+                    <tbody id="rekapBody">
+                        @foreach ($rekap as [$a, $b])
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $a->tanggal }}</td>
+                                <td>Rp{{ number_format($a->total, 0, ',', '.') }}</td>
+                                <td>Rp{{ number_format($b->nominal, 0, ',', '.') }}</td>
+                            </tr>
+                        @endforeach
                     </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>No</th>
-                            <th>Tanggal</th>
-                            <th>Penjualan</th>
-                            <th>Pengeluaran</th>
-                        </tr>
-                    </tfoot>
                 </table>
             </div>
         </div>
+
     </div>
 
     @push('scripts')
@@ -63,6 +63,31 @@
 
                 table.buttons().container()
                     .appendTo('#example2_wrapper .col-md-6:eq(0)');
+            });
+
+            document.addEventListener("DOMContentLoaded", function() {
+                const filterInput = document.getElementById("tanggal");
+                const tableBody = document.getElementById("rekapBody");
+
+                function filterTable() {
+                    const selectedDate = filterInput.value;
+                    const rows = tableBody.querySelectorAll("tr");
+
+                    rows.forEach(row => {
+                        const tanggalCell = row.querySelector("td:nth-child(2)");
+                        const tanggal = tanggalCell.textContent.trim();
+
+                        if (selectedDate === "" || tanggal === selectedDate) {
+                            row.style.display = ""; // show
+                        } else {
+                            row.style.display = "none"; // hide
+                        }
+                    });
+                }
+
+                filterTable();
+
+                filterInput.addEventListener("change", filterTable);
             });
         </script>
     @endpush

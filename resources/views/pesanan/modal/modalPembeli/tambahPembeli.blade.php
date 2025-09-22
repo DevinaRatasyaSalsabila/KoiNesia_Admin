@@ -5,7 +5,7 @@
                 <h5 class="modal-title" id="exampleModalLabel">Tambah Data Pembeli</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="formTambahPembeli" class="row g-3 needs-validation" onsubmit="return false;">
+            <form id="formTambahPembeli" class="row g-3 needs-validation">
                 @csrf
                 <div class="modal-body">
                     <div class="px-3 mt-2 col-md-12">
@@ -34,44 +34,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    document.getElementById('formTambahPembeli').addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        let formData = new FormData(this);
-
-        fetch("{{ route('pembeli.add') }}", {
-                method: "POST",
-                headers: {
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                },
-                body: formData
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    let modalPembeli = bootstrap.Modal.getInstance(document.getElementById(
-                        "tambah_pembeli"));
-                    modalPembeli.hide();
-
-                    let modalPesanan = new bootstrap.Modal(document.getElementById("tambah_pesanan"));
-                    modalPesanan.show();
-
-                    let select = document.getElementById('pembeli');
-                    select.insertAdjacentHTML('beforeend', `
-                <option value="${data.pembeli.id_pembeli}" selected>
-                    ${data.pembeli.nama_pembeli}
-                </option>
-            `);
-
-                    this.reset();
-
-                    alert("Pembeli berhasil ditambah!");
-                } else {
-                    alert("Gagal: " + data.message);
-                }
-            })
-            .catch(err => console.error(err));
-    });
-</script>

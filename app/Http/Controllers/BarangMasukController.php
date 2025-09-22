@@ -14,16 +14,14 @@ class BarangMasukController extends Controller
      */
     public function index()
     {
-        $barang = BarangMasuk::all();
-        $produk = null; // default biar ga error
+        $barang = BarangMasuk::all()->map(function ($item) {
+            // tambahin field baru 'nama_produk' langsung ke setiap item
+            $item->nama_produk = Produk::where('kode_produk', $item->kode_produk)->value('nama_produk');
+            return $item;
+        });
 
-        foreach ($barang as $b) {
-            $produk = Produk::where('kode_produk', $b->kode_produk)->value('nama_produk');
-        }
-
-        return view('barang_masuk.index', compact('barang', 'produk'));
+        return view('barang_masuk.index', compact('barang'));
     }
-
     /**
      * Show the form for creating a new resource.
      */

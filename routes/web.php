@@ -75,7 +75,7 @@ Route::get('riwayat-transaksi/detail', [RiwayatController::class, 'show']);
 
 //rekap
 Route::get('rekap', [RekapController::class, 'index'])->name('rekap.index');
-
+Route::get('/rekap/filter', [RekapController::class, 'filter'])->name('rekap.filter');
 
 //tes api wa
 Route::get('/form-wa', function () {

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pengeluaran;
+use App\Models\Pesanan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RekapController extends Controller
 {
@@ -11,16 +14,45 @@ class RekapController extends Controller
      */
     public function index()
     {
-        return view('rekap.index');
+        $pengeluaran = Pengeluaran::all();
+
+        $penjualan = Pesanan::select(
+            DB::raw('DATE(created_at) as tanggal'),
+            DB::raw('SUM(nominal) as total')
+        )
+            ->where('status', 'selesai')
+            ->groupBy(DB::raw('DATE(created_at)'))
+            ->orderBy('tanggal', 'asc')
+            ->get();
+
+
+        $rekap = $penjualan->zip($pengeluaran);
+        // dd($penjualan);
+        return view('rekap.index', compact('rekap'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function filter(Request $request)
     {
-        //
+        $tanggal = $request->input('tanggal');
+
+        $penjualan = Pesanan::selectRaw('DATE(created_at) as tanggal, SUM(nominal) as total')
+            ->where('status', 'selesai')
+            ->when($tanggal, fn($q) => $q->whereDate('created_at', $tanggal))
+            ->groupBy('tanggal')
+            ->get();
+
+        $pengeluaran = Pengeluaran::selectRaw('DATE(created_at) as tanggal, SUM(nominal) as nominal')
+            ->whereDate('created_at', $tanggal)
+            ->get();
+
+        $rekap = $penjualan->zip($pengeluaran);
+
+        return response()->json($rekap);
     }
+
 
     /**
      * Store a newly created resource in storage.

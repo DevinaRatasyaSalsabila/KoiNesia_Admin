@@ -135,5 +135,44 @@
                 console.log("Nominal updated:", total);
             }
         });
+
+    document.getElementById('formTambahPembeli').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        let formData = new FormData(this);
+
+        fetch("{{ route('pembeli.add') }}", {
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    let modalPembeli = bootstrap.Modal.getInstance(document.getElementById(
+                        "tambah_pembeli"));
+                    modalPembeli.hide();
+
+                    let modalPesanan = new bootstrap.Modal(document.getElementById("tambah_pesanan"));
+                    modalPesanan.show();
+
+                    let select = document.getElementById('pembeli');
+                    select.insertAdjacentHTML('beforeend', `
+                <option value="${data.pembeli.id_pembeli}" selected>
+                    ${data.pembeli.nama_pembeli}
+                </option>
+            `);
+
+                    this.reset();
+
+                    alert("Pembeli berhasil ditambah!");
+                } else {
+                    alert("Gagal: " + data.message);
+                }
+            })
+            .catch(err => console.error(err));
+    });
     </script>
 @endpush

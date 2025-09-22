@@ -36,8 +36,8 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($pengeluaran as $item)
                         <tr>
-                            @foreach ($pengeluaran as $item)
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->nama_pengeluaran }}</td>
                                 <td>Rp{{ number_format($item->nominal, 2, ',', '.') }}</td>
@@ -56,8 +56,8 @@
                                     </button>
                                 </td>
                                 @include('pengeluaran.modal.edit')
+                            </tr>
                             @endforeach
-                        </tr>
                     </tbody>
                     <tfoot>
                         <tr>

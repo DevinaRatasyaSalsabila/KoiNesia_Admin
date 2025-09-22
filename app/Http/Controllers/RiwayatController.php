@@ -19,6 +19,9 @@ class RiwayatController extends Controller
             ->get()
             ->groupBy('kode_pesanan');
 
+        $pesananSelesai = Pesanan::where('status', 'selesai')
+            ->sum('nominal');
+
         $pesananData = $pesanan->map(function ($listPesanan) {
             $first = $listPesanan->first();
 
@@ -33,7 +36,8 @@ class RiwayatController extends Controller
         });
 
         return view('riwayat.index', [
-            'pesanan' => $pesananData
+            'pesanan' => $pesananData,
+            'pesananSelesai' => $pesananSelesai,
         ]);
     }
     /**

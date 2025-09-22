@@ -42,19 +42,21 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->created_at }}</td>
-                                <td>{{ $produk }}</td>
+                                <td>{{ $item->nama_produk ?? '-' }}</td>
                                 <td>{{ $item->total_produk }}</td>
                                 <td>{{ $item->keterangan }}</td>
                                 <td class="text-center">
                                     <div class="d-flex align-items-center gap-2">
-                                        <form action="{{ route('barang-masuk.destroy', $item->id_pemasukan) }}" method="post">
+                                        <form action="{{ route('barang-masuk.destroy', $item->id_pemasukan) }}"
+                                            method="post">
                                             @csrf
                                             @method('delete')
                                             <button class="btn btn-danger">
                                                 <i class="fadeIn animated bx bx-trash text-light"></i>
                                             </button>
                                         </form>
-                                        <a href="{{ url('barang-masuk/edit', $item->id_pemasukan) }}" class="btn btn-warning">
+                                        <a href="{{ url('barang-masuk/edit', $item->id_pemasukan) }}"
+                                            class="btn btn-warning">
                                             <i class="fadeIn animated bx bx-pencil text-light"></i>
                                         </a>
                                     </div>
@@ -83,7 +85,7 @@
 
     @push('scripts')
         <script>
-            $(document).ready(function () {
+            $(document).ready(function() {
                 var table = $('#example2').DataTable({
                     lengthChange: false,
                     buttons: ['copy', 'excel', 'pdf', 'print']

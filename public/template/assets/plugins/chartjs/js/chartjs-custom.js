@@ -1,15 +1,14 @@
 $(function() {
 
-
     // chart1
     var ctx = document.getElementById('chart1').getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Th', 'Fr', 'Sa', 'Su'],
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             datasets: [{
                 label: 'Penjualan',
-                data: [10, 20, 35, 10, 27, 11, 20],
+                data: window.chartData.penjualan,
                 backgroundColor: [
                     '#008cff'
                 ],
@@ -22,13 +21,12 @@ $(function() {
                 borderWidth: 4,
                 fill: {
 					target: 'origin',
-					above: 'rgb(13 110 253 / 15%)',   // Area will be red above the origin
-					//below: 'rgb(21 202 32 / 100%)'   // And blue below the origin
+					above: 'rgb(13 110 253 / 15%)',
 				  }, 
              },
             {
-                label: 'Barang Keluar',
-                data: [5, 30, 16, 23, 18, 14, 5],
+                label: 'Pengeluaran',
+                data: window.chartData.pengeluaran,
                 backgroundColor: [
                     '#fc185a'
                 ],
@@ -41,8 +39,7 @@ $(function() {
                 borderWidth: 4,
                 fill: {
 					target: 'origin',
-					above: 'rgb(252 24 90 / 15%)',   // Area will be red above the origin
-					//below: 'rgb(21 202 32 / 100%)'   // And blue below the origin
+					above: 'rgb(252 24 90 / 15%)',
 				  }, 
             }]
         },
@@ -61,7 +58,6 @@ $(function() {
             }
         }
     });
-
 
     
     // chart2

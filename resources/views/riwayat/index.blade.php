@@ -19,7 +19,7 @@
     <div class="card">
         <div class="card-body d-flex justify-content-between align-items-center">
             <h5>Total Penjualan :</h5>
-            <h6>Rp900.000,00</h6>
+            <h6>Rp{{ $pesananSelesai }}</h6>
         </div>
     </div>
 

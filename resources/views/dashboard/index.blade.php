@@ -31,7 +31,7 @@
                         class="wh-48 d-flex bg-danger text-danger bg-opacity-10 align-items-center justify-content-center rounded-circle mb-2">
                         <i class="lni lni-page-break text-danger fs-1"></i>
                     </div>
-                    <h4 class="mb-0">{{$produk->count()}}</h4>
+                    <h4 class="mb-0">{{ $produk->count() }}</h4>
                     <p class="mb-0">Total Produk</p>
                 </div>
             </div>
@@ -43,7 +43,7 @@
                         class="wh-48 d-flex bg-danger text-danger bg-opacity-10 align-items-center justify-content-center rounded-circle mb-2">
                         <i class="lni lni-page-break text-danger fs-1"></i>
                     </div>
-                    <h4 class="mb-0">{{$pesanan->count()}}</h4>
+                    <h4 class="mb-0">{{ $pesanan->count() }}</h4>
                     <p class="mb-0">Total Pesanan</p>
                 </div>
             </div>
@@ -76,7 +76,7 @@
                         class="wh-48 d-flex bg-danger text-danger bg-opacity-10 align-items-center justify-content-center rounded-circle mb-2">
                         <i class="lni lni-page-break text-danger fs-1"></i>
                     </div>
-                    <h4 class="mb-0">{{$pesananSelesai->count()}}</h4>
+                    <h4 class="mb-0">{{ $pesananSelesai->count() }}</h4>
                     <p class="mb-0">Produk Terjual</p>
                 </div>
             </div>
@@ -88,8 +88,10 @@
                         class="wh-48 d-flex bg-danger text-danger bg-opacity-10 align-items-center justify-content-center rounded-circle mb-2">
                         <i class="lni lni-page-break text-danger fs-1"></i>
                     </div>
-                    <h4 class="mb-0">1.8K</h4>
-                    <p class="mb-0">Produk Baru</p>
+                    <div class="mb-0 d-flex justify-content-between align-items-center">
+                        <p>Rp</p> {{ number_format($pendapatanPerBulan, 0, ',', '.') }}
+                    </div>
+                    <p class="mb-0">Pendapatan Perbulan</p>
                 </div>
             </div>
         </div>
@@ -104,25 +106,33 @@
                         <!-- Pesanan 1 -->
                         @foreach ($pesananNew as $item)
                             <div class="d-flex align-items-center gap-3">
-                                <img src="{{ asset('template/assets/images/orders/01.png') }}" width="70" class="rounded-3"
-                                    alt="Produk">
+                                <img src="{{ asset('storage/produk/final/' . $item->gambar) }}" width="70"
+                                    class="rounded-3" alt="Produk">
                                 <div class="flex-grow-1">
                                     <h6 class="mb-0 fw-bold">{{ $item->kode_pesanan }}</h6>
                                     <p class="mb-0">
-                                        Jumlah: {{ $item->total_nominal }} |
-                                        Tanggal: {{ \Carbon\Carbon::parse($item->tanggal)->format('d M Y H:i') }}
+                                        Jumlah: {{ $item->total_barang }} |
+                                        Tanggal: {{ \Carbon\Carbon::parse($item->created_at)->format('d M Y H:i') }}
                                     </p>
                                 </div>
                                 <div>
-                                    <h6 class="mb-0 text-success">Rp{{ number_format($item->total_nominal, 0, ',', '.') }}</h6>
+                                    <h6 class="mb-0 text-success">Rp{{ number_format($item->total_nominal, 0, ',', '.') }}
+                                    </h6>
                                 </div>
                             </div>
                         @endforeach
-
                         <!-- Pesanan 2 -->
                     </div>
                 </div>
             </div>
         </div>
     </div><!-- end row -->
+    @push('scripts')
+        <script>
+            window.chartData = {
+                penjualan: @json($penjualanData),
+                pengeluaran: @json($PengeluaranData),
+            };
+        </script>
+    @endpush
 @endsection
