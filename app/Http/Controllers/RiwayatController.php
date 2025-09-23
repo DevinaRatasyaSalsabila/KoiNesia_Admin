@@ -60,9 +60,11 @@ class RiwayatController extends Controller
      * Display the specified resource.
      */
     // public function show(string $id)
-    public function show()
+    public function show(string $id)
     {
-        return view('riwayat.detail');
+        $pesanan = Pesanan::findOrFile($id);
+        dd($pesanan);
+        return view('riwayat.detail', compact('pesanan'));
     }
 
     /**

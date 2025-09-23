@@ -21,8 +21,8 @@
             <h5 class="mb-0">Rekap</h5>
             <div class="input-group" style="width: 220px;">
                 <label for="tanggal" class="col-form-label me-2">Filter</label>
-                <input type="date" id="tanggal" name="tanggal" value="{{ now()->toDateString() }}"
-                    class="form-control form-control-sm">
+                <input type="date" id="tanggal" name="tanggal" value="" class="form-control form-control-sm">
+                {{-- <input type="month" id="tanggal" name="tanggal" value="" class="form-control form-control-sm"> --}}
             </div>
         </div>
 
@@ -73,22 +73,82 @@
                     const selectedDate = filterInput.value;
                     const rows = tableBody.querySelectorAll("tr");
 
+                    let visibleCount = 0;
+
                     rows.forEach(row => {
                         const tanggalCell = row.querySelector("td:nth-child(2)");
                         const tanggal = tanggalCell.textContent.trim();
 
                         if (selectedDate === "" || tanggal === selectedDate) {
-                            row.style.display = ""; // show
+                            row.style.display = "";
+                            visibleCount++;
                         } else {
-                            row.style.display = "none"; // hide
+                            row.style.display = "none";
                         }
                     });
+
+                    const emptyRow = document.getElementById("noDataRow");
+                    if (emptyRow) emptyRow.remove();
+
+                    if (visibleCount === 0) {
+                        const tr = document.createElement("tr");
+                        tr.id = "noDataRow";
+                        tr.innerHTML = `
+        <td colspan="4" class="text-center text-muted">
+            Data tidak tersedia pada rentang ini
+        </td>
+    `;
+                        tableBody.appendChild(tr);
+                    }
                 }
 
                 filterTable();
 
                 filterInput.addEventListener("change", filterTable);
             });
+
+            //ini kalo typenya month
+            // document.addEventListener("DOMContentLoaded", function() {
+            //     const filterInput = document.getElementById("tanggal");
+            //     const tableBody = document.getElementById("rekapBody");
+
+            //     function filterTable() {
+            //         const selectedMonth = filterInput.value;
+            //         const rows = tableBody.querySelectorAll("tr");
+
+            //         let visibleCount = 0;
+
+            //         rows.forEach(row => {
+            //             const tanggalCell = row.querySelector("td:nth-child(2)");
+            //             const tanggal = tanggalCell.textContent.trim().substring(0, 7);
+
+            //             if (selectedMonth === "" || tanggal === selectedMonth) {
+            //                 row.style.display = "";
+            //                 visibleCount++;
+            //             } else {
+            //                 row.style.display = "none";
+            //             }
+            //         });
+
+            //         const emptyRow = document.getElementById("noDataRow");
+            //         if (emptyRow) emptyRow.remove();
+
+            //         if (visibleCount === 0) {
+            //             const tr = document.createElement("tr");
+            //             tr.id = "noDataRow";
+            //             tr.innerHTML = `
+            //     <td colspan="4" class="text-center text-muted">
+            //         Data tidak tersedia pada bulan ini
+            //     </td>
+            // `;
+            //             tableBody.appendChild(tr);
+            //         }
+            //     }
+
+            //     filterTable();
+
+            //     filterInput.addEventListener("change", filterTable);
+            // });
         </script>
     @endpush
 @endsection

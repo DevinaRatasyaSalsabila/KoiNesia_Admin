@@ -71,7 +71,7 @@ Route::post('pembeli', [PembeliController::class, 'store'])->name('pembeli.add')
 
 //Riwayat Transaksi
 Route::get('riwayat-transaksi', [RiwayatController::class, 'index'])->name('riwayat.index');
-Route::get('riwayat-transaksi/detail', [RiwayatController::class, 'show']);
+Route::get('riwayat-transaksi/detail/{id}', [RiwayatController::class, 'show'])->name('riwayat.detail');
 
 //rekap
 Route::get('rekap', [RekapController::class, 'index'])->name('rekap.index');

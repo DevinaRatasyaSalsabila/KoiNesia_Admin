@@ -1,3 +1,4 @@
+{{-- lk aku nangkepe ini detail rekap ngge menampilkan riwayat pesanan di tanggal itu (semua di tanggal itu) --}}
 @extends('main')
 @section('content')
     <!--breadcrumb-->
@@ -15,7 +16,7 @@
             </nav>
         </div>
     </div>
-    <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-4">
+    {{-- <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-4">
         <div class="col">
             <div class="card">
                 <div class="card-body">
@@ -64,7 +65,7 @@
                 </div>
             </div>
         </div>
-    </div><!--end row-->
+    </div> --}}
 
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
@@ -77,10 +78,10 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Nama Item</th>
-                            <th>Harga Satuan</th>
-                            <th>Jumlah Item</th>
-                            <th>Total</th>
+                            <th>Kode Pesanan</th>
+                            <th>Produk</th>
+                            <th>Total Seluruh Produk</th>
+                            <th>Nominal</th>
                         </tr>
                     </thead>
                     <tbody>
