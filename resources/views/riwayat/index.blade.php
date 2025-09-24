@@ -29,8 +29,7 @@
             <h5 class="mb-0">Riwayat Transaksi</h5>
             <div class="input-group" style="width: 220px;">
                 <label for="tanggal" class="col-form-label me-2">Filter</label>
-                <input type="date" id="tanggal-riwayat" name="tanggal" value=""
-                    class="form-control form-control-sm">
+                <input type="date" id="tanggal-riwayat" name="tanggal" value="" class="form-control form-control-sm">
                 {{-- <input type="month" id="tanggal" name="tanggal" value="" class="form-control form-control-sm"> --}}
             </div>
         </div>
@@ -55,8 +54,7 @@
                                 <td>{{ $item['nama_pembeli'] }}</td>
                                 <td>Rp{{ number_format($item['total_nominal'], 0, ',', '.') }}</td>
                                 <td class="text-center">
-                                    <a href="{{ route('riwayat.detail', $item['kode_pesanan']) }}"
-                                        class="btn btn-warning">
+                                    <a href="{{ route('riwayat.detail', $item['kode_pesanan']) }}" class="btn btn-warning">
                                         <i class="fadeIn animated bx bx-clipboard text-light"></i>
                                     </a>
                                 </td>
@@ -80,7 +78,7 @@
 
     @push('scripts')
         <script>
-            $(document).ready(function() {
+            $(document).ready(function () {
                 var table = $('#riwayatTable').DataTable({
                     lengthChange: false,
                     buttons: ['copy', 'excel', 'pdf', 'print']
@@ -90,7 +88,7 @@
                     .appendTo('#example2_wrapper .col-md-6:eq(0)');
             });
 
-            document.addEventListener("DOMContentLoaded", function() {
+            document.addEventListener("DOMContentLoaded", function () {
                 const filterInput = document.getElementById("tanggal-riwayat");
                 const riwayatBody = document.getElementById("riwayatBody");
 
@@ -119,10 +117,10 @@
                         const tr = document.createElement("tr");
                         tr.id = "noDataRow";
                         tr.innerHTML = `
-        <td colspan="4" class="text-center text-muted">
-            Data tidak tersedia pada rentang ini
-        </td>
-    `;
+                <td colspan="5" class="text-center text-muted">
+                    Data tidak tersedia pada rentang ini
+                </td>
+            `;
                         riwayatBody.appendChild(tr);
                     }
                 }

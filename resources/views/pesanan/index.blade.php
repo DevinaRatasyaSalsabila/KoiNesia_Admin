@@ -74,6 +74,10 @@
                                             {{ ($first->status ?? '') == 'proses' ? 'selected' : '' }}>
                                             Diproses
                                         </option>
+                                        <option value="selesai" class="fw-bold"
+                                            {{ ($first->status ?? '') == 'selesai' ? 'selected' : '' }}>
+                                            Selesai
+                                        </option>
                                     </select>
                                 </td>
 
@@ -137,25 +141,37 @@
             let updateStatusUrl = "{{ route('pesanan.updateStatus', ':id') }}";
 
             $(document).on('change', '.update-status-select', function() {
-                let id = $(this).data('id');
-                let status = $(this).val();
-                let url = updateStatusUrl.replace(':id', id);
+    let id = $(this).data('id');
+    let status = $(this).val();
+    let url = updateStatusUrl.replace(':id', id);
 
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    data: {
-                        status: status,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(res) {
-                        console.log('Status updated:', res);
-                    },
-                    error: function(err) {
-                        console.log(err.responseJSON);
-                    }
-                });
-            });
+    // simpan referensi row tabel
+    let row = $(this).closest('tr');
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: {
+            status: status,
+            _token: '{{ csrf_token() }}'
+        },
+        success: function(res) {
+            console.log('Status updated:', res);
+
+            if (status === 'selesai') {
+                // hapus row dari DataTable
+                let table = $("#tabel_pesanan").DataTable();
+                table.row(row).remove().draw(false);
+
+                // tampilkan alert bawaan JS
+                alert('Riwayat pesanan telah tersimpan');
+            }
+        },
+        error: function(err) {
+            console.log(err.responseJSON);
+        }
+    });
+});
 
             document.querySelectorAll('.update-status-select').forEach(select => {
                 const updateColor = (el) => {

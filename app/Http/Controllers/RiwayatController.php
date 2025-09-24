@@ -60,11 +60,24 @@ class RiwayatController extends Controller
      * Display the specified resource.
      */
     // public function show(string $id)
-    public function show(string $id)
+    public function show(string $kodePesanan)
     {
-        $pesanan = Pesanan::findOrFile($id);
-        dd($pesanan);
-        return view('riwayat.detail', compact('pesanan'));
+        $items = Pesanan::where('kode_pesanan', $kodePesanan)
+            ->join('produk', 'pesanan.kode_produk', '=', 'produk.kode_produk')
+            ->select(
+                'produk.nama_produk',
+                'produk.harga_Satuan',
+                'pesanan.jumlah',
+                'pesanan.nominal'
+            )
+            ->get();
+
+        $pesanan = Pesanan::where('kode_pesanan', $kodePesanan)->firstOrFail();
+        $pembeli = Pembeli::find($pesanan->id_pembeli);
+
+        $totalKeseluruhan = $items->sum('nominal');
+
+        return view('riwayat.detail', compact('pesanan', 'pembeli', 'items', 'totalKeseluruhan'));
     }
 
     /**

@@ -98,7 +98,7 @@
                         </div>
                         <div class="col-12">
                             <label for="harga_produk" class="form-label">Harga Produk</label>
-                            <input type="number" class="form-control" id="harga_produk" name="harga_produk"
+                            <input type="text" class="form-control" id="harga_produk" name="harga_produk"
                                 placeholder="Masukkan Harga Produk" required>
                             <div class="invalid-feedback">
                                 Harga produk wajib diisi.
@@ -171,6 +171,23 @@
                         }
                     }
                 });
+            });
+
+            function formatUang(subject) {
+                subject = subject.replace(/[^,\d]/g, "");
+                let rupiah = subject.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                return "Rp" + rupiah;
+            }
+
+            $('#harga_produk').on('input', function () {
+                let value = $(this).val();
+                $(this).val(formatUang(value));
+            });
+
+            $('#formAddProduct').on('submit', function () {
+                let value = $('#harga_produk').val();
+                let angkaMurni = value.replace(/[^0-9]/g, ""); 
+                $('#harga_produk').val(angkaMurni);
             });
 
             (function () {

@@ -81,6 +81,10 @@ class PengeluaranController extends Controller
     {
         $pengeluaran = Pengeluaran::findOrFail($id);
 
+        $request->merge([
+            'nominal' => preg_replace('/[^0-9]/', '', $request->nominal),
+        ]);
+
         $request->validate([
             'nama_pengeluaran' => 'required|string|max:255',
             'tanggal' => 'required|date',
@@ -99,19 +103,11 @@ class PengeluaranController extends Controller
             return back()->withErrors(['duplicate' => 'Data pengeluaran dengan kombinasi tersebut sudah ada.']);
         }
 
-        $pengeluaran->nama_pengeluaran = $request->nama_pengeluaran;
-        $pengeluaran->tanggal = $request->tanggal;
-        $pengeluaran->keterangan = $request->keterangan;
-        $pengeluaran->nominal = $request->nominal;
-
-        $pengeluaran->save();
+        $pengeluaran->update($request->all());
 
         return back()->with('success', 'Data pengeluaran berhasil diperbarui');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         Pengeluaran::find($id)->delete();

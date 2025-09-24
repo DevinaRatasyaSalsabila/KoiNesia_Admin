@@ -33,6 +33,7 @@ class PesananController extends Controller
                 'pembeli.alamat',
                 'pembeli.created_at'
             )
+            ->where('pesanan.status', '!=', 'selesai')
             ->groupBy(
                 'pesanan.kode_pesanan',
                 'pesanan.id_pembeli',
@@ -87,14 +88,13 @@ class PesananController extends Controller
         $pesanan = Pesanan::where('kode_pesanan', $id)->firstOrFail();
 
         $status = $request->status;
-        if (!in_array($status, ['baru', 'proses'])) {
+        if (!in_array($status, ['baru', 'proses', 'selesai'])) {
             return response()->json(['error' => 'Status tidak valid'], 400);
         }
 
         $pesanan->status = $status;
         $pesanan->save();
 
-        // Ambil pembeli dari pesanan, bukan dari request
         $pembeli = Pembeli::find($pesanan->id_pembeli);
 
         $no_hp = $pembeli->no_hp;
