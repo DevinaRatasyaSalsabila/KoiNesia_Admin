@@ -47,6 +47,6 @@ public function submit(Request $request)
     public function logout()
     {
         Auth::logout();
-        return redirect('/');
+        return redirect('/')->with('success', 'Logout berhasil');
     }
 }

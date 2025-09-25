@@ -1,11 +1,11 @@
 @extends('main')
 @section('content')
     <!--breadcrumb-->
-    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+    <div class="mb-3 page-breadcrumb d-none d-sm-flex align-items-center">
         <div class="breadcrumb-title pe-3">Produk</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0 p-0">
+                <ol class="p-0 mb-0 breadcrumb">
                     <li class="breadcrumb-item">
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
@@ -18,22 +18,22 @@
     <!--end breadcrumb-->
 
 <div class="d-flex justify-content-end">
-    <a href="{{ url('produk/tambah') }}" 
-       class="btn btn-warning btn-sm px-3 shadow-sm my-2" 
+    <a href="{{ url('produk/tambah') }}"
+       class="px-3 my-2 shadow-sm btn btn-warning btn-sm"
        data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Produk">
         <i class="bx bx-plus fs-5 text-light"></i>
     </a>
 </div>
 
-    <div class="row row-cols-1 row-cols-md-3 g-4 mb-3">
+    <div class="mb-3 row row-cols-1 row-cols-md-3 g-4">
         @foreach ($produk as $item)
             @php
                 $media = json_decode($item->gambar_produk, true);
             @endphp
             <div class="col">
-                <div class="card shadow-sm border-0 rounded-4 overflow-hidden h-100">
+                <div class="overflow-hidden border-0 shadow-sm card rounded-4 h-100">
                     <div class="row g-0 align-items-center">
-                        <div class="col-md-4 text-center p-3">
+                        <div class="p-3 text-center col-md-4">
                             @if (!empty($media))
                                 @php
                                     $firstImage = collect($media)->first(function ($file) {
@@ -64,7 +64,7 @@
                             <div class="card-body">
                                 <h5 class="card-title fw-bold text-dark">{{ $item->nama_produk }} Ukuran
                                     {{ $item->ukuran_produk }}</h5>
-                                <span class="badge bg-secondary mb-2 px-3 p-1 fs-6 shadow-sm">
+                                <span class="p-1 px-3 mb-2 shadow-sm badge bg-secondary fs-6">
                                     Stok: {{ $item->stok_produk }}
                                 </span>
                                 <h6 class="fw-bold">
@@ -73,22 +73,21 @@
                                         Rp{{ number_format($item->harga_Satuan, 0, ',', '.') }}
                                     </span>
                                 </h6>
-                                <div class="d-flex gap-2">
+                                <div class="gap-2 d-flex">
                                     <a href="{{ url('produk/detail', $item->id_produk) }}"
-                                        class="btn btn-primary btn-sm px-3 shadow-sm d-flex align-items-center gap-2"
+                                        class="gap-2 px-3 shadow-sm btn btn-primary btn-sm d-flex align-items-center"
                                         data-bs-toggle="tooltip" data-bs-placement="top" title="Detail Produk">
                                         <i class="bx bx-info-circle fs-5"></i>
                                     </a>
                                     <a href="{{ url('produk/edit', $item->id_produk) }}"
-                                        class="btn btn-warning btn-sm px-3 shadow-sm" data-bs-toggle="tooltip"
+                                        class="px-3 shadow-sm btn btn-warning btn-sm" data-bs-toggle="tooltip"
                                         data-bs-placement="top" title="Edit Produk">
                                         <i class="bx bx-pencil fs-5 text-light"></i>
                                     </a>
-                                    <form action="{{ route('produk.delete', $item->id_produk) }}" method="POST"
-                                        onsubmit="return confirm('Yakin hapus produk ini?')">
+                                    <form action="{{ route('produk.delete', $item->id_produk) }}" method="POST" class="delete-form">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm px-3 shadow-sm"
+                                        <button type="submit" class="px-3 shadow-sm btn btn-danger btn-sm"
                                             data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Produk">
                                             <i class="bx bx-trash fs-5 text-light"></i>
                                         </button>

@@ -42,8 +42,8 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $a->tanggal }}</td>
-                                <td>Rp{{ number_format($a->total, 0, ',', '.') }}</td>
-                                <td>Rp{{ number_format($b->nominal, 0, ',', '.') }}</td>
+                                <td>Rp{{ number_format(optional($a)->total, 0, ',', '.') }}</td>
+                                <td>Rp{{ number_format(optional($b)->nominal ?? 0, 0, ',', '.') }}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -75,6 +75,9 @@
 
                     let visibleCount = 0;
 
+                    const emptyRow = document.getElementById("noDataRow");
+                    if (emptyRow) emptyRow.remove();
+
                     rows.forEach(row => {
                         const tanggalCell = row.querySelector("td:nth-child(2)");
                         const tanggal = tanggalCell.textContent.trim();
@@ -87,17 +90,14 @@
                         }
                     });
 
-                    const emptyRow = document.getElementById("noDataRow");
-                    if (emptyRow) emptyRow.remove();
-
                     if (visibleCount === 0) {
                         const tr = document.createElement("tr");
                         tr.id = "noDataRow";
                         tr.innerHTML = `
-        <td colspan="4" class="text-center text-muted">
-            Data tidak tersedia pada rentang ini
-        </td>
-    `;
+                            <td colspan="4" class="text-center text-muted">
+                                Data tidak tersedia pada rentang ini
+                            </td>
+                        `;
                         tableBody.appendChild(tr);
                     }
                 }
@@ -137,10 +137,10 @@
             //             const tr = document.createElement("tr");
             //             tr.id = "noDataRow";
             //             tr.innerHTML = `
-            //     <td colspan="4" class="text-center text-muted">
-            //         Data tidak tersedia pada bulan ini
-            //     </td>
-            // `;
+    //     <td colspan="4" class="text-center text-muted">
+    //         Data tidak tersedia pada bulan ini
+    //     </td>
+    // `;
             //             tableBody.appendChild(tr);
             //         }
             //     }

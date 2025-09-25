@@ -136,7 +136,7 @@ class BarangMasukController extends Controller
     public function destroy(string $id)
     {
         $barang = BarangMasuk::find($id);
-        // $barang->delete();
+        $barang->delete();
 
         //iki fungsi lk  barang masok di hapus, stok produk di kurangi
         // $barang = BarangMasuk::where('kode_produk', $barang->kode_produk)->first();

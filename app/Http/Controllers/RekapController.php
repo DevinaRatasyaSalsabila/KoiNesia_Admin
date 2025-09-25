@@ -25,33 +25,32 @@ class RekapController extends Controller
             ->orderBy('tanggal', 'asc')
             ->get();
 
-
         $rekap = $penjualan->zip($pengeluaran);
-        // dd($penjualan);
+
         return view('rekap.index', compact('rekap'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function filter(Request $request)
-    {
-        $tanggal = $request->input('tanggal');
+    // public function filter(Request $request)
+    // {
+    //     $tanggal = $request->input('tanggal');
 
-        $penjualan = Pesanan::selectRaw('DATE(created_at) as tanggal, SUM(nominal) as total')
-            ->where('status', 'selesai')
-            ->when($tanggal, fn($q) => $q->whereDate('created_at', $tanggal))
-            ->groupBy('tanggal')
-            ->get();
+    //     $penjualan = Pesanan::selectRaw('DATE(created_at) as tanggal, SUM(nominal) as total')
+    //         ->where('status', 'selesai')
+    //         ->when($tanggal, fn($q) => $q->whereDate('created_at', $tanggal))
+    //         ->groupBy('tanggal')
+    //         ->get();
 
-        $pengeluaran = Pengeluaran::selectRaw('DATE(created_at) as tanggal, SUM(nominal) as nominal')
-            ->whereDate('created_at', $tanggal)
-            ->get();
+    //     $pengeluaran = Pengeluaran::selectRaw('DATE(created_at) as tanggal, SUM(nominal) as nominal')
+    //         ->whereDate('created_at', $tanggal)
+    //         ->get();
 
-        $rekap = $penjualan->zip($pengeluaran);
+    //     $rekap = $penjualan->zip($pengeluaran);
 
-        return response()->json($rekap);
-    }
+    //     return response()->json($rekap);
+    // }
 
 
     /**

@@ -46,8 +46,8 @@
                                 <td>{{ $item->total_produk }}</td>
                                 <td>{{ $item->keterangan }}</td>
                                 <td class="text-center">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <form action="{{ route('barang-masuk.destroy', $item->id_pemasukan) }}"
+                                    <div class="gap-2 d-flex align-items-center">
+                                        <form action="{{ route('barang-masuk.destroy', $item->id_pemasukan) }}" class="delete-form"
                                             method="post">
                                             @csrf
                                             @method('delete')

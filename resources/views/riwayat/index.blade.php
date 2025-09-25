@@ -1,11 +1,11 @@
 @extends('main')
 @section('content')
     <!--breadcrumb-->
-    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+    <div class="mb-3 page-breadcrumb d-none d-sm-flex align-items-center">
         <div class="breadcrumb-title pe-3">Riwayat Transaksi</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0 p-0">
+                <ol class="p-0 mb-0 breadcrumb">
                     <li class="breadcrumb-item">
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
@@ -23,14 +23,19 @@
         </div>
     </div>
 
-    <!--end breadcrumb-->
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Riwayat Transaksi</h5>
-            <div class="input-group" style="width: 220px;">
-                <label for="tanggal" class="col-form-label me-2">Filter</label>
-                <input type="date" id="tanggal-riwayat" name="tanggal" value="" class="form-control form-control-sm">
-                {{-- <input type="month" id="tanggal" name="tanggal" value="" class="form-control form-control-sm"> --}}
+            <div class="input-group" style="width: 420px;">
+                <label for="tanggal" class="col-form-label me-2">Dari</label>
+                <input type="date" id="dari-riwayat" class="form-control form-control-sm me-4">
+
+                <label for="tanggal" class="col-form-label me-2">Sampai</label>
+                <input type="date" id="sampai-riwayat" class="form-control form-control-sm">
+
+                <button type="button" id="resetFilter" class="btn btn-danger btn-sm ms-2">
+                    <i class="bi bi-arrow-counterclockwise"></i>
+                </button>
             </div>
         </div>
 
@@ -60,7 +65,6 @@
                                 </td>
                             </tr>
                         @endforeach
-
                     </tbody>
                     <tfoot>
                         <tr>
@@ -78,7 +82,7 @@
 
     @push('scripts')
         <script>
-            $(document).ready(function () {
+            $(document).ready(function() {
                 var table = $('#riwayatTable').DataTable({
                     lengthChange: false,
                     buttons: ['copy', 'excel', 'pdf', 'print']
@@ -88,30 +92,38 @@
                     .appendTo('#example2_wrapper .col-md-6:eq(0)');
             });
 
-            document.addEventListener("DOMContentLoaded", function () {
-                const filterInput = document.getElementById("tanggal-riwayat");
+            document.addEventListener("DOMContentLoaded", function() {
+                const dariInput = document.getElementById("dari-riwayat");
+                const sampaiInput = document.getElementById("sampai-riwayat");
                 const riwayatBody = document.getElementById("riwayatBody");
+                const resetBtn = document.getElementById("resetFilter");
 
                 function filterTable() {
-                    const selectedDate = filterInput.value;
-                    const rows = riwayatBody.querySelectorAll("tr");
+                    const dariDate = dariInput.value ? new Date(dariInput.value) : null;
+                    const sampaiDate = sampaiInput.value ? new Date(sampaiInput.value) : null;
 
+                    const rows = riwayatBody.querySelectorAll("tr");
                     let visibleCount = 0;
+
+                    const emptyRow = document.getElementById("noDataRow");
+                    if (emptyRow) emptyRow.remove();
 
                     rows.forEach(row => {
                         const tanggalCell = row.querySelector("td:nth-child(2)");
-                        const tanggal = tanggalCell.textContent.trim();
+                        const [dd, mm, yyyy] = tanggalCell.textContent.trim().split('-');
+                        const tanggal = new Date(`${yyyy}-${mm}-${dd}`);
 
-                        if (selectedDate === "" || tanggal === selectedDate) {
+                        let showRow = true;
+                        if (dariDate && tanggal < dariDate) showRow = false;
+                        if (sampaiDate && tanggal > sampaiDate) showRow = false;
+
+                        if (showRow) {
                             row.style.display = "";
                             visibleCount++;
                         } else {
                             row.style.display = "none";
                         }
                     });
-
-                    const emptyRow = document.getElementById("noDataRow");
-                    if (emptyRow) emptyRow.remove();
 
                     if (visibleCount === 0) {
                         const tr = document.createElement("tr");
@@ -125,9 +137,26 @@
                     }
                 }
 
-                filterTable();
+                // Event filter
+                dariInput.addEventListener("change", filterTable);
+                sampaiInput.addEventListener("change", filterTable);
 
-                filterInput.addEventListener("change", filterTable);
+                // Event reset
+                resetBtn.addEventListener("click", function() {
+                    dariInput.value = "";
+                    sampaiInput.value = "";
+
+                    // tampilkan semua row
+                    riwayatBody.querySelectorAll("tr").forEach(row => {
+                        row.style.display = "";
+                    });
+
+                    // hapus pesan kosong kalau ada
+                    const emptyRow = document.getElementById("noDataRow");
+                    if (emptyRow) emptyRow.remove();
+                });
+
+                filterTable();
             });
         </script>
     @endpush

@@ -1,11 +1,12 @@
 @extends('main')
 @section('content')
+
     <!--breadcrumb-->
-    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+    <div class="mb-3 page-breadcrumb d-none d-sm-flex align-items-center">
         <div class="breadcrumb-title pe-3">Pengeluaran</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0 p-0">
+                <ol class="p-0 mb-0 breadcrumb">
                     <li class="breadcrumb-item">
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
@@ -42,8 +43,7 @@
                                 <td>{{ $item->nama_pengeluaran }}</td>
                                 <td>Rp{{ number_format($item->nominal, 0, ',', '.') }}</td>
                                 <td class="text-center">
-                                    <form action="{{ route('pengeluaran.delete', $item->id) }}" method="POST"
-                                        onsubmit="return confirm('Yakin mau hapus pengeluaran ini? 😥')" class="d-inline">
+                                    <form action="{{ route('pengeluaran.delete', $item->id) }}" method="POST" class="d-inline delete-form">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">

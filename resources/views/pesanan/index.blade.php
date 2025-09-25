@@ -82,24 +82,23 @@
                                 </td>
 
                                 <td class="align-middle">
-                                    <div class="d-flex align-items-center gap-2">
+                                    <div class="gap-2 d-flex align-items-center">
                                         <a href="{{ route('pesanan.detail', $first->kode_pesanan) }}"
                                             class="text-decoration-none text-dark d-flex align-items-center">
                                             <i class="material-icons-outlined">content_paste</i>
                                         </a>
 
                                         <form action="{{ route('pesanan.delete', $first->kode_pesanan) }}" method="POST"
-                                            class="m-0 p-0 d-flex align-items-center">
+                                            class="p-0 m-0 d-flex align-items-center delete-form">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
-                                                class="btn text-dark p-0 m-0 d-flex align-items-center"
-                                                onclick="return confirm('Yakin mau hapus pesanan ini?')">
+                                                class="p-0 m-0 btn text-dark d-flex align-items-center delete-btn">
                                                 <i class="material-icons-outlined">delete</i>
                                             </button>
                                         </form>
 
-                                        <button type="button" class="btn p-0 d-flex align-items-center"
+                                        <button type="button" class="p-0 btn d-flex align-items-center"
                                             data-bs-toggle="modal"
                                             data-bs-target="#edit_pesanan_{{ $first->kode_pesanan }}">
                                             <i class="material-icons-outlined">edit</i>
@@ -141,37 +140,37 @@
             let updateStatusUrl = "{{ route('pesanan.updateStatus', ':id') }}";
 
             $(document).on('change', '.update-status-select', function() {
-    let id = $(this).data('id');
-    let status = $(this).val();
-    let url = updateStatusUrl.replace(':id', id);
+                let id = $(this).data('id');
+                let status = $(this).val();
+                let url = updateStatusUrl.replace(':id', id);
 
-    // simpan referensi row tabel
-    let row = $(this).closest('tr');
+                // simpan referensi row tabel
+                let row = $(this).closest('tr');
 
-    $.ajax({
-        url: url,
-        type: 'POST',
-        data: {
-            status: status,
-            _token: '{{ csrf_token() }}'
-        },
-        success: function(res) {
-            console.log('Status updated:', res);
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {
+                        status: status,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(res) {
+                        console.log('Status updated:', res);
 
-            if (status === 'selesai') {
-                // hapus row dari DataTable
-                let table = $("#tabel_pesanan").DataTable();
-                table.row(row).remove().draw(false);
+                        if (status === 'selesai') {
+                            // hapus row dari DataTable
+                            let table = $("#tabel_pesanan").DataTable();
+                            table.row(row).remove().draw(false);
 
-                // tampilkan alert bawaan JS
-                alert('Riwayat pesanan telah tersimpan');
-            }
-        },
-        error: function(err) {
-            console.log(err.responseJSON);
-        }
-    });
-});
+                            // tampilkan alert bawaan JS
+                            alert('Riwayat pesanan telah tersimpan');
+                        }
+                    },
+                    error: function(err) {
+                        console.log(err.responseJSON);
+                    }
+                });
+            });
 
             document.querySelectorAll('.update-status-select').forEach(select => {
                 const updateColor = (el) => {

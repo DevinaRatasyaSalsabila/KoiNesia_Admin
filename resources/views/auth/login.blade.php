@@ -29,9 +29,6 @@
 
 <body>
 
-
-    <!--authentication-->
-
     <div class="section-authentication-cover">
         <div class="">
             <div class="row g-0">
@@ -39,7 +36,7 @@
                 <div
                     class="col-12 col-xl-7 col-xxl-8 auth-cover-left align-items-center justify-content-center d-none d-xl-flex border-end">
 
-                    <div class="card rounded-0 mb-0 border-0 shadow-none bg-transparent">
+                    <div class="mb-0 bg-transparent border-0 shadow-none card rounded-0">
                         <div class="card-body">
                             <img src="{{ asset('template/assets/images/auth/login1.png') }}"
                                 class="img-fluid auth-img-cover-login" width="650" alt="">
@@ -49,21 +46,34 @@
                 </div>
 
                 <div class="col-12 col-xl-5 col-xxl-4 auth-cover-right align-items-center justify-content-center">
-                    <div class="card rounded-0 m-3 mb-0 border-0 shadow-none">
+                    <div class="m-3 mb-0 border-0 shadow-none card rounded-0">
                         <div class="card-body p-sm-5">
                             <img src="assets/images/logo1.png" class="mb-4" width="145" alt="">
-                            <h2 class="fw-bold text-center">Login</h2>
+                            <h2 class="text-center fw-bold">Login</h2>
+
+                            @if (session('error'))
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    {{ session('error') }}
+                                </div>
+                            @endif
+
                             @if ($errors->has('login_error'))
                                 <div class="alert alert-danger">
                                     {{ $errors->first('login_error') }}
                                 </div>
                             @endif
+
+                            @if (session('success'))
+                                <div class="alert alert-success">
+                                    {{ session('success') }}
+                                </div>
+                            @endif
                             <p class="mb-0 text-center">Masukkan Email dan Password</p>
                             <div class="separator section-padding">
-                                <div class="line mt-2"></div>
+                                <div class="mt-2 line"></div>
                             </div>
 
-                            <div class="form-body mt-4">
+                            <div class="mt-4 form-body">
                                 <form class="row g-3" action="{{ route('login.submit') }}" method="POST">
                                     @csrf
                                     <div class="col-12">
@@ -76,7 +86,7 @@
                                         <div class="input-group" id="password_hide">
                                             <input type="password" class="form-control" id="inputChoosePassword"
                                                 name="password" value="12345678" placeholder="Masukkan Kata Sandi">
-                                            <a href="javascript:;" class="input-group-text bg-transparent"><i
+                                            <a href="javascript:;" class="bg-transparent input-group-text"><i
                                                     class="bi bi-eye-slash-fill"></i></a>
                                         </div>
                                     </div>
@@ -95,12 +105,13 @@
         </div>
     </div>
 
-    <!--authentication-->
-
-    <!--plugins-->
     <script src="{{ asset('template/assets/js/jquery.min.js') }}"></script>
 
     <script>
+        setTimeout(() => {
+            document.querySelectorAll('.alert').forEach(el => el.remove());
+        }, 3000);
+
         $(document).ready(function() {
             $("#password_hide a").on('click', function(event) {
                 event.preventDefault();
