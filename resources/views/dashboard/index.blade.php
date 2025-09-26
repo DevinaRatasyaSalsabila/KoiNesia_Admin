@@ -15,12 +15,6 @@
     </div>
     <!--end breadcrumb-->
 
-    @if (Auth::check())
-        <p>udh login</p>
-    @else
-        <p>belum login</p>
-    @endif
-
     <div class="row g-3">
         <!-- Kiri -->
         <div class="gap-3 col-12 col-xl-2 d-flex flex-column">
@@ -104,7 +98,7 @@
                     <hr>
                     <div class="gap-3 d-flex flex-column">
                         <!-- Pesanan 1 -->
-                        @foreach ($pesananNew as $item)
+                        @forelse ($pesananNew as $item)
                             <div class="gap-3 d-flex align-items-center">
                                 <img src="{{ asset('storage/produk/final/' . $item->gambar) }}" width="70"
                                     class="rounded-3" alt="Produk">
@@ -120,7 +114,9 @@
                                     </h6>
                                 </div>
                             </div>
-                        @endforeach
+                            @empty
+                            <p class="text-center">Tidak ada pesanan terbaru</p>
+                        @endforelse
                         <!-- Pesanan 2 -->
                     </div>
                 </div>
