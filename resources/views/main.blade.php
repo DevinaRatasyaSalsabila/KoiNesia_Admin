@@ -193,8 +193,7 @@
                                                 <!-- <div class="flex-shrink-0 mega-menu-icon">
                         <i class="material-icons-outlined">question_answer</i>
                       </div> -->
-                                                <img src="assets/images/megaIcons/06.png" width="40"
-                                                    alt="">
+                                                <img src="assets/images/megaIcons/06.png" width="40" alt="">
                                                 <div class="mega-menu-content">
                                                     <h5>Marketing</h5>
                                                     <p class="mb-0 f-14">In publishing and graphic
@@ -211,8 +210,7 @@
                                     <div class="mb-0 border shadow-none card rounded-4">
                                         <div class="card-body">
                                             <div class="gap-3 d-flex align-items-start">
-                                                <img src="assets/images/megaIcons/02.png" width="40"
-                                                    alt="">
+                                                <img src="assets/images/megaIcons/02.png" width="40" alt="">
                                                 <div class="mega-menu-content">
                                                     <h5>Website</h5>
                                                     <p class="mb-0 f-14">In publishing and graphic
@@ -229,8 +227,7 @@
                                     <div class="mb-0 border shadow-none card rounded-4">
                                         <div class="card-body">
                                             <div class="gap-3 d-flex align-items-start">
-                                                <img src="assets/images/megaIcons/03.png" width="40"
-                                                    alt="">
+                                                <img src="assets/images/megaIcons/03.png" width="40" alt="">
                                                 <div class="mega-menu-content">
                                                     <h5>Subscribers</h5>
                                                     <p class="mb-0 f-14">In publishing and graphic
@@ -247,8 +244,7 @@
                                     <div class="mb-0 border shadow-none card rounded-4">
                                         <div class="card-body">
                                             <div class="gap-3 d-flex align-items-start">
-                                                <img src="assets/images/megaIcons/01.png" width="40"
-                                                    alt="">
+                                                <img src="assets/images/megaIcons/01.png" width="40" alt="">
                                                 <div class="mega-menu-content">
                                                     <h5>Hubspot</h5>
                                                     <p class="mb-0 f-14">In publishing and graphic
@@ -265,8 +261,7 @@
                                     <div class="mb-0 border shadow-none card rounded-4">
                                         <div class="card-body">
                                             <div class="gap-3 d-flex align-items-start">
-                                                <img src="assets/images/megaIcons/11.png" width="40"
-                                                    alt="">
+                                                <img src="assets/images/megaIcons/11.png" width="40" alt="">
                                                 <div class="mega-menu-content">
                                                     <h5>Templates</h5>
                                                     <p class="mb-0 f-14">In publishing and graphic
@@ -283,8 +278,7 @@
                                     <div class="mb-0 border shadow-none card rounded-4">
                                         <div class="card-body">
                                             <div class="gap-3 d-flex align-items-start">
-                                                <img src="assets/images/megaIcons/13.png" width="40"
-                                                    alt="">
+                                                <img src="assets/images/megaIcons/13.png" width="40" alt="">
                                                 <div class="mega-menu-content">
                                                     <h5>Ebooks</h5>
                                                     <p class="mb-0 f-14">In publishing and graphic
@@ -301,8 +295,7 @@
                                     <div class="mb-0 border shadow-none card rounded-4">
                                         <div class="card-body">
                                             <div class="gap-3 d-flex align-items-start">
-                                                <img src="assets/images/megaIcons/12.png" width="40"
-                                                    alt="">
+                                                <img src="assets/images/megaIcons/12.png" width="40" alt="">
                                                 <div class="mega-menu-content">
                                                     <h5>Sales</h5>
                                                     <p class="mb-0 f-14">In publishing and graphic
@@ -319,8 +312,7 @@
                                     <div class="mb-0 border shadow-none card rounded-4">
                                         <div class="card-body">
                                             <div class="gap-3 d-flex align-items-start">
-                                                <img src="assets/images/megaIcons/08.png" width="40"
-                                                    alt="">
+                                                <img src="assets/images/megaIcons/08.png" width="40" alt="">
                                                 <div class="mega-menu-content">
                                                     <h5>Tools</h5>
                                                     <p class="mb-0 f-14">In publishing and graphic
@@ -337,8 +329,7 @@
                                     <div class="mb-0 border shadow-none card rounded-4">
                                         <div class="card-body">
                                             <div class="gap-3 d-flex align-items-start">
-                                                <img src="assets/images/megaIcons/09.png" width="40"
-                                                    alt="">
+                                                <img src="assets/images/megaIcons/09.png" width="40" alt="">
                                                 <div class="mega-menu-content">
                                                     <h5>Academy</h5>
                                                     <p class="mb-0 f-14">In publishing and graphic
@@ -517,8 +508,7 @@
                                             All</a>
                                     </div>
                                     <div><a class="gap-2 py-2 dropdown-item d-flex align-items-center"
-                                            href="javascript:;"><i
-                                                class="material-icons-outlined fs-6">done_all</i>Mark
+                                            href="javascript:;"><i class="material-icons-outlined fs-6">done_all</i>Mark
                                             all as read</a>
                                     </div>
                                     <div><a class="gap-2 py-2 dropdown-item d-flex align-items-center"
@@ -526,8 +516,7 @@
                                                 class="material-icons-outlined fs-6">mic_off</i>Disable
                                             Notifications</a></div>
                                     <div><a class="gap-2 py-2 dropdown-item d-flex align-items-center"
-                                            href="javascript:;"><i
-                                                class="material-icons-outlined fs-6">grade</i>What's
+                                            href="javascript:;"><i class="material-icons-outlined fs-6">grade</i>What's
                                             new ?</a></div>
                                     <div>
                                         <hr class="dropdown-divider">
@@ -544,8 +533,8 @@
                                 <a class="py-2 dropdown-item border-bottom" href="javascript:;">
                                     <div class="gap-3 d-flex align-items-center">
                                         <div class="">
-                                            <img src="assets/images/avatars/01.png" class="rounded-circle"
-                                                width="45" height="45" alt="">
+                                            <img src="assets/images/avatars/01.png" class="rounded-circle" width="45"
+                                                height="45" alt="">
                                         </div>
                                         <div class="">
                                             <h5 class="notify-title">Congratulations Jhon</h5>
@@ -581,8 +570,8 @@
                                 <a class="py-2 dropdown-item border-bottom" href="javascript:;">
                                     <div class="gap-3 d-flex align-items-center">
                                         <div class="">
-                                            <img src="assets/images/apps/13.png" class="rounded-circle"
-                                                width="45" height="45" alt="">
+                                            <img src="assets/images/apps/13.png" class="rounded-circle" width="45"
+                                                height="45" alt="">
                                         </div>
                                         <div class="">
                                             <h5 class="notify-title">Payment Recived</h5>
@@ -600,8 +589,8 @@
                                 <a class="py-2 dropdown-item border-bottom" href="javascript:;">
                                     <div class="gap-3 d-flex align-items-center">
                                         <div class="">
-                                            <img src="assets/images/apps/14.png" class="rounded-circle"
-                                                width="45" height="45" alt="">
+                                            <img src="assets/images/apps/14.png" class="rounded-circle" width="45"
+                                                height="45" alt="">
                                         </div>
                                         <div class="">
                                             <h5 class="notify-title">New Order Recived</h5>
@@ -619,8 +608,8 @@
                                 <a class="py-2 dropdown-item border-bottom" href="javascript:;">
                                     <div class="gap-3 d-flex align-items-center">
                                         <div class="">
-                                            <img src="assets/images/avatars/06.png" class="rounded-circle"
-                                                width="45" height="45" alt="">
+                                            <img src="assets/images/avatars/06.png" class="rounded-circle" width="45"
+                                                height="45" alt="">
                                         </div>
                                         <div class="">
                                             <h5 class="notify-title">Congratulations Jhon</h5>
@@ -671,20 +660,15 @@
                             <div class="text-center">
                                 <img src="assets/images/avatars/01.png" class="p-1 mb-3 shadow rounded-circle"
                                     width="90" height="90" alt="">
-                                <h5 class="mb-0 user-name fw-bold">Hello, Jhon</h5>
+                                <h5 class="mb-0 user-name fw-bold">Hello,
+                                    @if (Auth::check())
+                                        <p>{{ Auth::user()->nama }}</p>
+                                    @else
+                                        <p> User</p>
+                                    @endif
+                                </h5>
                             </div>
                         </a>
-                        <hr class="dropdown-divider">
-                        <a class="gap-2 py-2 dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                class="material-icons-outlined">person_outline</i>Profile</a>
-                        <a class="gap-2 py-2 dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                class="material-icons-outlined">local_bar</i>Setting</a>
-                        <a class="gap-2 py-2 dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                class="material-icons-outlined">dashboard</i>Dashboard</a>
-                        <a class="gap-2 py-2 dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                class="material-icons-outlined">account_balance</i>Earning</a>
-                        <a class="gap-2 py-2 dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                class="material-icons-outlined">cloud_download</i>Downloads</a>
                         <hr class="dropdown-divider">
                         <form action="{{ route('logout') }}" method="POST">
                             @csrf
@@ -805,12 +789,10 @@
                                 class="ms-2">Catalan</span></a>
                     </li>
                     <li><a class="py-2 dropdown-item d-flex align-items-center" href="javascript:;"><img
-                                src="assets/images/county/03.png" width="20" alt=""><span
-                                class="ms-2">French</span></a>
+                                src="assets/images/county/03.png" width="20" alt=""><span class="ms-2">French</span></a>
                     </li>
                     <li><a class="py-2 dropdown-item d-flex align-items-center" href="javascript:;"><img
-                                src="assets/images/county/04.png" width="20" alt=""><span
-                                class="ms-2">Belize</span></a>
+                                src="assets/images/county/04.png" width="20" alt=""><span class="ms-2">Belize</span></a>
                     </li>
                     <li><a class="py-2 dropdown-item d-flex align-items-center" href="javascript:;"><img
                                 src="assets/images/county/05.png" width="20" alt=""><span
@@ -825,8 +807,7 @@
                                 class="ms-2">Georgian</span></a>
                     </li>
                     <li><a class="py-2 dropdown-item d-flex align-items-center" href="javascript:;"><img
-                                src="assets/images/county/08.png" width="20" alt=""><span
-                                class="ms-2">Hindi</span></a>
+                                src="assets/images/county/08.png" width="20" alt=""><span class="ms-2">Hindi</span></a>
                     </li>
                 </ul>
             </div>
@@ -868,15 +849,15 @@
     <main class="main-wrapper">
         <div class="main-content">
             {{-- @if (session('error'))
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    {{ session('error') }}
-                </div>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+            </div>
             @endif
 
             @if (session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
             @endif --}}
             @yield('content')
         </div>
@@ -905,8 +886,7 @@
             <div class="order-list">
                 <div class="gap-3 p-3 order-item d-flex align-items-center border-bottom">
                     <div class="order-img">
-                        <img src="assets/images/orders/01.png" class="img-fluid rounded-3" width="75"
-                            alt="">
+                        <img src="assets/images/orders/01.png" class="img-fluid rounded-3" width="75" alt="">
                     </div>
                     <div class="order-info flex-grow-1">
                         <h5 class="mb-1 order-title">White Men Shoes</h5>
@@ -920,8 +900,7 @@
 
                 <div class="gap-3 p-3 order-item d-flex align-items-center border-bottom">
                     <div class="order-img">
-                        <img src="assets/images/orders/02.png" class="img-fluid rounded-3" width="75"
-                            alt="">
+                        <img src="assets/images/orders/02.png" class="img-fluid rounded-3" width="75" alt="">
                     </div>
                     <div class="order-info flex-grow-1">
                         <h5 class="mb-1 order-title">Red Airpods</h5>
@@ -935,8 +914,7 @@
 
                 <div class="gap-3 p-3 order-item d-flex align-items-center border-bottom">
                     <div class="order-img">
-                        <img src="assets/images/orders/03.png" class="img-fluid rounded-3" width="75"
-                            alt="">
+                        <img src="assets/images/orders/03.png" class="img-fluid rounded-3" width="75" alt="">
                     </div>
                     <div class="order-info flex-grow-1">
                         <h5 class="mb-1 order-title">Men Polo Tshirt</h5>
@@ -950,8 +928,7 @@
 
                 <div class="gap-3 p-3 order-item d-flex align-items-center border-bottom">
                     <div class="order-img">
-                        <img src="assets/images/orders/04.png" class="img-fluid rounded-3" width="75"
-                            alt="">
+                        <img src="assets/images/orders/04.png" class="img-fluid rounded-3" width="75" alt="">
                     </div>
                     <div class="order-info flex-grow-1">
                         <h5 class="mb-1 order-title">Blue Jeans Casual</h5>
@@ -965,8 +942,7 @@
 
                 <div class="gap-3 p-3 order-item d-flex align-items-center border-bottom">
                     <div class="order-img">
-                        <img src="assets/images/orders/05.png" class="img-fluid rounded-3" width="75"
-                            alt="">
+                        <img src="assets/images/orders/05.png" class="img-fluid rounded-3" width="75" alt="">
                     </div>
                     <div class="order-info flex-grow-1">
                         <h5 class="mb-1 order-title">Fancy Shirts</h5>
@@ -980,8 +956,7 @@
 
                 <div class="gap-3 p-3 order-item d-flex align-items-center border-bottom">
                     <div class="order-img">
-                        <img src="assets/images/orders/06.png" class="img-fluid rounded-3" width="75"
-                            alt="">
+                        <img src="assets/images/orders/06.png" class="img-fluid rounded-3" width="75" alt="">
                     </div>
                     <div class="order-info flex-grow-1">
                         <h5 class="mb-1 order-title">Home Sofa Set </h5>
@@ -995,8 +970,7 @@
 
                 <div class="gap-3 p-3 order-item d-flex align-items-center border-bottom">
                     <div class="order-img">
-                        <img src="assets/images/orders/07.png" class="img-fluid rounded-3" width="75"
-                            alt="">
+                        <img src="assets/images/orders/07.png" class="img-fluid rounded-3" width="75" alt="">
                     </div>
                     <div class="order-info flex-grow-1">
                         <h5 class="mb-1 order-title">Black iPhone</h5>
@@ -1010,8 +984,7 @@
 
                 <div class="gap-3 p-3 order-item d-flex align-items-center border-bottom">
                     <div class="order-img">
-                        <img src="assets/images/orders/08.png" class="img-fluid rounded-3" width="75"
-                            alt="">
+                        <img src="assets/images/orders/08.png" class="img-fluid rounded-3" width="75" alt="">
                     </div>
                     <div class="order-info flex-grow-1">
                         <h5 class="mb-1 order-title">Goldan Watch</h5>
@@ -1144,7 +1117,7 @@
 
     @if (session('success'))
         <script>
-            document.addEventListener("DOMContentLoaded", function() {
+            document.addEventListener("DOMContentLoaded", function () {
                 Swal.fire({
                     icon: 'success',
                     title: 'Berhasil!',
@@ -1158,7 +1131,7 @@
 
     @if (session('error'))
         <script>
-            document.addEventListener("DOMContentLoaded", function() {
+            document.addEventListener("DOMContentLoaded", function () {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -1167,30 +1140,30 @@
             });
         </script>
     @endif
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        document.querySelectorAll('.delete-form').forEach(form => {
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll('.delete-form').forEach(form => {
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
 
-                Swal.fire({
-                    title: 'Yakin mau hapus?',
-                    text: "Data ini bakal hilang permanen!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Ya, hapus!',
-                    cancelButtonText: 'Batal'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
+                    Swal.fire({
+                        title: 'Yakin mau hapus?',
+                        text: "Data ini bakal hilang permanen!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Ya, hapus!',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
                 });
             });
         });
-    });
-</script>
+    </script>
 </body>
 
 </html>

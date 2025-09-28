@@ -29,7 +29,7 @@
                             @elseif(Str::endsWith($file, ['.mp4', '.webm', '.ogg']))
                                 <video width="320" height="240" controls>
                                     <source src="{{ asset('storage/produk/final/' . $file) }}">
-                                    Browser kamu ga support video 😭
+                                    Browser anda tidak mendukung pemutaran video.
                                 </video>
                             @endif
                         @endforeach
@@ -71,7 +71,7 @@
 
                             {{-- Input file untuk upload baru --}}
                             <input id="fancy-file-upload" type="file" name="gambar_produk"
-                                accept=".jpg,.jpeg,.png,.mp4,.webm,.ogg" multiple>
+                                accept=".jpg,.jpeg,.png,.mp4,.webm,.ogg" required multiple>
                             <div id="hidden-gambar"></div>
                             <div class="invalid-feedback">
                                 Gambar produk harus diupload.
@@ -109,7 +109,7 @@
                                 Kode Produk
                             </label>
                             <input type="text" class="form-control" name="kode_produk"
-                                style="background-color: rgb(232, 227, 227)" id="kode_produk"
+                                required style="background-color: rgb(232, 227, 227)" id="kode_produk"
                                 value="{{ $produk->kode_produk }}">
                         </div>
                         <div class="col-12">
