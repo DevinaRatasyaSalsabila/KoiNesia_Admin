@@ -57,8 +57,8 @@
                     {{-- Nominal --}}
                     <div class="mt-3">
                         <label class="form-label">Nominal</label>
-                    <input type="text" class="form-control nominal-edit" name="nominal"
-                        value="{{ number_format($first->nominal, 0, ',', '.') }}" readonly>
+                        <input type="text" class="form-control nominal-edit" name="nominal"
+                            value="{{ number_format($first->nominal, 0, ',', '.') }}" readonly>
                     </div>
                 </div>
 
@@ -125,7 +125,7 @@
             hitungTotal(modal);
         });
 
-        $(document).on("click", ".add-produk", function() {
+        $(document).off("click", ".add-produk").on("click", ".add-produk", function() {
             let target = $($(this).data("target"));
             let newRow = `
         <div class="mb-2 row produk-edit-row">
@@ -165,7 +165,5 @@
         $(document).on("shown.bs.modal", ".modal", function() {
             hitungTotal($(this));
         });
-
-        //ini pas button nambah produk di modal edit harusnya 1 aja tiap klik, tapi ini kayanya jumlah row sekali klik itu nambahnya sesuai jumlah pesanan, kaya kalau ada 2 pesanan otomatis sekali klik nnti 2 row produk, bukan 1
     </script>
 @endpush
