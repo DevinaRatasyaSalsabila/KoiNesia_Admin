@@ -1,11 +1,11 @@
 @extends('main')
 @section('content')
     <!--breadcrumb-->
-    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+    <div class="mb-3 page-breadcrumb d-none d-sm-flex align-items-center">
         <div class="breadcrumb-title pe-3">Edit Produk</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0 p-0">
+                <ol class="p-0 mb-0 breadcrumb">
                     <li class="breadcrumb-item"></li>
                     <li class="breadcrumb-item active" aria-current="page">Azza Koi Farm</li>
                 </ol>
@@ -17,9 +17,9 @@
         $gambarArray = json_decode($produk->gambar_produk, true);
     @endphp
 
-    <div class="row mb-4 text-center">
+    <div class="mb-4 text-center row">
         <div class="col-12">
-            <div class="card border-0 shadow-sm">
+            <div class="border-0 shadow-sm card">
                 <div class="card-body">
                     @if (!empty($gambarArray))
                         @foreach ($gambarArray as $file)
@@ -71,7 +71,7 @@
 
                             {{-- Input file untuk upload baru --}}
                             <input id="fancy-file-upload" type="file" name="gambar_produk"
-                                accept=".jpg,.jpeg,.png,.mp4,.webm,.ogg" required multiple>
+                                accept=".jpg,.jpeg,.png,.mp4,.webm,.ogg" multiple>
                             <div id="hidden-gambar"></div>
                             <div class="invalid-feedback">
                                 Gambar produk harus diupload.
@@ -84,7 +84,7 @@
         <div class="col-12 col-lg-4">
             <div class="card">
                 <div class="card-body">
-                    <div class="d-flex align-items-center gap-3">
+                    <div class="gap-3 d-flex align-items-center">
                         <button type="button" class="btn btn-outline-secondary flex-fill" onclick="window.history.back()">
                             <i class="bi bi-arrow-left-circle me-2"></i>
                             Batal
