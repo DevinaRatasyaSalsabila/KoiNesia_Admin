@@ -27,9 +27,11 @@
                                 <select class="form-select produk-select" name="produk[]" required>
                                     <option value="">Pilih Produk</option>
                                     @foreach ($produk as $item)
-                                        <option value="{{ $item->id_produk }}" data-harga="{{ $item->harga_Satuan }}">
+                                        <option value="{{ $item->id_produk }}" data-harga="{{ $item->harga_Satuan }}"
+                                            data-stok="{{ $item->stok_produk }}">
                                             {{ $item->nama_produk }}
-                                            [Rp{{ number_format($item->harga_Satuan, 0, ',', '.') }}]
+                                            [Rp{{ number_format($item->harga_Satuan, 0, ',', '.') }} =>
+                                            {{ $item->stok_produk }}]
                                         </option>
                                     @endforeach
                                 </select>
@@ -54,6 +56,12 @@
                             placeholder="Masukkan Nominal" required readonly>
                         <div class="invalid-feedback">Masukkan Nominal</div>
                     </div>
+                    {{-- <div id="alert-stok" class="alert alert-warning alert-dismissible fade show d-none" role="alert">
+                        <span id="alert-message"></span>
+                        <a href="{{ route('barang-masuk.index') }}" class="btn btn-sm btn-primary ms-2">Tambah Stok</a>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div> --}}
+
                 </div>
 
                 <div class="modal-footer">
@@ -69,53 +77,138 @@
 
 @push('scripts')
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
 
             $('.produk-select').select2({
                 dropdownParent: $('#tambah_pesanan'),
                 width: '100%'
             });
 
-            $('#tambah-produk').click(function () {
-                let RowNew = $(`
-                        <div class="px-3 mt-2 row produk-row">
-                            <div class="col-md-9">
-                                <select class="form-select produk-select" name="produk[]" required>
-                                    <option value="">Pilih Produk</option>
-                                    @foreach ($produk as $item)
-                                        <option value="{{ $item->id_produk }}" data-harga="{{ $item->harga_Satuan }}">
-                                            {{ $item->nama_produk }} [{{ $item->harga_Satuan }}]
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-3 d-flex align-items-end">
-                                <div class="flex-grow-1 me-2">
-                                    <input type="number" class="form-control jumlah-produk" name="jumlah[]" placeholder="Masukkan Jumlah" required>
-                                    <div class="invalid-feedback">Masukkan Jumlah</div>
-                                </div>
-                                <button type="button" class="btn btn-danger btn-sm remove-produk" style="height:40px;">✖</button>
-                            </div>
-                        </div>
-                    `);
+            $('#tambah-produk').click(function() {
+                let selectedValues = [];
+                $('.produk-select').each(function() {
+                    let val = $(this).val();
+                    if (val) selectedValues.push(val);
+                });
+
+                let RowNew = $(`<div class="px-3 mt-2 row produk-row">
+        <div class="col-md-9">
+            <select class="form-select produk-select" name="produk[]" required>
+                <option value="">Pilih Produk</option>
+                @foreach ($produk as $item)
+                    <option value="{{ $item->id_produk }}"
+                            data-harga="{{ $item->harga_Satuan }}"
+                            data-stok="{{ $item->stok_produk }}">
+                        {{ $item->nama_produk }}
+                        [Rp{{ number_format($item->harga_Satuan, 0, ',', '.') }} => {{ $item->stok_produk }}]
+                    </option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+            <div class="flex-grow-1 me-2">
+                <input type="number" class="form-control jumlah-produk" name="jumlah[]" placeholder="Masukkan Jumlah" required>
+                <div class="invalid-feedback">Masukkan Jumlah</div>
+            </div>
+            <button type="button" class="btn btn-danger btn-sm remove-produk" style="height:40px;">✖</button>
+        </div>
+    </div>`);
 
                 $('#wrapper-produk-tambah').append(RowNew);
-                console.log("✅ Row baru ditambahkan ke DOM");
 
                 RowNew.find('.produk-select').select2({
                     dropdownParent: $('#tambah_pesanan'),
                     width: '100%'
                 });
 
+                selectedValues.forEach(val => {
+                    RowNew.find(`option[value="${val}"]`).prop('disabled', true);
+                });
+
                 hitungNominalRupiah();
             });
 
-            $(document).on('click', '.remove-produk', function () {
+            $(document).on('click', '.remove-produk', function() {
                 $(this).closest('.produk-row').remove();
                 hitungNominalRupiah();
             });
 
-            $(document).on('change', '.produk-select, .jumlah-produk', function () {
+            $(document).on('change', '.produk-select', function() {
+                let stok = $(this).find('option:selected').data('stok') || 0;
+
+                let jumlahInput = $(this).closest('.produk-row').find('.jumlah-produk');
+                jumlahInput.attr('max', stok);
+
+                if (parseInt(jumlahInput.val()) > stok) {
+                    jumlahInput.val(stok);
+                }
+
+                // if (stok > 0 && stok < 5) {
+                //     $('#alert-message').text(`⚠️ Stok produk ini menipis (${stok} tersisa).`);
+                //     $('#alert-stok').removeClass('d-none');
+                // } else {
+                //     $('#alert-stok').addClass('d-none');
+                // }
+
+                let selectedValues = [];
+                $('.produk-select').each(function() {
+                    let val = $(this).val();
+                    if (val) selectedValues.push(val);
+                });
+
+                let uniqueValues = [...new Set(selectedValues)];
+                if (uniqueValues.length !== selectedValues.length) {
+                    alert("🚫 Tidak dapat memilih produk yang sama!");
+                    $(this).val("").trigger("change");
+                }
+
+                hitungNominalRupiah();
+            });
+
+            $(document).on('input', '.jumlah-produk', function() {
+                let row = $(this).closest('.produk-row');
+                let stok = row.find('.produk-select option:selected').data('stok') || 0;
+                let val = parseInt($(this).val()) || 0;
+
+                // Cegah angka minus
+                if (val < 1) {
+                    $(this).val(1);
+                    // $('#alert-message').text(`🚫 Jumlah minimal 1.`);
+                    // $('#alert-stok').removeClass('d-none');
+                    return;
+                }
+
+                if (val > stok) {
+                    $(this).val(stok);
+                    // $('#alert-message').text(`🚫 Jumlah tidak boleh melebihi stok (${stok} tersedia).`);
+                    // $('#alert-stok').removeClass('d-none');
+                }
+                else if (stok < 5 && stok > 0) {
+                    $('#alert-message').text(`⚠️ Stok produk ini menipis (${stok} tersisa).`);
+                    $('#alert-stok').removeClass('d-none');
+                } else {
+                    $('#alert-stok').addClass('d-none');
+                }
+
+                hitungNominalRupiah();
+            });
+
+            $(document).on('input', '.jumlah-produk', function() {
+                let row = $(this).closest('.produk-row');
+                let stok = row.find('.produk-select option:selected').data('stok') || 0;
+                let val = parseInt($(this).val()) || 0;
+
+                if (val > stok) {
+                    $(this).val(stok);
+                    $('#alert-message').text(`🚫 Jumlah tidak boleh melebihi stok (${stok} tersedia).`);
+                    $('#alert-stok').removeClass('d-none');
+                } else if (stok < 5 && stok > 0) {
+                    $('#alert-message').text(`⚠️ Stok produk ini menipis (${stok} tersisa).`);
+                    $('#alert-stok').removeClass('d-none');
+                } else {
+                    $('#alert-stok').addClass('d-none');
+                }
+
                 hitungNominalRupiah();
             });
 
@@ -126,7 +219,7 @@
 
             function hitungNominalRupiah() {
                 let total = 0;
-                $('#wrapper-produk-tambah .produk-row').each(function () {
+                $('#wrapper-produk-tambah .produk-row').each(function() {
                     let harga = $(this).find('.produk-select option:selected').data('harga') || 0;
                     let jumlah = parseInt($(this).find('.jumlah-produk').val()) || 0;
                     total += harga * jumlah;
@@ -136,43 +229,43 @@
             }
         });
 
-    document.getElementById('formTambahPembeli').addEventListener('submit', function(e) {
-        e.preventDefault();
+        document.getElementById('formTambahPembeli').addEventListener('submit', function(e) {
+            e.preventDefault();
 
-        let formData = new FormData(this);
+            let formData = new FormData(this);
 
-        fetch("{{ route('pembeli.add') }}", {
-                method: "POST",
-                headers: {
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                },
-                body: formData
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    let modalPembeli = bootstrap.Modal.getInstance(document.getElementById(
-                        "tambah_pembeli"));
-                    modalPembeli.hide();
+            fetch("{{ route('pembeli.add') }}", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    body: formData
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        let modalPembeli = bootstrap.Modal.getInstance(document.getElementById(
+                            "tambah_pembeli"));
+                        modalPembeli.hide();
 
-                    let modalPesanan = new bootstrap.Modal(document.getElementById("tambah_pesanan"));
-                    modalPesanan.show();
+                        let modalPesanan = new bootstrap.Modal(document.getElementById("tambah_pesanan"));
+                        modalPesanan.show();
 
-                    let select = document.getElementById('pembeli');
-                    select.insertAdjacentHTML('beforeend', `
+                        let select = document.getElementById('pembeli');
+                        select.insertAdjacentHTML('beforeend', `
                 <option value="${data.pembeli.id_pembeli}" selected>
                     ${data.pembeli.nama_pembeli}
                 </option>
             `);
 
-                    this.reset();
+                        this.reset();
 
-                    alert("Pembeli berhasil ditambah!");
-                } else {
-                    alert("Gagal: " + data.message);
-                }
-            })
-            .catch(err => console.error(err));
-    });
+                        alert("Pembeli berhasil ditambah!");
+                    } else {
+                        alert("Gagal: " + data.message);
+                    }
+                })
+                .catch(err => console.error(err));
+        });
     </script>
 @endpush

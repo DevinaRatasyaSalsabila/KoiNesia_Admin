@@ -25,17 +25,18 @@
 
                     <div id="produk-container-{{ $first->kode_pesanan }}">
                         @foreach ($first->produk_detail as $pd)
-                            <div class="row mb-2 produk-row">
+                            <div class="mb-2 row produk-edit-row">
                                 <div class="col-md-9">
                                     <select name="produk[]" class="form-control">
                                         @foreach ($produk as $p)
                                             {{-- @php
                                             dd($p->harga_Satuan);
                                         @endphp --}}
-                                            <option value="{{ $p->kode_produk }}"
-                                                {{ $p->kode_produk == $pd->kode_produk ? 'selected' : '' }}
-                                                data-harga="{{ $p->harga_Satuan }}">
-                                                {{ $p->nama_produk }} - {{ $p->harga_Satuan }}
+                                            <option value="{{ $p->id_produk }}" data-harga="{{ $p->harga_Satuan }}"
+                                                data-stok="{{ $p->stok_produk }}">
+                                                {{ $p->nama_produk }}
+                                                [Rp{{ number_format($p->harga_Satuan, 0, ',', '.') }} =>
+                                                {{ $p->stok_produk }}]
                                             </option>
                                         @endforeach
                                     </select>
@@ -56,8 +57,8 @@
                     {{-- Nominal --}}
                     <div class="mt-3">
                         <label class="form-label">Nominal</label>
-                        <input type="number" class="form-control" name="nominal" value="{{ $first->nominal }}"
-                            required>
+                    <input type="text" class="form-control nominal-edit" name="nominal"
+                        value="{{ number_format($first->nominal, 0, ',', '.') }}" readonly>
                     </div>
                 </div>
 
@@ -74,49 +75,81 @@
 
 @push('scripts')
     <script>
+        function formatUang(num) {
+            num = num || 0;
+            return "Rp" + num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
         function hitungTotal(modal) {
             let total = 0;
-            modal.find(".produk-row").each(function() {
-                let jumlah = parseInt($(this).find("input[name='jumlah[]']").val()) || 0;
+            modal.find(".produk-edit-row").each(function() {
                 let harga = parseInt($(this).find("select[name='produk[]'] option:selected").data("harga")) || 0;
-                total += jumlah * harga;
+                let jumlah = parseInt($(this).find("input[name='jumlah[]']").val()) || 0;
+                total += harga * jumlah;
             });
-            modal.find("input[name='nominal']").val(total);
+            modal.find(".nominal-edit").val(formatUang(total));
         }
 
         $(document).on("input", "input[name='jumlah[]']", function() {
+            let row = $(this).closest(".produk-edit-row");
+            let stok = row.find("select[name='produk[]'] option:selected").data("stok") || 0;
+            let val = parseInt($(this).val()) || 0;
+
+            if (val < 1) {
+                $(this).val(1);
+                alert("🚫 Jumlah minimal 1");
+            } else if (val > stok) {
+                $(this).val(stok);
+                alert(`🚫 Jumlah tidak boleh lebih dari stok (${stok})`);
+            }
+
             let modal = $(this).closest(".modal");
             hitungTotal(modal);
         });
 
         $(document).on("change", "select[name='produk[]']", function() {
             let modal = $(this).closest(".modal");
+            let selectedValues = [];
+
+            modal.find("select[name='produk[]']").each(function() {
+                let val = $(this).val();
+                if (val) selectedValues.push(val);
+            });
+
+            let uniqueValues = [...new Set(selectedValues)];
+            if (uniqueValues.length !== selectedValues.length) {
+                alert("🚫 Produk sudah dipilih sebelumnya!");
+                $(this).val("").trigger("change");
+            }
+
             hitungTotal(modal);
         });
 
         $(document).on("click", ".add-produk", function() {
             let target = $($(this).data("target"));
             let newRow = `
-    <div class="row mb-2 produk-row">
-        <div class="col-md-9">
-            <select name="produk[]" class="form-control" required>
-                <option value="" disabled selected>-- Pilih Produk --</option>
-                @foreach ($produk as $p)
-                    <option value="{{ $p->kode_produk }}" data-harga="{{ $p->harga_Satuan }}">
-                        {{ $p->nama_produk }} - {{ $p->harga_Satuan }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
-        <div class="col-md-3 d-flex align-items-end">
-            <div class="flex-grow-1 me-2">
-                <input type="number" class="form-control jumlah-produk" name="jumlah[]" placeholder="Masukkan Jumlah" required>
-                <div class="invalid-feedback">Masukkan Jumlah</div>
+        <div class="mb-2 row produk-edit-row">
+            <div class="col-md-9">
+                <select name="produk[]" class="form-select" required>
+                    <option value="" disabled selected>-- Pilih Produk --</option>
+                    @foreach ($produk as $p)
+                        <option value="{{ $p->id_produk }}"
+                                data-harga="{{ $p->harga_Satuan }}"
+                                data-stok="{{ $p->stok_produk }}">
+                            {{ $p->nama_produk }}
+                            [Rp{{ number_format($p->harga_Satuan, 0, ',', '.') }} => {{ $p->stok_produk }}]
+                        </option>
+                    @endforeach
+                </select>
             </div>
-            <button type="button" class="btn btn-danger btn-sm remove-produk" style="height:40px;">✖</button>
-        </div>
-    </div>
-`;
+            <div class="col-md-3 d-flex align-items-end">
+                <div class="flex-grow-1 me-2">
+                    <input type="number" class="form-control jumlah-produk"
+                           name="jumlah[]" placeholder="Masukkan Jumlah" required>
+                </div>
+                <button type="button" class="btn btn-danger btn-sm remove-produk" style="height:40px;">✖</button>
+            </div>
+        </div>`;
             target.append(newRow);
 
             let modal = $(this).closest(".modal");
@@ -125,12 +158,14 @@
 
         $(document).on("click", ".remove-produk", function() {
             let modal = $(this).closest(".modal");
-            $(this).closest(".produk-row").remove();
+            $(this).closest(".produk-edit-row").remove();
             hitungTotal(modal);
         });
 
         $(document).on("shown.bs.modal", ".modal", function() {
             hitungTotal($(this));
         });
+
+        //ini pas button nambah produk di modal edit harusnya 1 aja tiap klik, tapi ini kayanya jumlah row sekali klik itu nambahnya sesuai jumlah pesanan, kaya kalau ada 2 pesanan otomatis sekali klik nnti 2 row produk, bukan 1
     </script>
 @endpush
