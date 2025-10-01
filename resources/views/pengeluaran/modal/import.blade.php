@@ -1,4 +1,3 @@
-ubahlah menjadi bootstrap 4
 <!-- Modal Import -->
 <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
     <div class="modal-dialog">
