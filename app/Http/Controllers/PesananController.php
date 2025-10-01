@@ -8,7 +8,6 @@ use App\Models\Produk;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Log as FacadesLog;
 use Illuminate\Support\Str;
@@ -34,17 +33,18 @@ class PesananController extends Controller
                 'pembeli.created_at'
             )
             ->where('pesanan.status', '!=', 'selesai')
-            ->groupBy(
-                'pesanan.kode_pesanan',
-                'pesanan.id_pembeli',
-                'pesanan.user_id',
-                'pesanan.status',
-                'pesanan.nominal',
-                'pembeli.nama_pembeli',
-                'pembeli.no_hp',
-                'pembeli.alamat'
-            )
-            ->get();
+            ->get()
+            ->groupBy(function ($item) {
+                if ($item->id_pembeli == 0) {
+                    return $item->kode_pesanan;
+                } else {
+                    return $item->kode_pesanan . '_' . $item->id_pembeli . '_' . $item->user_id . '_' . $item->status . '_' . $item->nominal . '_' . $item->nama_pembeli . '_' . $item->no_hp . '_' . $item->alamat;
+                }
+            });
+
+        $pesanan = $pesanan->map(function ($group) {
+            return $group->first();
+        });
 
         $pesanan->transform(function ($item) {
             $produk_detail = DB::table('pesanan')
@@ -57,6 +57,7 @@ class PesananController extends Controller
             return $item;
         });
 
+         dd($pesanan, $produk, $pembeli);
         return view('pesanan.index', compact('produk', 'pembeli', 'pesanan'));
     }
 

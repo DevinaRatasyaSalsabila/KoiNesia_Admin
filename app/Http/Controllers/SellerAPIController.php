@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pesanan;
 use App\Models\Produk;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
@@ -83,5 +84,26 @@ class SellerAPIController extends Controller
             'message' => 'Stok updated',
             'sisa_stok' => $produk->stok_produk
         ]);
+    }
+
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'kode_pesanan' => 'required|string',
+            'kode_produk'  => 'required|string',
+            'jumlah'       => 'required|integer',
+            'nominal'      => 'required|integer',
+        ]);
+
+        $data['id_pembeli'] = 0;
+        $data['user_id'] = 0;
+        $data['status'] = 'baru';
+
+        $pesanan = Pesanan::create($data);
+
+        return response()->json([
+            'success' => true,
+            'pesanan' => $pesanan
+        ], 201);
     }
 }

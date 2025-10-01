@@ -5,6 +5,7 @@ use App\Http\Controllers\SellerAPIController;
 
 Route::get('/products', [SellerAPIController::class, 'index']);
 Route::put('/products/{id}/reduce-stock', [SellerAPIController::class, 'reduceStock']);
+Route::post('/pesanan/API', [SellerAPIController::class, 'store']);
 
 
 Route::get('/test', function () {
