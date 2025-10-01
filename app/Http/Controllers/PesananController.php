@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use GuzzleHttp\Client;
-use Illuminate\Support\Facades\Log as FacadesLog;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Str;
 
 class PesananController extends Controller
@@ -18,33 +18,32 @@ class PesananController extends Controller
     {
         $pembeli = Pembeli::all();
         $produk = Produk::all();
-
         $pesanan = DB::table('pesanan')
-            ->join('pembeli', 'pesanan.id_pembeli', '=', 'pembeli.id_pembeli')
+            ->leftJoin('pembeli', 'pesanan.id_pembeli', '=', 'pembeli.id_pembeli')
             ->select(
                 'pesanan.kode_pesanan',
                 'pesanan.id_pembeli',
                 'pesanan.user_id',
                 'pesanan.status',
                 'pesanan.nominal',
-                'pembeli.nama_pembeli',
+                'pembeli.nama_pembeli as pembeli_nama',
+                'pesanan.nama_pembeli as pesanan_nama',
                 'pembeli.no_hp',
                 'pembeli.alamat',
-                'pembeli.created_at'
+                'pesanan.created_at as pesanan_created_at'
             )
             ->where('pesanan.status', '!=', 'selesai')
-            ->get()
-            ->groupBy(function ($item) {
-                if ($item->id_pembeli == 0) {
-                    return $item->kode_pesanan;
-                } else {
-                    return $item->kode_pesanan . '_' . $item->id_pembeli . '_' . $item->user_id . '_' . $item->status . '_' . $item->nominal . '_' . $item->nama_pembeli . '_' . $item->no_hp . '_' . $item->alamat;
-                }
-            });
+            ->get();
 
-        $pesanan = $pesanan->map(function ($group) {
-            return $group->first();
+        $pesanan = $pesanan->groupBy(function ($item) {
+            if ($item->id_pembeli == 0) {
+                return $item->kode_pesanan;
+            } else {
+                return $item->kode_pesanan . '_' . $item->id_pembeli . '_' . $item->user_id . '_' . $item->status . '_' . $item->nominal . '_' . $item->pembeli_nama . '_' . $item->no_hp . '_' . $item->alamat;
+            }
         });
+
+        $pesanan = $pesanan->map(fn($group) => $group->first());
 
         $pesanan->transform(function ($item) {
             $produk_detail = DB::table('pesanan')
@@ -57,13 +56,9 @@ class PesananController extends Controller
             return $item;
         });
 
-         dd($pesanan, $produk, $pembeli);
         return view('pesanan.index', compact('produk', 'pembeli', 'pesanan'));
     }
 
-    /**
-     * Show the form for creating a new resource
-     */
     public function show(string $kode)
     {
         $items = Pesanan::where('kode_pesanan', $kode)
@@ -185,9 +180,20 @@ class PesananController extends Controller
         ];
 
         try {
-            $client->post($url, ['form_params' => $data]);
+            $response = $client->post($url, ['form_params' => $data]);
+
+            Log::info('WA API Response: ' . $response->getStatusCode());
+            Log::info('WA API Body: ' . $response->getBody());
+        } catch (RequestException $e) {
+            if ($e->hasResponse()) {
+                $res = $e->getResponse();
+                Log::error('WA API Error Status: ' . $res->getStatusCode());
+                Log::error('WA API Error Body: ' . $res->getBody());
+            } else {
+                Log::error('WA API Error: ' . $e->getMessage());
+            }
         } catch (\Exception $e) {
-            dd('Error: ' . $e->getMessage());
+            Log::error('WA API Unknown Error: ' . $e->getMessage());
         }
     }
 

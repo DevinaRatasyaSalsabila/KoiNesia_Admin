@@ -93,6 +93,7 @@ class SellerAPIController extends Controller
             'kode_produk'  => 'required|string',
             'jumlah'       => 'required|integer',
             'nominal'      => 'required|integer',
+            'nama_pembeli' => 'nullable|string',
         ]);
 
         $data['id_pembeli'] = 0;
