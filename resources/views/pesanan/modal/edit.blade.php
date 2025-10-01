@@ -95,13 +95,13 @@
             let stok = row.find("select[name='produk[]'] option:selected").data("stok") || 0;
             let val = parseInt($(this).val()) || 0;
 
-            if (val < 1) {
-                $(this).val(1);
-                alert("🚫 Jumlah minimal 1");
-            } else if (val > stok) {
-                $(this).val(stok);
-                alert(`🚫 Jumlah tidak boleh lebih dari stok (${stok})`);
-            }
+            // if (val < 1) {
+            //     $(this).val(1);
+            //     alert("🚫 Jumlah minimal 1");
+            // } else if (val > stok) {
+            //     $(this).val(stok);
+            //     alert(`🚫 Jumlah tidak boleh lebih dari stok (${stok})`);
+            // }
 
             let modal = $(this).closest(".modal");
             hitungTotal(modal);

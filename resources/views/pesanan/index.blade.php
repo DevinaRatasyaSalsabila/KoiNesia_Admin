@@ -35,6 +35,10 @@
             </button>
         </div>
 
+        <a href="{{ route('service.start') }}" class="btn btn-success">
+            🔄 Start WhatsApp Service
+        </a>
+
         <div class="card-body">
             <div class="table-responsive">
                 <table id="tabel_pesanan" class="table table-striped table-bordered Pesanan">

@@ -150,7 +150,8 @@
                                 let hidden = $('<input>').attr({
                                     type: 'hidden',
                                     name: 'gambar_produk[]',
-                                    value: e.target.result
+                                    value: e.target.result,
+                                    required: true
                                 });
                                 $('#formAddProduct').append(hidden);
                             };
