@@ -53,6 +53,7 @@ class PesananController extends Controller
                 ->get();
 
             $item->produk_detail = $produk_detail;
+            
             return $item;
         });
 
