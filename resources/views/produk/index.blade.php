@@ -17,13 +17,16 @@
     </div>
     <!--end breadcrumb-->
 
-<div class="d-flex justify-content-end">
-    <a href="{{ url('produk/tambah') }}"
-       class="px-3 my-2 shadow-sm btn btn-warning btn-sm"
-       data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Produk">
-        <i class="bx bx-plus fs-5 text-light"></i>
-    </a>
-</div>
+    <div class="d-flex justify-content-end gap-2">
+        <a href="{{ url('produk/tambah') }}" class="px-3 my-2 shadow-sm btn btn-warning btn-sm" data-bs-toggle="tooltip"
+            data-bs-placement="top" title="Tambah Produk">
+            <i class="bx bx-plus fs-5 text-light"></i>
+        </a>
+
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#importModal">
+            <i class="ri-download-2-line"></i> Import
+        </button>
+    </div>
 
     <div class="mb-3 row row-cols-1 row-cols-md-3 g-4">
         @foreach ($produk as $item)
@@ -51,12 +54,12 @@
                                     <img src="{{ asset('storage/produk/final/' . $firstImage) }}"
                                         class="img-fluid rounded-3" style="max-height:280px;object-fit:cover;">
                                 @elseif ($firstVideo)
-                                   <div class="video-container">
-                                    <video class="video-preview" controls>
-                                        <source src="{{ asset('storage/produk/final/' . $firstVideo) }}">
-                                        Browser anda tidak mendukung pemutaran video 😭
-                                    </video>
-                                </div>
+                                    <div class="video-container">
+                                        <video class="video-preview" controls>
+                                            <source src="{{ asset('storage/produk/final/' . $firstVideo) }}">
+                                            Browser anda tidak mendukung pemutaran video 😭
+                                        </video>
+                                    </div>
                                 @endif
                             @endif
                         </div>
@@ -84,7 +87,8 @@
                                         data-bs-placement="top" title="Edit Produk">
                                         <i class="bx bx-pencil fs-5 text-light"></i>
                                     </a>
-                                    <form action="{{ route('produk.delete', $item->id_produk) }}" method="POST" class="delete-form">
+                                    <form action="{{ route('produk.delete', $item->id_produk) }}" method="POST"
+                                        class="delete-form">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="px-3 shadow-sm btn btn-danger btn-sm"
@@ -100,4 +104,6 @@
             </div>
         @endforeach
     </div>
+
+    @include('produk.modal.import')
 @endsection

@@ -1,6 +1,5 @@
 @extends('main')
 @section('content')
-
     <!--breadcrumb-->
     <div class="mb-3 page-breadcrumb d-none d-sm-flex align-items-center">
         <div class="breadcrumb-title pe-3">Pengeluaran</div>
@@ -20,9 +19,16 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Daftar Pengeluaran</h5>
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambah_pengeluaran">
+            <div class="d-flex float-end gap-2">
+                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambah_pengeluaran">
                 <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
             </button>
+
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#importModal">
+                <i class="ri-download-2-line"></i> Import
+            </button>
+            </div>
+           
         </div>
 
         <div class="card-body">
@@ -38,12 +44,13 @@
                     </thead>
                     <tbody>
                         @foreach ($pengeluaran as $item)
-                        <tr>
+                            <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->nama_pengeluaran }}</td>
                                 <td>Rp{{ number_format($item->nominal, 0, ',', '.') }}</td>
                                 <td class="text-center">
-                                    <form action="{{ route('pengeluaran.delete', $item->id) }}" method="POST" class="d-inline delete-form">
+                                    <form action="{{ route('pengeluaran.delete', $item->id) }}" method="POST"
+                                        class="d-inline delete-form">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">
@@ -57,7 +64,7 @@
                                 </td>
                                 @include('pengeluaran.modal.edit')
                             </tr>
-                            @endforeach
+                        @endforeach
                     </tbody>
                     <tfoot>
                         <tr>
@@ -72,6 +79,7 @@
         </div>
     </div>
 
+    @include('pengeluaran.modal.import')
     @include('pengeluaran.modal.tambah')
 
     @push('scripts')

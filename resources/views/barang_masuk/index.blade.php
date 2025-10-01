@@ -19,9 +19,16 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Daftar Barang Masuk</h5>
-            <a href="{{ url('barang-masuk/tambah') }}" class="btn btn-success">
-                <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
-            </a>
+            <div class="d-flex float-end gap-2">
+                <a href="{{ url('barang-masuk/tambah') }}" class="btn btn-success">
+                    <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
+                </a>
+
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
+                    data-bs-target="#importModal">
+                    <i class="ri-download-2-line"></i> Import
+                </button>
+            </div>
         </div>
 
         <div class="card-body">
@@ -47,8 +54,8 @@
                                 <td>{{ $item->keterangan }}</td>
                                 <td class="text-center">
                                     <div class="gap-2 d-flex align-items-center">
-                                        <form action="{{ route('barang-masuk.destroy', $item->id_pemasukan) }}" class="delete-form"
-                                            method="post">
+                                        <form action="{{ route('barang-masuk.destroy', $item->id_pemasukan) }}"
+                                            class="delete-form" method="post">
                                             @csrf
                                             @method('delete')
                                             <button class="btn btn-danger">
@@ -83,6 +90,7 @@
         </div>
     </div>
 
+    @include('barang_masuk.modal.import')
     @push('scripts')
         <script>
             $(document).ready(function() {

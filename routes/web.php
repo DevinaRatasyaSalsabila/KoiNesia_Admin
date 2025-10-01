@@ -28,6 +28,7 @@ Route::middleware(['middlewareLogin'])->group(function () {
     Route::post('/barang-masuk/add', [BarangMasukController::class, 'store'])->name('barang-masuk.store');
     Route::post('/barang-masuk/update/{id}', [BarangMasukController::class, 'update'])->name('barang-masuk.update');
     Route::delete('/barang-masuk/delete/{id}', [BarangMasukController::class, 'destroy'])->name('barang-masuk.destroy');
+    Route::post('/barang-masuk/import', [BarangMasukController::class, 'import'])->name('barang-masuk.import');
 
     //daftar produk
     Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
@@ -38,6 +39,7 @@ Route::middleware(['middlewareLogin'])->group(function () {
     Route::get('/produk/edit/{id}', [ProdukController::class, 'edit'])->name('produk.edit');
     Route::put('/produk/update/{id}', [ProdukController::class, 'update'])->name('produk.update');
     Route::delete('/produk/delete/{id}', [ProdukController::class, 'destroy'])->name('produk.delete');
+    Route::post('/produk/import', [ProdukController::class, 'import'])->name('produk.import');
 
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
@@ -52,6 +54,7 @@ Route::middleware(['middlewareLogin'])->group(function () {
     Route::post('/tambah-pengeluaran', [PengeluaranController::class, 'store'])->name('pengeluaran.add');
     Route::put('/edit-pengeluaran/{id}', [PengeluaranController::class, 'update'])->name('pengeluaran.update');
     Route::delete('/delete-pengeluaran/{id}', [PengeluaranController::class, 'destroy'])->name('pengeluaran.delete');
+    Route::post('/pengeluran/import', [PengeluaranController::class, 'import'])->name('pengeluaran.import');
 
     // pesanan
     Route::get('/pesanan', [PesananController::class, 'index'])->name('pesanan.index');

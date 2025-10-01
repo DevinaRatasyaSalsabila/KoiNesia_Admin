@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\PengeluaranImport;
 use App\Models\Pengeluaran;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PengeluaranController extends Controller
 {
@@ -112,5 +114,16 @@ class PengeluaranController extends Controller
     {
         Pengeluaran::find($id)->delete();
         return redirect()->back()->with('success', 'Pengeluaran Berhasil Dihapus');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv'
+        ]);
+
+        Excel::import(new PengeluaranImport, $request->file('file'));
+
+        return back()->with('sukses', 'Data produk berhasil diimport.');
     }
 }

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\BarangMasukImport;
 use App\Models\BarangMasuk;
 use App\Models\Produk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BarangMasukController extends Controller
 {
@@ -145,5 +147,15 @@ class BarangMasukController extends Controller
         // $barangKurang->save();
         // $barang->delete();
         return redirect()->back()->with('success', 'Data Barang Masuk Berhasil Dihapus');
+    }
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv'
+        ]);
+
+        Excel::import(new BarangMasukImport, $request->file('file'));
+
+        return back()->with('sukses', 'Data produk berhasil diimport.');
     }
 }
