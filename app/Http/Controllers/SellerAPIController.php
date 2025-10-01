@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Produk;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class SellerAPIController extends Controller
 {
@@ -53,5 +54,34 @@ class SellerAPIController extends Controller
         } catch (\Exception $e) {
             dd('Error: ' . $e->getMessage());
         }
+    }
+
+    public function reduceStock(Request $request, $id)
+    {
+        Log::info("Reduce stock dipanggil untuk ID: $id, data:", $request->all());
+
+      $produk = Produk::where('kode_produk', $id)->first();
+
+        if (!$produk) {
+            Log::error("Produk tidak ditemukan dengan ID: $id");
+            return response()->json(['error' => 'Produk tidak ditemukan'], 404);
+        }
+
+        $qty = (int) $request->qty;
+
+        if ($produk->stok_produk < $qty) {
+            Log::warning("Stok tidak cukup untuk produk $id. Stok: {$produk->stok_produk}, diminta: $qty");
+            return response()->json(['error' => 'Stok tidak cukup'], 400);
+        }
+
+        $produk->stok_produk -= $qty;
+        $produk->save();
+
+        Log::info("Stok produk $id berhasil dikurangi. Sisa: {$produk->stok_produk}");
+
+        return response()->json([
+            'message' => 'Stok updated',
+            'sisa_stok' => $produk->stok_produk
+        ]);
     }
 }

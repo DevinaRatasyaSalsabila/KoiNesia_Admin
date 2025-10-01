@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pembeli;
 use App\Models\Pesanan;
 use App\Models\Produk;
-use Illuminate\Container\Attributes\Log;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -242,5 +242,33 @@ class PesananController extends Controller
         Pesanan::where('kode_pesanan', $id)->delete();
 
         return redirect()->back()->with('success', 'Pesanan berhasil dihapus.');
+    }
+
+    public function startService()
+    {
+        $client = new \GuzzleHttp\Client();
+        $url = 'https://apiwa.smkpgriwlingi.sch.id/api/serviceStart';
+
+        $data = [
+            'apiKey' => env('WHAPI_KEY', 'f60d05297f0af62109d4ec9ec274bd32'),
+        ];
+
+        try {
+            $response = $client->post($url, ['form_params' => $data]);
+            $body = json_decode($response->getBody(), true);
+
+            // log hasil
+            Log::info('Service start response: ' . $response->getBody());
+
+            // kalau sukses, bisa aja redirect sambil kasih pesan
+            if (isset($body['code']) && $body['code'] == 200) {
+                return back()->with('success', 'WA Service berhasil dihidupkan!');
+            }
+
+            return back()->with('error', 'Gagal start service: ' . $response->getBody());
+        } catch (\Exception $e) {
+            Log::error('Error starting WA service: ' . $e->getMessage());
+            return back()->with('error', 'Error: ' . $e->getMessage());
+        }
     }
 }

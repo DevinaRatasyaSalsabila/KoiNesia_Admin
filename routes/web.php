@@ -78,3 +78,5 @@ Route::get('/form-wa', function () {
 });
 
 Route::post('/kirim-wa', [SellerAPIController::class, 'pesan'])->name('kirim.wa');
+
+Route::get('/service/start', [PesananController::class, 'startService'])->name('service.start');
