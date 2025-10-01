@@ -37,7 +37,7 @@ class PesananController extends Controller
 
         $pesanan = $pesanan->groupBy(function ($item) {
             if ($item->id_pembeli == 0) {
-                return $item->kode_pesanan;
+                return $item->pesanan_nama;
             } else {
                 return $item->kode_pesanan . '_' . $item->id_pembeli . '_' . $item->user_id . '_' . $item->status . '_' . $item->nominal . '_' . $item->pembeli_nama . '_' . $item->no_hp . '_' . $item->alamat;
             }

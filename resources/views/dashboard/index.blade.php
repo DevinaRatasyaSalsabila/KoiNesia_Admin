@@ -41,7 +41,7 @@
                             <i class="lni lni-cart-full fs-1"></i>
                         </div>
                         <h4 class="mb-0"> Rp{{ number_format($pendapatanPerBulan, 0, ',', '.') }}</h4>
-                        <p class="mb-0">Pendapatan Perbulan</p>
+                        <p class="mb-0">Pendapatan Bulan Ini</p>
                     </div>
                 </div>
             </div>
@@ -120,7 +120,7 @@
             </div>
         </div>
     </div><!-- end row -->
-{{-- 
+{{--
     <div class="mt-3 row g-3">
         <!-- Kiri -->
         <div class="col-3 col-xl-3 d-flex flex-column gap-3">

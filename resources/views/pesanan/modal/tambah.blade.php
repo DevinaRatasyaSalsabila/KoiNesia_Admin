@@ -14,7 +14,7 @@
                         <label class="form-label">Data Pembeli</label>
                         <select class="form-select" name="id_pembeli" id="pembeli" required>
                             @foreach ($pembeli as $pemb)
-                                <option value="{{ $pemb->id_pembeli }}">{{ $pemb->nama_pembeli }}</option>
+                                <option value="{{ $pemb->id_pembeli }}">{{ $pemb->nama_pembeli }} [{{ $pemb->no_hp }}]</option>
                             @endforeach
                         </select>
                         <a href="#" data-bs-toggle="modal" data-bs-target="#tambah_pembeli">+ Tambah Pembeli</a>
