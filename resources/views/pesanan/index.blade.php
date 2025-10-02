@@ -61,10 +61,8 @@
                             <tr>
                               <td class="align-middle">{{ $first->pesanan_created_at ?? '-' }}</td>
                             <td class="align-middle">
-                                {{ $first->id_pembeli == 0
-                                    ? ($first->pesanan_nama ?? '-')
-                                    : ($first->pembeli_nama ?? '-')
-                                }}
+                                {{ $first->id_pembeli == 0 ? '-' : ($first->pembeli_nama ?? '-') }}
+
                             </td>
                                 <td class="align-middle">
                                     <div>Rp{{ number_format($totalNominal, 0, ',', '.') }}</div>
