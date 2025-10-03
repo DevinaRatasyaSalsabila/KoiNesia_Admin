@@ -102,7 +102,7 @@ class PesananController extends Controller
         $pesan = "Halo *{$pembeli->nama_pembeli}*, saat ini pesanan dengan kode *{$pesanan->kode_pesanan}* statusnya sudah diupdate menjadi *{$status}* ya.\n\n"
             . "Terima kasih sudah order di Azza Koi Farm 🐟✨";
 
-        $this->apicall($no_hp, $pesan);
+        // $this->apicall($no_hp, $pesan);
 
         return response()->json(['success' => true, 'status' => $pesanan->status]);
     }

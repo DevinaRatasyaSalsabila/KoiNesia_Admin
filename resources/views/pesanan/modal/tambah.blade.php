@@ -143,13 +143,6 @@
                     jumlahInput.val(stok);
                 }
 
-                // if (stok > 0 && stok < 5) {
-                //     $('#alert-message').text(`⚠️ Stok produk ini menipis (${stok} tersisa).`);
-                //     $('#alert-stok').removeClass('d-none');
-                // } else {
-                //     $('#alert-stok').addClass('d-none');
-                // }
-
                 let selectedValues = [];
                 $('.produk-select').each(function() {
                     let val = $(this).val();

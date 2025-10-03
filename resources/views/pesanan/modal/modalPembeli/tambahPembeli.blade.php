@@ -10,15 +10,17 @@
                 <div class="modal-body">
                     <div class="px-3 mt-2 col-md-12">
                         <label class="form-label">Nama Pembeli</label>
-                        <input type="text" class="form-control" name="nama_pembeli"
-                            placeholder="Masukkan Nama Pembeli" required>
+                        <input type="text" class="form-control" name="nama_pembeli" placeholder="Masukkan Nama Pembeli"
+                            required>
                         <div class="invalid-feedback">Masukkan Nama Pembeli</div>
                     </div>
                     <div class="px-3 mt-2 col-md-12">
                         <label class="form-label">NO. Handphone</label>
-                        <input type="text" class="form-control" name="no_hp" placeholder="Masukkan No. HP"
-                            required>
-                        <div class="invalid-feedback">Masukkan NO. Handphone Pembeli</div>
+                        <div class="input-group">
+                            <span class="input-group-text" id="basic-addon1">62</span>
+                            <input type="text" class="form-control" name="no_hp" placeholder="Masukkan No. HP" required
+                                aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
                     </div>
                     <div class="px-3 mt-2 col-md-12">
                         <label class="form-label">Alamat Pembeli</label>
