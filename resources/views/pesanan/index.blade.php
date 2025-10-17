@@ -35,10 +35,6 @@
             </button>
         </div>
 
-        <a href="{{ route('service.start') }}" class="btn btn-success">
-            🔄 Start WhatsApp Service
-        </a>
-
         <div class="card-body">
             <div class="table-responsive">
                 <table id="tabel_pesanan" class="table table-striped table-bordered Pesanan">
@@ -63,8 +59,11 @@
                                 });
                             @endphp
                             <tr>
-                                <td class="align-middle">{{ $first->created_at ?? '-' }}</td>
-                                <td class="align-middle">{{ $first->nama_pembeli ?? ($first->id_pembeli ?? '-') }}</td>
+                              <td class="align-middle">{{ $first->pesanan_created_at ?? '-' }}</td>
+                            <td class="align-middle">
+                                {{ $first->id_pembeli == 0 ? '-' : ($first->pembeli_nama ?? '-') }}
+
+                            </td>
                                 <td class="align-middle">
                                     <div>Rp{{ number_format($totalNominal, 0, ',', '.') }}</div>
                                 </td>

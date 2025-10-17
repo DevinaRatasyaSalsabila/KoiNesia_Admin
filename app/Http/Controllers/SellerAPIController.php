@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pembeli;
+use App\Models\Pesanan;
 use App\Models\Produk;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class SellerAPIController extends Controller
@@ -60,7 +63,7 @@ class SellerAPIController extends Controller
     {
         Log::info("Reduce stock dipanggil untuk ID: $id, data:", $request->all());
 
-      $produk = Produk::where('kode_produk', $id)->first();
+        $produk = Produk::where('kode_produk', $id)->first();
 
         if (!$produk) {
             Log::error("Produk tidak ditemukan dengan ID: $id");
@@ -83,5 +86,67 @@ class SellerAPIController extends Controller
             'message' => 'Stok updated',
             'sisa_stok' => $produk->stok_produk
         ]);
+    }
+
+    public function store(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            Log::info("API Pesanan Diterima:", $request->all());
+
+            $pembeli = DB::table('pembeli')->where('no_hp', $request->telepon)->first();
+
+            if (!$pembeli) {
+                $idPembeli = DB::table('pembeli')->insertGetId([
+                    'nama_pembeli' => $request->nama_pembeli,
+                    'no_hp'        => $request->telepon,
+                    'alamat'       => $request->alamat,
+                    'created_at'   => now(),
+                    'updated_at'   => now()
+                ]);
+
+                Log::info("Pembeli baru disimpan:", [
+                    'id_pembeli'   => $idPembeli,
+                    'nama_pembeli' => $request->nama_pembeli,
+                    'no_hp'        => $request->telepon,
+                    'alamat'       => $request->alamat,
+                ]);
+            } else {
+                $idPembeli = $pembeli->id_pembeli;
+                Log::info("Pembeli lama ditemukan:", (array) $pembeli);
+            }
+
+            // insert pesanan
+            $pesanan = Pesanan::create([
+                'kode_pesanan' => $request->kode_pesanan,
+                'kode_produk'  => $request->kode_produk,
+                'jumlah'       => $request->jumlah,
+                'nominal'      => $request->nominal,
+                'id_pembeli'   => $idPembeli,
+                'status'       => 'baru',
+                'user_id'      => 0,
+            ]);
+
+            Log::info("Pesanan berhasil disimpan:", $pesanan->toArray());
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Pesanan berhasil dibuat',
+                'pembeli' => $pembeli,
+                'pesanan' => $pesanan
+            ], 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            Log::error("Gagal buat pesanan:", [
+                'error_message' => $e->getMessage(),
+                'trace'         => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }
