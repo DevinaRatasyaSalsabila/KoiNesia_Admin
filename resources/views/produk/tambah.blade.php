@@ -39,7 +39,7 @@
                         </div>
                         <div class="mb-4">
                             <h5 class="mb-3">Gambar Produk</h5>
-                            <input type="file" id="fancy-file-upload" required multiple accept=".jpg,.jpeg,.png,.mp4,.webm,.ogg">
+                            <input type="file" id="fancy-file-upload" multiple accept=".jpg,.jpeg,.png,.mp4,.webm,.ogg">
                             <div id="hidden-gambar"></div>
                             <div class="invalid-feedback">
                                 Gambar produk harus diupload.

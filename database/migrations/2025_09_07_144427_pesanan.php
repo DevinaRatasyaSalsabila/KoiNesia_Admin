@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id('id_pesanan');
             $table->string('kode_pesanan');
             $table->unsignedBigInteger('id_pembeli');
-            $table->string('nama_pembeli')->nullable();
             $table->string('kode_produk');
             $table->unsignedBigInteger('user_id');
             $table->enum('status', ['baru', 'proses', 'selesai'])->default('baru');
