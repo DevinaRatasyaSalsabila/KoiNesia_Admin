@@ -16,6 +16,7 @@
         }
     </style>
 
+
     <div class="mb-3 page-breadcrumb d-none d-sm-flex align-items-center">
         <div class="breadcrumb-title pe-3">Pesanan</div>
         <div class="ps-3">
@@ -59,52 +60,52 @@
                                 });
                             @endphp
                             <tr>
-                              <td class="align-middle">{{ $first->pesanan_created_at ?? '-' }}</td>
-                            <td class="align-middle">
-                                {{ $first->id_pembeli == 0 ? '-' : ($first->pembeli_nama ?? '-') }}
+                                <td class="align-middle">{{ $first->pesanan_created_at ?? '-' }}</td>
+                                <td class="align-middle">
+                                    {{ $first->id_pembeli == 0 ? '-' : $first->pembeli_nama ?? '-' }}
 
-                            </td>
+                                </td>
                                 <td class="align-middle">
                                     <div>Rp{{ number_format($totalNominal, 0, ',', '.') }}</div>
                                 </td>
                                 <td>
-                                    <select class="form-select update-status-select" data-id="{{ $first->kode_pesanan }}">
-                                        <option value="baru" class="fw-bold"
-                                            {{ ($first->status ?? '') == 'baru' ? 'selected' : '' }}>
-                                            Baru
-                                        </option>
-                                        <option value="proses" class="fw-bold"
-                                            {{ ($first->status ?? '') == 'proses' ? 'selected' : '' }}>
-                                            Diproses
-                                        </option>
-                                        <option value="selesai" class="fw-bold"
-                                            {{ ($first->status ?? '') == 'selesai' ? 'selected' : '' }}>
-                                            Selesai
-                                        </option>
-                                    </select>
+                                    <div class="status-wrapper">
+                                        <select class="form-select update-status-select fw-bold"
+                                            data-id="{{ $first->kode_pesanan }}">
+                                            <option value="baru" data-color="#0d6efd"
+                                                {{ ($first->status ?? '') == 'baru' ? 'selected' : '' }}>
+                                                Baru
+                                            </option>
+                                            <option value="proses" data-color="#ffc107"
+                                                {{ ($first->status ?? '') == 'proses' ? 'selected' : '' }}>
+                                                Diproses
+                                            </option>
+                                            <option value="selesai" data-color="#198754"
+                                                {{ ($first->status ?? '') == 'selesai' ? 'selected' : '' }}>
+                                                Selesai
+                                            </option>
+                                        </select>
+                                    </div>
                                 </td>
-
                                 <td class="align-middle">
                                     <div class="gap-2 d-flex align-items-center">
                                         <a href="{{ route('pesanan.detail', $first->kode_pesanan) }}"
-                                            class="text-decoration-none text-dark d-flex align-items-center">
-                                            <i class="material-icons-outlined">content_paste</i>
+                                            class="btn btn-primary btn-sm">
+                                            <i class="fadeIn animated bx bx-info-circle fs-6"></i>
                                         </a>
 
                                         <form action="{{ route('pesanan.delete', $first->kode_pesanan) }}" method="POST"
                                             class="p-0 m-0 d-flex align-items-center delete-form">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit"
-                                                class="p-0 m-0 btn text-dark d-flex align-items-center delete-btn">
-                                                <i class="material-icons-outlined">delete</i>
+                                            <button type="submit" class="btn btn-danger">
+                                                <i class="fadeIn animated bx bx-trash text-light fs-6"></i>
                                             </button>
                                         </form>
 
-                                        <button type="button" class="p-0 btn d-flex align-items-center"
-                                            data-bs-toggle="modal"
+                                        <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                                             data-bs-target="#edit_pesanan_{{ $first->kode_pesanan }}">
-                                            <i class="material-icons-outlined">edit</i>
+                                            <i class="fadeIn animated bx bx-pencil text-light fs-6"></i>
                                         </button>
                                     </div>
                                 </td>
@@ -132,12 +133,13 @@
     @push('scripts')
         <script>
             $(document).ready(function() {
-                var table = $("#tabel_pesanan").DataTable({
+                var table = $('#tabel_pesanan').DataTable({
                     lengthChange: false,
-                    buttons: ["copy", "excel", "pdf", "print"],
+                    buttons: ['copy', 'excel', 'pdf', 'print']
                 });
 
-                table.buttons().container().appendTo("#example2_wrapper .col-md-6:eq(0)");
+                table.buttons().container()
+                    .appendTo('#tabel_pesanan_wrapper .col-md-6:eq(0)');
             });
 
             let updateStatusUrl = "{{ route('pesanan.updateStatus', ':id') }}";
