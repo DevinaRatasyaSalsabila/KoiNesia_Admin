@@ -53,8 +53,8 @@
                             class="mb-2 wh-48 d-flex bg-primary bg-opacity-10 text-primary align-items-center justify-content-center rounded-circle mx-auto">
                             <i class="lni lni-package fs-1"></i>
                         </div>
-                        <h4 class="mb-0">{{ $pesananSelesai->count() }}</h4>
-                        <p class="mb-0">Produk Terjual</p>
+                        <h4 class="mb-0">{{ $pesananSelesai }}</h4>
+                        <p class="mb-0">Item Terjual</p>
                     </div>
                 </div>
             </div>

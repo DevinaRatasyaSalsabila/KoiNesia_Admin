@@ -99,10 +99,10 @@ class PesananController extends Controller
         }
 
         // bikin isi pesan WA
-        $pesan = "Halo *{$pembeli->nama_pembeli}*, saat ini pesanan dengan kode *{$pesanan->kode_pesanan}* statusnya sudah diupdate menjadi *{$status}* ya.\n\n"
+        $pesan = "Halo *{$pembeli->nama_pembeli}*, saat ini pesanan dengan kode *{$pesanan->kode_pesanan}* statusnya sudah diupdate menjadi *{$status}*.\n\n"
             . "Terima kasih sudah order di Azza Koi Farm 🐟✨";
 
-        // $this->apicall($no_hp, $pesan);
+        $this->apicall($no_hp, $pesan);
 
         return response()->json(['success' => true, 'status' => $pesanan->status]);
     }
@@ -207,36 +207,68 @@ class PesananController extends Controller
 
     public function update(Request $request, string $kode_pesanan)
     {
-        $request->validate([
-            'id_pembeli' => 'required|exists:pembeli,id_pembeli',
-            'produk'     => 'required|array',
-            'jumlah'     => 'required|array',
-            'nominal'    => 'required|numeric',
-        ]);
+        Log::info("🔄 Mulai update pesanan: {$kode_pesanan}", ['request' => $request->all()]);
 
-        DB::table('pesanan')->where('kode_pesanan', $kode_pesanan)->delete();
-
-        foreach ($request->produk as $i => $kodeProduk) {
-            $produk = DB::table('produk')->where('kode_produk', $kodeProduk)->first();
-            if (!$produk) continue;
-
-            $qty = $request->jumlah[$i] ?? 1;
-            $subtotal = $produk->harga_Satuan * $qty;
-
-            DB::table('pesanan')->insert([
-                'kode_pesanan' => $kode_pesanan,
-                'id_pembeli'   => $request->id_pembeli,
-                'user_id'      => 1,
-                'status'       => 'baru',
-                'kode_produk'  => $kodeProduk,
-                'jumlah'       => $qty,
-                'nominal'      => $subtotal,
-                'updated_at'   => now(),
-                'created_at'   => now(),
+        try {
+            // ✅ Validasi input
+            $request->validate([
+                'id_pembeli' => 'required|exists:pembeli,id_pembeli',
+                'produk'     => 'required|array|min:1',
+                'jumlah'     => 'required|array|min:1',
+                'nominal'    => 'required',
             ]);
-        }
 
-        return redirect()->route('pesanan.index')->with('success', 'Pesanan berhasil diupdate!');
+            DB::beginTransaction();
+
+            // ✅ Hapus semua data lama untuk kode_pesanan ini
+            DB::table('pesanan')->where('kode_pesanan', $kode_pesanan)->delete();
+            Log::info("🗑️ Pesanan lama dihapus", ['kode_pesanan' => $kode_pesanan]);
+
+            // ✅ Loop dan buat pesanan baru dari array produk[]
+            foreach ($request->produk as $i => $idProduk) {
+                $produk = DB::table('produk')->where('id_produk', $idProduk)->first();
+
+                if (!$produk) {
+                    throw new \Exception("⚠️ Produk dengan ID {$idProduk} tidak ditemukan di database!");
+                }
+
+                $qty = (int) ($request->jumlah[$i] ?? 1);
+                $subtotal = $produk->harga_Satuan * $qty;
+
+                DB::table('pesanan')->insert([
+                    'kode_pesanan' => $kode_pesanan,
+                    'id_pembeli'   => $request->id_pembeli,
+                    'user_id'      => auth()->id() ?? 1,
+                    'status'       => 'baru',
+                    'kode_produk'  => $produk->kode_produk,
+                    'jumlah'       => $qty,
+                    'nominal'      => $subtotal,
+                    'created_at'   => now(),
+                    'updated_at'   => now(),
+                ]);
+
+                Log::info("🧾 Pesanan baru dibuat", [
+                    'kode_pesanan' => $kode_pesanan,
+                    'kode_produk'  => $produk->kode_produk,
+                    'qty'          => $qty,
+                    'subtotal'     => $subtotal,
+                ]);
+            }
+
+            DB::commit();
+
+            Log::info("✅ Update pesanan selesai", ['kode_pesanan' => $kode_pesanan]);
+            return redirect()->route('pesanan.index')->with('success', 'Pesanan berhasil diperbarui!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            Log::error("❌ Gagal update pesanan", [
+                'kode_pesanan' => $kode_pesanan,
+                'error'        => $e->getMessage(),
+            ]);
+
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat update pesanan: ' . $e->getMessage());
+        }
     }
 
     public function destroy($id)

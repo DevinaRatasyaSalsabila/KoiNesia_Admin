@@ -19,8 +19,8 @@ class DasboardController extends Controller
     {
         $produk = Produk::all();
         $pesanan = Pesanan::all();
-        $pesananSelesai = Pesanan::where('status', 'selesai')->get();
-
+        $pesananSelesai = Pesanan::where('status', 'selesai')->sum('jumlah');
+// dd($pesananSelesai);
         $PesanBaru = Pesanan::select('kode_pesanan', DB::raw('MAX(created_at) as created_at'))
             ->groupBy('kode_pesanan')
             ->orderByDesc('created_at')
