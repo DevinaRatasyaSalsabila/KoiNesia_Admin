@@ -20,15 +20,16 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Daftar Pengeluaran</h5>
             <div class="d-flex float-end gap-2">
-                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambah_pengeluaran">
-                <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
-            </button>
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambah_pengeluaran">
+                    <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
+                </button>
 
-            <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#importModal">
-                <i class="ri-download-2-line"></i> Import
-            </button>
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
+                    data-bs-target="#importModal">
+                    <i class="bi bi-download"></i>
+                </button>
             </div>
-           
+
         </div>
 
         <div class="card-body">

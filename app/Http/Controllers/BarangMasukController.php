@@ -150,12 +150,13 @@ class BarangMasukController extends Controller
     }
     public function import(Request $request)
     {
-        $request->validate([
-            'file' => 'required|mimes:xlsx,xls,csv'
-        ]);
+        $import = new BarangMasukImport();
+        Excel::import($import, $request->file('file_excel'));
 
-        Excel::import(new BarangMasukImport, $request->file('file'));
+        if (count($import->kodeTidakDitemukan) > 0) {
+            return back()->with('error', 'Kode produk berikut tidak ditemukan: ' . implode(', ', $import->kodeTidakDitemukan));
+        }
 
-        return back()->with('sukses', 'Data produk berhasil diimport.');
+        return back()->with('success', 'Import barang masuk berhasil dan stok telah diperbarui!');
     }
 }

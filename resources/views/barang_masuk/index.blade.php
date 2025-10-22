@@ -26,7 +26,7 @@
 
                 <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
                     data-bs-target="#importModal">
-                    <i class="ri-download-2-line"></i> Import
+                    <i class="bi bi-download"></i>
                 </button>
             </div>
         </div>

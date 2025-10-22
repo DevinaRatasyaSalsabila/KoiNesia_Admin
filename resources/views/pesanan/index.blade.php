@@ -31,9 +31,29 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Daftar Pesanan Terbaru</h5>
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambah_pesanan">
-                <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
-            </button>
+            <div class="d-flex float-end gap-2">
+                <div class="input-group" style="width: 420px;">
+                    <label for="tanggal" class="col-form-label me-2">Dari</label>
+                    <input type="date" id="dari-pesanan" class="form-control form-control-sm me-4">
+
+                    <label for="tanggal" class="col-form-label me-2">Sampai</label>
+                    <input type="date" id="sampai-pesanan" class="form-control form-control-sm">
+
+                    <button type="button" id="resetPesananFilter" class="btn btn-danger btn-sm ms-2">
+                        <i class="bi bi-arrow-counterclockwise"></i>
+                    </button>
+                </div>
+                <!-- Tombol print dan pilih semua -->
+                <button type="button" id="btnPrintPesanan" class="btn btn-secondary btn-sm">
+                    <i class="bi bi-printer"></i>
+                </button>
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambah_pesanan">
+                    <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
+                </button>
+                <button type="button" id="btnSelectAllPesanan" class="btn btn-secondary btn-sm">
+                    Pilih Semua
+                </button>
+            </div>
         </div>
 
         <div class="card-body">
@@ -41,6 +61,7 @@
                 <table id="tabel_pesanan" class="table table-striped table-bordered Pesanan">
                     <thead>
                         <tr>
+                            <th></th>
                             <th>Tanggal</th>
                             <th>Nama Pembeli</th>
                             <th>Nominal Pembelian</th>
@@ -59,7 +80,13 @@
                                     return isset($r->nominal) ? (float) $r->nominal : 0;
                                 });
                             @endphp
-                            <tr>
+                           <tr data-id="{{ $first->kode_pesanan }}">
+                                <td class="align-middle">
+                                    <div class="form-check">
+                                        <input class="form-check-input checkbox-pesanan" type="checkbox"
+                                            value="{{ $first->kode_pesanan }}">
+                                    </div>
+                                </td>
                                 <td class="align-middle">{{ $first->pesanan_created_at ?? '-' }}</td>
                                 <td class="align-middle">
                                     {{ $first->id_pembeli == 0 ? '-' : $first->pembeli_nama ?? '-' }}
@@ -124,6 +151,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
+                            <th></th>
                             <th>Tanggal</th>
                             <th>Nama Pembeli</th>
                             <th>Nominal Pembelian</th>
@@ -301,6 +329,115 @@
                 updateColor(select);
 
                 select.addEventListener('change', () => updateColor(select));
+            });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const dariInput = document.getElementById('dari-pesanan');
+                const sampaiInput = document.getElementById('sampai-pesanan');
+                const tabel = document.getElementById('tabel_pesanan').getElementsByTagName('tbody')[0];
+                const selectAllBtn = document.getElementById('btnSelectAllPesanan');
+                const printBtn = document.getElementById('btnPrintPesanan');
+                const resetBtn = document.getElementById('resetPesananFilter');
+
+                // 🗓️ Set default tanggal hari ini
+                const today = new Date().toISOString().split('T')[0];
+                dariInput.value = today;
+                sampaiInput.value = today;
+
+                // Fungsi filter berdasarkan range tanggal
+                function filterByDateRange() {
+                    const dari = new Date(dariInput.value);
+                    const sampai = new Date(sampaiInput.value);
+
+                    Array.from(tabel.rows).forEach(row => {
+                        const tanggalText = row.cells[1].textContent.trim();
+                        const tanggal = new Date(tanggalText);
+
+                        if (tanggal >= dari && tanggal <= sampai) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                }
+
+                // Event ketika tanggal diganti
+                dariInput.addEventListener('change', filterByDateRange);
+                sampaiInput.addEventListener('change', filterByDateRange);
+
+                // Reset ke hari ini
+                resetBtn.addEventListener('click', () => {
+                    dariInput.value = today;
+                    sampaiInput.value = today;
+                    filterByDateRange();
+                });
+
+                // Pilih semua
+                selectAllBtn.addEventListener('click', () => {
+                    const checkboxes = document.querySelectorAll('.checkbox-pesanan');
+                    checkboxes.forEach(cb => {
+                        if (cb.closest('tr').style.display !== 'none') {
+                            cb.checked = true;
+                        }
+                    });
+                });
+
+                // Print data yang diceklis
+                printBtn.addEventListener('click', () => {
+                    const checkedRows = Array.from(document.querySelectorAll('.checkbox-pesanan:checked'))
+                        .map(cb => cb.closest('tr'));
+
+                    if (checkedRows.length === 0) {
+                        alert('Pilih data pesanan yang ingin dicetak terlebih dahulu!');
+                        return;
+                    }
+
+                    // Buat halaman print sederhana
+                    const printWindow = window.open('', '', 'width=800,height=600');
+                    printWindow.document.write('<html><head><title>Print Pesanan</title>');
+                    printWindow.document.write(
+                        '<style>table{width:100%;border-collapse:collapse;}th,td{border:1px solid #333;padding:6px;text-align:left;}</style>'
+                    );
+                    printWindow.document.write('</head><body>');
+                    printWindow.document.write('<h3>Data Pesanan Terpilih</h3>');
+                    printWindow.document.write('<table>');
+                    printWindow.document.write(
+                        '<tr><th>Tanggal</th><th>Nama Pembeli</th><th>Nominal Pembelian</th><th>Status</th></tr>'
+                    );
+
+                    checkedRows.forEach(row => {
+                        printWindow.document.write('<tr>' +
+                            '<td>' + row.cells[1].textContent + '</td>' +
+                            '<td>' + row.cells[2].textContent + '</td>' +
+                            '<td>' + row.cells[3].textContent + '</td>' +
+                            '<td>' + row.cells[4].textContent + '</td>' +
+                            '</tr>');
+                    });
+
+                    printWindow.document.write('</table></body></html>');
+                    printWindow.document.close();
+                    printWindow.print();
+                });
+
+                // Jalankan filter pertama kali (hari ini)
+                filterByDateRange();
+            });
+        </script>
+        <script>
+            document.getElementById('btnPrintPesanan').addEventListener('click', function() {
+                let terpilih = [];
+                document.querySelectorAll('.form-check-input:checked').forEach(cb => {
+                    terpilih.push(cb.closest('tr').getAttribute('data-id'));
+                });
+
+                if (terpilih.length === 0) {
+                    alert('Pilih data pesanan yang ingin dicetak!');
+                    return;
+                }
+
+                let url = "{{ route('pesananPrint') }}?id=" + terpilih.join(',');
+                window.open(url, '_blank');
             });
         </script>
     @endpush

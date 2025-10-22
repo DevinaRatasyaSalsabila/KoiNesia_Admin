@@ -262,4 +262,21 @@ class PesananController extends Controller
             return back()->with('error', 'Error: ' . $e->getMessage());
         }
     }
+    public function print(Request $request)
+    {
+        $ids = explode(',', $request->get('kode_pesanan'));
+
+        $pesanan = DB::table('pesanan')
+            ->join('pembeli', 'pembeli.id_pembeli', '=', 'pesanan.id_pembeli')
+            ->whereIn('kode_pesanan', $ids)
+            ->select(
+                'pesanan.kode_pesanan',
+                'pembeli.nama_pembeli',
+                'pembeli.no_hp',
+                'pembeli.alamat'
+            )
+            ->get();
+
+        return view('pesanan.resi', compact('pesanan'));
+    }
 }
