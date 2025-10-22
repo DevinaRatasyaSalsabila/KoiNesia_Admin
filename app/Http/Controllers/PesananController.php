@@ -85,13 +85,7 @@ class PesananController extends Controller
         $pesanan = Pesanan::where('kode_pesanan', $id)->firstOrFail();
 
         $status = $request->status;
-        if (!in_array($status, ['baru', 'proses', 'selesai'])) {
-            return response()->json(['error' => 'Status tidak valid'], 400);
-        }
-
-        $pesanan->status = $status;
-        $pesanan->save();
-
+        Pesanan::where('kode_pesanan', $id)->update(['status' => $status]);
         $pembeli = Pembeli::find($pesanan->id_pembeli);
 
         $no_hp = $pembeli->no_hp;
@@ -220,7 +214,7 @@ class PesananController extends Controller
                 'kode_produk' => $item->kode_produk,
                 'jumlah' => $item->jumlah,
                 'nominal' => $item->jumlah * Produk::where('kode_produk', $item->kode_produk)->first()->harga_Satuan,
-                'kode_pesanan' => $pesanan->kode_pesanan,
+                'kode_pesanan' => $kode_pesanan,
 
             ]);
         }
