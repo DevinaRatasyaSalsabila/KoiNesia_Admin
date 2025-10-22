@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class PesananController extends Controller
@@ -209,66 +210,22 @@ class PesananController extends Controller
     {
         Log::info("🔄 Mulai update pesanan: {$kode_pesanan}", ['request' => $request->all()]);
 
-        try {
-            // ✅ Validasi input
-            $request->validate([
-                'id_pembeli' => 'required|exists:pembeli,id_pembeli',
-                'produk'     => 'required|array|min:1',
-                'jumlah'     => 'required|array|min:1',
-                'nominal'    => 'required',
+        $pesanan = Pesanan::where('kode_pesanan', $kode_pesanan)->get();
+        $pesananBaru = Pesanan::where('kode_pesanan', $kode_pesanan)->get();
+        // $pesananBaru =
+        foreach ($pesananBaru as $item) {
+            $item->update([
+                'id_pembeli' => $request->id_pembeli,
+                'user_id'      => Auth::id() ?? 0,
+                'kode_produk' => $item->kode_produk,
+                'jumlah' => $item->jumlah,
+                'nominal' => $item->jumlah * Produk::where('kode_produk', $item->kode_produk)->first()->harga_Satuan,
+                'kode_pesanan' => $pesanan->kode_pesanan,
+
             ]);
-
-            DB::beginTransaction();
-
-            // ✅ Hapus semua data lama untuk kode_pesanan ini
-            DB::table('pesanan')->where('kode_pesanan', $kode_pesanan)->delete();
-            Log::info("🗑️ Pesanan lama dihapus", ['kode_pesanan' => $kode_pesanan]);
-
-            // ✅ Loop dan buat pesanan baru dari array produk[]
-            foreach ($request->produk as $i => $idProduk) {
-                $produk = DB::table('produk')->where('id_produk', $idProduk)->first();
-
-                if (!$produk) {
-                    throw new \Exception("⚠️ Produk dengan ID {$idProduk} tidak ditemukan di database!");
-                }
-
-                $qty = (int) ($request->jumlah[$i] ?? 1);
-                $subtotal = $produk->harga_Satuan * $qty;
-
-                DB::table('pesanan')->insert([
-                    'kode_pesanan' => $kode_pesanan,
-                    'id_pembeli'   => $request->id_pembeli,
-                    'user_id'      => auth()->id() ?? 1,
-                    'status'       => 'baru',
-                    'kode_produk'  => $produk->kode_produk,
-                    'jumlah'       => $qty,
-                    'nominal'      => $subtotal,
-                    'created_at'   => now(),
-                    'updated_at'   => now(),
-                ]);
-
-                Log::info("🧾 Pesanan baru dibuat", [
-                    'kode_pesanan' => $kode_pesanan,
-                    'kode_produk'  => $produk->kode_produk,
-                    'qty'          => $qty,
-                    'subtotal'     => $subtotal,
-                ]);
-            }
-
-            DB::commit();
-
-            Log::info("✅ Update pesanan selesai", ['kode_pesanan' => $kode_pesanan]);
-            return redirect()->route('pesanan.index')->with('success', 'Pesanan berhasil diperbarui!');
-        } catch (\Exception $e) {
-            DB::rollBack();
-
-            Log::error("❌ Gagal update pesanan", [
-                'kode_pesanan' => $kode_pesanan,
-                'error'        => $e->getMessage(),
-            ]);
-
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat update pesanan: ' . $e->getMessage());
         }
+
+        return redirect()->route('pesanan.index')->with('success', 'Pesanan berhasil diperbarui!');
     }
 
     public function destroy($id)
