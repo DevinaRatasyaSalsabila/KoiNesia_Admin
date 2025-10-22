@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.3/dist/sweetalert2.min.css
+    " rel="stylesheet">
 
     <!--bootstrap css-->
     <link href="{{ asset('template/assets/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -431,7 +433,7 @@
                         <div class="menu-title">Pesanan</div>
                     </a>
                 </li>
-                
+
                 <li>
                     <a href="#" class="has-arrow">
                         <div class="parent-icon">
@@ -764,6 +766,9 @@
     <!--plugins-->
     <script src="{{ asset('template/assets/js/jquery.min.js') }}"></script>
     {{-- select 2 --}}
+    <script src="
+            https://cdn.jsdelivr.net/npm/sweetalert2@11.26.3/dist/sweetalert2.all.min.js
+            "></script>
     <script src="{{ asset('template/assets/plugins/select2/js/select2-custom.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="{{ asset('template/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js') }}"></script>

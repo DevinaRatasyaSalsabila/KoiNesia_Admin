@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class PesananController extends Controller
@@ -99,10 +100,10 @@ class PesananController extends Controller
         }
 
         // bikin isi pesan WA
-        $pesan = "Halo *{$pembeli->nama_pembeli}*, saat ini pesanan dengan kode *{$pesanan->kode_pesanan}* statusnya sudah diupdate menjadi *{$status}* ya.\n\n"
+        $pesan = "Halo *{$pembeli->nama_pembeli}*, saat ini pesanan dengan kode *{$pesanan->kode_pesanan}* statusnya sudah diupdate menjadi *{$status}*.\n\n"
             . "Terima kasih sudah order di Azza Koi Farm 🐟✨";
 
-        // $this->apicall($no_hp, $pesan);
+        $this->apicall($no_hp, $pesan);
 
         return response()->json(['success' => true, 'status' => $pesanan->status]);
     }
@@ -207,36 +208,24 @@ class PesananController extends Controller
 
     public function update(Request $request, string $kode_pesanan)
     {
-        $request->validate([
-            'id_pembeli' => 'required|exists:pembeli,id_pembeli',
-            'produk'     => 'required|array',
-            'jumlah'     => 'required|array',
-            'nominal'    => 'required|numeric',
-        ]);
+        Log::info("🔄 Mulai update pesanan: {$kode_pesanan}", ['request' => $request->all()]);
 
-        DB::table('pesanan')->where('kode_pesanan', $kode_pesanan)->delete();
+        $pesanan = Pesanan::where('kode_pesanan', $kode_pesanan)->get();
+        $pesananBaru = Pesanan::where('kode_pesanan', $kode_pesanan)->get();
+        // $pesananBaru =
+        foreach ($pesananBaru as $item) {
+            $item->update([
+                'id_pembeli' => $request->id_pembeli,
+                'user_id'      => Auth::id() ?? 0,
+                'kode_produk' => $item->kode_produk,
+                'jumlah' => $item->jumlah,
+                'nominal' => $item->jumlah * Produk::where('kode_produk', $item->kode_produk)->first()->harga_Satuan,
+                'kode_pesanan' => $pesanan->kode_pesanan,
 
-        foreach ($request->produk as $i => $kodeProduk) {
-            $produk = DB::table('produk')->where('kode_produk', $kodeProduk)->first();
-            if (!$produk) continue;
-
-            $qty = $request->jumlah[$i] ?? 1;
-            $subtotal = $produk->harga_Satuan * $qty;
-
-            DB::table('pesanan')->insert([
-                'kode_pesanan' => $kode_pesanan,
-                'id_pembeli'   => $request->id_pembeli,
-                'user_id'      => 1,
-                'status'       => 'baru',
-                'kode_produk'  => $kodeProduk,
-                'jumlah'       => $qty,
-                'nominal'      => $subtotal,
-                'updated_at'   => now(),
-                'created_at'   => now(),
             ]);
         }
 
-        return redirect()->route('pesanan.index')->with('success', 'Pesanan berhasil diupdate!');
+        return redirect()->route('pesanan.index')->with('success', 'Pesanan berhasil diperbarui!');
     }
 
     public function destroy($id)
