@@ -278,6 +278,7 @@ class PesananController extends Controller
             return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui pesanan!');
         }
     }
+    
     public function destroy($id)
     {
         Pesanan::where('kode_pesanan', $id)->delete();
