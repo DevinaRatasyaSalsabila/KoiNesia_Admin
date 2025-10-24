@@ -1,4 +1,4 @@
-@extends('main')
+@extends('pelanggan.mainPelanggan')
 @section('content')
     <div id="cart-page" class="page-hero-section division">
         <div class="container">

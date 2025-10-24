@@ -1,4 +1,4 @@
-@extends('main')
+@extends('pelanggan.mainPelanggan')
 @section('content')
     <div id="cart-page" class="page-hero-section division">
         <div class="container">
@@ -30,7 +30,7 @@
         </div>
     </div>
 
-    <form action="/pesanan/kirim" method="POST" class="row">
+    <form action="{{route('pesanan.kirim')}}" method="POST" class="row">
         @csrf
         <section class="wide-100 cart-page division">
             <div class="container">

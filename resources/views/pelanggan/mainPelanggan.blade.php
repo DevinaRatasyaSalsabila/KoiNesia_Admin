@@ -1,9 +1,4 @@
 <!DOCTYPE html>
-<!-- Testo - Pizza and Fast Food Landing Page Template design design by Jthemes (http://www.jthemes.net) -->
-<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
-<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
-<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!-->
 <html lang="en">
 
 
@@ -184,7 +179,7 @@
                 <nav class="navik-menu menu-caret navik-yellow">
                     <ul class="top-list">
                         <li>
-                            <a href="{{ url('/') }}">Beranda</a>
+                            <a href="{{ route('dashboard.pelanggan') }}">Beranda</a>
                         </li>
 
                         <li>
@@ -204,7 +199,7 @@
                         </li>
 
                         <li class="basket-ico ico-30">
-                            <a href="{{ url('/keranjang') }}">
+                            <a href="{{ route('keranjang') }}">
                                 <span class="ico-holder">
                                     <span class="flaticon-shopping-bag"></span>
                                     <em class="roundpoint" id="cart-count">0</em>

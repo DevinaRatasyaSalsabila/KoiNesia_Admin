@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\DasboardController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PembeliController;
 use App\Http\Controllers\PengeluaranController;
 use App\Http\Controllers\ProdukController;
@@ -14,7 +15,7 @@ use App\Http\Controllers\SellerAPIController;
 use Illuminate\Support\Facades\Route;
 
 // Login
-Route::get('/', [LoginController::class, 'index'])->name('login');
+Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/loginsubmit', [LoginController::class, 'submit'])->name('login.submit');
 
 Route::middleware(['middlewareLogin'])->group(function () {
@@ -82,4 +83,12 @@ Route::get('/form-wa', function () {
 
 Route::post('/kirim-wa', [SellerAPIController::class, 'pesan'])->name('kirim.wa');
 
-Route::get('/service/start', [PesananController::class, 'startService'])->name('service.start');
+
+
+Route::get('/', [PelangganController::class, 'beranda'])->name('dashboard.pelanggan');
+Route::prefix('pelanggan')->group(function () {
+    Route::get('/keranjang', [PelangganController::class, 'keranjang'])->name('keranjang');
+    Route::get('/keranjang/pesanan', [PelangganController::class, 'format'])->name('format');
+    // Route::get('/produk', [PelangganController::class, 'produkLengkap'])->name('produkLengkap');
+    Route::post('/pesanan/kirim', [PelangganController::class, 'kirim'])->name('pesanan.kirim');
+});

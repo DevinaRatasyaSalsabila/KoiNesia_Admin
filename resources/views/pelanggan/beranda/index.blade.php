@@ -1,4 +1,4 @@
-@extends('main')
+@extends('pelanggan.mainPelanggan')
 @section('content')
     <style>
         .btn-cart-add-1 {
@@ -9,29 +9,8 @@
             box-shadow: none;
         }
     </style>
-    {{-- <section id="hero-9" class="bg-03 hero-section">
-        <div class="bg-fixed bg-inner division">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="text-center hero-9-txt white-color">
-                            <h2>Azza Koi Farm</h2>
-                            <p class="p-xl">
-                                Nikmati koleksi koi terbaik dengan warna memukau, sehat, dan dirawat dengan penuh
-                                ketelatenan.
-                            </p>
-                            <a href="#" class="btn btn-lg btn-meat tra-white-hover">
-                                Tentang Kami
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> --}}
 
-    <!-- HERO-4
-                                                                                                                                               ============================================= -->
+    <!-- HERO-4 -->
     <section id="hero-4" class="bg-fixed hero-section division">
         <div class="container">
             <div class="row d-flex align-items-center">
@@ -167,15 +146,21 @@
             <div class="row">
                 @if (!empty($produk))
                     @foreach ($produk as $prod)
+                        @php
+                            $gambarList = json_decode($prod->gambar_produk, true);
+                            $gambarUtama = !empty($gambarList)
+                                ? asset('storage/produk/final/' . $gambarList[0])
+                                : asset('files/images/default.jpg');
+                        @endphp
+
                         <div class="col-sm-4 col-lg-3">
                             <div class="bg-white menu-6-item">
                                 <div class="menu-6-img rel">
                                     <div class="hover-overlay">
-                                        <img class="img-fluid" src="{{ $prod['gambar_url'] }}" alt="menu-image" />
-                                        <span class="item-code bg-tra-dark">Kode:
-                                            {{ $prod['kode_produk'] }}</span>
+                                        <img src="{{ $gambarUtama }}" class="img-fluid mb-2" alt="{{ $prod->nama_produk }}">
+                                        <span class="item-code bg-tra-dark">Kode: {{ $prod->kode_produk }}</span>
                                         <div class="menu-img-zoom ico-25">
-                                            <a href="{{ $prod['gambar_url'] }}" class="image-link">
+                                            <a href="{{ $gambarUtama }}" class="image-link">
                                                 <span class="flaticon-zoom"></span>
                                             </a>
                                         </div>
@@ -184,35 +169,36 @@
 
                                 <div class="menu-6-txt rel">
                                     <div class="like-ico ico-25">
-                                        <a href="#">
-                                            <span class="flaticon-heart"></span>
-                                        </a>
+                                        <a href="#"><span class="flaticon-heart"></span></a>
                                     </div>
-                                    <h5 class="h5-sm">
-                                        {{ $prod['nama_produk'] }}
-                                    </h5>
-                                    <!-- Description -->
-                                    <p class="grey-color">
-                                        {{ \Illuminate\Support\Str::limit($prod['deskripsi_produk'], 25) }}
-                                    </p>
-                                    <div class="menu-6-price bg-meat">
-                                        <h5 class="h6-xs yellow-color">
-                                            {{ 'Rp ' . number_format($prod['harga_Satuan'], 0, ',', '.') }}
+                                    <h5 class="h5-sm">{{ $prod->nama_produk }}</h5>
 
-                                        </h5>
-                                    </div>
-                                    <div class="add-to-cart bg-yellow ico-10">
-                                        <button type="button"
-                                            class="shadow-none btn-cart-add-1 bg-yellow text-light ico-10"
-                                            data-id="{{ $prod['kode_produk'] }}" data-nama="{{ $prod['nama_produk'] }}"
-                                            data-harga="{{ $prod['harga_Satuan'] }}"
-                                            data-stok="{{ $prod['stok_produk'] }}"
-                                            data-ukuran="{{ $prod['ukuran_produk'] }}"
-                                            data-gambar="{{ $prod['gambar_url'] }}">
-                                            <span class="flaticon-shopping-bag"></span>
-                                            {{-- Keranjang --}}
-                                        </button>
-                                    </div>
+                                    <p class="grey-color">
+                                        {{ \Illuminate\Support\Str::limit($prod->deskripsi_produk, 25) }}
+                                    </p>
+
+                                    @if ($prod->stok_produk > 0)
+                                        <div class="menu-6-price bg-meat">
+                                            <h5 class="h6-xs white-color">
+                                                {{ 'Rp ' . number_format($prod->harga_Satuan, 0, ',', '.') }}
+                                            </h5>
+                                        </div>
+
+                                        <div class="add-to-cart bg-yellow ico-10">
+                                            <button type="button" class="shadow-none btn-cart-add-1 bg-yellow text-light ico-10"
+                                                data-id="{{ $prod->kode_produk }}" data-nama="{{ $prod->nama_produk }}"
+                                                data-harga="{{ $prod->harga_Satuan }}" data-stok="{{ $prod->stok_produk }}"
+                                                data-ukuran="{{ $prod->ukuran_produk }}" data-gambar="{{ $gambarUtama }}">
+                                                <span class="flaticon-shopping-bag"></span>
+                                            </button>
+                                        </div>
+                                    @else
+                                        <div class="text-center mt-3">
+                                            <button type="button" class="btn btn-danger w-100 shadow-none" disabled>
+                                                <i class="flaticon-error"></i> Stok Habis
+                                            </button>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -424,9 +410,8 @@
                     <!-- 6 -->
                     <div class="accordion-item" style="background-color: transparent; border: 1px solid #fff;">
                         <h2 class="accordion-header" id="headingSix">
-                            <button class="text-white accordion-button collapsed" type="button"
-                                data-bs-toggle="collapse" data-bs-target="#faq6"
-                                style="background-color: rgba(0,0,0,0.2);">
+                            <button class="text-white accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#faq6" style="background-color: rgba(0,0,0,0.2);">
                                 Berapa biaya ongkir untuk pembelian ikan koi?
                             </button>
                         </h2>
@@ -442,9 +427,8 @@
                     <!-- 7 -->
                     <div class="accordion-item" style="background-color: transparent; border: 1px solid #fff;">
                         <h2 class="accordion-header" id="headingSeven">
-                            <button class="text-white accordion-button collapsed" type="button"
-                                data-bs-toggle="collapse" data-bs-target="#faq7"
-                                style="background-color: rgba(0,0,0,0.2);">
+                            <button class="text-white accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#faq7" style="background-color: rgba(0,0,0,0.2);">
                                 Apakah bisa request ukuran atau jenis koi tertentu?
                             </button>
                         </h2>
@@ -460,9 +444,8 @@
                     <!-- 8 -->
                     <div class="accordion-item" style="background-color: transparent; border: 1px solid #fff;">
                         <h2 class="accordion-header" id="headingEight">
-                            <button class="text-white accordion-button collapsed" type="button"
-                                data-bs-toggle="collapse" data-bs-target="#faq8"
-                                style="background-color: rgba(0,0,0,0.2);">
+                            <button class="text-white accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#faq8" style="background-color: rgba(0,0,0,0.2);">
                                 Apakah ada perawatan khusus setelah koi sampai di rumah?
                             </button>
                         </h2>
@@ -478,9 +461,8 @@
                     <!-- 9 -->
                     <div class="accordion-item" style="background-color: transparent; border: 1px solid #fff;">
                         <h2 class="accordion-header" id="headingNine">
-                            <button class="text-white accordion-button collapsed" type="button"
-                                data-bs-toggle="collapse" data-bs-target="#faq9"
-                                style="background-color: rgba(0,0,0,0.2);">
+                            <button class="text-white accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#faq9" style="background-color: rgba(0,0,0,0.2);">
                                 Apakah ada diskon untuk pembelian dalam jumlah banyak (grosir)?
                             </button>
                         </h2>
@@ -496,9 +478,8 @@
                     <!-- 10 -->
                     <div class="accordion-item" style="background-color: transparent; border: 1px solid #fff;">
                         <h2 class="accordion-header" id="headingTen">
-                            <button class="text-white accordion-button collapsed" type="button"
-                                data-bs-toggle="collapse" data-bs-target="#faq10"
-                                style="background-color: rgba(0,0,0,0.2);">
+                            <button class="text-white accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#faq10" style="background-color: rgba(0,0,0,0.2);">
                                 Apakah bisa datang langsung ke tempat untuk melihat koi?
                             </button>
                         </h2>
@@ -525,7 +506,7 @@
                 console.log("Jumlah tombol keranjang ketemu:", buttons.length);
 
                 buttons.forEach(btn => {
-                    btn.addEventListener("click", function(e) {
+                    btn.addEventListener("click", function (e) {
                         e.preventDefault();
                         console.log("✅ Tombol keranjang diklik!");
 
@@ -568,3 +549,5 @@
         </script>
     @endpush
 @endsection
+
+kurang itu efek bergetar pas nambah ke keranjang, admin ttp sama kurangny
