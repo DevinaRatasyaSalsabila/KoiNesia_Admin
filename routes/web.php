@@ -11,6 +11,7 @@ use App\Http\Controllers\PesananController;
 use App\Http\Controllers\RekapController;
 use App\Http\Controllers\RiwayatController;
 use App\Http\Controllers\SellerAPIController;
+use App\Imports\ProdukImport;
 use Illuminate\Support\Facades\Route;
 
 // Login
@@ -39,7 +40,7 @@ Route::middleware(['middlewareLogin'])->group(function () {
     Route::get('/produk/edit/{id}', [ProdukController::class, 'edit'])->name('produk.edit');
     Route::put('/produk/update/{id}', [ProdukController::class, 'update'])->name('produk.update');
     Route::delete('/produk/delete/{id}', [ProdukController::class, 'destroy'])->name('produk.delete');
-    Route::post('/produk/import', [ProdukController::class, 'import'])->name('produk.import');
+    Route::post('/produk/import', [ProdukImport::class, 'import'])->name('produk.import');
 
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 

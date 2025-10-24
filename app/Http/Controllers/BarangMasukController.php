@@ -148,15 +148,26 @@ class BarangMasukController extends Controller
         // $barang->delete();
         return redirect()->back()->with('success', 'Data Barang Masuk Berhasil Dihapus');
     }
+    // public function import(Request $request)
+    // {
+    //     $import = new BarangMasukImport();
+    //     Excel::import($import, $request->file('file_excel'));
+
+    //     if (count($import->kodeTidakDitemukan) > 0) {
+    //         return back()->with('error', 'Kode produk berikut tidak ditemukan: ' . implode(', ', $import->kodeTidakDitemukan));
+    //     }
+
+    //     return back()->with('success', 'Import barang masuk berhasil dan stok telah diperbarui!');
+    // }
+
     public function import(Request $request)
     {
-        $import = new BarangMasukImport();
-        Excel::import($import, $request->file('file_excel'));
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv'
+        ]);
 
-        if (count($import->kodeTidakDitemukan) > 0) {
-            return back()->with('error', 'Kode produk berikut tidak ditemukan: ' . implode(', ', $import->kodeTidakDitemukan));
-        }
+        Excel::import(new BarangMasukImport, $request->file('file'));
 
-        return back()->with('success', 'Import barang masuk berhasil dan stok telah diperbarui!');
+        return back()->with('sukses', 'Data produk berhasil diimport.');
     }
 }
