@@ -82,7 +82,7 @@ class PelangganController extends Controller
             $nominal = $p['qty'] * $p['harga'];
             $totalHarga += $nominal;
 
-            $detailPesanan .= "- {$p['id']} ({$p['qty']}x) = Rp " . number_format($nominal, 0, ',', '.') . "\n";
+            $detailPesanan .= "- {$p['nama']} ({$p['qty']}x) = Rp " . number_format($nominal, 0, ',', '.') . "\n";
 
             // 🧾 Simpan ke tabel pesanan
             Pesanan::create([

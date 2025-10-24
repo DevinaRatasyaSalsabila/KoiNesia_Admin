@@ -60,9 +60,9 @@
                     <tr>
                         <td colspan="3"></td>
                         <td>
-                            <h5 class="h5-md meat-color text-end">
+                            < class="h5-md meat-color text-end">
                                 Total Keseluruhan :
-                            </h5>
+                            </>
                         </td>
                         <td colspan="2" class="product-price-total-keseluruhan">
                             <h5 class="text-center h5-md">Rp 0</h5>
@@ -138,13 +138,13 @@
                                 <div class="cart-product-desc d-flex align-items-center">
                                     <img src="${item.gambar}" width="60" style="margin-right:10px; border-radius:6px;">
                                     <div>
-                                        <h5 class="mb-1 h5-sm">${item.nama}</h5>
+                                        <p class="mb-1 fw-bold h5-sm">${item.nama}</p>
                                         <p class="p-sm text-muted">Kode: ${item.id}</p>
                                     </div>
                                 </div>
                             </td>
                             <td data-label="Harga" class="product-price">
-                                <h5 class="h5-md">Rp ${new Intl.NumberFormat('id-ID').format(item.harga)}</h5>
+                                <p class="h5-md fw-bold">Rp ${new Intl.NumberFormat('id-ID').format(item.harga)}</p>
                             </td>
                             <td data-label="Item" class="product-qty">
                                 <input
@@ -160,10 +160,10 @@
                             <td data-label="Stok" class="product-qty">
                                 ${stokKosong
                                 ? '<span class="badge bg-danger">Stok Habis</span>'
-                                : '<h5 class="h5-md">' + (item.stok ?? '-') + '</h5>'}
+                                : '<p class="h5-md fw-bold">' + (item.stok ?? '-') + '</p>'}
                             </td>
                             <td data-label="Total" class="product-price-total text-end">
-                                <h5 class="h5-md">Rp ${new Intl.NumberFormat('id-ID').format(total)}</h5>
+                                <p class="h5-md fw-bold">Rp ${new Intl.NumberFormat('id-ID').format(total)}</p>
                             </td>
                             <td data-label="Hapus" class="td-trash text-end">
                                 <button class="hapus-btn btn btn-sm btn-outline-danger" data-index="${index}">
@@ -175,7 +175,6 @@
                     });
                 }
 
-                // ✅ hitung total hanya produk yang dicentang
                 function hitungTotal() {
                     let totalKeseluruhan = 0;
                     cart.forEach(item => {
@@ -187,9 +186,8 @@
                         "Rp " + new Intl.NumberFormat('id-ID').format(totalKeseluruhan);
                 }
 
-                hitungTotal(); // langsung panggil biar sync di awal
+                hitungTotal();
 
-                // checkbox listener
                 document.querySelectorAll(".pilih-checkbox").forEach(checkbox => {
                     checkbox.addEventListener("change", () => {
                         let index = checkbox.dataset.index;
@@ -199,7 +197,6 @@
                     });
                 });
 
-                // hapus produk
                 document.querySelectorAll(".hapus-btn").forEach(btn => {
                     btn.addEventListener("click", () => {
                         let index = btn.dataset.index;
@@ -209,7 +206,6 @@
                     });
                 });
 
-                // ubah qty
                 document.querySelectorAll(".qty-input").forEach(input => {
                     input.addEventListener("change", () => {
                         let index = input.dataset.index;
@@ -224,15 +220,12 @@
                     });
                 });
 
-                // ✅ Lanjutkan hanya kirim item yang dipilih dan stoknya masih ada
                 const lanjutkanBtn = document.querySelector("a.btn-meat");
                 lanjutkanBtn.addEventListener("click", (e) => {
                     e.preventDefault();
 
-                    // ambil ulang dari localStorage biar paling update
                     let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-                    // cuma item yang dipilih (checked) & stoknya masih > 0
                     let terpilih = cart.filter(item => item.dipilih && item.stok > 0);
 
                     if (terpilih.length === 0) {
@@ -240,10 +233,8 @@
                         return;
                     }
 
-                    // simpan ke localStorage checkout
                     localStorage.setItem("checkout", JSON.stringify(terpilih));
 
-                    // pindah halaman ke format/index
                     window.location.href = lanjutkanBtn.getAttribute("href");
                 });
             });

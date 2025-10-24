@@ -550,4 +550,4 @@
     @endpush
 @endsection
 
-kurang itu efek bergetar pas nambah ke keranjang, admin ttp sama kurangny
+{{-- kurang itu efek bergetar pas nambah ke keranjang, admin ttp sama kurangny --}}

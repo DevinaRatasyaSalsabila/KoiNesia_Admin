@@ -71,7 +71,8 @@
 
                                         <div class="col-md-12 col-lg-12 mb-2">
                                             <label for="">Alamat Lengkap</label>
-                                            <textarea name="alamat" class="form-control " placeholder="Masukkan Alamat Lengkap"></textarea>
+                                            <textarea name="alamat" class="form-control "
+                                                placeholder="Masukkan Alamat Lengkap"></textarea>
                                         </div>
 
                                         <div class="text-center col-md-12">
@@ -85,7 +86,7 @@
                 </div>
             </div>
 
-            <section id="cart-1" >
+            <section id="cart-1">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
@@ -156,29 +157,29 @@
                             }
 
                             tbody.innerHTML += `
-                                        <tr>
-                                            <td class="text-center">
-                                                <input type="checkbox" class="pilih-checkbox" data-index="${index}" ${item.dipilih ? "checked" : ""}>
-                                            </td>
-                                            <td>
-                                                <div class="cart-product-desc d-flex align-items-center">
-                                                    <img src="${item.gambar}" width="60" style="margin-right:10px; border-radius:6px;">
-                                                    <div>
-                                                        <h5 class="mb-1 h5-sm">${item.nama}</h5>
-                                                        <p class="p-sm text-muted">Kode: ${item.id}</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td><h5>Rp ${new Intl.NumberFormat('id-ID').format(item.harga)}</h5></td>
-                                            <td><h5>${item.qty} Stok = ${item.stok}</h5></td>
-                                            <td class="text-center"><h5>Rp ${new Intl.NumberFormat('id-ID').format(total)}</h5></td>
-                                             <td class="text-end">
-                                                 <button class="hapus-btn btn btn-sm btn-danger" data-index="${index}">
-                                                     <i class="fas fa-trash-alt" style="color: red;"></i>
-                                                 </button>
-                                             </td>
-                                        </tr>
-                                    `;
+                                <tr>
+                                    <td class="text-center">
+                                        <input type="checkbox" class="pilih-checkbox" data-index="${index}" ${item.dipilih ? "checked" : ""}>
+                                    </td>
+                                    <td>
+                                        <div class="cart-product-desc d-flex align-items-center">
+                                            <img src="${item.gambar}" width="60" style="margin-right:10px; border-radius:6px;">
+                                            <div>
+                                                <h5 class="mb-1 h5-sm">${item.nama}</h5>
+                                                <p class="p-sm text-muted">Kode: ${item.id}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><h5>Rp ${new Intl.NumberFormat('id-ID').format(item.harga)}</h5></td>
+                                    <td><h5>${item.qty} Stok = ${item.stok}</h5></td>
+                                    <td class="text-center"><h5>Rp ${new Intl.NumberFormat('id-ID').format(total)}</h5></td>
+                                     <td class="text-end">
+                                         <button class="hapus-btn btn btn-sm btn-danger" data-index="${index}">
+                                             <i class="fas fa-trash-alt" style="color: red;"></i>
+                                         </button>
+                                     </td>
+                                </tr>
+                            `;
                         });
                     }
 
@@ -208,11 +209,11 @@
 
             document.addEventListener("DOMContentLoaded", () => {
                 const form = document.querySelector("form");
-                form.addEventListener("submit", function(e) {
+                form.addEventListener("submit", function (e) {
                     let checkout = JSON.parse(localStorage.getItem("checkout")) || [];
-
                     let dipilih = checkout.filter(item => item.dipilih);
 
+                    // hapus hidden lama
                     document.querySelectorAll(".produk-hidden").forEach(el => el.remove());
 
                     dipilih.forEach((item, i) => {
@@ -234,7 +235,15 @@
                         inputHarga.type = "hidden";
                         inputHarga.name = `produk[${i}][harga]`;
                         inputHarga.value = item.harga;
+                        inputHarga.classList.add("produk-hidden");
                         form.appendChild(inputHarga);
+
+                        let inputNama = document.createElement("input");
+                        inputNama.type = "hidden";
+                        inputNama.name = `produk[${i}][nama]`;
+                        inputNama.value = item.nama;
+                        inputNama.classList.add("produk-hidden");
+                        form.appendChild(inputNama);
                     });
                 });
             });
