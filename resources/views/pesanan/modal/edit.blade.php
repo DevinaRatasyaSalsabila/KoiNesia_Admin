@@ -14,8 +14,7 @@
                         <label class="form-label">Data Pembeli</label>
                         <select class="form-select" name="id_pembeli" required>
                             @foreach ($pembeli as $pemb)
-                                <option value="{{ $pemb->id_pembeli }}"
-                                    {{ $first->id_pembeli == $pemb->id_pembeli ? 'selected' : '' }}>
+                                <option value="{{ $pemb->id_pembeli }}" {{ $first->id_pembeli == $pemb->id_pembeli ? 'selected' : '' }}>
                                     {{ $pemb->nama_pembeli }}
                                 </option>
                             @endforeach
@@ -30,11 +29,8 @@
                                     <select name="produk[]" class="form-control">
                                         @foreach ($produk as $p)
                                             <option value="{{ $p->id_produk }}" data-harga="{{ $p->harga_Satuan }}"
-                                                data-stok="{{ $p->stok_produk }}"
-                                                {{ $pd->kode_produk == $p->kode_produk ? 'selected' : '' }}>
-                                                {{ $p->nama_produk }}
-                                                [Rp{{ number_format($p->harga_Satuan, 0, ',', '.') }} =>
-                                                {{ $p->stok_produk }}]
+                                                data-stok="{{ $p->stok_produk }}" {{ $pd->kode_produk == $p->kode_produk ? 'selected' : '' }}> {{ $p->nama_produk }}
+                                                [Rp{{ number_format($p->harga_Satuan, 0, ',', '.') }} => {{ $p->stok_produk }}]
                                             </option>
                                         @endforeach
                                     </select>
@@ -72,79 +68,91 @@
 
 @push('scripts')
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             const kodePesanan = "{{ $first->kode_pesanan }}";
             const containerSelector = `#produk-container-${kodePesanan}`;
             const addBtnSelector = `.add-produk[data-target="${containerSelector}"]`;
             const nominalInput = $(`.modal#edit_pesanan_${kodePesanan}`).find('.nominal-edit');
 
-            // hapus listener lama dulu
-            $(document).off('click', addBtnSelector);
-
-            // Fungsi hitung nominal total
+            // Hitung total nominal
             function updateNominal() {
                 let total = 0;
-                $(containerSelector).find('.produk-edit-row').each(function() {
+                $(containerSelector).find('.produk-edit-row').each(function () {
                     let select = $(this).find('select[name="produk[]"]');
                     let jumlah = parseFloat($(this).find('input[name="jumlah[]"]').val()) || 0;
                     let harga = parseFloat(select.find(':selected').data('harga')) || 0;
                     total += harga * jumlah;
                 });
-
-                // format ke Rp (ribuan)
-                let formatted = total.toLocaleString('id-ID');
-                nominalInput.val(formatted);
+                nominalInput.val(total.toLocaleString('id-ID'));
             }
 
-            // Tambah produk baru
-            $(document).on('click', addBtnSelector, function(e) {
-                e.preventDefault();
-                const container = $(containerSelector);
+            // Tambah produk
+            $(document).on('click', '.add-produk', function () {
+                const target = $(this).data('target');
+                const produkOptions = `
+                        @foreach ($produk as $p)
+                            <option value="{{ $p->id_produk }}" data-harga="{{ $p->harga_Satuan }}" data-stok="{{ $p->stok_produk }}">
+                                {{ $p->nama_produk }} [Rp{{ number_format($p->harga_Satuan, 0, ',', '.') }} => {{ $p->stok_produk }}]
+                            </option>
+                        @endforeach
+                    `;
 
-                let rowBefore = container.find('.produk-edit-row').length;
-                console.log(`pesanan:${kodePesanan} Jumlah row sebelum klik:`, rowBefore);
+                const newRow = `
+                        <div class="mb-2 row produk-edit-row">
+                            <div class="col-md-9">
+                                <select name="produk[]" class="form-control">${produkOptions}</select>
+                            </div>
+                            <div class="col-md-3 d-flex align-items-center">
+                                <input type="number" name="jumlah[]" class="form-control me-2" value="1" min="1">
+                                <button type="button" class="btn btn-danger btn-sm remove-produk">✖</button>
+                            </div>
+                        </div>
+                    `;
 
-                let newRow = `
-            <div class="mb-2 row produk-edit-row">
-                <div class="col-md-9">
-                    <select name="produk[]" class="form-control">
-                        ${container.find('select[name="produk[]"]').first().html()}
-                    </select>
-                </div>
-                <div class="col-md-3 d-flex align-items-center">
-                    <input type="number" min="0" name="jumlah[]" class="form-control me-2" value="1">
-                    <button type="button" class="btn btn-danger btn-sm remove-produk">✖</button>
-                </div>
-            </div>
-        `;
-
-                container.append(newRow);
-                updateNominal(); // langsung update total pas baris baru ditambah
-
-                let rowAfter = container.find('.produk-edit-row').length;
-                console.log(`pesanan:${kodePesanan} Jumlah row setelah klik:`, rowAfter);
-                console.log(`pesanan:${kodePesanan} Perubahan jumlah row:`, rowAfter - rowBefore);
+                $(target).append(newRow);
+                updateNominal();
             });
 
             // Hapus produk
-            $(document).off('click', `${containerSelector} .remove-produk`).on('click',
-                `${containerSelector} .remove-produk`,
-                function() {
-                    $(this).closest('.produk-edit-row').remove();
-                    updateNominal(); // update lagi setelah hapus
-                });
+            $(document).on('click', `${containerSelector} .remove-produk`, function () {
+                $(this).closest('.produk-edit-row').remove();
+                updateNominal();
+            });
 
-            // Kalau user ubah produk atau jumlah → update total
-            $(document).on('change keyup',
-                `${containerSelector} select[name="produk[]"], ${containerSelector} input[name="jumlah[]"]`,
-                function() {
-                    updateNominal();
-                });
+            // Update stok limit + nominal
+            $(document).on('change', `${containerSelector} select[name="produk[]"]`, function () {
+                const stok = $(this).find(':selected').data('stok') || 0;
+                const jumlahInput = $(this).closest('.produk-edit-row').find('input[name="jumlah[]"]');
+                jumlahInput.attr('max', stok);
+                if (parseInt(jumlahInput.val()) > stok) jumlahInput.val(stok);
+                updateNominal();
+            });
 
-            // Panggil sekali waktu modal pertama kali load
+            $(document).on('keyup change', `${containerSelector} input[name="jumlah[]"]`, updateNominal);
+
+            // Submit pakai AJAX
+            $(document).on('submit', `form[action="{{ route('pesanan.update', $first->kode_pesanan) }}"]`, function (e) {
+                e.preventDefault();
+                const form = $(this);
+                const url = form.attr('action');
+                const data = form.serialize();
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: data + '&_method=PUT',
+                })
+                    .done(() => {
+                        alert('✅ Pesanan berhasil diperbarui!');
+                        location.reload();
+                    })
+                    .fail(() => {
+                        alert('❌ Gagal memperbarui pesanan.');
+                    });
+            });
+
+            // Initial load
             updateNominal();
         });
     </script>
 @endpush
-
-//ini klo di push blm bisa, terus min max jg belum diatur

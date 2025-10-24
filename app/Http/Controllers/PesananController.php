@@ -154,7 +154,7 @@ class PesananController extends Controller
 
         $this->apicall($no_hp, $pesan);
 
-        return redirect()->route('pesanan.index');
+        return redirect()->route('pesanan.index')->with('success', 'Pesanan Berhasil Dibuat');
     }
 
     private function apicall($no_hp, $pesan)
@@ -278,7 +278,7 @@ class PesananController extends Controller
             return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui pesanan!');
         }
     }
-    
+
     public function destroy($id)
     {
         Pesanan::where('kode_pesanan', $id)->delete();
