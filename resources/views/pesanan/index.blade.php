@@ -30,7 +30,13 @@
     </div>
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Daftar Pesanan Terbaru</h5>
+            <h5 class="mb-0">
+                Daftar Pesanan Terbaru
+                <button type="button" id="btnSelectAllPesanan" class="btn btn-secondary btn-sm">
+                    <i class="bi bi-check2-circle"></i>
+                    Pilih Semua
+                </button>
+            </h5>
             <div class="d-flex float-end gap-2">
                 <div class="input-group" style="width: 420px;">
                     <label for="tanggal" class="col-form-label me-2">Dari</label>
@@ -44,14 +50,23 @@
                     </button>
                 </div>
                 <!-- Tombol print dan pilih semua -->
-                <button type="button" id="btnPrintPesanan" class="btn btn-secondary btn-sm">
+                {{-- <button type="button" id="btnPrintPesanan" class="btn btn-secondary btn-sm">
                     <i class="bi bi-printer"></i>
                 </button>
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambah_pesanan">
                     <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
+                </button> --}}
+                <!-- Tombol Print -->
+                <button type="button" id="btnPrintPesanan" class="btn btn-secondary btn-sm" data-bs-toggle="tooltip"
+                    data-bs-placement="top" title="Cetak Daftar Pesanan">
+                    <i class="bi bi-printer"></i>
                 </button>
-                <button type="button" id="btnSelectAllPesanan" class="btn btn-secondary btn-sm">
-                    Pilih Semua
+
+                <!-- Tombol Tambah Pesanan -->
+                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                    data-bs-target="#tambah_pesanan" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Tambah Pesanan Baru">
+                    <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
                 </button>
             </div>
         </div>
@@ -80,14 +95,16 @@
                                     return isset($r->nominal) ? (float) $r->nominal : 0;
                                 });
                             @endphp
-                           <tr data-id="{{ $first->kode_pesanan }}">
+                            <tr data-id="{{ $first->kode_pesanan }}">
                                 <td class="align-middle">
                                     <div class="form-check">
                                         <input class="form-check-input checkbox-pesanan" type="checkbox"
                                             value="{{ $first->kode_pesanan }}">
                                     </div>
                                 </td>
-                                <td class="align-middle">{{ $first->pesanan_created_at ?? '-' }}</td>
+                                <td class="align-middle" data-tanggal="{{ $first->pesanan_created_at }}">
+                                    {{ \Carbon\Carbon::parse($first->pesanan_created_at)->format('d-m-Y') }}
+                                </td>
                                 <td class="align-middle">
                                     {{ $first->id_pembeli == 0 ? '-' : $first->pembeli_nama ?? '-' }}
 
@@ -352,7 +369,10 @@
 
                     Array.from(tabel.rows).forEach(row => {
                         const tanggalText = row.cells[1].textContent.trim();
-                        const tanggal = new Date(tanggalText);
+
+                        // Ubah dari dd-mm-yyyy ke yyyy-mm-dd supaya bisa diproses
+                        const [day, month, year] = tanggalText.split('-');
+                        const tanggal = new Date(`${year}-${month}-${day}`);
 
                         if (tanggal >= dari && tanggal <= sampai) {
                             row.style.display = '';
@@ -361,6 +381,7 @@
                         }
                     });
                 }
+
 
                 // Event ketika tanggal diganti
                 dariInput.addEventListener('change', filterByDateRange);
