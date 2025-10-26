@@ -799,7 +799,6 @@
     <script src="{{ asset('template/assets/plugins/fancy-file-uploader/jquery.fancy-fileupload.js') }}"></script>
 
     <script src="{{ asset('template/assets/plugins/form-repeater/repeater.js') }}"></script>
-
     @stack('scripts')
 </body>
 

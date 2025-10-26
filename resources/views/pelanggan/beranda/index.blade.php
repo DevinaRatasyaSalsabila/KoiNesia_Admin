@@ -157,7 +157,8 @@
                             <div class="bg-white menu-6-item">
                                 <div class="menu-6-img rel">
                                     <div class="hover-overlay">
-                                        <img src="{{ $gambarUtama }}" class="img-fluid mb-2" alt="{{ $prod->nama_produk }}">
+                                        <img src="{{ $gambarUtama }}" class="mb-2 img-fluid"
+                                            alt="{{ $prod->nama_produk }}">
                                         <span class="item-code bg-tra-dark">Kode: {{ $prod->kode_produk }}</span>
                                         <div class="menu-img-zoom ico-25">
                                             <a href="{{ $gambarUtama }}" class="image-link">
@@ -185,16 +186,19 @@
                                         </div>
 
                                         <div class="add-to-cart bg-yellow ico-10">
-                                            <button type="button" class="shadow-none btn-cart-add-1 bg-yellow text-light ico-10"
+                                            <button type="button"
+                                                class="shadow-none btn-cart-add-1 bg-yellow text-light ico-10"
                                                 data-id="{{ $prod->kode_produk }}" data-nama="{{ $prod->nama_produk }}"
-                                                data-harga="{{ $prod->harga_Satuan }}" data-stok="{{ $prod->stok_produk }}"
-                                                data-ukuran="{{ $prod->ukuran_produk }}" data-gambar="{{ $gambarUtama }}">
+                                                data-harga="{{ $prod->harga_Satuan }}"
+                                                data-stok="{{ $prod->stok_produk }}"
+                                                data-ukuran="{{ $prod->ukuran_produk }}"
+                                                data-gambar="{{ $gambarUtama }}">
                                                 <span class="flaticon-shopping-bag"></span>
                                             </button>
                                         </div>
                                     @else
-                                        <div class="text-center mt-3">
-                                            <button type="button" class="btn btn-danger w-100 shadow-none" disabled>
+                                        <div class="mt-3 text-center">
+                                            <button type="button" class="shadow-none btn btn-danger w-100" disabled>
                                                 <i class="flaticon-error"></i> Stok Habis
                                             </button>
                                         </div>
@@ -399,7 +403,6 @@
         </div>
     </section>
 
-
     <section id="about-7" class="bg-05 about-section division">
         <div class="container white-color">
             <div class="abox-4-wrapper ico-80">
@@ -410,8 +413,9 @@
                     <!-- 6 -->
                     <div class="accordion-item" style="background-color: transparent; border: 1px solid #fff;">
                         <h2 class="accordion-header" id="headingSix">
-                            <button class="text-white accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#faq6" style="background-color: rgba(0,0,0,0.2);">
+                            <button class="text-white accordion-button collapsed" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#faq6"
+                                style="background-color: rgba(0,0,0,0.2);">
                                 Berapa biaya ongkir untuk pembelian ikan koi?
                             </button>
                         </h2>
@@ -427,8 +431,9 @@
                     <!-- 7 -->
                     <div class="accordion-item" style="background-color: transparent; border: 1px solid #fff;">
                         <h2 class="accordion-header" id="headingSeven">
-                            <button class="text-white accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#faq7" style="background-color: rgba(0,0,0,0.2);">
+                            <button class="text-white accordion-button collapsed" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#faq7"
+                                style="background-color: rgba(0,0,0,0.2);">
                                 Apakah bisa request ukuran atau jenis koi tertentu?
                             </button>
                         </h2>
@@ -444,8 +449,9 @@
                     <!-- 8 -->
                     <div class="accordion-item" style="background-color: transparent; border: 1px solid #fff;">
                         <h2 class="accordion-header" id="headingEight">
-                            <button class="text-white accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#faq8" style="background-color: rgba(0,0,0,0.2);">
+                            <button class="text-white accordion-button collapsed" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#faq8"
+                                style="background-color: rgba(0,0,0,0.2);">
                                 Apakah ada perawatan khusus setelah koi sampai di rumah?
                             </button>
                         </h2>
@@ -461,8 +467,9 @@
                     <!-- 9 -->
                     <div class="accordion-item" style="background-color: transparent; border: 1px solid #fff;">
                         <h2 class="accordion-header" id="headingNine">
-                            <button class="text-white accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#faq9" style="background-color: rgba(0,0,0,0.2);">
+                            <button class="text-white accordion-button collapsed" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#faq9"
+                                style="background-color: rgba(0,0,0,0.2);">
                                 Apakah ada diskon untuk pembelian dalam jumlah banyak (grosir)?
                             </button>
                         </h2>
@@ -478,8 +485,9 @@
                     <!-- 10 -->
                     <div class="accordion-item" style="background-color: transparent; border: 1px solid #fff;">
                         <h2 class="accordion-header" id="headingTen">
-                            <button class="text-white accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#faq10" style="background-color: rgba(0,0,0,0.2);">
+                            <button class="text-white accordion-button collapsed" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#faq10"
+                                style="background-color: rgba(0,0,0,0.2);">
                                 Apakah bisa datang langsung ke tempat untuk melihat koi?
                             </button>
                         </h2>
@@ -503,12 +511,10 @@
                 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
                 const buttons = document.querySelectorAll(".btn-cart-add-1");
-                console.log("Jumlah tombol keranjang ketemu:", buttons.length);
 
                 buttons.forEach(btn => {
-                    btn.addEventListener("click", function (e) {
+                    btn.addEventListener("click", function(e) {
                         e.preventDefault();
-                        console.log("✅ Tombol keranjang diklik!");
 
                         const produk = {
                             id: this.dataset.id,
@@ -517,18 +523,11 @@
                             stok: parseInt(this.dataset.stok),
                             ukuran: this.dataset.ukuran,
                             gambar: this.dataset.gambar,
-                            qty: 1,
+                            qty: 1
                         };
-
-                        console.log("Data produk:", produk);
 
                         if (!cart.find(item => item.id === produk.id)) {
                             cart.push(produk);
-                            console.log("Produk baru ditambahkan ke cart:", produk);
-                        } else {
-                            console.log(
-                                "Produk sudah ada di cart, tidak ditambahkan lagi."
-                            );
                         }
 
                         localStorage.setItem("cart", JSON.stringify(cart));
@@ -537,14 +536,24 @@
                 });
 
                 function updateCartUI() {
-                    const cartCount = document.getElementById('cart-count');
-                    if (cartCount) {
-                        cartCount.textContent = cart.length;
-                        console.log("Jumlah produk di cart sekarang:", cart.length);
-                    }
+                    const cartCount = document.getElementById('cart-count'); // desktop
+                    const cartCountFixed = document.getElementById('cart-count-fixed'); // mobile fixed
+                    const cartIcon = document.getElementById('cart-icon');
+                    const cartIconFixed = document.getElementById('cart-icon-fixed');
+
+                    if (cartCount) cartCount.textContent = cart.length;
+                    if (cartCountFixed) cartCountFixed.textContent = cart.length;
+
+                    // shake desktop + mobile fixed icon
+                    [cartIcon, cartIconFixed].forEach(icon => {
+                        if (icon) {
+                            icon.classList.add('shake');
+                            setTimeout(() => icon.classList.remove('shake'), 500);
+                        }
+                    });
                 }
 
-                updateCartUI();
+                updateCartUI(); // init badge
             });
         </script>
     @endpush

@@ -1,5 +1,88 @@
 @extends('pelanggan.mainPelanggan')
 @section('content')
+    @push('style')
+        <style>
+            /* 🌸 Responsive Layout Cart Page */
+            @media (max-width: 768px) {
+
+                /* Sembunyiin header tabel biar rapih di mobile */
+                #myTable thead {
+                    display: none;
+                }
+
+                #myTable tbody tr {
+                    display: flex;
+                    flex-direction: column;
+                    border: 1px solid #ddd;
+                    border-radius: 10px;
+                    margin-bottom: 15px;
+                    padding: 10px;
+                    background-color: #fff;
+                    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+                }
+
+                #myTable td {
+                    display: block;
+                    width: 100%;
+                    border: none !important;
+                    padding: 5px 0 !important;
+                }
+
+                /* 🔹 Produk */
+                .cart-product-desc {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                }
+
+                .cart-product-desc img {
+                    width: 70px;
+                    height: 70px;
+                    border-radius: 10px;
+                    object-fit: cover;
+                }
+
+                .cart-product-desc h5 {
+                    font-size: 1rem;
+                    margin-bottom: 2px;
+                }
+
+                .cart-product-desc p {
+                    font-size: 0.85rem;
+                    color: #777;
+                }
+
+                /* 🔹 Harga dan Qty jadi 1 baris */
+                .cart-price-qty {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-top: 8px;
+                    font-size: 0.95rem;
+                }
+
+                .cart-price-qty h5 {
+                    margin: 0;
+                    font-weight: 600;
+                }
+
+                .cart-price-qty .qty {
+                    background: #f1f1f1;
+                    color: #333;
+                    padding: 4px 8px;
+                    border-radius: 8px;
+                }
+
+                /* 🔹 Total */
+                .cart-total {
+                    text-align: right;
+                    margin-top: 5px;
+                    font-weight: 600;
+                }
+            }
+        </style>
+    @endpush
+
     <div id="cart-page" class="page-hero-section division">
         <div class="container">
             <div class="row">
@@ -30,7 +113,7 @@
         </div>
     </div>
 
-    <form action="{{route('pesanan.kirim')}}" method="POST" class="row">
+    <form action="{{ route('pesanan.kirim') }}" method="POST" class="row">
         @csrf
         <section class="wide-100 cart-page division">
             <div class="container">
@@ -47,12 +130,12 @@
                         </div>
                     </div>
                     <div class="col-lg-8">
-                        <div class="mb-5 rounded  bg-body-tertiary">
+                        <div class="mb-5 rounded bg-body-tertiary">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="form-holder">
                                         <div class="row">
-                                            <div class="col-md-12 col-lg-6 mb-2">
+                                            <div class="mb-2 col-md-12 col-lg-6">
                                                 <label for="">Nama Penerima</label>
                                                 <input type="text" name="nama_pembeli" class="form-control "
                                                     placeholder="Masukkan Nama Penerima">
@@ -69,10 +152,9 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-12 col-lg-12 mb-2">
+                                        <div class="mb-2 col-md-12 col-lg-12">
                                             <label for="">Alamat Lengkap</label>
-                                            <textarea name="alamat" class="form-control "
-                                                placeholder="Masukkan Alamat Lengkap"></textarea>
+                                            <textarea name="alamat" class="form-control " placeholder="Masukkan Alamat Lengkap"></textarea>
                                         </div>
 
                                         <div class="text-center col-md-12">
@@ -94,7 +176,6 @@
                                 <table id="myTable">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Pilih</th>
                                             <th scope="col">Produk</th>
                                             <th scope="col">Harga</th>
                                             <th scope="col">Item</th>
@@ -115,7 +196,7 @@
                             <tr>
                                 <td colspan="3"></td>
                                 <td>
-                                    <h5 class="h5-md meat-color text-end">Total Keseluruhan :</h5>
+                                    <h5 class="h5-md meat-color text-end">Total Keseluruhan : </h5>
                                 </td>
                                 <td colspan="2" class="product-price-total-keseluruhan">
                                     <h5 id="total-harga" class="text-center h5-md">Rp 0</h5>
@@ -158,9 +239,6 @@
 
                             tbody.innerHTML += `
                                 <tr>
-                                    <td class="text-center">
-                                        <input type="checkbox" class="pilih-checkbox" data-index="${index}" ${item.dipilih ? "checked" : ""}>
-                                    </td>
                                     <td>
                                         <div class="cart-product-desc d-flex align-items-center">
                                             <img src="${item.gambar}" width="60" style="margin-right:10px; border-radius:6px;">
@@ -171,13 +249,8 @@
                                         </div>
                                     </td>
                                     <td><h5>Rp ${new Intl.NumberFormat('id-ID').format(item.harga)}</h5></td>
-                                    <td><h5>${item.qty} Stok = ${item.stok}</h5></td>
+                                    <td><h5 class="badge bg-light text-dark">${item.qty} x</h5></td>
                                     <td class="text-center"><h5>Rp ${new Intl.NumberFormat('id-ID').format(total)}</h5></td>
-                                     <td class="text-end">
-                                         <button class="hapus-btn btn btn-sm btn-danger" data-index="${index}">
-                                             <i class="fas fa-trash-alt" style="color: red;"></i>
-                                         </button>
-                                     </td>
                                 </tr>
                             `;
                         });
@@ -209,7 +282,7 @@
 
             document.addEventListener("DOMContentLoaded", () => {
                 const form = document.querySelector("form");
-                form.addEventListener("submit", function (e) {
+                form.addEventListener("submit", function(e) {
                     let checkout = JSON.parse(localStorage.getItem("checkout")) || [];
                     let dipilih = checkout.filter(item => item.dipilih);
 

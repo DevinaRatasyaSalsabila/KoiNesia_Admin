@@ -60,9 +60,9 @@
                     <tr>
                         <td colspan="3"></td>
                         <td>
-                            < class="h5-md meat-color text-end">
+                            <p class="h5-md fw-bold meat-color text-end">
                                 Total Keseluruhan :
-                            </>
+                            </p>
                         </td>
                         <td colspan="2" class="product-price-total-keseluruhan">
                             <h5 class="text-center h5-md">Rp 0</h5>
@@ -104,7 +104,7 @@
                             item.stok = found.stok_produk;
                             item.harga = found.harga_Satuan;
                         }
-                        if (item.dipilih === undefined) item.dipilih = false; // ⬅️ default false
+                        if (item.dipilih === undefined) item.dipilih = false;
                         return item;
                     });
 
@@ -116,63 +116,57 @@
                 const tbody = document.querySelector("#myTable tbody");
                 const totalKeseluruhanEl = document.querySelector(".product-price-total-keseluruhan h5");
 
-                tbody.innerHTML = "";
-                if (cart.length === 0) {
-                    tbody.innerHTML = "<tr><td colspan='6' class='text-center'>Keranjang kosong</td></tr>";
-                } else {
-                    cart.forEach((item, index) => {
-                        let total = item.harga * item.qty;
-                        let stokKosong = item.stok === 0;
+                function renderCart() {
+                    tbody.innerHTML = "";
+                    if (cart.length === 0) {
+                        tbody.innerHTML = "<tr><td colspan='6' class='text-center'>Keranjang kosong</td></tr>";
+                    } else {
+                        cart.forEach((item, index) => {
+                            const total = item.harga * item.qty;
+                            const stokKosong = item.stok === 0;
 
-                        tbody.innerHTML += `
-                        <tr class="${stokKosong ? 'opacity-50' : ''}">
-                            <td data-label="Pilih" class="text-center">
-                                <input
-                                    type="checkbox"
-                                    class="pilih-checkbox"
-                                    data-index="${index}"
-                                    ${stokKosong ? "disabled" : (item.dipilih ? "checked" : "")}
-                                >
-                            </td>
-                            <td data-label="Produk" class="product-name">
-                                <div class="cart-product-desc d-flex align-items-center">
-                                    <img src="${item.gambar}" width="60" style="margin-right:10px; border-radius:6px;">
-                                    <div>
-                                        <p class="mb-1 fw-bold h5-sm">${item.nama}</p>
-                                        <p class="p-sm text-muted">Kode: ${item.id}</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td data-label="Harga" class="product-price">
-                                <p class="h5-md fw-bold">Rp ${new Intl.NumberFormat('id-ID').format(item.harga)}</p>
-                            </td>
-                            <td data-label="Item" class="product-qty">
-                                <input
-                                    class="qty-input"
-                                    type="number"
-                                    min="1"
-                                    max="${item.stok}"
-                                    value="${item.qty}"
-                                    data-index="${index}"
-                                    ${stokKosong ? "disabled" : ""}
-                                >
-                            </td>
-                            <td data-label="Stok" class="product-qty">
-                                ${stokKosong
-                                ? '<span class="badge bg-danger">Stok Habis</span>'
-                                : '<p class="h5-md fw-bold">' + (item.stok ?? '-') + '</p>'}
-                            </td>
-                            <td data-label="Total" class="product-price-total text-end">
-                                <p class="h5-md fw-bold">Rp ${new Intl.NumberFormat('id-ID').format(total)}</p>
-                            </td>
-                            <td data-label="Hapus" class="td-trash text-end">
-                                <button class="hapus-btn btn btn-sm btn-outline-danger" data-index="${index}">
-                                    <i class="far fa-trash-alt" style="color: red;"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    `;
-                    });
+                            tbody.innerHTML += `
+                <tr class="${stokKosong ? 'opacity-50' : ''}">
+                    <td data-label="Pilih" class="text-center">
+                        <input type="checkbox" class="pilih-checkbox"
+                            data-index="${index}"
+                            ${stokKosong ? "disabled" : (item.dipilih ? "checked" : "")}>
+                    </td>
+                    <td data-label="Produk" class="product-name">
+                        <div class="cart-product-desc d-flex align-items-center">
+                            <img src="${item.gambar}" width="60" style="margin-right:10px; border-radius:6px;">
+                            <div>
+                                <p class="mb-1 fw-bold h5-sm">${item.nama}</p>
+                                <p class="p-sm text-muted">Kode: ${item.id}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td data-label="Harga" class="product-price">
+                        <p class="h5-md fw-bold">Rp ${new Intl.NumberFormat('id-ID').format(item.harga)}</p>
+                    </td>
+                    <td data-label="Item" class="product-qty">
+                        <input class="qty-input" type="number" min="1" max="${item.stok}" 
+                               value="${item.qty}" data-index="${index}" 
+                               ${stokKosong ? "disabled" : ""}>
+                    </td>
+                    <td data-label="Stok" class="product-qty">
+                        ${stokKosong
+                            ? '<span class="badge bg-danger">Stok Habis</span>'
+                            : '<p class="h5-md fw-bold">' + (item.stok ?? '-') + '</p>'}
+                    </td>
+                    <td data-label="Total" class="product-price-total text-end">
+                        <p class="h5-md fw-bold subtotal">Rp ${new Intl.NumberFormat('id-ID').format(total)}</p>
+                    </td>
+                    <td data-label="Hapus" class="td-trash text-end">
+                        <button class="hapus-btn btn btn-sm btn-outline-danger" data-index="${index}">
+                            <i class="far fa-trash-alt" style="color: red;"></i>
+                        </button>
+                    </td>
+                </tr>`;
+                        });
+                    }
+                    attachListeners();
+                    hitungTotal();
                 }
 
                 function hitungTotal() {
@@ -182,59 +176,62 @@
                             totalKeseluruhan += item.harga * item.qty;
                         }
                     });
-                    totalKeseluruhanEl.textContent =
-                        "Rp " + new Intl.NumberFormat('id-ID').format(totalKeseluruhan);
+                    totalKeseluruhanEl.textContent = "Rp " + new Intl.NumberFormat('id-ID').format(
+                    totalKeseluruhan);
                 }
 
-                hitungTotal();
-
-                document.querySelectorAll(".pilih-checkbox").forEach(checkbox => {
-                    checkbox.addEventListener("change", () => {
-                        let index = checkbox.dataset.index;
-                        cart[index].dipilih = checkbox.checked;
-                        localStorage.setItem("cart", JSON.stringify(cart));
-                        hitungTotal();
+                function attachListeners() {
+                    document.querySelectorAll(".pilih-checkbox").forEach(checkbox => {
+                        checkbox.addEventListener("change", () => {
+                            const index = checkbox.dataset.index;
+                            cart[index].dipilih = checkbox.checked;
+                            localStorage.setItem("cart", JSON.stringify(cart));
+                            hitungTotal();
+                        });
                     });
-                });
 
-                document.querySelectorAll(".hapus-btn").forEach(btn => {
-                    btn.addEventListener("click", () => {
-                        let index = btn.dataset.index;
-                        cart.splice(index, 1);
-                        localStorage.setItem("cart", JSON.stringify(cart));
-                        location.reload();
+                    document.querySelectorAll(".hapus-btn").forEach(btn => {
+                        btn.addEventListener("click", () => {
+                            const index = btn.dataset.index;
+                            cart.splice(index, 1);
+                            localStorage.setItem("cart", JSON.stringify(cart));
+                            renderCart();
+                        });
                     });
-                });
 
-                document.querySelectorAll(".qty-input").forEach(input => {
-                    input.addEventListener("change", () => {
-                        let index = input.dataset.index;
-                        cart[index].qty = parseInt(input.value);
-                        const totalCell = input.closest("tr").querySelector(
-                            ".product-price-total h5");
-                        totalCell.textContent =
-                            "Rp " + new Intl.NumberFormat("id-ID").format(cart[index].harga * cart[
-                                index].qty);
-                        localStorage.setItem("cart", JSON.stringify(cart));
-                        hitungTotal();
+                    document.querySelectorAll(".qty-input").forEach(input => {
+                        input.addEventListener("input", () => {
+                            const index = input.dataset.index;
+                            let newQty = parseInt(input.value);
+                            if (isNaN(newQty) || newQty < 1) newQty = 1;
+                            if (newQty > cart[index].stok) newQty = cart[index].stok;
+                            cart[index].qty = newQty;
+
+                            // update subtotal row ini langsung
+                            const subtotalEl = input.closest("tr").querySelector(".subtotal");
+                            subtotalEl.textContent = "Rp " + new Intl.NumberFormat('id-ID').format(
+                                cart[index].harga * newQty);
+
+                            // simpan ke localStorage & update total keseluruhan
+                            localStorage.setItem("cart", JSON.stringify(cart));
+                            hitungTotal();
+                        });
                     });
-                });
+                }
+
+                renderCart();
 
                 const lanjutkanBtn = document.querySelector("a.btn-meat");
                 lanjutkanBtn.addEventListener("click", (e) => {
                     e.preventDefault();
 
-                    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-                    let terpilih = cart.filter(item => item.dipilih && item.stok > 0);
-
+                    const terpilih = cart.filter(item => item.dipilih && item.stok > 0);
                     if (terpilih.length === 0) {
                         alert("Pilih minimal satu produk sebelum melanjutkan ya 🥺");
                         return;
                     }
 
                     localStorage.setItem("checkout", JSON.stringify(terpilih));
-
                     window.location.href = lanjutkanBtn.getAttribute("href");
                 });
             });

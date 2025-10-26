@@ -136,7 +136,7 @@ class PesananController extends Controller
             $produk->stok_produk -= $qty;
             $produk->save();
 
-            $detailPesanan .= "- {$produk->nama_produk} x{$qty} = Rp " . number_format($subtotal, 0, ',', '.') . "\n";
+            $detailPesanan .= "- {$produk->nama_pembeli} x{$qty} = Rp " . number_format($subtotal, 0, ',', '.') . "\n";
         }
 
         $pembeli = Pembeli::find($request->id_pembeli);
@@ -154,7 +154,12 @@ class PesananController extends Controller
 
         $this->apicall($no_hp, $pesan);
 
-        return redirect()->route('pesanan.index')->with('success', 'Pesanan Berhasil Dibuat');
+       if ($pesan) {
+    return redirect()->route('pesanan.index')->with('success', 'Pesanan Berhasil Dibuat!');
+} else {
+    return redirect()->route('pesanan.index')->with('error', 'Gagal membuat pesanan!');
+}
+
     }
 
     private function apicall($no_hp, $pesan)
@@ -213,35 +218,38 @@ class PesananController extends Controller
 
             $pesananLama = Pesanan::where('kode_pesanan', $kode_pesanan)->get();
             $produkBaruIDs = $request->produk;
-            Log::info($request->all());
             Log::info("📦 Produk baru dikirim dari form", ['produk_baru' => $produkBaruIDs]);
+
+            Log::info("📊 Pesanan lama sebelum update", $pesananLama->map(function ($p) {
+                return [
+                    'kode_produk' => $p->kode_produk,
+                    'jumlah' => $p->jumlah,
+                    'nominal' => $p->nominal,
+                ];
+            })->toArray());
 
             foreach ($request->produk as $i => $idProduk) {
                 $produk = Produk::find($idProduk);
-                if (!$produk) {
-                    Log::warning("⚠️ Produk tidak ditemukan", ['id_produk' => $idProduk]);
-                    continue;
-                }
+                if (!$produk) continue;
 
                 $qty = (int) ($request->jumlah[$i] ?? 1);
                 $subtotal = $produk->harga_Satuan * $qty;
 
-                $pesananItem = $pesananLama->firstWhere('kode_produk', $produk->kode_produk);
+                // Langsung cek DB biar real-time
+                $pesananItem = Pesanan::where('kode_pesanan', $kode_pesanan)
+                    ->where('kode_produk', $produk->kode_produk)
+                    ->first();
 
                 if ($pesananItem) {
+                    // Update produk lama
                     $pesananItem->update([
-                        'jumlah'  => $qty,
+                        'jumlah' => $qty,
                         'nominal' => $subtotal,
                         'id_pembeli' => $request->id_pembeli,
                         'updated_at' => now(),
                     ]);
-                    Log::info("♻️ Produk diupdate", [
-                        'nama_produk' => $produk->nama_produk,
-                        'kode_produk' => $produk->kode_produk,
-                        'jumlah' => $qty,
-                        'subtotal' => $subtotal,
-                    ]);
                 } else {
+                    // Tambah produk baru
                     Pesanan::create([
                         'kode_pesanan' => $kode_pesanan,
                         'id_pembeli'   => $request->id_pembeli,
@@ -251,22 +259,18 @@ class PesananController extends Controller
                         'jumlah'       => $qty,
                         'nominal'      => $subtotal,
                     ]);
-                    Log::info("🆕 Produk baru ditambahkan", [
-                        'kode_produk' => $produk->kode_produk,
-                        'jumlah' => $qty,
-                        'subtotal' => $subtotal,
-                    ]);
                 }
             }
 
             $kodeProdukBaru = Produk::whereIn('id_produk', $produkBaruIDs)->pluck('kode_produk');
-            $deleted = Pesanan::where('kode_pesanan', $kode_pesanan)
+            Pesanan::where('kode_pesanan', $kode_pesanan)
                 ->whereNotIn('kode_produk', $kodeProdukBaru)
                 ->delete();
 
-            if ($deleted > 0) {
-                Log::info("🗑️ Produk dihapus dari pesanan", ['deleted_count' => $deleted]);
-            }
+
+            // if ($deleted > 0) {
+            //     Log::info("🗑️ Produk dihapus dari pesanan", ['deleted_count' => $deleted]);
+            // }
 
             Log::info("✅ Update pesanan selesai", ['kode_pesanan' => $kode_pesanan]);
             return redirect()->route('pesanan.index')->with('success', 'Pesanan berhasil diperbarui!');
@@ -278,6 +282,7 @@ class PesananController extends Controller
             return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui pesanan!');
         }
     }
+
 
     public function destroy($id)
     {

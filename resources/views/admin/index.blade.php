@@ -85,6 +85,23 @@
                 table.buttons().container()
                     .appendTo('#example2_wrapper .col-md-6:eq(0)');
             });
+
+             @if (session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: '{{ session('success') }}',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        @elseif (session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops!',
+                text: '{{ session('error') }}',
+                showConfirmButton: true,
+            });
+        @endif
         </script>
     @endpush
 @endsection
