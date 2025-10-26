@@ -318,4 +318,54 @@ class PesananController extends Controller
             return back()->with('error', 'Error: ' . $e->getMessage());
         }
     }
+    // public function print(Request $request)
+    // {
+    //     $ids = explode(',', $request->get('id')); // ubah ke 'id'
+
+    //     $pesanan = DB::table('pesanan')
+    //         ->join('pembeli', 'pembeli.id_pembeli', '=', 'pesanan.id_pembeli')
+    //         ->whereIn('pesanan.kode_pesanan', $ids)
+    //         ->select(
+    //             'pesanan.kode_pesanan',
+    //             'pembeli.nama_pembeli',
+    //             'pembeli.no_hp',
+    //             'pembeli.alamat'
+    //         )
+    //         ->get();
+
+    //         return view('pesanan.resi', compact('pesanan'));
+    // }
+    // app/Http/Controllers/PesananController.php
+
+    public function print(Request $request)
+    {
+        // $ids = explode(',', $request->id);
+
+        // $pesanan = DB::table('pesanan')
+        //     ->join('pembeli', 'pesanan.id_pembeli', '=', 'pembeli.id_pembeli')
+        //     ->join('produk', 'pesanan.kode_produk', '=', 'produk.kode_produk')
+        //     ->whereIn('pesanan.kode_pesanan', $ids)
+        //     ->select(
+        //         'pesanan.kode_pesanan',
+        //         'pembeli.nama_pembeli',
+        //         'pembeli.no_hp',
+        //         'pembeli.alamat',
+        //         'produk.nama_produk',
+        //         'produk.harga_Satuan',
+        //         'pesanan.jumlah',
+        //         'pesanan.nominal'
+        //     )
+        //     ->get();
+
+        // return view('pesanan.resi', compact('pesanan'));
+        $ids = explode(',', $request->id);
+        $pesanan = DB::table('pesanan')
+            ->join('produk', 'pesanan.kode_produk', '=', 'produk.kode_produk')
+            ->join('pembeli', 'pesanan.id_pembeli', '=', 'pembeli.id_pembeli')
+            ->select('pesanan.*', 'produk.nama_produk', 'produk.harga_satuan', 'pembeli.nama_pembeli', 'pembeli.no_hp', 'pembeli.alamat')
+            ->whereIn('pesanan.kode_pesanan', $ids)
+            ->get()
+            ->groupBy('kode_pesanan');
+        return view('pesanan.resi', compact('pesanan'));
+    }
 }

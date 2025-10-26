@@ -30,10 +30,45 @@
     </div>
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Daftar Pesanan Terbaru</h5>
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambah_pesanan">
-                <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
-            </button>
+            <h5 class="mb-0">
+                Daftar Pesanan Terbaru
+                <button type="button" id="btnSelectAllPesanan" class="btn btn-secondary btn-sm">
+                    <i class="bi bi-check2-circle"></i>
+                    Pilih Semua
+                </button>
+            </h5>
+            <div class="d-flex float-end gap-2">
+                <div class="input-group" style="width: 420px;">
+                    <label for="tanggal" class="col-form-label me-2">Dari</label>
+                    <input type="date" id="dari-pesanan" class="form-control form-control-sm me-4">
+
+                    <label for="tanggal" class="col-form-label me-2">Sampai</label>
+                    <input type="date" id="sampai-pesanan" class="form-control form-control-sm">
+
+                    <button type="button" id="resetPesananFilter" class="btn btn-danger btn-sm ms-2">
+                        <i class="bi bi-arrow-counterclockwise"></i>
+                    </button>
+                </div>
+                <!-- Tombol print dan pilih semua -->
+                {{-- <button type="button" id="btnPrintPesanan" class="btn btn-secondary btn-sm">
+                    <i class="bi bi-printer"></i>
+                </button>
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambah_pesanan">
+                    <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
+                </button> --}}
+                <!-- Tombol Print -->
+                <button type="button" id="btnPrintPesanan" class="btn btn-secondary btn-sm"
+                    data-bs-toggle="tooltip" data-bs-placement="top" title="Cetak Daftar Pesanan">
+                    <i class="bi bi-printer"></i>
+                </button>
+
+                <!-- Tombol Tambah Pesanan -->
+                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                    data-bs-target="#tambah_pesanan" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Tambah Pesanan Baru">
+                    <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
+                </button>
+            </div>
         </div>
 
         <div class="card-body">
@@ -41,6 +76,7 @@
                 <table id="tabel_pesanan" class="table table-striped table-bordered Pesanan">
                     <thead>
                         <tr>
+                            <th></th>
                             <th>Tanggal</th>
                             <th>Nama Pembeli</th>
                             <th>Nominal Pembelian</th>
@@ -59,8 +95,17 @@
                                     return isset($r->nominal) ? (float) $r->nominal : 0;
                                 });
                             @endphp
-                            <tr>
-                                <td class="align-middle">{{ $first->pesanan_created_at ?? '-' }}</td>
+                            <tr data-id="{{ $first->kode_pesanan }}">
+                                <td class="align-middle">
+                                    <div class="form-check">
+                                        <input class="form-check-input checkbox-pesanan" type="checkbox"
+                                            value="{{ $first->kode_pesanan }}">
+                                    </div>
+                                </td>
+                                <td class="align-middle"
+                                    data-tanggal="{{ $first->pesanan_created_at }}">
+                                    {{ \Carbon\Carbon::parse($first->pesanan_created_at)->format('d-m-Y') }}
+                                </td>
                                 <td class="align-middle">
                                     {{ $first->id_pembeli == 0 ? '-' : $first->pembeli_nama ?? '-' }}
 
@@ -72,11 +117,14 @@
                                     <select class="form-select update-status-select fw-bold"
                                         data-id="{{ $first->kode_pesanan }}">
                                         <option value="baru" data-color="#0d6efd"
-                                            {{ ($first->status ?? '') == 'baru' ? 'selected' : '' }}>Baru</option>
+                                            {{ ($first->status ?? '') == 'baru' ? 'selected' : '' }}>
+                                            Baru</option>
                                         <option value="proses" data-color="#ffc107"
-                                            {{ ($first->status ?? '') == 'proses' ? 'selected' : '' }}>Diproses</option>
+                                            {{ ($first->status ?? '') == 'proses' ? 'selected' : '' }}>
+                                            Diproses</option>
                                         <option value="selesai" data-color="#198754"
-                                            {{ ($first->status ?? '') == 'selesai' ? 'selected' : '' }}>Selesai</option>
+                                            {{ ($first->status ?? '') == 'selesai' ? 'selected' : '' }}>
+                                            Selesai</option>
                                     </select>
                                     {{-- <div class="status-wrapper">
                                         <select class="form-select update-status-select fw-bold"
@@ -103,16 +151,20 @@
                                             <i class="fadeIn animated bx bx-info-circle fs-6"></i>
                                         </a>
 
-                                        <form action="{{ route('pesanan.delete', $first->kode_pesanan) }}" method="POST"
+                                        <form
+                                            action="{{ route('pesanan.delete', $first->kode_pesanan) }}"
+                                            method="POST"
                                             class="p-0 m-0 d-flex align-items-center delete-form">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger">
-                                                <i class="fadeIn animated bx bx-trash text-light fs-6"></i>
+                                                <i
+                                                    class="fadeIn animated bx bx-trash text-light fs-6"></i>
                                             </button>
                                         </form>
 
-                                        <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                        <button type="button" class="btn btn-warning"
+                                            data-bs-toggle="modal"
                                             data-bs-target="#edit_pesanan_{{ $first->kode_pesanan }}">
                                             <i class="fadeIn animated bx bx-pencil text-light fs-6"></i>
                                         </button>
@@ -124,6 +176,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
+                            <th></th>
                             <th>Tanggal</th>
                             <th>Nama Pembeli</th>
                             <th>Nominal Pembelian</th>
@@ -303,98 +356,120 @@
                 select.addEventListener('change', () => updateColor(select));
             });
         </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const dariInput = document.getElementById('dari-pesanan');
+                const sampaiInput = document.getElementById('sampai-pesanan');
+                const tabel = document.getElementById('tabel_pesanan').getElementsByTagName(
+                    'tbody')[0];
+                const selectAllBtn = document.getElementById('btnSelectAllPesanan');
+                const printBtn = document.getElementById('btnPrintPesanan');
+                const resetBtn = document.getElementById('resetPesananFilter');
 
-        {{-- <script>
-            $(document).ready(function() {
-                const kodePesanan = "{{ $first->kode_pesanan }}";
-                const containerSelector = `#produk-container-${kodePesanan}`;
-                const nominalInput = $(`.modal#edit_pesanan_${kodePesanan}`).find('.nominal-edit');
+                // 🗓️ Set default tanggal hari ini
+                const today = new Date().toISOString().split('T')[0];
+                dariInput.value = today;
+                sampaiInput.value = today;
 
-                // Fungsi hitung total nominal
-                function updateNominal() {
-                    let total = 0;
-                    $(containerSelector).find('.produk-edit-row').each(function() {
-                        let select = $(this).find('select[name="produk[]"]');
-                        let jumlah = parseFloat($(this).find('input[name="jumlah[]"]').val()) || 0;
-                        let harga = parseFloat(select.find(':selected').data('harga')) || 0;
-                        total += harga * jumlah;
+                // Fungsi filter berdasarkan range tanggal
+                function filterByDateRange() {
+                    const dari = new Date(dariInput.value);
+                    const sampai = new Date(sampaiInput.value);
+
+                    Array.from(tabel.rows).forEach(row => {
+                        const tanggalText = row.cells[1].textContent.trim();
+
+                        // Ubah dari dd-mm-yyyy ke yyyy-mm-dd supaya bisa diproses
+                        const [day, month, year] = tanggalText.split('-');
+                        const tanggal = new Date(`${year}-${month}-${day}`);
+
+                        if (tanggal >= dari && tanggal <= sampai) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
                     });
-                    nominalInput.val(total.toLocaleString('id-ID'));
                 }
 
-                // Tambah produk
-                $(document).on('click', `.add-produk[data-target="${containerSelector}"]`, function() {
-                    const target = $(this).data('target');
-                    const produkOptions = `
-            @foreach ($produk as $p)
-                <option value="{{ $p->id_produk }}" 
-                        data-harga="{{ $p->harga_Satuan }}" 
-                        data-stok="{{ $p->stok_produk }}">
-                    {{ $p->nama_produk }} [Rp{{ number_format($p->harga_Satuan, 0, ',', '.') }} => {{ $p->stok_produk }}]
-                </option>
-            @endforeach
-        `;
 
-                    const newRow = `
-            <div class="mb-2 row produk-edit-row">
-                <div class="col-md-9">
-                    <select name="produk[]" class="form-control">${produkOptions}</select>
-                </div>
-                <div class="col-md-3 d-flex align-items-center">
-                    <input type="number" name="jumlah[]" class="form-control me-2" value="1" min="1">
-                    <button type="button" class="btn btn-danger btn-sm remove-produk">✖</button>
-                </div>
-            </div>
-        `;
+                // Event ketika tanggal diganti
+                dariInput.addEventListener('change', filterByDateRange);
+                sampaiInput.addEventListener('change', filterByDateRange);
 
-                    $(target).append(newRow);
-                    updateNominal();
+                // Reset ke hari ini
+                resetBtn.addEventListener('click', () => {
+                    dariInput.value = today;
+                    sampaiInput.value = today;
+                    filterByDateRange();
                 });
 
-                // 🧹 Hapus produk (FIXED)
-                // Gunakan delegation global biar baris dinamis ikut ke-bind
-                $(document).on('click', `${containerSelector} .remove-produk`, function() {
-                    $(this).closest('.produk-edit-row').remove();
-                    updateNominal();
+                // Pilih semua
+                selectAllBtn.addEventListener('click', () => {
+                    const checkboxes = document.querySelectorAll('.checkbox-pesanan');
+                    checkboxes.forEach(cb => {
+                        if (cb.closest('tr').style.display !== 'none') {
+                            cb.checked = true;
+                        }
+                    });
                 });
 
-                // Update stok dan nominal saat produk diubah
-                $(document).on('change', `${containerSelector} select[name="produk[]"]`, function() {
-                    const stok = $(this).find(':selected').data('stok') || 0;
-                    const jumlahInput = $(this).closest('.produk-edit-row').find('input[name="jumlah[]"]');
-                    jumlahInput.attr('max', stok);
-                    if (parseInt(jumlahInput.val()) > stok) jumlahInput.val(stok);
-                    updateNominal();
-                });
+                // Print data yang diceklis
+                printBtn.addEventListener('click', () => {
+                    const checkedRows = Array.from(document.querySelectorAll(
+                            '.checkbox-pesanan:checked'))
+                        .map(cb => cb.closest('tr'));
 
-                // Update nominal saat jumlah berubah
-                $(document).on('keyup change', `${containerSelector} input[name="jumlah[]"]`, updateNominal);
+                    if (checkedRows.length === 0) {
+                        alert('Pilih data pesanan yang ingin dicetak terlebih dahulu!');
+                        return;
+                    }
 
-                // Submit pakai AJAX
-                $(document).on('submit', `form[action="{{ route('pesanan.update', $first->kode_pesanan) }}"]`,
-                    function(e) {
-                        e.preventDefault();
-                        const form = $(this);
-                        const url = form.attr('action');
-                        const data = form.serialize();
+                    // Buat halaman print sederhana
+                    const printWindow = window.open('', '', 'width=800,height=600');
+                    printWindow.document.write('<html><head><title>Print Pesanan</title>');
+                    printWindow.document.write(
+                        '<style>table{width:100%;border-collapse:collapse;}th,td{border:1px solid #333;padding:6px;text-align:left;}</style>'
+                    );
+                    printWindow.document.write('</head><body>');
+                    printWindow.document.write('<h3>Data Pesanan Terpilih</h3>');
+                    printWindow.document.write('<table>');
+                    printWindow.document.write(
+                        '<tr><th>Tanggal</th><th>Nama Pembeli</th><th>Nominal Pembelian</th><th>Status</th></tr>'
+                    );
 
-                        $.ajax({
-                                url: url,
-                                type: 'POST',
-                                data: data + '&_method=PUT',
-                            })
-                            .done(() => {
-                                alert('✅ Pesanan berhasil diperbarui!');
-                                location.reload();
-                            })
-                            .fail(() => {
-                                alert('❌ Gagal memperbarui pesanan.');
-                            });
+                    checkedRows.forEach(row => {
+                        printWindow.document.write('<tr>' +
+                            '<td>' + row.cells[1].textContent + '</td>' +
+                            '<td>' + row.cells[2].textContent + '</td>' +
+                            '<td>' + row.cells[3].textContent + '</td>' +
+                            '<td>' + row.cells[4].textContent + '</td>' +
+                            '</tr>');
                     });
 
-                // Initial load
-                updateNominal();
+                    printWindow.document.write('</table></body></html>');
+                    printWindow.document.close();
+                    printWindow.print();
+                });
+
+                // Jalankan filter pertama kali (hari ini)
+                filterByDateRange();
             });
-        </script> --}}
+        </script>
+        <script>
+            document.getElementById('btnPrintPesanan').addEventListener('click', function() {
+                let terpilih = [];
+                document.querySelectorAll('.form-check-input:checked').forEach(cb => {
+                    terpilih.push(cb.closest('tr').getAttribute('data-id'));
+                });
+
+                if (terpilih.length === 0) {
+                    alert('Pilih data pesanan yang ingin dicetak!');
+                    return;
+                }
+
+                let url = "{{ route('pesananPrint') }}?id=" + terpilih.join(',');
+                window.open(url, '_blank');
+            });
+        </script>
     @endpush
 @endsection

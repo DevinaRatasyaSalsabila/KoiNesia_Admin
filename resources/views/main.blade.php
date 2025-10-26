@@ -352,13 +352,13 @@
                 </li> --}}
                 <li class="nav-item dropdown">
                     <a href="javascrpt:;" class="dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown">
-                        <img src="assets/images/avatars/01.png" class="rounded-circle p-1 border" width="45"
+                        <img src="{{asset('template/assets/images/avatars/01.png')}}" class="rounded-circle p-1 border" width="45"
                             height="45">
                     </a>
                     <div class="shadow dropdown-menu dropdown-user dropdown-menu-end">
                         <a class="gap-2 py-2 dropdown-item" href="javascript:;">
                             <div class="text-center">
-                                <img src="assets/images/avatars/01.png" class="rounded-circle p-1 shadow mb-3"
+                                <img src="{{asset('template/assets/images/avatars/01.png')}}" class="rounded-circle p-1 shadow mb-3"
                                     width="90" height="90" alt="">
                                 <h5 class="user-name mb-0 fw-bold">Hello, Jhon</h5>
                             </div>

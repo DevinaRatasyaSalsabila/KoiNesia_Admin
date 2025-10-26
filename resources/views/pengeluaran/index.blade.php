@@ -23,12 +23,16 @@
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambah_pengeluaran">
                     <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
                 </button>
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambah_pengeluaran">
+                    <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
+                </button>
 
                 <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
                     data-bs-target="#importModal">
-                    <i class="ri-download-2-line"></i> Import
+                    <i class="bi bi-download"></i>
                 </button>
             </div>
+
 
         </div>
 

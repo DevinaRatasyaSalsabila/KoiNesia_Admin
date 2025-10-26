@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Imports\ProdukImport;
+use App\Imports\ProdukImport;   
 use App\Models\Produk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -176,6 +176,16 @@ class ProdukController extends Controller
         return redirect()->route('produk.index')->with('success', 'Produk berhasil dihapus!');
     }
 
+    // public function import(Request $request)
+    // {
+    //     $request->validate([
+    //         'file' => 'required|mimes:xlsx,xls,csv'
+    //     ]);
+
+    //     Excel::import(new ProdukImport, $request->file('file'));
+
+    //     return back()->with('sukses', 'Data produk berhasil diimport.');
+    // }
     public function import(Request $request)
     {
         $request->validate([
@@ -184,6 +194,6 @@ class ProdukController extends Controller
 
         Excel::import(new ProdukImport, $request->file('file'));
 
-        return back()->with('sukses', 'Data produk berhasil diimport.');
+        return redirect()->back()->with('success', 'Data produk berhasil diimport!');
     }
 }
