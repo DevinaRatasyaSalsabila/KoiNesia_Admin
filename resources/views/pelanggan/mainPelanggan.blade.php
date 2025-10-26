@@ -53,17 +53,57 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        /* efek shake */
+        @keyframes shake {
 
+            0%,
+            100% {
+                transform: translateX(0);
+            }
 
+            20%,
+            60% {
+                transform: translateX(-4px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(4px);
+            }
+        }
+
+        .shake {
+            animation: shake 0.5s;
+        }
+
+        /* FIXED CART ICON MOBILE */
+        #cart-icon-fixed {
+            display: none;
+            /* default hidden desktop */
+        }
+
+        @media (max-width: 768px) {
+            #cart-icon-fixed {
+                display: block;
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                right: 55px;
+                /* adjust biar ga nutup hamburger */
+                z-index: 1050;
+            }
+        }
+
+        @media (max-width: 360px) {
+            #cart-icon-fixed {
+                right: 45px;
+            }
+        }
+    </style>
 </head>
 
-
-
-
 <body>
-
-
-
 
     <!-- PRELOADER SPINNER
   ============================================= -->
@@ -77,9 +117,6 @@
             </div>
         </div>
     </div>
-
-
-
 
     {{-- <!-- HEADER-1
   ============================================= -->
@@ -174,7 +211,14 @@
                     <div class="line-menu"></div>
                     <div class="line-menu line-half last-line"></div>
                 </div>
-
+               <div id="cart-icon-fixed" class="basket-ico ico-30">
+                <a href="{{ route('keranjang') }}">
+                    <span class="ico-holder">
+                        <span class="flaticon-shopping-bag"></span>
+                        <em class="roundpoint" id="cart-count-fixed">0</em>
+                    </span>
+                </a>
+            </div>
                 <!-- MAIN MENU (tambahin scrollspy) -->
                 <nav class="navik-menu menu-caret navik-yellow">
                     <ul class="top-list">
@@ -198,7 +242,7 @@
                             <a href="tel:0859348539">08459348594</a>
                         </li>
 
-                        <li class="basket-ico ico-30">
+                        <li class="basket-ico ico-30" id="cart-icon">
                             <a href="{{ route('keranjang') }}">
                                 <span class="ico-holder">
                                     <span class="flaticon-shopping-bag"></span>
@@ -206,8 +250,6 @@
                                 </span>
                             </a>
                         </li>
-
-
 
                         <div id="cart-dropdown"
                             style="display:none; position:absolute; right:0; background:#fff; border:1px solid #ccc; padding:10px; width:250px; z-index:999;">
@@ -226,19 +268,24 @@
         </div>
         <!-- End container -->
     </header>
+    {{-- 
+    <!-- FIXED CART ICON MOBILE -->
+    <div id="cart-icon-fixed" class="basket-ico ico-30">
+        <a href="{{ route('keranjang') }}">
+            <span class="ico-holder">
+                <span class="flaticon-shopping-bag"></span>
+                <em class="roundpoint" id="cart-count-fixed">0</em>
+            </span>
+        </a>
+    </div> --}}
+
     <!-- END HEADER-3 -->
-
-
-
 
     <!-- PAGE CONTENT
   ============================================= -->
     <div id="page" class="page">
 
         @yield('content')
-
-
-
 
         <!-- HERO-9
    ============================================= -->
@@ -271,8 +318,9 @@
                         <div class="footer-contacts">
 
                             {{-- <!-- Address -->
-                            <p class="p-xl mt-10">Los Angeles,</p> --}}
-                            <p class="p-xl">Lingkungan Klemunan, Klemunan, Kec. Wlingi, Kabupaten Blitar, Jawa Timur 66184</p>
+                            <p class="mt-10 p-xl">Los Angeles,</p> --}}
+                            <p class="p-xl">Lingkungan Klemunan, Klemunan, Kec. Wlingi, Kabupaten Blitar, Jawa Timur
+                                66184</p>
 
                             {{-- <!-- Contacts -->
                             <p class="p-lg foo-email">Email: <a
@@ -288,7 +336,7 @@
                     <div class="col-md-12 col-lg-4 col-xl-3">
                         <div class="footer-img">
                             <!-- Images -->
-                            <ul class="text-center clearfix"
+                            <ul class="clearfix text-center"
                                 style="display:flex; flex-wrap:wrap; justify-content:center; list-style:none; padding:15px; margin:0;">
 
                                 <li style="flex:0 0 33.33%; text-align:center; margin-bottom:15px;">
@@ -337,9 +385,6 @@
         </footer> <!-- END FOOTER-1 -->
     </div> <!-- END PAGE CONTENT -->
 
-
-
-
     <!-- EXTERNAL SCRIPTS
         ============================================= -->
     <script src="{{ asset('files/js/jquery-3.5.1.min.js') }}"></script>
@@ -362,7 +407,6 @@
 
     <!-- Custom Script -->
     <script src="{{ asset('files/js/custom.js') }}"></script>
-
 
     @stack('script')
 

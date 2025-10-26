@@ -23,12 +23,16 @@
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambah_pengeluaran">
                     <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
                 </button>
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambah_pengeluaran">
+                    <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
+                </button>
 
                 <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
                     data-bs-target="#importModal">
                     <i class="bi bi-download"></i>
                 </button>
             </div>
+
 
         </div>
 
@@ -94,6 +98,24 @@
                 table.buttons().container()
                     .appendTo('#example2_wrapper .col-md-6:eq(0)');
             });
+
+
+            @if (session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: '{{ session('success') }}',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            @elseif (session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops!',
+                    text: '{{ session('error') }}',
+                    showConfirmButton: true,
+                });
+            @endif
         </script>
     @endpush
 @endsection

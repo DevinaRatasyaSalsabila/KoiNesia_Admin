@@ -57,8 +57,8 @@
                     <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
                 </button> --}}
                 <!-- Tombol Print -->
-                <button type="button" id="btnPrintPesanan" class="btn btn-secondary btn-sm" data-bs-toggle="tooltip"
-                    data-bs-placement="top" title="Cetak Daftar Pesanan">
+                <button type="button" id="btnPrintPesanan" class="btn btn-secondary btn-sm"
+                    data-bs-toggle="tooltip" data-bs-placement="top" title="Cetak Daftar Pesanan">
                     <i class="bi bi-printer"></i>
                 </button>
 
@@ -102,7 +102,8 @@
                                             value="{{ $first->kode_pesanan }}">
                                     </div>
                                 </td>
-                                <td class="align-middle" data-tanggal="{{ $first->pesanan_created_at }}">
+                                <td class="align-middle"
+                                    data-tanggal="{{ $first->pesanan_created_at }}">
                                     {{ \Carbon\Carbon::parse($first->pesanan_created_at)->format('d-m-Y') }}
                                 </td>
                                 <td class="align-middle">
@@ -116,11 +117,14 @@
                                     <select class="form-select update-status-select fw-bold"
                                         data-id="{{ $first->kode_pesanan }}">
                                         <option value="baru" data-color="#0d6efd"
-                                            {{ ($first->status ?? '') == 'baru' ? 'selected' : '' }}>Baru</option>
+                                            {{ ($first->status ?? '') == 'baru' ? 'selected' : '' }}>
+                                            Baru</option>
                                         <option value="proses" data-color="#ffc107"
-                                            {{ ($first->status ?? '') == 'proses' ? 'selected' : '' }}>Diproses</option>
+                                            {{ ($first->status ?? '') == 'proses' ? 'selected' : '' }}>
+                                            Diproses</option>
                                         <option value="selesai" data-color="#198754"
-                                            {{ ($first->status ?? '') == 'selesai' ? 'selected' : '' }}>Selesai</option>
+                                            {{ ($first->status ?? '') == 'selesai' ? 'selected' : '' }}>
+                                            Selesai</option>
                                     </select>
                                     {{-- <div class="status-wrapper">
                                         <select class="form-select update-status-select fw-bold"
@@ -147,16 +151,20 @@
                                             <i class="fadeIn animated bx bx-info-circle fs-6"></i>
                                         </a>
 
-                                        <form action="{{ route('pesanan.delete', $first->kode_pesanan) }}" method="POST"
+                                        <form
+                                            action="{{ route('pesanan.delete', $first->kode_pesanan) }}"
+                                            method="POST"
                                             class="p-0 m-0 d-flex align-items-center delete-form">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger">
-                                                <i class="fadeIn animated bx bx-trash text-light fs-6"></i>
+                                                <i
+                                                    class="fadeIn animated bx bx-trash text-light fs-6"></i>
                                             </button>
                                         </form>
 
-                                        <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                        <button type="button" class="btn btn-warning"
+                                            data-bs-toggle="modal"
                                             data-bs-target="#edit_pesanan_{{ $first->kode_pesanan }}">
                                             <i class="fadeIn animated bx bx-pencil text-light fs-6"></i>
                                         </button>
@@ -352,7 +360,8 @@
             document.addEventListener('DOMContentLoaded', function() {
                 const dariInput = document.getElementById('dari-pesanan');
                 const sampaiInput = document.getElementById('sampai-pesanan');
-                const tabel = document.getElementById('tabel_pesanan').getElementsByTagName('tbody')[0];
+                const tabel = document.getElementById('tabel_pesanan').getElementsByTagName(
+                    'tbody')[0];
                 const selectAllBtn = document.getElementById('btnSelectAllPesanan');
                 const printBtn = document.getElementById('btnPrintPesanan');
                 const resetBtn = document.getElementById('resetPesananFilter');
@@ -406,7 +415,8 @@
 
                 // Print data yang diceklis
                 printBtn.addEventListener('click', () => {
-                    const checkedRows = Array.from(document.querySelectorAll('.checkbox-pesanan:checked'))
+                    const checkedRows = Array.from(document.querySelectorAll(
+                            '.checkbox-pesanan:checked'))
                         .map(cb => cb.closest('tr'));
 
                     if (checkedRows.length === 0) {
