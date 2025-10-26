@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\DasboardController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PembeliController;
 use App\Http\Controllers\PengeluaranController;
 use App\Http\Controllers\ProdukController;
@@ -11,11 +12,10 @@ use App\Http\Controllers\PesananController;
 use App\Http\Controllers\RekapController;
 use App\Http\Controllers\RiwayatController;
 use App\Http\Controllers\SellerAPIController;
-use App\Imports\ProdukImport;
 use Illuminate\Support\Facades\Route;
 
 // Login
-Route::get('/', [LoginController::class, 'index'])->name('login');
+Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/loginsubmit', [LoginController::class, 'submit'])->name('login.submit');
 
 Route::middleware(['middlewareLogin'])->group(function () {
@@ -40,7 +40,7 @@ Route::middleware(['middlewareLogin'])->group(function () {
     Route::get('/produk/edit/{id}', [ProdukController::class, 'edit'])->name('produk.edit');
     Route::put('/produk/update/{id}', [ProdukController::class, 'update'])->name('produk.update');
     Route::delete('/produk/delete/{id}', [ProdukController::class, 'destroy'])->name('produk.delete');
-    Route::post('/produk/import', [ProdukImport::class, 'import'])->name('produk.import');
+    Route::post('/produk/import', [ProdukController::class, 'import'])->name('produk.import');
 
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
@@ -64,7 +64,6 @@ Route::middleware(['middlewareLogin'])->group(function () {
     Route::get('/detail/{id}', [PesananController::class, 'show'])->name('pesanan.detail');
     Route::post('/pesanan/{id}/status', [PesananController::class, 'updateStatus'])->name('pesanan.updateStatus');
     Route::delete('/pesanan/{id}', [PesananController::class, 'destroy'])->name('pesanan.delete');
-    Route::get('/pesanan/print', [PesananController::class, 'print'])->name('pesananPrint');
 
     //pembeli - pesanan
     Route::post('pembeli', [PembeliController::class, 'store'])->name('pembeli.add');
@@ -84,7 +83,15 @@ Route::get('/form-wa', function () {
 
 Route::post('/kirim-wa', [SellerAPIController::class, 'pesan'])->name('kirim.wa');
 
-Route::get('/service/start', [PesananController::class, 'startService'])->name('service.start');
+
+
+Route::get('/', [PelangganController::class, 'beranda'])->name('dashboard.pelanggan');
+Route::prefix('pelanggan')->group(function () {
+    Route::get('/keranjang', [PelangganController::class, 'keranjang'])->name('keranjang');
+    Route::get('/keranjang/pesanan', [PelangganController::class, 'format'])->name('format');
+    // Route::get('/produk', [PelangganController::class, 'produkLengkap'])->name('produkLengkap');
+    Route::post('/pesanan/kirim', [PelangganController::class, 'kirim'])->name('pesanan.kirim');
+});
 
 Route::get('/resi', function () {
     return view('pesanan.resi'); // view form nanti

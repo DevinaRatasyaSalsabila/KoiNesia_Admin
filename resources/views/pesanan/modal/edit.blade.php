@@ -29,8 +29,7 @@
                                     <select name="produk[]" class="form-control">
                                         @foreach ($produk as $p)
                                             <option value="{{ $p->id_produk }}" data-harga="{{ $p->harga_Satuan }}"
-                                                data-stok="{{ $p->stok_produk }}" {{ $pd->kode_produk == $p->kode_produk ? 'selected' : '' }}>
-                                                {{ $p->nama_produk }}
+                                                data-stok="{{ $p->stok_produk }}" {{ $pd->kode_produk == $p->kode_produk ? 'selected' : '' }}> {{ $p->nama_produk }}
                                                 [Rp{{ number_format($p->harga_Satuan, 0, ',', '.') }} => {{ $p->stok_produk }}]
                                             </option>
                                         @endforeach
@@ -69,108 +68,91 @@
 
 @push('scripts')
     <script>
-        function formatUang(num) {
-            num = num || 0;
-            return "Rp" + num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        }
+        $(document).ready(function () {
+            const kodePesanan = "{{ $first->kode_pesanan }}";
+            const containerSelector = `#produk-container-${kodePesanan}`;
+            const addBtnSelector = `.add-produk[data-target="${containerSelector}"]`;
+            const nominalInput = $(`.modal#edit_pesanan_${kodePesanan}`).find('.nominal-edit');
 
-        function hitungTotal(modal) {
-            let total = 0;
-            modal.find(".produk-edit-row").each(function () {
-                let harga = parseInt($(this).find("select[name='produk[]'] option:selected").data("harga")) || 0;
-                let jumlah = parseInt($(this).find("input[name='jumlah[]']").val()) || 0;
-                total += harga * jumlah;
-            });
-            modal.find(".nominal-edit").val(formatUang(total));
-        }
-
-        $(document).on("input", "input[name='jumlah[]']", function () {
-            let row = $(this).closest(".produk-edit-row");
-            let selected = row.find("select[name='produk[]'] option:selected");
-            let stok = selected.data("stok") || 0;
-            let val = parseInt($(this).val()) || 0;
-
-            if (!selected.val()) {
-                return;
+            // Hitung total nominal
+            function updateNominal() {
+                let total = 0;
+                $(containerSelector).find('.produk-edit-row').each(function () {
+                    let select = $(this).find('select[name="produk[]"]');
+                    let jumlah = parseFloat($(this).find('input[name="jumlah[]"]').val()) || 0;
+                    let harga = parseFloat(select.find(':selected').data('harga')) || 0;
+                    total += harga * jumlah;
+                });
+                nominalInput.val(total.toLocaleString('id-ID'));
             }
 
-            if (val > stok) {
-                alert("🚫 Jumlah melebihi stok tersedia!");
-                $(this).val(stok);
-                val = stok;
-            }
+            // Tambah produk
+            $(document).on('click', '.add-produk', function () {
+                const target = $(this).data('target');
+                const produkOptions = `
+                        @foreach ($produk as $p)
+                            <option value="{{ $p->id_produk }}" data-harga="{{ $p->harga_Satuan }}" data-stok="{{ $p->stok_produk }}">
+                                {{ $p->nama_produk }} [Rp{{ number_format($p->harga_Satuan, 0, ',', '.') }} => {{ $p->stok_produk }}]
+                            </option>
+                        @endforeach
+                    `;
 
-            let modal = $(this).closest(".modal");
-            hitungTotal(modal);
+                const newRow = `
+                        <div class="mb-2 row produk-edit-row">
+                            <div class="col-md-9">
+                                <select name="produk[]" class="form-control">${produkOptions}</select>
+                            </div>
+                            <div class="col-md-3 d-flex align-items-center">
+                                <input type="number" name="jumlah[]" class="form-control me-2" value="1" min="1">
+                                <button type="button" class="btn btn-danger btn-sm remove-produk">✖</button>
+                            </div>
+                        </div>
+                    `;
 
-        });
-
-        $(document).on("change", "select[name='produk[]']", function () {
-            let row = $(this).closest(".produk-edit-row");
-            let jumlahInput = row.find("input[name='jumlah[]']");
-            let jumlah = parseInt(jumlahInput.val()) || 0;
-
-            // kalau user belum isi jumlah, auto set ke 1
-            if (jumlah <= 0) {
-                jumlah = 1;
-                jumlahInput.val(jumlah);
-            }
-
-            let modal = $(this).closest(".modal");
-            let selectedValues = [];
-
-            modal.find("select[name='produk[]']").each(function () {
-                let val = $(this).val();
-                if (val) selectedValues.push(val);
+                $(target).append(newRow);
+                updateNominal();
             });
 
-            let uniqueValues = [...new Set(selectedValues)];
-            if (uniqueValues.length !== selectedValues.length) {
-                alert("🚫 Produk sudah dipilih sebelumnya!");
-                $(this).val("").trigger("change");
-            }
+            // Hapus produk
+            $(document).on('click', `${containerSelector} .remove-produk`, function () {
+                $(this).closest('.produk-edit-row').remove();
+                updateNominal();
+            });
 
-            hitungTotal(modal);
-        });
+            // Update stok limit + nominal
+            $(document).on('change', `${containerSelector} select[name="produk[]"]`, function () {
+                const stok = $(this).find(':selected').data('stok') || 0;
+                const jumlahInput = $(this).closest('.produk-edit-row').find('input[name="jumlah[]"]');
+                jumlahInput.attr('max', stok);
+                if (parseInt(jumlahInput.val()) > stok) jumlahInput.val(stok);
+                updateNominal();
+            });
 
-        $(document).off("click", ".add-produk").on("click", ".add-produk", function () {
-            let target = $($(this).data("target"));
-            let newRow = `
-                <div class="mb-2 row produk-edit-row">
-                    <div class="col-md-9">
-                        <select name="produk[]" class="form-select" required>
-                            <option value="" disabled selected>-- Pilih Produk --</option>
-                            @foreach ($produk as $p)
-                                <option value="{{ $p->id_produk }}"
-                                        data-harga="{{ $p->harga_Satuan }}"
-                                        data-stok="{{ $p->stok_produk }}">
-                                    {{ $p->nama_produk }}
-                                    [Rp{{ number_format($p->harga_Satuan, 0, ',', '.') }} => {{ $p->stok_produk }}]
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-3 d-flex align-items-center">
-                        <input type="number" class="form-control me-2 jumlah-produk"
-                               name="jumlah[]" value="1" min="1" required> <!-- ✅ default 1 -->
-                        <button type="button" class="btn btn-danger btn-sm remove-produk">✖</button>
-                    </div>
-                </div>`;
+            $(document).on('keyup change', `${containerSelector} input[name="jumlah[]"]`, updateNominal);
 
-            target.append(newRow);
+            // Submit pakai AJAX
+            $(document).on('submit', `form[action="{{ route('pesanan.update', $first->kode_pesanan) }}"]`, function (e) {
+                e.preventDefault();
+                const form = $(this);
+                const url = form.attr('action');
+                const data = form.serialize();
 
-            let modal = $(this).closest(".modal");
-            hitungTotal(modal);
-        });
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: data + '&_method=PUT',
+                })
+                    .done(() => {
+                        alert('✅ Pesanan berhasil diperbarui!');
+                        location.reload();
+                    })
+                    .fail(() => {
+                        alert('❌ Gagal memperbarui pesanan.');
+                    });
+            });
 
-        $(document).on("click", ".remove-produk", function () {
-            let modal = $(this).closest(".modal");
-            $(this).closest(".produk-edit-row").remove();
-            hitungTotal(modal);
-        });
-
-        $(document).on("shown.bs.modal", ".modal", function () {
-            hitungTotal($(this));
+            // Initial load
+            updateNominal();
         });
     </script>
 @endpush
