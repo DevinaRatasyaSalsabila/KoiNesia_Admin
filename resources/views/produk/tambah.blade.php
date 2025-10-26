@@ -113,7 +113,7 @@
 
     @push('scripts')
         <script>
-            document.addEventListener("DOMContentLoaded", function() {
+            document.addEventListener("DOMContentLoaded", function () {
                 // fungsi generate kode produk
                 function generateKodeProduk() {
                     let random = Math.floor(1000 + Math.random() * 9000); // random 4 digit
@@ -126,14 +126,14 @@
                 console.log("✅ Kode Produk Generated:", kode);
             });
 
-            $(document).ready(function() {
+            $(document).ready(function () {
                 $('#fancy-file-upload').FancyFileUpload({
                     params: {
                         action: 'fileuploader'
                     },
                     maxfilesize: 50 * 1024 * 1024, // 50MB
                     edit: false,
-                    added: function(e, data) {
+                    added: function (e, data) {
                         let file = data.files[0];
                         let type = file.type;
 
@@ -146,7 +146,7 @@
                         if (type.startsWith("image/")) {
                             // convert image ke base64 → hidden input
                             var reader = new FileReader();
-                            reader.onload = function(e) {
+                            reader.onload = function (e) {
                                 let hidden = $('<input>').attr({
                                     type: 'hidden',
                                     name: 'gambar_produk[]',
@@ -180,23 +180,23 @@
                 return "Rp" + rupiah;
             }
 
-            $('#harga_produk').on('input', function() {
+            $('#harga_produk').on('input', function () {
                 let value = $(this).val();
                 $(this).val(formatUang(value));
             });
 
-            $('#formAddProduct').on('submit', function() {
+            $('#formAddProduct').on('submit', function () {
                 let value = $('#harga_produk').val();
                 let angkaMurni = value.replace(/[^0-9]/g, "");
                 $('#harga_produk').val(angkaMurni);
             });
 
-            (function() {
+            (function () {
                 'use strict'
                 const forms = document.querySelectorAll('#formAddProduct')
                 Array.prototype.slice.call(forms)
-                    .forEach(function(form) {
-                        form.addEventListener('submit', function(event) {
+                    .forEach(function (form) {
+                        form.addEventListener('submit', function (event) {
                             if (!form.checkValidity()) {
                                 event.preventDefault()
                                 event.stopPropagation()
@@ -204,28 +204,11 @@
                             form.classList.add('was-validated')
                         }, false)
 
-                        form.addEventListener('reset', function() {
+                        form.addEventListener('reset', function () {
                             form.classList.remove('was-validated')
                         }, false)
                     })
             })()
-
-            @if (session('success'))
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success!',
-                    text: '{{ session('success') }}',
-                    showConfirmButton: false,
-                    timer: 2000
-                });
-            @elseif (session('error'))
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops!',
-                    text: '{{ session('error') }}',
-                    showConfirmButton: true,
-                });
-            @endif
         </script>
     @endpush
 @endsection

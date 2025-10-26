@@ -54,7 +54,7 @@
                                         class="d-inline delete-form">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">
+                                        <button type="button" class="btn btn-danger confirm-delete-button">
                                             <i class="fadeIn animated bx bx-trash text-light"></i>
                                         </button>
                                     </form>
@@ -94,7 +94,26 @@
                 table.buttons().container()
                     .appendTo('#example2_wrapper .col-md-6:eq(0)');
             });
+  $(document).on('click', '.confirm-delete-button', function(e) {
+                e.preventDefault(); // biar tombol gak langsung submit
 
+                const form = $(this).closest('form'); // cari form terdekat dari tombol yang diklik
+
+                Swal.fire({
+                    title: "Yakin ingin menghapus data ini?",
+                    text: "Data yang dihapus tidak bisa dikembalikan!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Ya, hapus!",
+                    cancelButtonText: "Batal"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit(); // submit form kalau dikonfirmasi
+                    }
+                });
+            });
 
             @if (session('success'))
                 Swal.fire({

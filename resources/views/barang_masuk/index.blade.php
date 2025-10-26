@@ -58,7 +58,7 @@
                                             class="delete-form" method="post">
                                             @csrf
                                             @method('delete')
-                                            <button class="btn btn-danger">
+                                            <button class="btn btn-danger confirm-delete-button" type="button">
                                                 <i class="fadeIn animated bx bx-trash text-light"></i>
                                             </button>
                                         </form>
@@ -103,22 +103,43 @@
                     .appendTo('#example2_wrapper .col-md-6:eq(0)');
             });
 
-             @if (session('success'))
-            Swal.fire({
-                icon: 'success',
-                title: 'Success!',
-                text: '{{ session('success') }}',
-                showConfirmButton: false,
-                timer: 2000
+            $(document).on('click', '.confirm-delete-button', function(e) {
+                e.preventDefault(); // biar tombol gak langsung submit
+
+                const form = $(this).closest('form'); // cari form terdekat dari tombol yang diklik
+
+                Swal.fire({
+                    title: "Yakin ingin menghapus data ini?",
+                    text: "Data yang dihapus tidak bisa dikembalikan!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Ya, hapus!",
+                    cancelButtonText: "Batal"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit(); // submit form kalau dikonfirmasi
+                    }
+                });
             });
-        @elseif (session('error'))
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops!',
-                text: '{{ session('error') }}',
-                showConfirmButton: true,
-            });
-        @endif
+
+            @if (session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: '{{ session('success') }}',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            @elseif (session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops!',
+                    text: '{{ session('error') }}',
+                    showConfirmButton: true,
+                });
+            @endif
         </script>
     @endpush
 @endsection
