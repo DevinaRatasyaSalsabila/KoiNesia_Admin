@@ -87,10 +87,11 @@
                                 <i class="bx bx-pencil text-light"></i>
                             </a>
                             <form action="{{ route('produk.delete', $item->id_produk) }}" method="POST"
-                                class="delete-form">
+                                class="delete-form d-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm rounded-3 shadow-sm"
+                                <button type="button"
+                                    class="btn btn-danger btn-sm rounded-3 shadow-sm confirm-delete-button"
                                     title="Hapus Produk">
                                     <i class="bx bx-trash text-light"></i>
                                 </button>
@@ -191,11 +192,11 @@
                                     <form action="/produk/delete/${item.id_produk}" method="POST" class="delete-form d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" 
-                                                class="px-3 shadow-sm btn btn-danger btn-sm"
-                                                data-bs-toggle="tooltip" title="Hapus Produk">
-                                            <i class="bx bx-trash fs-5 text-light"></i>
-                                        </button>
+                                       <button type="button" 
+    class="px-3 shadow-sm btn btn-danger btn-sm confirm-delete-button"
+    data-bs-toggle="tooltip" title="Hapus Produk">
+    <i class="bx bx-trash fs-5 text-light"></i>
+</button>
                                     </form>
                                 </div>
                             </div>
@@ -244,6 +245,44 @@
                 displayData(currentPage, filteredData);
                 setupPagination();
             });
+
+            $(document).on('click', '.confirm-delete-button', function(e) {
+                e.preventDefault(); // biar tombol gak langsung submit
+
+                const form = $(this).closest('form'); // cari form terdekat dari tombol yang diklik
+
+                Swal.fire({
+                    title: "Yakin ingin menghapus produk?",
+                    text: "Produk yang dihapus tidak bisa dikembalikan!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Ya, hapus!",
+                    cancelButtonText: "Batal"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit(); // submit form kalau dikonfirmasi
+                    }
+                });
+            });
+
+            @if (session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: '{{ session('success') }}',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            @elseif (session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops!',
+                    text: '{{ session('error') }}',
+                    showConfirmButton: true,
+                });
+            @endif
         </script>
 
 

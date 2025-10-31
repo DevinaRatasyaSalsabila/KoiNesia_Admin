@@ -788,7 +788,6 @@
 
     <script src="/assets/plugins/simplebar/js/simplebar.min.js"></script>
 
-
     {{-- validation --}}
     <script src="{{ asset('template/assets/plugins/validation/validation-script.js') }}"></script>
 
