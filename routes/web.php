@@ -97,3 +97,8 @@ Route::prefix('pelanggan')->group(function () {
 Route::get('/resi', function () {
     return view('pesanan.resi'); // view form nanti
 });
+// Route::get('/detail', function () {
+//     return view('pelanggan.detail_produk.index'); // view form nanti
+// });
+
+Route::get('/pelanggan/produk-lengkap', [PelangganController::class, 'produk_lengkap'])->name('produkLengkap');

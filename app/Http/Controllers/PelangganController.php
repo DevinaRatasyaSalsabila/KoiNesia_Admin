@@ -15,6 +15,31 @@ class PelangganController extends Controller
 {
     public function beranda()
     {
+        // $produk = DB::table('produk')->orderBy('created_at', 'desc')->get()->map(function ($item) {
+        //     $gambarArray = json_decode($item->gambar_produk, true); // ubah JSON ke array
+        //     $item->gambar_url = !empty($gambarArray)
+        //         ? asset('storage/produk/final/' . $gambarArray[0]) // ambil gambar pertama
+        //         : asset('files/images/default.jpg'); // fallback kalau kosong
+        //     return $item;
+        // });
+        $produk = DB::table('produk')
+            ->orderBy('created_at', 'desc') // urutkan dari yang terbaru
+            ->take(4) // ambil hanya 4 produk teratas
+            ->get()
+            ->map(function ($item) {
+                $gambarArray = json_decode($item->gambar_produk, true); // ubah JSON ke array
+                $item->gambar_url = !empty($gambarArray)
+                    ? asset('storage/produk/final/' . $gambarArray[0]) // ambil gambar pertama
+                    : asset('files/images/default.jpg'); // fallback kalau kosong
+                return $item;
+            });
+
+
+        return view('pelanggan.beranda.index', compact('produk'));
+    }
+
+    public function produk_lengkap()
+    {
         $produk = DB::table('produk')->orderBy('created_at', 'desc')->get()->map(function ($item) {
             $gambarArray = json_decode($item->gambar_produk, true); // ubah JSON ke array
             $item->gambar_url = !empty($gambarArray)
@@ -22,8 +47,7 @@ class PelangganController extends Controller
                 : asset('files/images/default.jpg'); // fallback kalau kosong
             return $item;
         });
-
-        return view('pelanggan.beranda.index', compact('produk'));
+        return view('pelanggan.detail_produk.index', compact('produk'));
     }
 
     public function keranjang()

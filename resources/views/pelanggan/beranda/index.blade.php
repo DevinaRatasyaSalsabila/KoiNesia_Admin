@@ -211,6 +211,9 @@
                     <p>Tidak Ada Produk.</p>
                 @endif
             </div>
+            <div class="d-flex justify-content-center">
+                <a href="{{ route('produkLengkap') }}" class="btn btn-md btn-red tra-yellow-hover">Selengkapnya</a>
+            </div>
         </div>
     </section>
 
