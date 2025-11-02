@@ -1,5 +1,14 @@
 @extends('pelanggan.mainPelanggan')
 @section('content')
+    <style>
+        .btn-cart-add-1 {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: transparent;
+            box-shadow: none;
+        }
+    </style>
 
     <style>
         /* ✨ Animasi dan Style Tambahan */
@@ -164,7 +173,8 @@
                                     <div class="hover-overlay">
                                         <img src="{{ $gambarUtama }}" class="mb-2 img-fluid"
                                             alt="{{ $prod->nama_produk }}">
-                                        <span class="item-code bg-tra-dark">Kode: {{ $prod->kode_produk }}</span>
+                                        <span class="item-code bg-tra-dark">Kode:
+                                            {{ $prod->kode_produk }}</span>
                                         <div class="menu-img-zoom ico-25">
                                             <a href="{{ $gambarUtama }}" class="image-link">
                                                 <span class="flaticon-zoom"></span>
@@ -191,9 +201,11 @@
 
                                         <div class="add-to-cart bg-yellow ico-10">
                                             <button type="button"
-                                                class="shadow-none btn-cart-add-1 bg-yellow text-light ico-10"
-                                                data-id="{{ $prod->kode_produk }}" data-nama="{{ $prod->nama_produk }}"
-                                                data-harga="{{ $prod->harga_Satuan }}" data-stok="{{ $prod->stok_produk }}"
+                                                class="shadow-none btn-cart-add-1 bg-yellow text-light ico-10 "
+                                                data-id="{{ $prod->kode_produk }}"
+                                                data-nama="{{ $prod->nama_produk }}"
+                                                data-harga="{{ $prod->harga_Satuan }}"
+                                                data-stok="{{ $prod->stok_produk }}"
                                                 data-ukuran="{{ $prod->ukuran_produk }}"
                                                 data-gambar="{{ $gambarUtama }}">
                                                 <span class="flaticon-shopping-bag"></span>
@@ -201,7 +213,8 @@
                                         </div>
                                     @else
                                         <div class="mt-3 text-center">
-                                            <button type="button" class="shadow-none btn btn-danger w-100" disabled>
+                                            <button type="button"
+                                                class="shadow-none btn btn-danger w-100" disabled>
                                                 <i class="flaticon-error"></i> Stok Habis
                                             </button>
                                         </div>
@@ -250,7 +263,8 @@
 
                 function updateCartUI() {
                     const cartCount = document.getElementById('cart-count'); // desktop
-                    const cartCountFixed = document.getElementById('cart-count-fixed'); // mobile fixed
+                    const cartCountFixed = document.getElementById(
+                    'cart-count-fixed'); // mobile fixed
                     const cartIcon = document.getElementById('cart-icon');
                     const cartIconFixed = document.getElementById('cart-icon-fixed');
 
@@ -280,12 +294,15 @@
                     const keyword = this.value.toLowerCase().trim();
 
                     produkItems.forEach(item => {
-                        const nama = item.querySelector(".nama-produk").textContent.toLowerCase();
-                        const deskripsi = item.querySelector(".deskripsi-produk").textContent
+                        const nama = item.querySelector(".nama-produk").textContent
+                            .toLowerCase();
+                        const deskripsi = item.querySelector(".deskripsi-produk")
+                            .textContent
                             .toLowerCase();
 
                         // kalau keyword kosong → tampilkan semua produk
-                        if (keyword === "" || nama.includes(keyword) || deskripsi.includes(keyword)) {
+                        if (keyword === "" || nama.includes(keyword) || deskripsi
+                            .includes(keyword)) {
                             item.style.display = "block";
                             item.classList.add("fade-in");
                         } else {
