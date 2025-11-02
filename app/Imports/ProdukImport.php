@@ -20,7 +20,6 @@ class ProdukImport implements ToCollection, WithHeadingRow
 
         $gambarList = [];
 
-        // 🔹 Ambil gambar dari Excel
         foreach ($worksheet->getDrawingCollection() as $drawing) {
             $koordinat = $drawing->getCoordinates();
 
@@ -40,7 +39,6 @@ class ProdukImport implements ToCollection, WithHeadingRow
 
             $filename = 'produk_' . uniqid() . '.' . $extension;
 
-            // ✅ Simpan ke public/storage/produk/final
             $destinationPath = public_path('storage/produk/final');
             if (!file_exists($destinationPath)) {
                 mkdir($destinationPath, 0777, true);
@@ -53,7 +51,6 @@ class ProdukImport implements ToCollection, WithHeadingRow
             $gambarList[$rowNumber] = $filename;
         }
 
-        // 🔹 Logging isi baris yang dibaca dari Excel
         Log::info('=== MULAI IMPORT PRODUK ===');
         Log::info('Total rows dibaca: ' . count($rows));
 
@@ -61,28 +58,33 @@ class ProdukImport implements ToCollection, WithHeadingRow
             $barisExcel = $index + 2;
             $gambarFile = $gambarList[$barisExcel] ?? null;
 
-            // 🔹 Log tiap baris buat debug
             Log::info("Row #{$barisExcel}", $row->toArray());
 
-            // 🧮 Ambil kolom harga (sesuai heading kamu di Excel)
             $hargaRaw = $row['harga_satuan'] ?? $row['harga'] ?? null;
 
-            // Jika null, log error-nya
             if ($hargaRaw === null) {
                 Log::warning("Kolom harga tidak ditemukan di row #{$barisExcel}");
             }
 
-            // 🧽 Bersihkan harga: "IDR 90,000" -> 90000
             $hargaBersih = (int)preg_replace('/[^0-9]/', '', $hargaRaw);
 
+            $isDuplicate = Produk::where('nama_produk', $row['nama_produk'] ?? null)
+                ->where('ukuran_produk', $row['ukuran_produk'] ?? null)
+                ->where('harga_satuan', $hargaBersih)
+                ->exists();
+
+            if ($isDuplicate) {
+                Log::warning("⚠️ Duplikat terdeteksi di row #{$barisExcel}: {$row['nama_produk']} (ukuran {$row['ukuran_produk']}, harga {$hargaBersih})");
+                continue;
+            }
             Produk::create([
                 'kode_produk'      => $row['kode_produk'] ?? null,
                 'nama_produk'      => $row['nama_produk'] ?? null,
-                'harga_Satuan'     => $hargaBersih,
+                'harga_satuan'     => $hargaBersih,
                 'stok_produk'      => $row['stok_produk'] ?? 0,
                 'deskripsi_produk' => $row['deskripsi_produk'] ?? null,
                 'ukuran_produk'    => $row['ukuran_produk'] ?? null,
-                'gambar_produk' => json_encode([$gambarFile]),
+                'gambar_produk'    => json_encode([$gambarFile]),
             ]);
         }
 

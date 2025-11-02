@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Imports\ProdukImport;   
+use App\Imports\ProdukImport;
 use App\Models\Produk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -54,11 +54,22 @@ class ProdukController extends Controller
             'gambar_produk'    => 'required|array',
         ]);
 
+        // 🔍 Cek duplikasi produk (nama + ukuran + harga)
+        $cekDuplikat = Produk::where('nama_produk', $request->nama_produk)
+            ->where('ukuran_produk', $request->ukuran_produk)
+            ->where('harga_satuan', $request->harga_produk)
+            ->exists();
+
+        if ($cekDuplikat) {
+            return redirect()->route('produk.index')->withErrors([
+                'nama_produk' => 'Produk dengan variasi tersebut sudah tersedia.',
+            ])->withInput();
+        }
+
         $filenames = [];
 
         if ($request->has('gambar_produk')) {
             foreach ($request->gambar_produk as $fileOrBase64) {
-                // kalau base64 (image)
                 if (Str::startsWith($fileOrBase64, 'data:image')) {
                     $image = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $fileOrBase64));
                     $filename = uniqid() . '.png';
@@ -76,7 +87,7 @@ class ProdukController extends Controller
             }
         }
 
-        $produk = Produk::create([
+        Produk::create([
             'nama_produk'      => $request->nama_produk,
             'deskripsi_produk' => $request->deskripsi_produk,
             'gambar_produk'    => json_encode($filenames),

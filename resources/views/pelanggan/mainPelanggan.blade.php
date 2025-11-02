@@ -211,14 +211,14 @@
                     <div class="line-menu"></div>
                     <div class="line-menu line-half last-line"></div>
                 </div>
-               <div id="cart-icon-fixed" class="basket-ico ico-30">
-                <a href="{{ route('keranjang') }}">
-                    <span class="ico-holder">
-                        <span class="flaticon-shopping-bag"></span>
-                        <em class="roundpoint" id="cart-count-fixed">0</em>
-                    </span>
-                </a>
-            </div>
+                <div id="cart-icon-fixed" class="basket-ico ico-30">
+                    <a href="{{ route('keranjang') }}">
+                        <span class="ico-holder">
+                            <span class="flaticon-shopping-bag"></span>
+                            <em class="roundpoint" id="cart-count-fixed">0</em>
+                        </span>
+                    </a>
+                </div>
                 <!-- MAIN MENU (tambahin scrollspy) -->
                 <nav class="navik-menu menu-caret navik-yellow">
                     <ul class="top-list">
@@ -227,19 +227,20 @@
                         </li>
 
                         <li>
-                            <a href="#">Tentang Kami</a>
+                            <a class="nav-link" href="#tentangKami">Tentang Kami</a>
                         </li>
 
                         <li>
-                            <a href="#">Produk</a>
+                            <a class="nav-link" href="#produk">Produk</a>
                         </li>
                         <li>
-                            <a href="#">Kontak</a>
+                            <a class="nav-link" href="#kontak">Kontak</a>
                         </li>
 
                         <!-- HEADER BUTTON  -->
                         <li class="nav-btn yellow-color">
-                            <a href="tel:0859348539">08459348594</a>
+                            <a href="https://wa.me/6283871992564?text=Halo%20kak%20aku%20mau%20nanya~"
+                                target="_blank">08459348594</a>
                         </li>
 
                         <li class="basket-ico ico-30" id="cart-icon">
@@ -268,7 +269,7 @@
         </div>
         <!-- End container -->
     </header>
-    {{-- 
+    {{--
     <!-- FIXED CART ICON MOBILE -->
     <div id="cart-icon-fixed" class="basket-ico ico-30">
         <a href="{{ route('keranjang') }}">

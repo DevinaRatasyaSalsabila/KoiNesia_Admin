@@ -91,6 +91,7 @@ Route::prefix('pelanggan')->group(function () {
     Route::get('/keranjang', [PelangganController::class, 'keranjang'])->name('keranjang');
     Route::get('/keranjang/pesanan', [PelangganController::class, 'format'])->name('format');
     // Route::get('/produk', [PelangganController::class, 'produkLengkap'])->name('produkLengkap');
+    Route::get('/produk-lengkap', [PelangganController::class, 'produk_lengkap'])->name('produkLengkap');
     Route::post('/pesanan/kirim', [PelangganController::class, 'kirim'])->name('pesanan.kirim');
 });
 
@@ -101,4 +102,4 @@ Route::get('/resi', function () {
 //     return view('pelanggan.detail_produk.index'); // view form nanti
 // });
 
-Route::get('/pelanggan/produk-lengkap', [PelangganController::class, 'produk_lengkap'])->name('produkLengkap');
+// Route::get('/pelanggan/produk-lengkap', [PelangganController::class, 'produk_lengkap'])->name('produkLengkap');

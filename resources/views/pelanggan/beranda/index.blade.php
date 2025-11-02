@@ -71,7 +71,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-7 col-lg-6">
+                <div class="col-md-7 col-lg-6" id="tentangKami">
                     <div class="mb-40 about-3-txt">
                         <h2 class="h2-sm">Tentang Kami – Azza Koi Farm</h2>
                         <p class="p-md grey-color">
@@ -133,7 +133,7 @@
 
 
     <section id="menu-6" class="wide-70 menu-section division">
-        <div class="container">
+        <div class="container" id="produk">
             <div class="text-center">
                 <h3 class="h3-md meat-color">
                     Produk Kami

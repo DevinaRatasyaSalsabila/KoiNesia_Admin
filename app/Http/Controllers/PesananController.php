@@ -154,12 +154,11 @@ class PesananController extends Controller
 
         $this->apicall($no_hp, $pesan);
 
-       if ($pesan) {
-    return redirect()->route('pesanan.index')->with('success', 'Pesanan Berhasil Dibuat!');
-} else {
-    return redirect()->route('pesanan.index')->with('error', 'Gagal membuat pesanan!');
-}
-
+        if ($pesan) {
+            return redirect()->route('pesanan.index')->with('success', 'Pesanan Berhasil Dibuat!');
+        } else {
+            return redirect()->route('pesanan.index')->with('error', 'Gagal membuat pesanan!');
+        }
     }
 
     private function apicall($no_hp, $pesan)
@@ -235,13 +234,11 @@ class PesananController extends Controller
                 $qty = (int) ($request->jumlah[$i] ?? 1);
                 $subtotal = $produk->harga_Satuan * $qty;
 
-                // Langsung cek DB biar real-time
                 $pesananItem = Pesanan::where('kode_pesanan', $kode_pesanan)
                     ->where('kode_produk', $produk->kode_produk)
                     ->first();
 
                 if ($pesananItem) {
-                    // Update produk lama
                     $pesananItem->update([
                         'jumlah' => $qty,
                         'nominal' => $subtotal,
@@ -249,7 +246,6 @@ class PesananController extends Controller
                         'updated_at' => now(),
                     ]);
                 } else {
-                    // Tambah produk baru
                     Pesanan::create([
                         'kode_pesanan' => $kode_pesanan,
                         'id_pembeli'   => $request->id_pembeli,
@@ -266,11 +262,6 @@ class PesananController extends Controller
             Pesanan::where('kode_pesanan', $kode_pesanan)
                 ->whereNotIn('kode_produk', $kodeProdukBaru)
                 ->delete();
-
-
-            // if ($deleted > 0) {
-            //     Log::info("🗑️ Produk dihapus dari pesanan", ['deleted_count' => $deleted]);
-            // }
 
             Log::info("✅ Update pesanan selesai", ['kode_pesanan' => $kode_pesanan]);
             return redirect()->route('pesanan.index')->with('success', 'Pesanan berhasil diperbarui!');
@@ -291,33 +282,6 @@ class PesananController extends Controller
         return redirect()->back()->with('success', 'Pesanan berhasil dihapus.');
     }
 
-    public function startService()
-    {
-        $client = new \GuzzleHttp\Client();
-        $url = 'https://apiwa.smkpgriwlingi.sch.id/api/serviceStart';
-
-        $data = [
-            'apiKey' => env('WHAPI_KEY', 'f60d05297f0af62109d4ec9ec274bd32'),
-        ];
-
-        try {
-            $response = $client->post($url, ['form_params' => $data]);
-            $body = json_decode($response->getBody(), true);
-
-            // log hasil
-            Log::info('Service start response: ' . $response->getBody());
-
-            // kalau sukses, bisa aja redirect sambil kasih pesan
-            if (isset($body['code']) && $body['code'] == 200) {
-                return back()->with('success', 'WA Service berhasil dihidupkan!');
-            }
-
-            return back()->with('error', 'Gagal start service: ' . $response->getBody());
-        } catch (\Exception $e) {
-            Log::error('Error starting WA service: ' . $e->getMessage());
-            return back()->with('error', 'Error: ' . $e->getMessage());
-        }
-    }
     // public function print(Request $request)
     // {
     //     $ids = explode(',', $request->get('id')); // ubah ke 'id'
