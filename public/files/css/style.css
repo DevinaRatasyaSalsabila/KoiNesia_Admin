@@ -865,7 +865,7 @@ body {
 }
 
 .bg-yellow {
-  background-color: #f7be27;
+  background-color: #dba603;
 }
 
 /*------------------------------------------*/
@@ -1324,8 +1324,8 @@ ul.txt-list {
 .scroll .yellow-hover:hover,
 .white-color .yellow-hover:hover {
   color: #333435 !important;
-  background-color: #f7be27;
-  border-color: #f7be27 !important;
+  background-color: #dba603;
+  border-color: #dba603 !important;
 }
 
 /*------------------------------------------*/
@@ -1768,7 +1768,7 @@ ul.txt-list {
 .brown-color .yellow-color,
 .coffee-color .yellow-color,
 .yellow-color span {
-  color: #f7be27;
+  color: #dba603;
 }
 
 /*------------------------------------------*/
@@ -1804,7 +1804,7 @@ ul.txt-list {
 }
 
 .stars-rating i {
-  color: #f7be27;
+  color: #dba603;
   font-size: 0.85rem;
   line-height: 1;
 }
@@ -2909,12 +2909,12 @@ span.item-code {
 }
 
 /*------------------------------------------*/
-/*  Main Menu Link Hover 
+/*  Main Menu Link Hover
 /*------------------------------------------*/
 
 .navik-menu.navik-yellow ul li:hover>a,
 .navik-menu.navik-yellow .mega-menu-heading a:hover {
-  color: #f7be27;
+  color: #dba603;
 }
 
 .navik-menu.navik-meat ul li:hover>a,
@@ -2947,7 +2947,7 @@ span.item-code {
 }
 
 #header-3 .navik-menu ul li.nav-btn.yellow-color>a {
-  color: #f7be27;
+  color: #dba603;
 }
 
 #header-3 .navik-menu ul li.nav-btn.red-color>a {
@@ -4408,7 +4408,7 @@ span.ico-holder {
 }
 
 .menu-3-list li:hover .menu-3-item-data {
-  background-color: #f7be27;
+  background-color: #dba603;
 }
 
 .item-data-meat-hover .menu-3-list li:hover .menu-3-item-data {
@@ -4814,7 +4814,7 @@ span.ico-holder {
 }
 
 /*------------------------------------------*/
-/*  Overlay Background 
+/*  Overlay Background
 /*------------------------------------------*/
 
 .item-overlay {
@@ -4834,7 +4834,7 @@ span.ico-holder {
 }
 
 /*------------------------------------------*/
-/*  Image Hover Effect 
+/*  Image Hover Effect
 /*------------------------------------------*/
 
 .gallery-img:hover img {
@@ -4901,7 +4901,7 @@ span.ico-holder {
 }
 
 /*------------------------------------------*/
-/*  Testimonial Message Avatar 
+/*  Testimonial Message Avatar
 /*------------------------------------------*/
 
 #reviews-1 img {
@@ -4980,7 +4980,7 @@ span.ico-holder {
 }
 
 .review-rating i {
-  color: #f7be27;
+  color: #dba603;
   font-size: 1.1rem;
   line-height: 1;
   margin: 0 1px;
@@ -5496,7 +5496,7 @@ img.appstore-original {
 }
 
 /*------------------------------------------*/
-/*  POST TAGS 
+/*  POST TAGS
 /*------------------------------------------*/
 
 .post-share-links {
@@ -6690,9 +6690,9 @@ select:-webkit-autofill:focus {
 
 .page-link:hover,
 .page-item.active .page-link {
-  background-color: #f7be27;
+  background-color: #dba603;
   color: #151515;
-  border-color: #f7be27;
+  border-color: #dba603;
   -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, .05);
   -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, .05);
   box-shadow: 0 5px 10px rgba(0, 0, 0, .05);
@@ -6863,7 +6863,7 @@ select:-webkit-autofill:focus {
 }
 
 #product-1-data .tabs-1 li.current {
-  background-color: #f7be27;
+  background-color: #dba603;
 }
 
 .tabs-2 li {
@@ -7385,7 +7385,7 @@ nav a#pull {
 
 
 /* ==========================================================================
-   STYLE CHANGER 
+   STYLE CHANGER
   ========================================================================== */
 
 #stlChanger {
