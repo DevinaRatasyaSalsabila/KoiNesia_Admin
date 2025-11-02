@@ -147,7 +147,7 @@
             <div class="mb-5 row justify-content-center">
                 <div class="col-lg-6 col-md-8">
                     <form id="searchForm"
-                        class="overflow-hidden bg-white border border-2 shadow-sm d-flex rounded-pill border-warning">
+                        class="overflow-hidden bg-white  border-2 shadow-sm d-flex rounded-pill border-warning">
                         <input type="text" id="searchInput" class="border-0 form-control ps-4"
                             placeholder="Cari produk favorit kamu..." aria-label="Search">
                         <button type="submit" class="px-4 text-white btn btn-warning">
