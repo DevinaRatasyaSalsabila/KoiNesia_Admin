@@ -54,7 +54,6 @@ class ProdukController extends Controller
             'gambar_produk'    => 'required|array',
         ]);
 
-        // 🔍 Cek duplikasi produk (nama + ukuran + harga)
         $cekDuplikat = Produk::where('nama_produk', $request->nama_produk)
             ->where('ukuran_produk', $request->ukuran_produk)
             ->where('harga_satuan', $request->harga_produk)
@@ -125,6 +124,7 @@ class ProdukController extends Controller
 
         $produk = Produk::findOrFail($id);
 
+        // $stok_new = $request->jumlah
         $data = [
             'nama_produk'      => $request->nama_produk,
             'deskripsi_produk' => $request->deskripsi_produk,

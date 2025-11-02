@@ -231,16 +231,29 @@ class PesananController extends Controller
                 $produk = Produk::find($idProduk);
                 if (!$produk) continue;
 
-                $qty = (int) ($request->jumlah[$i] ?? 1);
-                $subtotal = $produk->harga_Satuan * $qty;
+                $qtyBaru = (int) ($request->jumlah[$i] ?? 1);
+                $subtotal = $produk->harga_Satuan * $qtyBaru;
 
-                $pesananItem = Pesanan::where('kode_pesanan', $kode_pesanan)
+                $pesananItem = $pesananLama->firstWhere('kode_produk', $produk->kode_produk);
+                $jumlahLama = $pesananItem ? $pesananItem->jumlah : 0;
+
+                $stokSebelum = $produk->stok_produk + $jumlahLama;
+
+                $stokBaru = $stokSebelum - $qtyBaru;
+
+                if ($stokBaru < 0) {
+                    return back()->with('error', "Stok produk {$produk->nama_produk} tidak mencukupi!");
+                }
+
+                $produk->update(['stok_produk' => $stokBaru]);
+
+                $pesananRecord = Pesanan::where('kode_pesanan', $kode_pesanan)
                     ->where('kode_produk', $produk->kode_produk)
                     ->first();
 
-                if ($pesananItem) {
-                    $pesananItem->update([
-                        'jumlah' => $qty,
+                if ($pesananRecord) {
+                    $pesananRecord->update([
+                        'jumlah' => $qtyBaru,
                         'nominal' => $subtotal,
                         'id_pembeli' => $request->id_pembeli,
                         'updated_at' => now(),
@@ -252,9 +265,11 @@ class PesananController extends Controller
                         'user_id'      => Auth::id() ?? 0,
                         'status'       => 'baru',
                         'kode_produk'  => $produk->kode_produk,
-                        'jumlah'       => $qty,
+                        'jumlah'       => $qtyBaru,
                         'nominal'      => $subtotal,
                     ]);
+
+                    $produk->decrement('stok_produk', $qtyBaru);
                 }
             }
 
@@ -273,7 +288,6 @@ class PesananController extends Controller
             return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui pesanan!');
         }
     }
-
 
     public function destroy($id)
     {
