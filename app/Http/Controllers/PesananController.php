@@ -269,7 +269,7 @@ class PesananController extends Controller
                         'nominal'      => $subtotal,
                     ]);
 
-                    $produk->decrement('stok_produk', $qtyBaru);
+                    // $produk->decrement('stok_produk', $qtyBaru);
                 }
             }
 
