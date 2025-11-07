@@ -16,25 +16,34 @@
     <!-- End Breadcrumb -->
 
     <!-- Pencarian dan Tombol Aksi -->
-    <div class="row align-items-center mb-4">
-        <div class="col-md-4">
+    <div class="row align-items-center mb-4 gy-3">
+        <!-- Kolom Search -->
+        <div class="col-12 col-md-6 col-lg-4">
             <div class="input-group shadow-sm rounded-3">
-                <span class="input-group-text bg-primary text-white"><i class="bx bx-search"></i></span>
-                <input type="text" class="form-control" id="search-guru" placeholder="Cari produk berdasarkan nama..."
-                    aria-label="Pencarian">
+                <span class="input-group-text bg-primary text-white">
+                    <i class="bx bx-search"></i>
+                </span>
+                <input type="text" class="form-control" id="search-guru"
+                    placeholder="Cari produk berdasarkan nama..." aria-label="Pencarian">
             </div>
         </div>
-        <div class="col-md-8 d-flex justify-content-end gap-2">
-            <a href="{{ url('produk/tambah') }}" class="btn btn-warning shadow-sm rounded-3" data-bs-toggle="tooltip"
-                title="Tambah Produk">
+
+        <!-- Kolom Tombol -->
+        <div
+            class="col-12 col-md-6 col-lg-8 d-flex flex-wrap justify-content-md-end justify-content-center gap-2">
+            <a href="{{ url('produk/tambah') }}"
+                class="btn btn-warning shadow-sm rounded-3 d-flex align-items-center justify-content-center"
+                data-bs-toggle="tooltip" title="Tambah Produk">
                 <i class="bx bx-plus fs-5 text-light"></i>
             </a>
-            <button type="button" class="btn btn-secondary shadow-sm rounded-3" data-bs-toggle="modal"
-                data-bs-target="#importModal" title="Import Produk">
+            <button type="button"
+                class="btn btn-secondary shadow-sm rounded-3 d-flex align-items-center justify-content-center"
+                data-bs-toggle="modal" data-bs-target="#importModal" title="Import Produk">
                 <i class="bi bi-download"></i>
             </button>
         </div>
     </div>
+
 
     <!-- Loader -->
     <div id="loader" class="text-center my-5" style="display:none;">
@@ -58,10 +67,13 @@
                                 );
                                 $firstVideo = $firstImage
                                     ? null
-                                    : collect($media)->first(fn($f) => Str::endsWith($f, ['.mp4', '.webm', '.ogg']));
+                                    : collect($media)->first(
+                                        fn($f) => Str::endsWith($f, ['.mp4', '.webm', '.ogg']),
+                                    );
                             @endphp
                             @if ($firstImage)
-                                <img src="{{ asset('storage/produk/final/' . $firstImage) }}" class="img-fluid rounded-3"
+                                <img src="{{ asset('storage/produk/final/' . $firstImage) }}"
+                                    class="img-fluid rounded-3"
                                     style="max-height:220px; object-fit:cover;">
                             @elseif ($firstVideo)
                                 <video class="rounded-3" controls style="max-height:220px;">
@@ -75,11 +87,13 @@
                         <p class="text-muted mb-1">Ukuran: {{ $item->ukuran_produk }}</p>
                         <span class="badge bg-secondary mb-2">Stok: {{ $item->stok_produk }}</span>
                         <h6 class="fw-bold mb-3">
-                            <span class="text-primary">Rp{{ number_format($item->harga_Satuan, 0, ',', '.') }}</span>
+                            <span
+                                class="text-primary">Rp{{ number_format($item->harga_Satuan, 0, ',', '.') }}</span>
                         </h6>
                         <div class="d-flex justify-content-center gap-2">
                             <a href="{{ url('produk/detail', $item->id_produk) }}"
-                                class="btn btn-primary btn-sm rounded-3 shadow-sm" title="Detail Produk">
+                                class="btn btn-primary btn-sm rounded-3 shadow-sm"
+                                title="Detail Produk">
                                 <i class="bx bx-info-circle"></i>
                             </a>
                             <a href="{{ url('produk/edit', $item->id_produk) }}"
@@ -140,9 +154,11 @@
                         let gambarHTML = "";
                         if (item.gambar_produk) {
                             const media = JSON.parse(item.gambar_produk);
-                            const firstImage = media.find(f => f.endsWith(".jpg") || f.endsWith(".jpeg") || f
+                            const firstImage = media.find(f => f.endsWith(".jpg") || f
+                                .endsWith(".jpeg") || f
                                 .endsWith(".png"));
-                            const firstVideo = media.find(f => f.endsWith(".mp4") || f.endsWith(".webm") || f
+                            const firstVideo = media.find(f => f.endsWith(".mp4") || f
+                                .endsWith(".webm") || f
                                 .endsWith(".ogg"));
                             if (firstImage) {
                                 gambarHTML = `
@@ -235,7 +251,8 @@
                 // Filter (search)
                 document.getElementById("search-guru").addEventListener("input", function() {
                     const q = this.value.toLowerCase();
-                    filteredData = dataProduk.filter(p => p.nama_produk.toLowerCase().includes(q));
+                    filteredData = dataProduk.filter(p => p.nama_produk.toLowerCase()
+                        .includes(q));
                     currentPage = 1;
                     displayData(currentPage, filteredData);
                     setupPagination();

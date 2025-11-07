@@ -853,7 +853,7 @@ body {
 }
 
 .bg-salmon {
-  background-color: #e84e1d;
+  background-color: #b3140a;
 }
 
 .bg-silk {
@@ -865,7 +865,7 @@ body {
 }
 
 .bg-yellow {
-  background-color: #dba603;
+  background-color: #cfa116;
 }
 
 /*------------------------------------------*/
@@ -904,7 +904,7 @@ body {
 }
 
 .bg-05 {
-  background-image: url(../images/bg-05.jpg);
+  background-image: url(../images/bg-2812.png);
   background-attachment: fixed !important;
 }
 
@@ -1302,8 +1302,8 @@ ul.txt-list {
 .scroll .salmon-hover:hover,
 .white-color .salmon-hover:hover {
   color: #fff !important;
-  background-color: #e84e1d;
-  border-color: #e84e1d !important;
+  background-color: #b3140a;
+  border-color: #b3140a !important;
 }
 
 .btn-tra-salmon,
@@ -1312,9 +1312,9 @@ ul.txt-list {
 .tra-salmon-hover:hover,
 .scroll .tra-salmon-hover:hover,
 .white-color .tra-salmonhover:hover {
-  color: #e84e1d !important;
+  color: #b3140a !important;
   background-color: transparent;
-  border-color: #e84e1d !important;
+  border-color: #b3140a !important;
 }
 
 .btn-yellow,
@@ -1324,8 +1324,8 @@ ul.txt-list {
 .scroll .yellow-hover:hover,
 .white-color .yellow-hover:hover {
   color: #333435 !important;
-  background-color: #dba603;
-  border-color: #dba603 !important;
+  background-color: #cfa116;
+  border-color: #cfa116 !important;
 }
 
 /*------------------------------------------*/
@@ -1720,7 +1720,7 @@ ul.txt-list {
 .salmon-color i,
 .white-color .salmon-color,
 .salmon-color span {
-  color: #e84e1d;
+  color: #b3140a;
 }
 
 .red-color,
@@ -1768,7 +1768,7 @@ ul.txt-list {
 .brown-color .yellow-color,
 .coffee-color .yellow-color,
 .yellow-color span {
-  color: #dba603;
+  color: #cfa116;
 }
 
 /*------------------------------------------*/
@@ -1804,7 +1804,7 @@ ul.txt-list {
 }
 
 .stars-rating i {
-  color: #dba603;
+  color: #cfa116;
   font-size: 0.85rem;
   line-height: 1;
 }
@@ -1914,7 +1914,7 @@ span.item-code {
 /*------------------------------------------*/
 
 .like-ico:hover>a span {
-  color: #e84e1d !important;
+  color: #b3140a !important;
 }
 
 /*------------------------------------------*/
@@ -2193,7 +2193,7 @@ span.item-code {
   border-radius: 50%;
   top: 0;
   left: 0;
-  background: #e84e1d;
+  background: #b3140a;
 }
 
 .cssload-ball-1 {
@@ -2914,7 +2914,7 @@ span.item-code {
 
 .navik-menu.navik-yellow ul li:hover>a,
 .navik-menu.navik-yellow .mega-menu-heading a:hover {
-  color: #dba603;
+  color: #cfa116;
 }
 
 .navik-menu.navik-meat ul li:hover>a,
@@ -2929,7 +2929,7 @@ span.item-code {
 
 .navik-menu.navik-salmon ul li:hover>a,
 .navik-menu.navik-salmon .mega-menu-heading a:hover {
-  color: #e84e1d;
+  color: #b3140a;
 }
 
 /*------------------------------------------*/
@@ -2947,7 +2947,7 @@ span.item-code {
 }
 
 #header-3 .navik-menu ul li.nav-btn.yellow-color>a {
-  color: #dba603;
+  color: #cfa116;
 }
 
 #header-3 .navik-menu ul li.nav-btn.red-color>a {
@@ -2955,7 +2955,7 @@ span.item-code {
 }
 
 #header-3 .navik-menu ul li.nav-btn.salmon-color>a {
-  color: #e84e1d;
+  color: #b3140a;
 }
 
 /*------------------------------------------*/
@@ -4408,7 +4408,7 @@ span.ico-holder {
 }
 
 .menu-3-list li:hover .menu-3-item-data {
-  background-color: #dba603;
+  background-color: #cfa116;
 }
 
 .item-data-meat-hover .menu-3-list li:hover .menu-3-item-data {
@@ -4420,7 +4420,7 @@ span.ico-holder {
 }
 
 .item-data-salmon-hover .menu-3-list li:hover .menu-3-item-data {
-  background-color: #e84e1d;
+  background-color: #b3140a;
 }
 
 .menu-3-list li:hover .menu-3-item-data h6 {
@@ -4980,7 +4980,7 @@ span.ico-holder {
 }
 
 .review-rating i {
-  color: #dba603;
+  color: #cfa116;
   font-size: 1.1rem;
   line-height: 1;
   margin: 0 1px;
@@ -6536,6 +6536,7 @@ select:-webkit-autofill:focus {
 
 #cart-page {
   background-image: url('/png/koi.png');
+  height: 100px;
 }
 
 #contacts-page {
@@ -6690,9 +6691,9 @@ select:-webkit-autofill:focus {
 
 .page-link:hover,
 .page-item.active .page-link {
-  background-color: #dba603;
+  background-color: #cfa116;
   color: #151515;
-  border-color: #dba603;
+  border-color: #cfa116;
   -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, .05);
   -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, .05);
   box-shadow: 0 5px 10px rgba(0, 0, 0, .05);
@@ -6863,7 +6864,7 @@ select:-webkit-autofill:focus {
 }
 
 #product-1-data .tabs-1 li.current {
-  background-color: #dba603;
+  background-color: #cfa116;
 }
 
 .tabs-2 li {

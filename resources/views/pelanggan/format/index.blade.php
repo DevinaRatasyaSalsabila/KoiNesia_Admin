@@ -98,7 +98,7 @@
                                                     <a href="demo-1.html">Pesanan</a>
                                                 </li>
                                                 <li class="breadcrumb-item active" aria-current="page">
-                                                    Pesanan
+                                                    Keranjang
                                                 </li>
                                             </ol>
                                         </nav>
@@ -106,7 +106,7 @@
                                 </div>
                             </div>
                         </div>
-                        <h2 class="h2-xl"> Pesanan</h2>
+                        {{-- <h2 class="h2-xl"> Pesanan</h2> --}}
                     </div>
                 </div>
             </div>
@@ -119,7 +119,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-4">
-                        <div class="mt-5 card bg-meat text-light">
+                        <div class="mt-5 card  text-light" style="background-color: #be170b">
                             <div class="card-body">
                                 <p>
                                     <i class="bi bi-info-circle-fill"></i>
@@ -138,23 +138,23 @@
                                             <div class="mb-2 col-md-12 col-lg-6">
                                                 <label for="">Nama Penerima</label>
                                                 <input type="text" name="nama_pembeli" class="form-control "
-                                                    placeholder="Masukkan Nama Penerima">
+                                                    placeholder="Masukkan Nama Penerima" required>
                                             </div>
 
                                             <div class="col-md-12 col-lg-6">
                                                 <label for="">Nomor HP Penerima</label>
                                                 <div class="mb-3 input-group">
                                                     <span class="input-group-text" id="basic-addon1">62</span>
-                                                    <input type="text" class="form-control" placeholder="Username"
+                                                    <input type="" class="form-control" placeholder="Username"
                                                         name="telepon" aria-label="Masukkan Nomor Telepon"
-                                                        aria-describedby="basic-addon1">
+                                                        aria-describedby="basic-addon1" required>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="mb-2 col-md-12 col-lg-12">
                                             <label for="">Alamat Lengkap</label>
-                                            <textarea name="alamat" class="form-control " placeholder="Masukkan Alamat Lengkap"></textarea>
+                                            <textarea name="alamat" class="form-control " placeholder="Masukkan Alamat Lengkap" required></textarea>
                                         </div>
 
                                         <div class="text-center col-md-12">
@@ -239,11 +239,11 @@
 
                             tbody.innerHTML += `
                                 <tr>
-                                    <td>
+                                    <td class="product-name">
                                         <div class="cart-product-desc d-flex align-items-center">
                                             <img src="${item.gambar}" width="60" style="margin-right:10px; border-radius:6px;">
                                             <div>
-                                                <h5 class="mb-1 h5-sm">${item.nama}</h5>
+                                                <h5 class="mb-1 fw-bold h5-sm">${item.nama}</h5>
                                                 <p class="p-sm text-muted">Kode: ${item.id}</p>
                                             </div>
                                         </div>

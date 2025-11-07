@@ -1,12 +1,74 @@
 @extends('pelanggan.mainPelanggan')
 @section('content')
     <style>
+        .btn-outline-secondary {
+            border: 1.5px solid #aaa;
+            color: #555;
+            background-color: transparent;
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: #f8f9fa;
+            color: #000;
+            border-color: #888;
+            transform: scale(1.03);
+        }
+    </style>
+    <style>
         .btn-cart-add-1 {
             background: transparent;
             border: none;
             outline: none;
             color: transparent;
             box-shadow: none;
+        }
+
+        /* Floating effect untuk gambar ikan koi */
+        .floating-img {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-12px);
+            }
+        }
+
+        /* Animasi halus tombol */
+        .btn-animate {
+            transition: all 0.3s ease;
+        }
+
+        .btn-animate:hover {
+            transform: scale(1.08);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Badge Koi agar tampil lembut */
+        .price-badge-md {
+            /* background: rgba(255, 255, 255, 0.85);
+                                    border-radius: 12px;
+                                    padding: 10px 20px;
+                                    backdrop-filter: blur(8px); */
+            animation: fadeInBadge 2s ease;
+        }
+
+        @keyframes fadeInBadge {
+            from {
+                opacity: 0;
+                transform: scale(0.10);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
     </style>
 
@@ -15,12 +77,29 @@
         <div class="container">
             <div class="row d-flex align-items-center">
 
+                <!-- HERO IMAGE -->
+                <div class="col-md-7 mb-4 mb-md-0" data-aos="fade-right" data-aos-duration="1200">
+                    <div class="text-center hero-4-img position-relative">
+                        <img class="img-fluid floating-img"
+                            src="{{ asset('files/images/koi-about.png') }}" alt="hero-image">
+
+                        <!-- Price Badge -->
+                        <!-- Price Badge -->
+                        <div class="bg-fixed price-badge-md 1white-color">
+                            <div class="badge-txt">
+                                <h4 class="h4-xs">Koleksi</h4>
+                                <h3 class="h6-lg">Koi Istimewa</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- HERO IMAGE -->
-                <div class="col-md-7">
+                {{-- <div class="col-md-7">
                     <div class="text-center hero-4-img">
 
-                        <img class="img-fluid" src="{{ asset('files/images/koi-about.png') }}" alt="hero-image">
+                        <img class="img-fluid" src="{{ asset('files/images/koi-about.png') }}"
+                            alt="hero-image">
 
                         <!-- Price Badge -->
                         <div class="bg-fixed price-badge-md 1white-color">
@@ -31,7 +110,7 @@
                         </div>
 
                     </div>
-                </div>
+                </div> --}}
 
 
                 <!-- HERO TEXT -->
@@ -60,67 +139,111 @@
         </div> <!-- End container -->
     </section> <!-- END HERO-4 -->
 
-
-
-    <section id="" class="wide-40 about-section division">
+    <!-- HERO-4 -->
+    {{-- <section id="hero-4" class="bg-fixed hero-section division py-5">
         <div class="container">
             <div class="row d-flex align-items-center">
-                <div class="col-md-5 col-lg-6">
-                    <div class="mb-40 text-center about-3-img">
-                        <img class="img-fluid" src="{{ asset('files/images/about-8.png') }}" alt="about-image">
+
+                <!-- HERO IMAGE -->
+                <div class="col-md-7 mb-4 mb-md-0" data-aos="fade-right" data-aos-duration="1200">
+                    <div class="text-center hero-4-img position-relative">
+                        <img class="img-fluid floating-img"
+                            src="{{ asset('files/images/koi-about.png') }}" alt="hero-image">
+
+                        <!-- Price Badge -->
+                        <div class="bg-fixed price-badge-md white-color position-absolute top-50 start-50 translate-middle"
+                            data-aos="zoom-in" data-aos-delay="600">
+                            <div class="badge-txt">
+                                <h4 class="h4-xs">Koleksi</h4>
+                                <h3 class="h6-lg">Koi Istimewa</h3>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="col-md-7 col-lg-6" id="tentangKami">
-                    <div class="mb-40 about-3-txt">
-                        <h2 class="h2-sm">Tentang Kami – Azza Koi Farm</h2>
-                        <p class="p-md grey-color">
-                            Azza Koi Farm adalah tempat budidaya koi yang berfokus pada kualitas,
-                            kesehatan, dan keindahan
-                            setiap ekor ikan. Kami percaya bahwa koi bukan hanya sekadar ikan hias,
-                            tetapi juga simbol
-                            ketenangan, keberuntungan, dan seni alami yang menambah nilai estetika pada
-                            kolam Anda.
+                <!-- HERO TEXT -->
+                <div class="col-md-5 text-center text-md-start" data-aos="fade-left"
+                    data-aos-duration="1200">
+                    <div class="hero-4-txt white-color">
+                        <h2 class="fw-bold mb-0">Azza Koi</h2>
+                        <h3 class="text-warning fw-semibold">Farm</h3>
+
+                        <p class="p-md mt-3 mb-4">
+                            Nikmati koleksi koi terbaik dengan warna memukau, sehat, dan dirawat dengan
+                            penuh ketelatenan.
                         </p>
-                        <div class="abox-2-wrapper ico-70">
+
+                        <a href="#"
+                            class="btn btn-md btn-yellow tra-white-hover btn-animate">Tentang Kami</a>
+                    </div>
+                </div>
+
+            </div> <!-- End row -->
+        </div> <!-- End container -->
+    </section> <!-- END HERO-4 --> --}}
+
+    <section class="wide-40 about-section division">
+        <div class="container">
+            <div class="row d-flex align-items-center">
+
+                <!-- Gambar -->
+                <div class="col-md-5 col-lg-6" data-aos="fade-right" data-aos-duration="1200">
+                    <div class="mb-40 text-center about-3-img">
+                        <img class="img-fluid" src="{{ asset('files/images/about-8.png') }}"
+                            alt="about-image">
+                    </div>
+                </div>
+
+                <!-- Teks -->
+                <div class="col-md-7 col-lg-6" id="tentangKami" data-aos="fade-up" data-aos-delay="300"
+                    data-aos-duration="1000">
+                    <div class="mb-40 about-3-txt">
+                        <h2 class="h2-sm" data-aos="zoom-in" data-aos-delay="400">Tentang Kami – Azza
+                            Koi Farm</h2>
+                        <p class="p-md grey-color" data-aos="fade-up" data-aos-delay="600">
+                            Azza Koi Farm adalah tempat budidaya koi yang berfokus pada kualitas,
+                            kesehatan, dan keindahan setiap ekor ikan. Kami percaya bahwa koi bukan
+                            hanya
+                            sekadar ikan hias, tetapi juga simbol ketenangan, keberuntungan, dan seni
+                            alami
+                            yang menambah nilai estetika pada kolam Anda.
+                        </p>
+
+                        <div class="abox-2-wrapper ico-70 mt-4">
                             <div class="text-center row">
-                                <div class="col-sm-3">
+                                <div class="col-sm-3" data-aos="flip-left" data-aos-delay="200">
                                     <div class="abox-2">
                                         <div class="abox-2-ico grey-color">
-                                            {{-- <span class="flaticon-fish"></span> --}}
                                             <i class="fa-solid fa-fish fs-1"></i>
                                         </div>
-                                        <h6 class="h6-lg">Kualitas Terjamin</h6>
+                                        <h6 class="h6-lg mt-2">Kualitas Terjamin</h6>
                                     </div>
                                 </div>
 
-                                <div class="col-sm-3">
+                                <div class="col-sm-3" data-aos="flip-left" data-aos-delay="400">
                                     <div class="abox-2">
                                         <div class="abox-2-ico grey-color">
-                                            {{-- <span class="flaticon-fried-chicken"></span> --}}
                                             <i class="fa-regular fa-handshake fs-1"></i>
                                         </div>
-                                        <h6 class="h6-lg">Kepercayaan Pelanggan</h6>
+                                        <h6 class="h6-lg mt-2">Kepercayaan Pelanggan</h6>
                                     </div>
                                 </div>
 
-                                <div class="col-sm-3">
+                                <div class="col-sm-3" data-aos="flip-left" data-aos-delay="600">
                                     <div class="abox-2">
                                         <div class="abox-2-ico grey-color">
-                                            {{-- <span class="flaticon-best-price"></span> --}}
                                             <i class="fa-solid fa-hand-holding-dollar fs-1"></i>
                                         </div>
-                                        <h6 class="h6-lg">Harga Bersahabat</h6>
+                                        <h6 class="h6-lg mt-2">Harga Bersahabat</h6>
                                     </div>
                                 </div>
 
-                                <div class="col-sm-3">
+                                <div class="col-sm-3" data-aos="flip-left" data-aos-delay="800">
                                     <div class="abox-2">
                                         <div class="abox-2-ico grey-color">
-                                            {{-- <span class="flaticon-moped"></span> --}}
                                             <i class="fa-regular fa-headphones fs-1"></i>
                                         </div>
-                                        <h6 class="h6-lg">Pelayanan Profesional</h6>
+                                        <h6 class="h6-lg mt-2">Pelayanan Profesional</h6>
                                     </div>
                                 </div>
                             </div>
@@ -132,16 +255,21 @@
     </section>
 
 
-    <section id="menu-6" class="wide-70 menu-section division">
+
+    <section id="menu-6" class=" wide-70 menu-section division">
         <div class="container" id="produk">
             <div class="text-center">
                 <h3 class="h3-md meat-color">
                     Produk Kami
                 </h3>
-                <p class="p-md grey-color">
-                    Kami menghadirkan pilihan produk yang beragam, terpercaya, dan sesuai dengan
-                    kebutuhan Anda.
-                </p>
+                @if (empty($produk))
+                    Belum ada produk yang tersedia. Silakan kunjungi kembali nanti.
+                @else
+                    <p class="p-md grey-color">
+                        Kami menghadirkan pilihan produk yang beragam, terpercaya, dan sesuai dengan
+                        kebutuhan Anda.
+                    </p>
+                @endif
             </div>
             <div class="row">
                 @if (!empty($produk))
@@ -159,7 +287,8 @@
                                     <div class="hover-overlay">
                                         <img src="{{ $gambarUtama }}" class="mb-2 img-fluid"
                                             alt="{{ $prod->nama_produk }}">
-                                        <span class="item-code bg-tra-dark">Kode: {{ $prod->kode_produk }}</span>
+                                        <span class="item-code bg-tra-dark">Kode:
+                                            {{ $prod->kode_produk }}</span>
                                         <div class="menu-img-zoom ico-25">
                                             <a href="{{ $gambarUtama }}" class="image-link">
                                                 <span class="flaticon-zoom"></span>
@@ -188,7 +317,8 @@
                                         <div class="add-to-cart bg-yellow ico-10">
                                             <button type="button"
                                                 class="shadow-none btn-cart-add-1 bg-yellow text-light ico-10"
-                                                data-id="{{ $prod->kode_produk }}" data-nama="{{ $prod->nama_produk }}"
+                                                data-id="{{ $prod->kode_produk }}"
+                                                data-nama="{{ $prod->nama_produk }}"
                                                 data-harga="{{ $prod->harga_Satuan }}"
                                                 data-stok="{{ $prod->stok_produk }}"
                                                 data-ukuran="{{ $prod->ukuran_produk }}"
@@ -198,7 +328,8 @@
                                         </div>
                                     @else
                                         <div class="mt-3 text-center">
-                                            <button type="button" class="shadow-none btn btn-danger w-100" disabled>
+                                            <button type="button"
+                                                class="shadow-none btn btn-danger w-100" disabled>
                                                 <i class="flaticon-error"></i> Stok Habis
                                             </button>
                                         </div>
@@ -207,13 +338,17 @@
                             </div>
                         </div>
                     @endforeach
-                @else
-                    <p>Tidak Ada Produk.</p>
                 @endif
             </div>
-            <div class="d-flex justify-content-center">
-                <a href="{{ route('produkLengkap') }}" class="btn btn-md btn-red tra-yellow-hover">Selengkapnya</a>
-            </div>
+            @if (!empty(count($produk) == 4))
+                <div class="d-flex justify-content-center">
+                    <a href="{{ route('produkLengkap') }}"
+                        class="btn btn-outline-secondary rounded-pill px-4 py-2 shadow-sm"
+                        style="transition: all 0.3s ease; font-weight: 500; color: #b3140a;">
+                        Selengkapnya
+                    </a>
+                </div>
+            @endif
         </div>
     </section>
 
@@ -229,118 +364,88 @@
                     <div class="flexslider">
                         <ul class="text-center slides">
 
-
-                            <!-- TESTIMONIAL-1 -->
                             <li class="review-1">
-                                <div class="review-1-txt">
+                                <div class="review-1-txt mx-auto" style="max-width:700px;">
+                                    <img src="{{ asset('files/images/review-author-1.jpg') }}"
+                                        alt="pelanggan-azza" class="rounded-circle shadow mb-3"
+                                        width="90" height="90">
 
-                                    <!-- Testimonial Author Avatar -->
-                                    <img src="{{ asset('files/images/review-author-1.jpg') }}" alt="testimonial-avatar">
+                                    <p class="">“Ikan koi dari Azza Koi Farm benar-benar
+                                        berkualitas! Warna ikannya cerah dan sehat semua. Pelayanannya
+                                        juga cepat dan ramah, saya pasti akan beli lagi.”</p>
 
-                                    <!-- Text -->
-                                    <p>" Etiam sapien sem at sagittis congue augue massa varius sodales
-                                        sapien undo tempus
-                                        dolor
-                                        egestas magna suscipit magna tempus aliquet porta sodales augue
-                                        suscipit luctus
-                                        neque "
-                                    </p>
-
-                                    <!-- Rating -->
-                                    <div class="review-rating">
-                                        <div class="stars-rating">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star-half-alt"></i>
-                                        </div>
+                                    <div class="review-rating mb-2 text-warning">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
                                     </div>
 
-                                    <!-- Testimonial Author -->
-                                    <p class="testimonial-autor">by Sean McMarthy</p>
-
+                                    <p class="fw-semibold mb-0">Andi Prasetyo</p>
+                                    <small class="text-secondary">Pelanggan dari Surabaya</small>
                                 </div>
                             </li>
 
-
-                            <!-- TESTIMONIAL-2 -->
+                            <!-- TESTIMONI 2 -->
                             <li class="review-1">
-                                <div class="review-1-txt">
+                                <div class="review-1-txt mx-auto" style="max-width:700px;">
+                                    <img src="{{ asset('files/images/review-author-2.jpg') }}"
+                                        alt="pelanggan-azza" class="rounded-circle shadow mb-3"
+                                        width="90" height="90">
 
-                                    <!-- Testimonial Author Avatar -->
-                                    <img src="{{ asset('files/images/review-author-2.jpg') }}" alt="testimonial-avatar">
+                                    <p class="">“Pesan koi jumbo di Azza Koi Farm ternyata
+                                        gampang banget! Adminnya responsif dan ikan dikirim dalam
+                                        kondisi segar. Recommended banget buat pecinta koi.”</p>
 
-                                    <!-- Text -->
-                                    <p>" At sagittis congue augue egestas egestas magna ipsum vitae
-                                        purus ipsum primis in
-                                        cubilia
-                                        laoreet augue egestas luctus donec diam ociis nullam tempor
-                                        sapien, eget orci
-                                        gravida porta "
-                                    </p>
-
-                                    <!-- Rating -->
-                                    <div class="review-rating">
-                                        <div class="stars-rating">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                        </div>
+                                    <div class="review-rating mb-2 text-warning">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
                                     </div>
 
-                                    <!-- Testimonial Author -->
-                                    <p class="testimonial-autor">by Evelyn Martinez</p>
-
+                                    <p class="fw-semibold mb-0">Siti Rahmawati</p>
+                                    <small class="text-secondary">Pelanggan dari Malang</small>
                                 </div>
-
                             </li>
 
-
-                            <!-- TESTIMONIAL-3 -->
+                            <!-- TESTIMONI 3 -->
                             <li class="review-1">
-                                <div class="review-1-txt">
+                                <div class="review-1-txt mx-auto" style="max-width:700px;">
+                                    <img src="{{ asset('files/images/review-author-3.jpg') }}"
+                                        alt="pelanggan-azza" class="rounded-circle shadow mb-3"
+                                        width="90" height="90">
 
-                                    <!-- Testimonial Author Avatar -->
-                                    <img src="{{ asset('files/images/review-author-3.jpg') }}" alt="testimonial-avatar">
+                                    <p class="">“Saya kagum dengan hasil ternakan Azza Koi
+                                        Farm. Varian ikannya lengkap dan kualitasnya bagus. Harga juga
+                                        bersahabat, cocok buat pemula maupun kolektor.”</p>
 
-                                    <!-- Text -->
-                                    <p>" Mauris donec ociis et magnis sapien etiam sapien sem sagittis
-                                        congue augue. An orci
-                                        nullam
-                                        tempor sapien, eget orci gravida donec enim ipsum porta justo
-                                        integer at odio velna
-                                        auctor "
-                                    </p>
-
-                                    <!-- Rating -->
-                                    <div class="review-rating">
-                                        <div class="stars-rating">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star-half-alt"></i>
-                                        </div>
+                                    <div class="review-rating mb-2 text-warning">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
                                     </div>
 
-                                    <!-- Testimonial Author -->
-                                    <p class="testimonial-autor">by Robert Peterson</p>
-
+                                    <p class="fw-semibold mb-0"> Rizky Saputra</p>
+                                    <small class="text-secondary">Pelanggan dari Blitar</small>
                                 </div>
-
                             </li>
+
                         </ul>
                     </div>
-
+                    </ul>
                 </div>
-            </div> <!-- End row -->
-        </div> <!-- End container -->
+
+            </div>
+        </div> <!-- End row -->
+    </div> <!-- End container -->
     </div> <!-- END TESTIMONIALS-1 -->
 
-    <section id="kontak" class="py-5">
+    <section id="kontak" class="wide-70 menu-section division">
         <div class="container">
             <div class="row g-4">
 
@@ -398,8 +503,8 @@
                 <div class="col-md-6">
                     <iframe
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3949.9320477314495!2d112.32966517412606!3d-8.108401881120022!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7895dae64834b5%3A0xfd3f89b1af065dcc!2sBasecamp%20Aza%20Koi%20Farms!5e0!3m2!1sid!2sid!4v1758073424053!5m2!1sid!2sid"
-                        width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        width="100%" height="400" style="border:0;" allowfullscreen=""
+                        loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
 
             </div>
@@ -414,7 +519,8 @@
                 <div class="container my-5 accordion" id="faqAccordion">
 
                     <!-- 6 -->
-                    <div class="accordion-item" style="background-color: transparent; border: 1px solid #fff;">
+                    <div class="accordion-item"
+                        style="background-color: transparent; border: 1px solid #fff;">
                         <h2 class="accordion-header" id="headingSix">
                             <button class="text-white accordion-button collapsed" type="button"
                                 data-bs-toggle="collapse" data-bs-target="#faq6"
@@ -422,7 +528,8 @@
                                 Berapa biaya ongkir untuk pembelian ikan koi?
                             </button>
                         </h2>
-                        <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div id="faq6" class="accordion-collapse collapse"
+                            data-bs-parent="#faqAccordion">
                             <div class="text-white accordion-body">
                                 Ongkir bervariasi tergantung lokasi dan jumlah pembelian. Estimasi
                                 ongkir akan muncul
@@ -432,7 +539,8 @@
                     </div>
 
                     <!-- 7 -->
-                    <div class="accordion-item" style="background-color: transparent; border: 1px solid #fff;">
+                    <div class="accordion-item"
+                        style="background-color: transparent; border: 1px solid #fff;">
                         <h2 class="accordion-header" id="headingSeven">
                             <button class="text-white accordion-button collapsed" type="button"
                                 data-bs-toggle="collapse" data-bs-target="#faq7"
@@ -440,7 +548,8 @@
                                 Apakah bisa request ukuran atau jenis koi tertentu?
                             </button>
                         </h2>
-                        <div id="faq7" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div id="faq7" class="accordion-collapse collapse"
+                            data-bs-parent="#faqAccordion">
                             <div class="text-white accordion-body">
                                 Bisa. Silakan hubungi kami melalui WhatsApp atau form kontak, kami akan
                                 cek ketersediaan
@@ -450,7 +559,8 @@
                     </div>
 
                     <!-- 8 -->
-                    <div class="accordion-item" style="background-color: transparent; border: 1px solid #fff;">
+                    <div class="accordion-item"
+                        style="background-color: transparent; border: 1px solid #fff;">
                         <h2 class="accordion-header" id="headingEight">
                             <button class="text-white accordion-button collapsed" type="button"
                                 data-bs-toggle="collapse" data-bs-target="#faq8"
@@ -458,7 +568,8 @@
                                 Apakah ada perawatan khusus setelah koi sampai di rumah?
                             </button>
                         </h2>
-                        <div id="faq8" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div id="faq8" class="accordion-collapse collapse"
+                            data-bs-parent="#faqAccordion">
                             <div class="text-white accordion-body">
                                 Ya. Biarkan koi beradaptasi dengan air baru terlebih dahulu (proses
                                 aklimatisasi sekitar
@@ -468,7 +579,8 @@
                     </div>
 
                     <!-- 9 -->
-                    <div class="accordion-item" style="background-color: transparent; border: 1px solid #fff;">
+                    <div class="accordion-item"
+                        style="background-color: transparent; border: 1px solid #fff;">
                         <h2 class="accordion-header" id="headingNine">
                             <button class="text-white accordion-button collapsed" type="button"
                                 data-bs-toggle="collapse" data-bs-target="#faq9"
@@ -476,7 +588,8 @@
                                 Apakah ada diskon untuk pembelian dalam jumlah banyak (grosir)?
                             </button>
                         </h2>
-                        <div id="faq9" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div id="faq9" class="accordion-collapse collapse"
+                            data-bs-parent="#faqAccordion">
                             <div class="text-white accordion-body">
                                 Ada. Untuk pembelian dalam jumlah besar, silakan hubungi admin untuk
                                 mendapatkan harga
@@ -486,7 +599,8 @@
                     </div>
 
                     <!-- 10 -->
-                    <div class="accordion-item" style="background-color: transparent; border: 1px solid #fff;">
+                    <div class="accordion-item"
+                        style="background-color: transparent; border: 1px solid #fff;">
                         <h2 class="accordion-header" id="headingTen">
                             <button class="text-white accordion-button collapsed" type="button"
                                 data-bs-toggle="collapse" data-bs-target="#faq10"
@@ -494,7 +608,8 @@
                                 Apakah bisa datang langsung ke tempat untuk melihat koi?
                             </button>
                         </h2>
-                        <div id="faq10" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div id="faq10" class="accordion-collapse collapse"
+                            data-bs-parent="#faqAccordion">
                             <div class="text-white accordion-body">
                                 Bisa, tentu saja. Kami juga melayani kunjungan langsung ke farm/kolam
                                 dengan perjanjian
@@ -540,7 +655,8 @@
 
                 function updateCartUI() {
                     const cartCount = document.getElementById('cart-count'); // desktop
-                    const cartCountFixed = document.getElementById('cart-count-fixed'); // mobile fixed
+                    const cartCountFixed = document.getElementById(
+                        'cart-count-fixed'); // mobile fixed
                     const cartIcon = document.getElementById('cart-icon');
                     const cartIconFixed = document.getElementById('cart-icon-fixed');
 
@@ -558,6 +674,10 @@
 
                 updateCartUI(); // init badge
             });
+        </script>
+
+        <script>
+            AOS.init();
         </script>
     @endpush
 @endsection

@@ -98,6 +98,9 @@ Route::prefix('pelanggan')->group(function () {
 Route::get('/resi', function () {
     return view('pesanan.resi'); // view form nanti
 });
+Route::get('/test', function () {
+    return view('format.test'); // view form nanti
+});
 // Route::get('/detail', function () {
 //     return view('pelanggan.detail_produk.index'); // view form nanti
 // });

@@ -1,6 +1,64 @@
 @extends('main')
 @section('content')
     <style>
+        /* === Panah dropdown berwarna biru soft === */
+        table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child::before,
+        table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child::before {
+            background: transparent !important;
+            /* hilangkan background */
+            color: #4da6ff !important;
+            /* panah biru soft */
+            border: none !important;
+            box-shadow: none !important;
+            font-weight: bold;
+            font-size: 18px;
+            line-height: 18px;
+        }
+
+        /* Saat baris terbuka (ikon berubah jadi -) */
+        table.dataTable.dtr-inline.collapsed>tbody>tr.parent>td:first-child::before,
+        table.dataTable.dtr-inline.collapsed>tbody>tr.parent>th:first-child::before {
+            color: #007bff !important;
+            /* biru sedikit lebih tua */
+        }
+
+        /* === Gaya isi dropdown (detail row) === */
+        table.dataTable tbody tr.child ul.dtr-details {
+            background: #f8fbff;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin: 10px 0;
+            border: 1px solid #e0ecff;
+        }
+
+        /* Gaya tiap baris data di dropdown */
+        table.dataTable tbody tr.child ul.dtr-details li {
+            margin-bottom: 6px;
+            font-size: 14px;
+            color: #333;
+            display: flex;
+            gap: 5px;
+        }
+
+        /* Judul kolom (label) */
+        table.dataTable tbody tr.child ul.dtr-details li span.dtr-title {
+            font-weight: 600;
+            color: #007bff;
+            margin-right: 5px;
+        }
+
+        /* Tambahkan tanda ":" otomatis setelah judul */
+        table.dataTable tbody tr.child ul.dtr-details li span.dtr-title::after {
+            content: ":";
+            margin-left: 2px;
+        }
+
+        /* Nilai data (isi kolom) */
+        table.dataTable tbody tr.child ul.dtr-details li span.dtr-data {
+            color: #444;
+        }
+    </style>
+    <style>
         .select2-container .select2-selection--single {
             height: 38px !important;
             display: flex;
@@ -14,8 +72,35 @@
         .select2-container--default .select2-selection--single .select2-selection__arrow {
             height: 36px !important;
         }
-    </style>
 
+        .card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            padding: 1rem 1.25rem;
+        }
+
+        @media (max-width: 768px) {
+            .card-header .row>div {
+                text-align: center;
+            }
+
+            .card-header h5 {
+                width: 100%;
+            }
+
+            .card-header input[type="date"] {
+                width: 100% !important;
+            }
+
+            .card-header .btn {
+                flex: 1 1 auto;
+            }
+
+            .card-header .d-flex {
+                justify-content: center !important;
+            }
+        }
+    </style>
 
     <div class="mb-3 page-breadcrumb d-none d-sm-flex align-items-center">
         <div class="breadcrumb-title pe-3">Pesanan</div>
@@ -28,48 +113,53 @@
             </nav>
         </div>
     </div>
+
     <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">
-                Daftar Pesanan Terbaru
-                <button type="button" id="btnSelectAllPesanan" class="btn btn-secondary btn-sm">
-                    <i class="bi bi-check2-circle"></i>
-                    Pilih Semua
-                </button>
-            </h5>
-            <div class="d-flex float-end gap-2">
-                <div class="input-group" style="width: 420px;">
-                    <label for="tanggal" class="col-form-label me-2">Dari</label>
-                    <input type="date" id="dari-pesanan" class="form-control form-control-sm me-4">
-
-                    <label for="tanggal" class="col-form-label me-2">Sampai</label>
-                    <input type="date" id="sampai-pesanan" class="form-control form-control-sm">
-
-                    <button type="button" id="resetPesananFilter" class="btn btn-danger btn-sm ms-2">
-                        <i class="bi bi-arrow-counterclockwise"></i>
+        <div class="card-header">
+            <div class="row gy-2 align-items-center">
+                <!-- Kiri: Judul dan tombol pilih semua -->
+                <div class="col-12 col-md-5 d-flex flex-wrap align-items-center gap-2">
+                    <h5 class="mb-0 fw-semibold text-nowrap flex-shrink-0">Daftar Pesanan Terbaru</h5>
+                    <button type="button" id="btnSelectAllPesanan" class="btn btn-secondary btn-sm">
+                        <i class="bi bi-check2-circle"></i> Pilih Semua
                     </button>
                 </div>
-                <!-- Tombol print dan pilih semua -->
-                {{-- <button type="button" id="btnPrintPesanan" class="btn btn-secondary btn-sm">
-                    <i class="bi bi-printer"></i>
-                </button>
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambah_pesanan">
-                    <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
-                </button> --}}
-                <!-- Tombol Print -->
-                <button type="button" id="btnPrintPesanan" class="btn btn-secondary btn-sm"
-                    data-bs-toggle="tooltip" data-bs-placement="top" title="Cetak Daftar Pesanan">
-                    <i class="bi bi-printer"></i>
-                </button>
 
-                <!-- Tombol Tambah Pesanan -->
-                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
-                    data-bs-target="#tambah_pesanan" data-bs-toggle="tooltip" data-bs-placement="top"
-                    title="Tambah Pesanan Baru">
-                    <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
-                </button>
+                <!-- Kanan: Filter dan Tombol Aksi -->
+                <div class="col-12 col-md-7">
+                    <div class="d-flex flex-wrap justify-content-md-end align-items-center gap-2">
+                        <div
+                            class="d-flex flex-wrap align-items-center gap-2 flex-grow-1 flex-md-grow-0">
+                            <label for="dari-pesanan"
+                                class="col-form-label mb-0 text-nowrap">Dari</label>
+                            <input type="date" id="dari-pesanan" class="form-control form-control-sm"
+                                style="width: auto; min-width: 130px;">
+                            <label for="sampai-pesanan"
+                                class="col-form-label mb-0 text-nowrap">Sampai</label>
+                            <input type="date" id="sampai-pesanan"
+                                class="form-control form-control-sm"
+                                style="width: auto; min-width: 130px;">
+                        </div>
+
+                        <div class="d-flex align-items-center gap-2">
+                            <button type="button" id="resetPesananFilter" class="btn btn-danger btn-sm"
+                                title="Reset Filter">
+                                <i class="bi bi-arrow-counterclockwise"></i>
+                            </button>
+                            <button type="button" id="btnPrintPesanan" class="btn btn-secondary btn-sm"
+                                title="Cetak Daftar Pesanan">
+                                <i class="bi bi-printer"></i>
+                            </button>
+                            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#tambah_pesanan" title="Tambah Pesanan Baru">
+                                <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+
 
         <div class="card-body">
             <div class="table-responsive">
@@ -84,23 +174,23 @@
                             <th>Aksi</th>
                         </tr>
                     </thead>
+
                     @php
                         $pesananGrouped = collect($pesanan)->groupBy('kode_pesanan');
                     @endphp
+
                     <tbody>
                         @foreach ($pesananGrouped as $kodePesanan => $items)
                             @php
                                 $first = $items->first();
-                                $totalNominal = $items->sum(function ($r) {
-                                    return isset($r->nominal) ? (float) $r->nominal : 0;
-                                });
+                                $totalNominal = $items->sum(
+                                    fn($r) => isset($r->nominal) ? (float) $r->nominal : 0,
+                                );
                             @endphp
                             <tr data-id="{{ $first->kode_pesanan }}">
-                                <td class="align-middle">
-                                    <div class="form-check">
-                                        <input class="form-check-input checkbox-pesanan" type="checkbox"
-                                            value="{{ $first->kode_pesanan }}">
-                                    </div>
+                                <td class="align-middle text-center">
+                                    <input class="form-check-input checkbox-pesanan" type="checkbox"
+                                        value="{{ $first->kode_pesanan }}">
                                 </td>
                                 <td class="align-middle"
                                     data-tanggal="{{ $first->pesanan_created_at }}">
@@ -108,12 +198,10 @@
                                 </td>
                                 <td class="align-middle">
                                     {{ $first->id_pembeli == 0 ? '-' : $first->pembeli_nama ?? '-' }}
-
                                 </td>
                                 <td class="align-middle">
-                                    <div>Rp{{ number_format($totalNominal, 0, ',', '.') }}</div>
-                                </td>
-                                <td>
+                                    Rp{{ number_format($totalNominal, 0, ',', '.') }}</td>
+                                <td class="align-middle">
                                     <select class="form-select update-status-select fw-bold"
                                         data-id="{{ $first->kode_pesanan }}">
                                         <option value="baru" data-color="#0d6efd"
@@ -126,44 +214,24 @@
                                             {{ ($first->status ?? '') == 'selesai' ? 'selected' : '' }}>
                                             Selesai</option>
                                     </select>
-                                    {{-- <div class="status-wrapper">
-                                        <select class="form-select update-status-select fw-bold"
-                                            data-id="{{ $first->kode_pesanan }}">
-                                            <option value="baru" data-color="#0d6efd"
-                                                {{ ($first->status ?? '') == 'baru' ? 'selected' : '' }}>
-                                                Baru
-                                            </option>
-                                            <option value="proses" data-color="#ffc107" onclick="Status()"
-                                                {{ ($first->status ?? '') == 'proses' ? 'selected' : '' }}>
-                                                Diproses
-                                            </option>
-                                            <option value="selesai" data-color="#198754"
-                                                {{ ($first->status ?? '') == 'selesai' ? 'selected' : '' }}>
-                                                Selesai
-                                            </option>
-                                        </select>
-                                    </div> --}}
                                 </td>
                                 <td class="align-middle">
-                                    <div class="gap-2 d-flex align-items-center">
+                                    <div class="d-flex flex-wrap justify-content-center gap-1">
                                         <a href="{{ route('pesanan.detail', $first->kode_pesanan) }}"
                                             class="btn btn-primary btn-sm">
                                             <i class="fadeIn animated bx bx-info-circle fs-6"></i>
                                         </a>
-
                                         <form
                                             action="{{ route('pesanan.delete', $first->kode_pesanan) }}"
-                                            method="POST"
-                                            class="p-0 m-0 d-flex align-items-center delete-form">
+                                            method="POST" class="d-inline delete-form">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">
+                                            <button type="submit" class="btn btn-danger btn-sm">
                                                 <i
                                                     class="fadeIn animated bx bx-trash text-light fs-6"></i>
                                             </button>
                                         </form>
-
-                                        <button type="button" class="btn btn-warning"
+                                        <button type="button" class="btn btn-warning btn-sm"
                                             data-bs-toggle="modal"
                                             data-bs-target="#edit_pesanan_{{ $first->kode_pesanan }}">
                                             <i class="fadeIn animated bx bx-pencil text-light fs-6"></i>
@@ -189,21 +257,12 @@
         </div>
     </div>
 
+
     @include('pesanan.modal.tambah')
     @include('pesanan.modal.modalPembeli.tambahPembeli')
 
     @push('scripts')
         <script>
-            $(document).ready(function() {
-                var table = $('#tabel_pesanan').DataTable({
-                    lengthChange: false,
-                    buttons: ['copy', 'excel', 'pdf', 'print']
-                });
-
-                table.buttons().container()
-                    .appendTo('#tabel_pesanan_wrapper .col-md-6:eq(0)');
-            });
-
             let updateStatusUrl = "{{ route('pesanan.updateStatus', ':id') }}";
 
             // Simpan previous value ketika user fokus ke select (untuk revert kalau cancel)
@@ -356,7 +415,16 @@
                 select.addEventListener('change', () => updateColor(select));
             });
         </script>
-        <script>
+        {{-- <script>
+            $(document).ready(function() {
+                var table = $('#tabel_pesanan').DataTable({
+                    lengthChange: false,
+                    buttons: ['copy', 'excel', 'pdf', 'print']
+                });
+
+                table.buttons().container()
+                    .appendTo('#tabel_pesanan_wrapper .col-md-6:eq(0)');
+            });
             document.addEventListener('DOMContentLoaded', function() {
                 const dariInput = document.getElementById('dari-pesanan');
                 const sampaiInput = document.getElementById('sampai-pesanan');
@@ -454,7 +522,126 @@
                 // Jalankan filter pertama kali (hari ini)
                 filterByDateRange();
             });
+        </script> --}}
+        <script>
+            $(document).ready(function() {
+                const dariInput = document.getElementById('dari-pesanan');
+                const sampaiInput = document.getElementById('sampai-pesanan');
+                const resetBtn = document.getElementById('resetPesananFilter');
+                const selectAllBtn = document.getElementById('btnSelectAllPesanan');
+                const printBtn = document.getElementById('btnPrintPesanan');
+
+                // Set default tanggal hari ini
+                const today = new Date().toISOString().split('T')[0];
+                dariInput.value = today;
+                sampaiInput.value = today;
+
+                // Inisialisasi DataTable
+                var table = $('#tabel_pesanan').DataTable({
+                    responsive: true,
+                    dom: "<'row mb-3'<'col-md-6 d-flex align-items-center'B><'col-md-6 d-flex justify-content-end'f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row mt-3'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 d-flex justify-content-end'p>>",
+                    buttons: [{
+                            extend: 'excelHtml5',
+                            className: 'btn btn-success btn-sm m-1',
+                            text: 'Export Excel',
+                            exportOptions: {
+                                rows: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            className: 'btn btn-danger btn-sm m-1',
+                            text: 'Export PDF',
+                            exportOptions: {
+                                rows: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'csvHtml5',
+                            className: 'btn btn-info btn-sm m-1',
+                            text: 'Export CSV',
+                            exportOptions: {
+                                rows: ':visible'
+                            }
+                        },
+                    ],
+                    language: {
+                        search: "Cari:",
+                        lengthMenu: "Tampilkan _MENU_ data",
+                        info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                        paginate: {
+                            next: "Berikutnya",
+                            previous: "Sebelumnya"
+                        }
+                    }
+                });
+
+                // Custom filter DataTable berdasarkan range tanggal
+                $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                    const dari = new Date(dariInput.value);
+                    const sampai = new Date(sampaiInput.value);
+                    const tanggalText = data[1]; // Kolom tanggal
+                    const tanggalParts = tanggalText.split(
+                        '-'); // YYYY-MM-DD atau DD-MM-YYYY
+                    let tanggal;
+
+                    // Jika format DD-MM-YYYY
+                    if (tanggalParts[0].length === 2 && tanggalParts[2].length === 4) {
+                        tanggal = new Date(
+                            `${tanggalParts[2]}-${tanggalParts[1]}-${tanggalParts[0]}`);
+                    } else {
+                        tanggal = new Date(tanggalText);
+                    }
+
+                    return tanggal >= dari && tanggal <= sampai;
+                });
+
+                // Event change tanggal
+                dariInput.addEventListener('change', () => table.draw());
+                sampaiInput.addEventListener('change', () => table.draw());
+
+                // Reset filter ke hari ini
+                resetBtn.addEventListener('click', () => {
+                    dariInput.value = today;
+                    sampaiInput.value = today;
+                    table.draw();
+                });
+
+                // Pilih semua checkbox visible
+                selectAllBtn.addEventListener('click', () => {
+                    $('.checkbox-pesanan:visible').prop('checked', true);
+                });
+
+                // Print manual data yang diceklis
+                printBtn.addEventListener('click', () => {
+                    const checkedRows = $('.checkbox-pesanan:checked').closest('tr');
+                    if (checkedRows.length === 0) {
+                        alert('Pilih data pesanan yang ingin dicetak!');
+                        return;
+                    }
+
+                    let html =
+                        '<table border="1" style="width:100%;border-collapse:collapse;"><tr><th>Tanggal</th><th>Nama Pembeli</th><th>Nominal Pembelian</th><th>Status</th></tr>';
+                    checkedRows.each(function() {
+                        const cells = $(this).find('td');
+                        html +=
+                            `<tr><td>${cells.eq(1).text()}</td><td>${cells.eq(2).text()}</td><td>${cells.eq(3).text()}</td><td>${cells.eq(4).text()}</td></tr>`;
+                    });
+                    html += '</table>';
+
+                    const w = window.open('', '', 'width=800,height=600');
+                    w.document.write(html);
+                    w.document.close();
+                    w.print();
+                });
+
+                // Jalankan filter pertama kali
+                table.draw();
+            });
         </script>
+
         <script>
             document.getElementById('btnPrintPesanan').addEventListener('click', function() {
                 let terpilih = [];

@@ -1,5 +1,63 @@
 @extends('main')
 @section('content')
+    <style>
+        /* === Panah dropdown berwarna biru soft === */
+        table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child::before,
+        table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child::before {
+            background: transparent !important;
+            /* hilangkan background */
+            color: #4da6ff !important;
+            /* panah biru soft */
+            border: none !important;
+            box-shadow: none !important;
+            font-weight: bold;
+            font-size: 18px;
+            line-height: 18px;
+        }
+
+        /* Saat baris terbuka (ikon berubah jadi -) */
+        table.dataTable.dtr-inline.collapsed>tbody>tr.parent>td:first-child::before,
+        table.dataTable.dtr-inline.collapsed>tbody>tr.parent>th:first-child::before {
+            color: #007bff !important;
+            /* biru sedikit lebih tua */
+        }
+
+        /* === Gaya isi dropdown (detail row) === */
+        table.dataTable tbody tr.child ul.dtr-details {
+            background: #f8fbff;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin: 10px 0;
+            border: 1px solid #e0ecff;
+        }
+
+        /* Gaya tiap baris data di dropdown */
+        table.dataTable tbody tr.child ul.dtr-details li {
+            margin-bottom: 6px;
+            font-size: 14px;
+            color: #333;
+            display: flex;
+            gap: 5px;
+        }
+
+        /* Judul kolom (label) */
+        table.dataTable tbody tr.child ul.dtr-details li span.dtr-title {
+            font-weight: 600;
+            color: #007bff;
+            margin-right: 5px;
+        }
+
+        /* Tambahkan tanda ":" otomatis setelah judul */
+        table.dataTable tbody tr.child ul.dtr-details li span.dtr-title::after {
+            content: ":";
+            margin-left: 2px;
+        }
+
+        /* Nilai data (isi kolom) */
+        table.dataTable tbody tr.child ul.dtr-details li span.dtr-data {
+            color: #444;
+        }
+    </style>
     <!--breadcrumb-->
     <div class="mb-3 page-breadcrumb d-none d-sm-flex align-items-center">
         <div class="breadcrumb-title pe-3">Barang Masuk </div>
@@ -54,11 +112,13 @@
                                 <td>{{ $item->keterangan }}</td>
                                 <td class="text-center">
                                     <div class="gap-2 d-flex align-items-center">
-                                        <form action="{{ route('barang-masuk.destroy', $item->id_pemasukan) }}"
+                                        <form
+                                            action="{{ route('barang-masuk.destroy', $item->id_pemasukan) }}"
                                             class="delete-form" method="post">
                                             @csrf
                                             @method('delete')
-                                            <button class="btn btn-danger confirm-delete-button" type="button">
+                                            <button class="btn btn-danger confirm-delete-button"
+                                                type="button">
                                                 <i class="fadeIn animated bx bx-trash text-light"></i>
                                             </button>
                                         </form>
@@ -93,15 +153,53 @@
     @include('barang_masuk.modal.import')
     @push('scripts')
         <script>
-            $(document).ready(function() {
-                var table = $('#example2').DataTable({
-                    lengthChange: false,
-                    buttons: ['copy', 'excel', 'pdf', 'print']
-                });
-
-                table.buttons().container()
-                    .appendTo('#example2_wrapper .col-md-6:eq(0)');
+            $('#example2').DataTable({
+                responsive: true,
+                dom: "<'row mb-3'<'col-md-6 d-flex align-items-center'B><'col-md-6 d-flex justify-content-end'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row mt-3'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 d-flex justify-content-end'p>>",
+                buttons: [{
+                        extend: 'excelHtml5',
+                        className: 'btn btn-success btn-sm m-1',
+                        text: 'Export Excel'
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        className: 'btn btn-danger btn-sm m-1',
+                        text: 'Export PDF'
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        className: 'btn btn-info btn-sm m-1',
+                        text: 'Export CSV'
+                    },
+                    {
+                        extend: 'print',
+                        className: 'btn btn-secondary btn-sm m-1',
+                        text: 'Print'
+                    }
+                ],
+                language: {
+                    search: "Cari:",
+                    lengthMenu: "Tampilkan _MENU_ data",
+                    info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                    paginate: {
+                        next: "Berikutnya",
+                        previous: "Sebelumnya"
+                    }
+                }
             });
+        </script>
+        <script>
+            // $(document).ready(function() {
+            //     var table = $('#example2').DataTable({
+            //         lengthChange: false,
+            //         buttons: ['copy', 'excel', 'pdf', 'print']
+            //     });
+
+            //     table.buttons().container()
+            //         .appendTo('#example2_wrapper .col-md-6:eq(0)');
+            // });
 
             $(document).on('click', '.confirm-delete-button', function(e) {
                 e.preventDefault(); // biar tombol gak langsung submit
