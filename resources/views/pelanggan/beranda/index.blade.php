@@ -53,9 +53,9 @@
         /* Badge Koi agar tampil lembut */
         .price-badge-md {
             /* background: rgba(255, 255, 255, 0.85);
-                                    border-radius: 12px;
-                                    padding: 10px 20px;
-                                    backdrop-filter: blur(8px); */
+                                        border-radius: 12px;
+                                        padding: 10px 20px;
+                                        backdrop-filter: blur(8px); */
             animation: fadeInBadge 2s ease;
         }
 
@@ -463,8 +463,10 @@
                                 style="background-color:#a0522d;"></i>
                             <div>
                                 <h5 class="mb-1 fw-bold">Alamat</h5>
-                                <p class="mb-0">Ruko Niaga 3 Kavling 3<br>Jl. Kalimantan Sananwetan
-                                    Kota Blitar</p>
+                                <p class="mb-0">
+                                    Lingkungan Klemunan, Klemunan, Kec. Wlingi, Kabupaten Blitar, Jawa
+                                    Timur 66184
+                                </p>
                             </div>
                         </div>
                     </div>
