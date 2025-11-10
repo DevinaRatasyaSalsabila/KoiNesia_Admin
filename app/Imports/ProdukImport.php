@@ -4,7 +4,6 @@ namespace App\Imports;
 
 use App\Models\Produk;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -12,6 +11,9 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class ProdukImport implements ToCollection, WithHeadingRow
 {
+    protected $skippedEmpty = [];
+    protected $skippedDuplicate = [];
+
     public function collection(Collection $rows)
     {
         $file = request()->file('file');
@@ -38,7 +40,6 @@ class ProdukImport implements ToCollection, WithHeadingRow
             }
 
             $filename = 'produk_' . uniqid() . '.' . $extension;
-
             $destinationPath = public_path('storage/produk/final');
             if (!file_exists($destinationPath)) {
                 mkdir($destinationPath, 0777, true);
@@ -61,33 +62,57 @@ class ProdukImport implements ToCollection, WithHeadingRow
             Log::info("Row #{$barisExcel}", $row->toArray());
 
             $hargaRaw = $row['harga_satuan'] ?? $row['harga'] ?? null;
+            $hargaBersih = $hargaRaw ? (int)preg_replace('/[^0-9]/', '', $hargaRaw) : null;
 
-            if ($hargaRaw === null) {
-                Log::warning("Kolom harga tidak ditemukan di row #{$barisExcel}");
+            // data wajib
+            $requiredFields = [
+                'kode_produk'   => $row['kode_produk'] ?? null,
+                'nama_produk'   => $row['nama_produk'] ?? null,
+                'ukuran_produk' => $row['ukuran_produk'] ?? null,
+                'harga_satuan'  => $hargaBersih,
+                'gambar_produk' => $gambarFile ?? null,
+            ];
+
+            // kalau ada data kosong
+            if (in_array(null, $requiredFields, true) || $hargaBersih === 0) {
+                $this->skippedEmpty[] = $barisExcel;
+                Log::warning("⚠️ Row #{$barisExcel} diskip karena data wajib kosong", $requiredFields);
+                continue;
             }
 
-            $hargaBersih = (int)preg_replace('/[^0-9]/', '', $hargaRaw);
-
-            $isDuplicate = Produk::where('nama_produk', $row['nama_produk'] ?? null)
-                ->where('ukuran_produk', $row['ukuran_produk'] ?? null)
+            // kalau duplikat
+            $isDuplicate = Produk::where('nama_produk', $row['nama_produk'])
+                ->where('ukuran_produk', $row['ukuran_produk'])
                 ->where('harga_satuan', $hargaBersih)
                 ->exists();
 
             if ($isDuplicate) {
-                Log::warning("⚠️ Duplikat terdeteksi di row #{$barisExcel}: {$row['nama_produk']} (ukuran {$row['ukuran_produk']}, harga {$hargaBersih})");
+                $this->skippedDuplicate[] = $barisExcel;
+                Log::warning("⚠️ Duplikat di row #{$barisExcel}: {$row['nama_produk']} ({$row['ukuran_produk']})");
                 continue;
             }
+
             Produk::create([
-                'kode_produk'      => $row['kode_produk'] ?? null,
-                'nama_produk'      => $row['nama_produk'] ?? null,
+                'kode_produk'      => $row['kode_produk'],
+                'nama_produk'      => $row['nama_produk'],
                 'harga_satuan'     => $hargaBersih,
                 'stok_produk'      => $row['stok_produk'] ?? 0,
                 'deskripsi_produk' => $row['deskripsi_produk'] ?? null,
-                'ukuran_produk'    => $row['ukuran_produk'] ?? null,
+                'ukuran_produk'    => $row['ukuran_produk'],
                 'gambar_produk'    => json_encode([$gambarFile]),
             ]);
         }
 
         Log::info('=== SELESAI IMPORT PRODUK ===');
+    }
+
+    public function getSkippedEmpty()
+    {
+        return $this->skippedEmpty;
+    }
+
+    public function getSkippedDuplicate()
+    {
+        return $this->skippedDuplicate;
     }
 }

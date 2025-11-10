@@ -79,8 +79,7 @@
             <h5 class="mb-0">Rekap</h5>
             <div class="input-group" style="width: 220px;">
                 <label for="tanggal" class="col-form-label me-2">Filter</label>
-                <input type="date" id="tanggal" name="tanggal" value=""
-                    class="form-control form-control-sm">
+                <input type="date" id="tanggal" name="tanggal" value="" class="form-control form-control-sm">
                 {{-- <input type="month" id="tanggal" name="tanggal" value="" class="form-control form-control-sm"> --}}
             </div>
         </div>
@@ -96,16 +95,17 @@
                             <th>Pengeluaran</th>
                         </tr>
                     </thead>
-                    <tbody id="rekapBody">
-                        @foreach ($rekap as [$a, $b])
+                    <tbody>
+                        @foreach ($rekap as $data)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $a->tanggal ?? null }}</td>
-                                <td>Rp{{ number_format(optional($a)->total, 0, ',', '.') }}</td>
-                                <td>Rp{{ number_format(optional($b)->nominal ?? 0, 0, ',', '.') }}</td>
+                                <td>{{ $data['tanggal'] }}</td>
+                                <td>Rp{{ number_format($data['penjualan'], 0, ',', '.') }}</td>
+                                <td>Rp{{ number_format($data['pengeluaran'], 0, ',', '.') }}</td>
                             </tr>
                         @endforeach
                     </tbody>
+
                 </table>
             </div>
         </div>
@@ -134,6 +134,39 @@
                             text: 'Export PDF',
                             exportOptions: {
                                 rows: ':visible'
+                            },
+                             customize: function(doc) {
+                                doc.content[1].table.widths = ['10%', '30%', '30%', '30%'];
+                                doc.pageMargins = [20, 20, 20, 20];
+                                doc.defaultStyle.alignment = 'justify';
+                                doc.defaultStyle.fontSize = 10;
+                                doc.content[1].layout = {
+                                    hLineWidth: function() {
+                                        return 0.5;
+                                    },
+                                    vLineWidth: function() {
+                                        return 0.5;
+                                    },
+                                    hLineColor: function() {
+                                        return '#cccccc';
+                                    },
+                                    vLineColor: function() {
+                                        return '#cccccc';
+                                    },
+                                    paddingLeft: function() {
+                                        return 6;
+                                    },
+                                    paddingRight: function() {
+                                        return 6;
+                                    },
+                                };
+                                doc.styles.tableHeader = {
+                                    alignment: 'center',
+                                    bold: true,
+                                    fillColor: '#eeeeee',
+                                    color: 'black',
+                                    fontSize: 11
+                                };
                             }
                         },
                         {
@@ -174,102 +207,6 @@
                     table.column(1).search(selectedDate).draw();
                 });
             });
-        </script>
-        <script>
-            // $(document).ready(function() {
-            //     var table = $('#example2').DataTable({
-            //         lengthChange: false,
-            //         buttons: ['copy', 'excel', 'pdf', 'print']
-            //     });
-
-            //     table.buttons().container()
-            //         .appendTo('#example2_wrapper .col-md-6:eq(0)');
-            // });
-
-            // document.addEventListener("DOMContentLoaded", function() {
-            //     const filterInput = document.getElementById("tanggal");
-            //     const tableBody = document.getElementById("rekapBody");
-
-            //     function filterTable() {
-            //         const selectedDate = filterInput.value;
-            //         const rows = tableBody.querySelectorAll("tr");
-
-            //         let visibleCount = 0;
-
-            //         const emptyRow = document.getElementById("noDataRow");
-            //         if (emptyRow) emptyRow.remove();
-
-            //         rows.forEach(row => {
-            //             const tanggalCell = row.querySelector("td:nth-child(2)");
-            //             const tanggal = tanggalCell.textContent.trim();
-
-            //             if (selectedDate === "" || tanggal === selectedDate) {
-            //                 row.style.display = "";
-            //                 visibleCount++;
-            //             } else {
-            //                 row.style.display = "none";
-            //             }
-            //         });
-
-            //         if (visibleCount === 0) {
-            //             const tr = document.createElement("tr");
-            //             tr.id = "noDataRow";
-            //             tr.innerHTML = `
-    //                 <td colspan="4" class="text-center text-muted">
-    //                     Data tidak tersedia pada rentang ini
-    //                 </td>
-    //             `;
-            //             tableBody.appendChild(tr);
-            //         }
-            //     }
-
-            //     filterTable();
-
-            //     filterInput.addEventListener("change", filterTable);
-            // });
-
-            //ini kalo typenya month
-            // document.addEventListener("DOMContentLoaded", function() {
-            //     const filterInput = document.getElementById("tanggal");
-            //     const tableBody = document.getElementById("rekapBody");
-
-            //     function filterTable() {
-            //         const selectedMonth = filterInput.value;
-            //         const rows = tableBody.querySelectorAll("tr");
-
-            //         let visibleCount = 0;
-
-            //         rows.forEach(row => {
-            //             const tanggalCell = row.querySelector("td:nth-child(2)");
-            //             const tanggal = tanggalCell.textContent.trim().substring(0, 7);
-
-            //             if (selectedMonth === "" || tanggal === selectedMonth) {
-            //                 row.style.display = "";
-            //                 visibleCount++;
-            //             } else {
-            //                 row.style.display = "none";
-            //             }
-            //         });
-
-            //         const emptyRow = document.getElementById("noDataRow");
-            //         if (emptyRow) emptyRow.remove();
-
-            //         if (visibleCount === 0) {
-            //             const tr = document.createElement("tr");
-            //             tr.id = "noDataRow";
-            //             tr.innerHTML = `
-    //     <td colspan="4" class="text-center text-muted">
-    //         Data tidak tersedia pada bulan ini
-    //     </td>
-    // `;
-            //             tableBody.appendChild(tr);
-            //         }
-            //     }
-
-            //     filterTable();
-
-            //     filterInput.addEventListener("change", filterTable);
-            // });
         </script>
     @endpush
 @endsection

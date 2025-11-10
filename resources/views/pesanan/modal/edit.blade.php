@@ -10,7 +10,6 @@
                 @csrf
                 @method('PUT')
                 <div class="modal-body">
-                    {{-- Data Pembeli --}}
                     <div class="mb-3">
                         <label class="form-label">Data Pembeli</label>
                         <select class="form-select" name="id_pembeli" required>
@@ -25,7 +24,6 @@
                             Tambah Pembeli</a>
                     </div>
 
-                    {{-- Produk --}}
                     <div id="produk-container-{{ $first->kode_pesanan }}">
                         @foreach ($first->produk_detail as $pd)
                             <div class="mb-2 row produk-edit-row">
@@ -59,7 +57,6 @@
                         + Tambah Produk
                     </button>
 
-                    {{-- Nominal --}}
                     <div class="mt-3">
                         <label class="form-label">Nominal</label>
                         <input type="text" class="form-control nominal-edit" name="nominal"
@@ -86,14 +83,12 @@
                 const nominalInput = modal.find('.nominal-edit');
                 const addBtn = modal.find('.add-produk');
 
-                // Reset event listener biar gak dobel
                 addBtn.off('click');
                 modal.off('click', '.remove-produk');
                 modal.off('change keyup',
                     'select[name="produk[]"], input[name="jumlah[]"]');
                 modal.off('submit', 'form');
 
-                // 🧮 Fungsi hitung total
                 function updateNominal() {
                     let total = 0;
                     container.find('.produk-edit-row').each(function() {
@@ -107,7 +102,6 @@
                     nominalInput.val(total.toLocaleString('id-ID'));
                 }
 
-                // ➕ Tambah produk
                 addBtn.on('click', function() {
                     const produkOptions = `
                 @foreach ($produk as $p)
@@ -134,7 +128,6 @@
                     );
                 });
 
-                // ❌ Hapus produk
                 modal.on('click', '.remove-produk', function() {
                     $(this).closest('.produk-edit-row').remove();
                     updateNominal();
@@ -142,21 +135,18 @@
                         `🗑️ Produk dihapus dari pesanan ${kodePesanan}`);
                 });
 
-                // 🔁 Update nominal otomatis
                 modal.on('change keyup',
                     'select[name="produk[]"], input[name="jumlah[]"]',
                     function() {
                         updateNominal();
                     });
 
-                // 🚀 Submit pakai AJAX (tanpa loncat elemen)
                 $('.form-edit-pesanan-1').off('submit').on('submit', function(e) {
                     e.preventDefault();
                     const formEl = this;
                     const url = $(formEl).attr('action');
                     const formData = new FormData(formEl);
 
-                    // Ambil produk baru dari container
                     container.find('.produk-edit-row').each(function() {
                         const produkVal = $(this).find(
                             'select[name="produk[]"]').val();
@@ -204,11 +194,9 @@
                     });
                 });
 
-                // Update awal
                 updateNominal();
             });
 
-            // Bersihkan listener saat modal ditutup
             $(document).on('hidden.bs.modal', '.modal', function() {
                 const modal = $(this);
                 modal.off();

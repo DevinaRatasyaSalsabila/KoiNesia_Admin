@@ -118,8 +118,8 @@
         <div class="card-header">
             <div class="row gy-2 align-items-center">
                 <!-- Kiri: Judul dan tombol pilih semua -->
-                <div class="col-12 col-md-5 d-flex flex-wrap align-items-center gap-2">
-                    <h5 class="mb-0 fw-semibold text-nowrap flex-shrink-0">Daftar Pesanan Terbaru</h5>
+                <div class="flex-wrap gap-2 col-12 col-md-5 d-flex align-items-center">
+                    <h5 class="flex-shrink-0 mb-0 fw-semibold text-nowrap">Daftar Pesanan Terbaru</h5>
                     <button type="button" id="btnSelectAllPesanan" class="btn btn-secondary btn-sm">
                         <i class="bi bi-check2-circle"></i> Pilih Semua
                     </button>
@@ -127,21 +127,17 @@
 
                 <!-- Kanan: Filter dan Tombol Aksi -->
                 <div class="col-12 col-md-7">
-                    <div class="d-flex flex-wrap justify-content-md-end align-items-center gap-2">
-                        <div
-                            class="d-flex flex-wrap align-items-center gap-2 flex-grow-1 flex-md-grow-0">
-                            <label for="dari-pesanan"
-                                class="col-form-label mb-0 text-nowrap">Dari</label>
+                    <div class="flex-wrap gap-2 d-flex justify-content-md-end align-items-center">
+                        <div class="flex-wrap gap-2 d-flex align-items-center flex-grow-1 flex-md-grow-0">
+                            <label for="dari-pesanan" class="mb-0 col-form-label text-nowrap">Dari</label>
                             <input type="date" id="dari-pesanan" class="form-control form-control-sm"
                                 style="width: auto; min-width: 130px;">
-                            <label for="sampai-pesanan"
-                                class="col-form-label mb-0 text-nowrap">Sampai</label>
-                            <input type="date" id="sampai-pesanan"
-                                class="form-control form-control-sm"
+                            <label for="sampai-pesanan" class="mb-0 col-form-label text-nowrap">Sampai</label>
+                            <input type="date" id="sampai-pesanan" class="form-control form-control-sm"
                                 style="width: auto; min-width: 130px;">
                         </div>
 
-                        <div class="d-flex align-items-center gap-2">
+                        <div class="gap-2 d-flex align-items-center">
                             <button type="button" id="resetPesananFilter" class="btn btn-danger btn-sm"
                                 title="Reset Filter">
                                 <i class="bi bi-arrow-counterclockwise"></i>
@@ -159,7 +155,6 @@
                 </div>
             </div>
         </div>
-
 
         <div class="card-body">
             <div class="table-responsive">
@@ -183,17 +178,14 @@
                         @foreach ($pesananGrouped as $kodePesanan => $items)
                             @php
                                 $first = $items->first();
-                                $totalNominal = $items->sum(
-                                    fn($r) => isset($r->nominal) ? (float) $r->nominal : 0,
-                                );
+                                $totalNominal = $items->sum(fn($r) => isset($r->nominal) ? (float) $r->nominal : 0);
                             @endphp
                             <tr data-id="{{ $first->kode_pesanan }}">
-                                <td class="align-middle text-center">
+                                <td class="text-center align-middle">
                                     <input class="form-check-input checkbox-pesanan" type="checkbox"
                                         value="{{ $first->kode_pesanan }}">
                                 </td>
-                                <td class="align-middle"
-                                    data-tanggal="{{ $first->pesanan_created_at }}">
+                                <td class="align-middle" data-tanggal="{{ $first->pesanan_created_at }}">
                                     {{ \Carbon\Carbon::parse($first->pesanan_created_at)->format('d-m-Y') }}
                                 </td>
                                 <td class="align-middle">
@@ -216,23 +208,20 @@
                                     </select>
                                 </td>
                                 <td class="align-middle">
-                                    <div class="d-flex flex-wrap justify-content-center gap-1">
+                                    <div class="flex-wrap gap-1 d-flex justify-content-center">
                                         <a href="{{ route('pesanan.detail', $first->kode_pesanan) }}"
                                             class="btn btn-primary btn-sm">
                                             <i class="fadeIn animated bx bx-info-circle fs-6"></i>
                                         </a>
-                                        <form
-                                            action="{{ route('pesanan.delete', $first->kode_pesanan) }}"
-                                            method="POST" class="d-inline delete-form">
+                                        <form action="{{ route('pesanan.delete', $first->kode_pesanan) }}" method="POST"
+                                            class="d-inline delete-form">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm">
-                                                <i
-                                                    class="fadeIn animated bx bx-trash text-light fs-6"></i>
+                                            <button type="button" class="btn btn-danger btn-sm confirm-delete-button">
+                                                <i class="fadeIn animated bx bx-trash text-light fs-6"></i>
                                             </button>
                                         </form>
-                                        <button type="button" class="btn btn-warning btn-sm"
-                                            data-bs-toggle="modal"
+                                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#edit_pesanan_{{ $first->kode_pesanan }}">
                                             <i class="fadeIn animated bx bx-pencil text-light fs-6"></i>
                                         </button>
@@ -265,7 +254,6 @@
         <script>
             let updateStatusUrl = "{{ route('pesanan.updateStatus', ':id') }}";
 
-            // Simpan previous value ketika user fokus ke select (untuk revert kalau cancel)
             $(document).on('focus', '.update-status-select', function() {
                 $(this).data('previous', $(this).val());
             });
@@ -364,38 +352,26 @@
                 }
             });
 
-            // $(document).on('change', '.update-status-select', function() {
-            //     let id = $(this).data('id');
-            //     let status = $(this).val();
-            //     let url = updateStatusUrl.replace(':id', id);
+            $(document).on('click', '.confirm-delete-button', function(e) {
+                e.preventDefault();
 
-            //     // simpan referensi row tabel
-            //     let row = $(this).closest('tr');
+                const form = $(this).closest('form');
 
-            //     $.ajax({
-            //         url: url,
-            //         type: 'POST',
-            //         data: {
-            //             status: status,
-            //             _token: '{{ csrf_token() }}'
-            //         },
-            //         success: function(res) {
-            //             console.log('Status updated:', res);
-
-            //             if (status === 'selesai') {
-            //                 // hapus row dari DataTable
-            //                 let table = $("#tabel_pesanan").DataTable();
-            //                 table.row(row).remove().draw(false);
-
-            //                 // tampilkan alert bawaan JS
-            //                 alert('Riwayat pesanan telah tersimpan');
-            //             }
-            //         },
-            //         error: function(err) {
-            //             console.log(err.responseJSON);
-            //         }
-            //     });
-            // });
+                Swal.fire({
+                    title: "Yakin ingin menghapus produk?",
+                    text: "Produk yang dihapus tidak bisa dikembalikan!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Ya, hapus!",
+                    cancelButtonText: "Batal"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
 
             document.querySelectorAll('.update-status-select').forEach(select => {
                 const updateColor = (el) => {
@@ -415,114 +391,7 @@
                 select.addEventListener('change', () => updateColor(select));
             });
         </script>
-        {{-- <script>
-            $(document).ready(function() {
-                var table = $('#tabel_pesanan').DataTable({
-                    lengthChange: false,
-                    buttons: ['copy', 'excel', 'pdf', 'print']
-                });
 
-                table.buttons().container()
-                    .appendTo('#tabel_pesanan_wrapper .col-md-6:eq(0)');
-            });
-            document.addEventListener('DOMContentLoaded', function() {
-                const dariInput = document.getElementById('dari-pesanan');
-                const sampaiInput = document.getElementById('sampai-pesanan');
-                const tabel = document.getElementById('tabel_pesanan').getElementsByTagName(
-                    'tbody')[0];
-                const selectAllBtn = document.getElementById('btnSelectAllPesanan');
-                const printBtn = document.getElementById('btnPrintPesanan');
-                const resetBtn = document.getElementById('resetPesananFilter');
-
-                // 🗓️ Set default tanggal hari ini
-                const today = new Date().toISOString().split('T')[0];
-                dariInput.value = today;
-                sampaiInput.value = today;
-
-                // Fungsi filter berdasarkan range tanggal
-                function filterByDateRange() {
-                    const dari = new Date(dariInput.value);
-                    const sampai = new Date(sampaiInput.value);
-
-                    Array.from(tabel.rows).forEach(row => {
-                        const tanggalText = row.cells[1].textContent.trim();
-
-                        // Ubah dari dd-mm-yyyy ke yyyy-mm-dd supaya bisa diproses
-                        const [day, month, year] = tanggalText.split('-');
-                        const tanggal = new Date(`${year}-${month}-${day}`);
-
-                        if (tanggal >= dari && tanggal <= sampai) {
-                            row.style.display = '';
-                        } else {
-                            row.style.display = 'none';
-                        }
-                    });
-                }
-
-
-                // Event ketika tanggal diganti
-                dariInput.addEventListener('change', filterByDateRange);
-                sampaiInput.addEventListener('change', filterByDateRange);
-
-                // Reset ke hari ini
-                resetBtn.addEventListener('click', () => {
-                    dariInput.value = today;
-                    sampaiInput.value = today;
-                    filterByDateRange();
-                });
-
-                // Pilih semua
-                selectAllBtn.addEventListener('click', () => {
-                    const checkboxes = document.querySelectorAll('.checkbox-pesanan');
-                    checkboxes.forEach(cb => {
-                        if (cb.closest('tr').style.display !== 'none') {
-                            cb.checked = true;
-                        }
-                    });
-                });
-
-                // Print data yang diceklis
-                printBtn.addEventListener('click', () => {
-                    const checkedRows = Array.from(document.querySelectorAll(
-                            '.checkbox-pesanan:checked'))
-                        .map(cb => cb.closest('tr'));
-
-                    if (checkedRows.length === 0) {
-                        alert('Pilih data pesanan yang ingin dicetak terlebih dahulu!');
-                        return;
-                    }
-
-                    // Buat halaman print sederhana
-                    const printWindow = window.open('', '', 'width=800,height=600');
-                    printWindow.document.write('<html><head><title>Print Pesanan</title>');
-                    printWindow.document.write(
-                        '<style>table{width:100%;border-collapse:collapse;}th,td{border:1px solid #333;padding:6px;text-align:left;}</style>'
-                    );
-                    printWindow.document.write('</head><body>');
-                    printWindow.document.write('<h3>Data Pesanan Terpilih</h3>');
-                    printWindow.document.write('<table>');
-                    printWindow.document.write(
-                        '<tr><th>Tanggal</th><th>Nama Pembeli</th><th>Nominal Pembelian</th><th>Status</th></tr>'
-                    );
-
-                    checkedRows.forEach(row => {
-                        printWindow.document.write('<tr>' +
-                            '<td>' + row.cells[1].textContent + '</td>' +
-                            '<td>' + row.cells[2].textContent + '</td>' +
-                            '<td>' + row.cells[3].textContent + '</td>' +
-                            '<td>' + row.cells[4].textContent + '</td>' +
-                            '</tr>');
-                    });
-
-                    printWindow.document.write('</table></body></html>');
-                    printWindow.document.close();
-                    printWindow.print();
-                });
-
-                // Jalankan filter pertama kali (hari ini)
-                filterByDateRange();
-            });
-        </script> --}}
         <script>
             $(document).ready(function() {
                 const dariInput = document.getElementById('dari-pesanan');
@@ -531,12 +400,10 @@
                 const selectAllBtn = document.getElementById('btnSelectAllPesanan');
                 const printBtn = document.getElementById('btnPrintPesanan');
 
-                // Set default tanggal hari ini
                 const today = new Date().toISOString().split('T')[0];
                 dariInput.value = today;
                 sampaiInput.value = today;
 
-                // Inisialisasi DataTable
                 var table = $('#tabel_pesanan').DataTable({
                     responsive: true,
                     dom: "<'row mb-3'<'col-md-6 d-flex align-items-center'B><'col-md-6 d-flex justify-content-end'f>>" +
@@ -547,7 +414,31 @@
                             className: 'btn btn-success btn-sm m-1',
                             text: 'Export Excel',
                             exportOptions: {
-                                rows: ':visible'
+                                columns: [1, 2, 3, 4],
+                                rows: function(idx, data, node) {
+                                    return $(node).find('.checkbox-pesanan').prop('checked');
+                                },
+                                format: {
+                                    body: function(data, row, column, node) {
+                                        if ($(node).find('select').length) {
+                                            return $(node).find('select option:selected').text().trim();
+                                        }
+                                        return $(node).text().trim();
+                                    }
+                                }
+                            },
+                            action: function(e, dt, button, config) {
+                                let checked = $('.checkbox-pesanan:checked').length;
+                                if (checked === 0) {
+                                    Swal.fire({
+                                        icon: 'warning',
+                                        title: 'Oops...',
+                                        text: 'Pilih setidaknya 1 data untuk di-export!',
+                                    });
+                                    return;
+                                }
+                                $.fn.dataTable.ext.buttons.excelHtml5.action.call(this, e, dt, button,
+                                    config);
                             }
                         },
                         {
@@ -555,15 +446,86 @@
                             className: 'btn btn-danger btn-sm m-1',
                             text: 'Export PDF',
                             exportOptions: {
-                                rows: ':visible'
+                                columns: [1, 2, 3, 4],
+                                rows: function(idx, data, node) {
+                                    return $(node).find('.checkbox-pesanan').prop('checked');
+                                },
+                                format: {
+                                    body: function(data, row, column, node) {
+                                        if ($(node).find('select').length) {
+                                            return $(node).find('select option:selected').text().trim();
+                                        }
+                                        return $(node).text().trim();
+                                    }
+                                }
+                            },
+                            customize: function(doc) {
+                                doc.content[1].table.widths = ['25%', '25%', '25%', '25%'];
+                                doc.pageMargins = [20, 20, 20, 20];
+                                doc.defaultStyle.alignment = 'justify';
+                                doc.defaultStyle.fontSize = 10;
+                                doc.content[1].layout = {
+                                    hLineWidth: function() {
+                                        return 0.5;
+                                    },
+                                    vLineWidth: function() {
+                                        return 0.5;
+                                    },
+                                    hLineColor: function() {
+                                        return '#cccccc';
+                                    },
+                                    vLineColor: function() {
+                                        return '#cccccc';
+                                    },
+                                    paddingLeft: function() {
+                                        return 6;
+                                    },
+                                    paddingRight: function() {
+                                        return 6;
+                                    },
+                                };
+                                doc.styles.tableHeader = {
+                                    alignment: 'center',
+                                    bold: true,
+                                    fillColor: '#eeeeee',
+                                    color: 'black',
+                                    fontSize: 11
+                                };
                             }
                         },
+
                         {
                             extend: 'csvHtml5',
                             className: 'btn btn-info btn-sm m-1',
                             text: 'Export CSV',
                             exportOptions: {
-                                rows: ':visible'
+                                columns: [1, 2, 3, 4],
+                                rows: function(idx, data, node) {
+                                    return $(node).find('.checkbox-pesanan').prop('checked');
+                                },
+                                format: {
+                                    body: function(data, row, column, node) {
+                                        // kalo kolomnya dropdown status
+                                        if ($(node).find('select').length) {
+                                            return $(node).find('select option:selected').text().trim();
+                                        }
+                                        // kalo bukan, ambil text biasa
+                                        return $(node).text().trim();
+                                    }
+                                }
+                            },
+                            action: function(e, dt, button, config) {
+                                let checked = $('.checkbox-pesanan:checked').length;
+                                if (checked === 0) {
+                                    Swal.fire({
+                                        icon: 'warning',
+                                        title: 'Oops...',
+                                        text: 'Pilih setidaknya 1 data untuk di-export!',
+                                    });
+                                    return;
+                                }
+                                $.fn.dataTable.ext.buttons.csvHtml5.action.call(this, e, dt, button,
+                                    config);
                             }
                         },
                     ],
@@ -578,7 +540,6 @@
                     }
                 });
 
-                // Custom filter DataTable berdasarkan range tanggal
                 $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
                     const dari = new Date(dariInput.value);
                     const sampai = new Date(sampaiInput.value);
@@ -587,7 +548,6 @@
                         '-'); // YYYY-MM-DD atau DD-MM-YYYY
                     let tanggal;
 
-                    // Jika format DD-MM-YYYY
                     if (tanggalParts[0].length === 2 && tanggalParts[2].length === 4) {
                         tanggal = new Date(
                             `${tanggalParts[2]}-${tanggalParts[1]}-${tanggalParts[0]}`);
@@ -598,23 +558,19 @@
                     return tanggal >= dari && tanggal <= sampai;
                 });
 
-                // Event change tanggal
                 dariInput.addEventListener('change', () => table.draw());
                 sampaiInput.addEventListener('change', () => table.draw());
 
-                // Reset filter ke hari ini
                 resetBtn.addEventListener('click', () => {
                     dariInput.value = today;
                     sampaiInput.value = today;
                     table.draw();
                 });
 
-                // Pilih semua checkbox visible
                 selectAllBtn.addEventListener('click', () => {
                     $('.checkbox-pesanan:visible').prop('checked', true);
                 });
 
-                // Print manual data yang diceklis
                 printBtn.addEventListener('click', () => {
                     const checkedRows = $('.checkbox-pesanan:checked').closest('tr');
                     if (checkedRows.length === 0) {
@@ -637,12 +593,9 @@
                     w.print();
                 });
 
-                // Jalankan filter pertama kali
                 table.draw();
             });
-        </script>
 
-        <script>
             document.getElementById('btnPrintPesanan').addEventListener('click', function() {
                 let terpilih = [];
                 document.querySelectorAll('.form-check-input:checked').forEach(cb => {

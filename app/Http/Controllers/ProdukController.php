@@ -203,7 +203,18 @@ class ProdukController extends Controller
             'file' => 'required|mimes:xlsx,xls,csv'
         ]);
 
-        Excel::import(new ProdukImport, $request->file('file'));
+        $import = new ProdukImport();
+        Excel::import($import, $request->file('file'));
+
+        $skippedEmpty = $import->getSkippedEmpty();
+        $skippedDuplicate = $import->getSkippedDuplicate();
+
+        if (count($skippedEmpty) > 0 || count($skippedDuplicate) > 0) {
+            $message = 'Beberapa data tidak diimport karena: ';
+            if (count($skippedEmpty) > 0) $message .= count($skippedEmpty) . ' baris kurang data wajib. ';
+            if (count($skippedDuplicate) > 0) $message .= count($skippedDuplicate) . ' baris terduplikat.';
+            return back()->with('warning', $message);
+        }
 
         return redirect()->back()->with('success', 'Data produk berhasil diimport!');
     }
