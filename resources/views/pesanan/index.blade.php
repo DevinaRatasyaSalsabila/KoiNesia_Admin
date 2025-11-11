@@ -117,15 +117,10 @@
     <div class="card">
         <div class="card-header">
             <div class="row gy-2 align-items-center">
-                <!-- Kiri: Judul dan tombol pilih semua -->
                 <div class="flex-wrap gap-2 col-12 col-md-5 d-flex align-items-center">
                     <h5 class="flex-shrink-0 mb-0 fw-semibold text-nowrap">Daftar Pesanan Terbaru</h5>
-                    <button type="button" id="btnSelectAllPesanan" class="btn btn-secondary btn-sm">
-                        <i class="bi bi-check2-circle"></i> Pilih Semua
-                    </button>
                 </div>
 
-                <!-- Kanan: Filter dan Tombol Aksi -->
                 <div class="col-12 col-md-7">
                     <div class="flex-wrap gap-2 d-flex justify-content-md-end align-items-center">
                         <div class="flex-wrap gap-2 d-flex align-items-center flex-grow-1 flex-md-grow-0">
@@ -161,7 +156,11 @@
                 <table id="tabel_pesanan" class="table table-striped table-bordered Pesanan">
                     <thead>
                         <tr>
-                            <th></th>
+                            <th class="text-center align-middle">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <input id="btnSelectAllPesanan" type="checkbox" class="form-check-input">
+                                </div>
+                            </th>
                             <th>Tanggal</th>
                             <th>Nama Pembeli</th>
                             <th>Nominal Pembelian</th>
@@ -263,13 +262,11 @@
                 const previous = select.data('previous'); // nilai sebelum diubah
                 const value = select.val();
 
-                // helper function untuk kirim ajax (DRY)
                 function sendUpdate(statusToSend) {
                     const id = select.data('id');
                     const url = updateStatusUrl.replace(':id', id);
                     const row = select.closest('tr');
 
-                    // disable select sementara biar ga double click
                     select.prop('disabled', true);
 
                     $.ajax({
@@ -288,14 +285,12 @@
                                 confirmButtonText: "Oke!"
                             });
 
-                            // kalau 'selesai', hapus row dari datatable (kalau memang mau)
                             if (statusToSend === 'selesai') {
                                 let table = $("#tabel_pesanan").DataTable();
                                 table.row(row).remove().draw(false);
                                 alert('Riwayat pesanan telah tersimpan');
                             }
 
-                            // update previous/data current ke nilai baru
                             select.data('previous', statusToSend);
                             select.prop('disabled', false);
                         },
@@ -306,14 +301,12 @@
                                 text: "Gagal mengubah status.",
                                 icon: "error"
                             });
-                            // revert ke previous karena gagal
                             select.val(previous);
                             select.prop('disabled', false);
                         }
                     });
                 }
 
-                // Konfirmasi tergantung value
                 if (value === 'proses') {
                     Swal.fire({
                         title: "Yakin mengganti status menjadi 'Diproses'?",
@@ -347,7 +340,6 @@
                         }
                     });
                 } else {
-                    // kalau ada status lain (contoh 'baru'), kita cuma update previous
                     select.data('previous', value);
                 }
             });
@@ -400,10 +392,6 @@
                 const selectAllBtn = document.getElementById('btnSelectAllPesanan');
                 const printBtn = document.getElementById('btnPrintPesanan');
 
-                const today = new Date().toISOString().split('T')[0];
-                dariInput.value = today;
-                sampaiInput.value = today;
-
                 var table = $('#tabel_pesanan').DataTable({
                     responsive: true,
                     dom: "<'row mb-3'<'col-md-6 d-flex align-items-center'B><'col-md-6 d-flex justify-content-end'f>>" +
@@ -426,6 +414,14 @@
                                         return $(node).text().trim();
                                     }
                                 }
+                            },
+                            messageTop: function() {
+                                const dari = $('#dari-pesanan').val();
+                                const sampai = $('#sampai-pesanan').val();
+                                if (dari && sampai) return `Data Pesanan (${dari} - ${sampai})`;
+                                if (dari) return `Data Pesanan (Dari ${dari})`;
+                                if (sampai) return `Data Pesanan (Sampai ${sampai})`;
+                                return 'Data Pesanan';
                             },
                             action: function(e, dt, button, config) {
                                 let checked = $('.checkbox-pesanan:checked').length;
@@ -460,40 +456,44 @@
                                 }
                             },
                             customize: function(doc) {
-                                doc.content[1].table.widths = ['25%', '25%', '25%', '25%'];
                                 doc.pageMargins = [20, 20, 20, 20];
-                                doc.defaultStyle.alignment = 'justify';
-                                doc.defaultStyle.fontSize = 10;
-                                doc.content[1].layout = {
-                                    hLineWidth: function() {
-                                        return 0.5;
-                                    },
-                                    vLineWidth: function() {
-                                        return 0.5;
-                                    },
-                                    hLineColor: function() {
-                                        return '#cccccc';
-                                    },
-                                    vLineColor: function() {
-                                        return '#cccccc';
-                                    },
-                                    paddingLeft: function() {
-                                        return 6;
-                                    },
-                                    paddingRight: function() {
-                                        return 6;
-                                    },
-                                };
-                                doc.styles.tableHeader = {
-                                    alignment: 'center',
+                                doc.defaultStyle.alignment = 'center';
+                                doc.content[1].table.widths = ['25%', '25%', '25%', '25%'];
+
+                                const dari = $('#dari-pesanan').val();
+                                const sampai = $('#sampai-pesanan').val();
+
+                                let headerText = 'Data Pesanan';
+                                if (dari && sampai) {
+                                    headerText += ` (${dari} - ${sampai})`;
+                                } else if (dari && !sampai) {
+                                    headerText += ` (Dari ${dari})`;
+                                } else if (!dari && sampai) {
+                                    headerText += ` (Sampai ${sampai})`;
+                                }
+
+                                doc.content.splice(0, 0, {
+                                    text: headerText,
+                                    fontSize: 14,
                                     bold: true,
-                                    fillColor: '#eeeeee',
-                                    color: 'black',
-                                    fontSize: 11
-                                };
+                                    alignment: 'center',
+                                    margin: [0, 0, 0, 15]
+                                });
+                            },
+                            action: function(e, dt, button, config) {
+                                let checked = $('.checkbox-pesanan:checked').length;
+                                if (checked === 0) {
+                                    Swal.fire({
+                                        icon: 'warning',
+                                        title: 'Oops...',
+                                        text: 'Pilih setidaknya 1 data untuk di-export!',
+                                    });
+                                    return;
+                                }
+                                $.fn.dataTable.ext.buttons.pdfHtml5.action.call(this, e, dt, button,
+                                    config);
                             }
                         },
-
                         {
                             extend: 'csvHtml5',
                             className: 'btn btn-info btn-sm m-1',
@@ -505,14 +505,20 @@
                                 },
                                 format: {
                                     body: function(data, row, column, node) {
-                                        // kalo kolomnya dropdown status
                                         if ($(node).find('select').length) {
                                             return $(node).find('select option:selected').text().trim();
                                         }
-                                        // kalo bukan, ambil text biasa
                                         return $(node).text().trim();
                                     }
                                 }
+                            },
+                            messageTop: function() {
+                                const dari = $('#dari-pesanan').val();
+                                const sampai = $('#sampai-pesanan').val();
+                                if (dari && sampai) return `Data Pesanan (${dari} - ${sampai})`;
+                                if (dari) return `Data Pesanan (Dari ${dari})`;
+                                if (sampai) return `Data Pesanan (Sampai ${sampai})`;
+                                return 'Data Pesanan';
                             },
                             action: function(e, dt, button, config) {
                                 let checked = $('.checkbox-pesanan:checked').length;
@@ -541,20 +547,27 @@
                 });
 
                 $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
-                    const dari = new Date(dariInput.value);
-                    const sampai = new Date(sampaiInput.value);
+                    const dari = dariInput.value ? new Date(dariInput.value) : null;
+                    const sampai = sampaiInput.value ? new Date(sampaiInput.value) : null;
                     const tanggalText = data[1]; // Kolom tanggal
-                    const tanggalParts = tanggalText.split(
-                        '-'); // YYYY-MM-DD atau DD-MM-YYYY
+                    const tanggalParts = tanggalText.split('-');
                     let tanggal;
 
                     if (tanggalParts[0].length === 2 && tanggalParts[2].length === 4) {
-                        tanggal = new Date(
-                            `${tanggalParts[2]}-${tanggalParts[1]}-${tanggalParts[0]}`);
+                        tanggal = new Date(`${tanggalParts[2]}-${tanggalParts[1]}-${tanggalParts[0]}`);
                     } else {
                         tanggal = new Date(tanggalText);
                     }
 
+                    if (!dari && !sampai) {
+                        return true;
+                    }
+                    if (dari && !sampai) {
+                        return tanggal >= dari;
+                    }
+                    if (!dari && sampai) {
+                        return tanggal <= sampai;
+                    }
                     return tanggal >= dari && tanggal <= sampai;
                 });
 
@@ -562,13 +575,24 @@
                 sampaiInput.addEventListener('change', () => table.draw());
 
                 resetBtn.addEventListener('click', () => {
-                    dariInput.value = today;
-                    sampaiInput.value = today;
+                    dariInput.value = '';
+                    sampaiInput.value = '';
+
+                    $(dariInput).trigger('change');
+                    $(sampaiInput).trigger('change');
+
                     table.draw();
                 });
 
-                selectAllBtn.addEventListener('click', () => {
-                    $('.checkbox-pesanan:visible').prop('checked', true);
+                selectAllBtn.addEventListener('change', function() {
+                    const isChecked = this.checked;
+                    $('.checkbox-pesanan:visible').prop('checked', isChecked);
+                });
+
+                $('.checkbox-pesanan').on('change', function() {
+                    const allChecked =
+                        $('.checkbox-pesanan:visible').length === $('.checkbox-pesanan:visible:checked').length;
+                    $('#btnSelectAllPesanan').prop('checked', allChecked);
                 });
 
                 printBtn.addEventListener('click', () => {

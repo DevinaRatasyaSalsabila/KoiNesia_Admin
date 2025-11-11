@@ -145,13 +145,13 @@
                         <p class="h5-md fw-bold">Rp ${new Intl.NumberFormat('id-ID').format(item.harga)}</p>
                     </td>
                     <td data-label="Item" class="product-qty">
-                        <input class="qty-input" type="number" min="1" max="${item.stok}" 
-                               value="${item.qty}" data-index="${index}" 
+                        <input class="qty-input" type="number" min="1" max="${item.stok}"
+                               value="${item.qty}" data-index="${index}"
                                ${stokKosong ? "disabled" : ""}>
                     </td>
                     <td data-label="Stok" class="product-qty">
                         ${stokKosong
-                            ? '<span class="badge bg-danger">Stok Habis</span>'
+                            ? '<span class="badge bg-danger">Stok Kosong</span>'
                             : '<p class="h5-md fw-bold">' + (item.stok ?? '-') + '</p>'}
                     </td>
                     <td data-label="Total" class="product-price-total text-end">

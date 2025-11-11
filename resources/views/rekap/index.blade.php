@@ -75,12 +75,29 @@
     </div>
 
     <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Rekap</h5>
-            <div class="input-group" style="width: 220px;">
-                <label for="tanggal" class="col-form-label me-2">Filter</label>
-                <input type="date" id="tanggal" name="tanggal" value="" class="form-control form-control-sm">
-                {{-- <input type="month" id="tanggal" name="tanggal" value="" class="form-control form-control-sm"> --}}
+        <div class="card-header">
+            <div class="row gy-2 align-items-center">
+                <!-- Judul -->
+                <div class="col-12 col-md-4 d-flex justify-content-md-start justify-content-center">
+                    <h5 class="mb-0 fw-semibold text-nowrap">Rekap</h5>
+                </div>
+
+                <!-- Filter tanggal -->
+                <div class="col-12 col-md-8">
+                    <div class="flex-wrap gap-2 d-flex justify-content-md-end justify-content-center align-items-center">
+                        <label for="dari-rekap" class="mb-0 col-form-label text-nowrap">Dari</label>
+                        <input type="date" id="dari-rekap" class="form-control form-control-sm"
+                            style="width: auto; min-width: 130px;">
+
+                        <label for="sampai-rekap" class="mb-0 col-form-label text-nowrap">Sampai</label>
+                        <input type="date" id="sampai-rekap" class="form-control form-control-sm"
+                            style="width: auto; min-width: 130px;">
+
+                        <button type="button" id="resetFilter" class="btn btn-danger btn-sm" title="Reset Filter">
+                            <i class="bi bi-arrow-counterclockwise"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -89,7 +106,11 @@
                 <table id="rekapTable" class="table table-striped table-bordered">
                     <thead>
                         <tr>
-                            <th>No</th>
+                            <th class="text-center align-middle">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <input id="btnSelectAllRekap" type="checkbox" class="form-check-input">
+                                </div>
+                            </th>
                             <th>Tanggal</th>
                             <th>Penjualan</th>
                             <th>Pengeluaran</th>
@@ -98,7 +119,10 @@
                     <tbody>
                         @foreach ($rekap as $data)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
+                                <td class="text-center align-middle">
+                                    <input class="form-check-input checkbox-rekap" type="checkbox"
+                                        value="{{ $data['tanggal'] }}">
+                                </td>
                                 <td>{{ $data['tanggal'] }}</td>
                                 <td>Rp{{ number_format($data['penjualan'], 0, ',', '.') }}</td>
                                 <td>Rp{{ number_format($data['pengeluaran'], 0, ',', '.') }}</td>
@@ -125,48 +149,43 @@
                             className: 'btn btn-success btn-sm m-1',
                             text: 'Export Excel',
                             exportOptions: {
-                                rows: ':visible'
-                            }
-                        },
-                        {
-                            extend: 'pdfHtml5',
-                            className: 'btn btn-danger btn-sm m-1',
-                            text: 'Export PDF',
-                            exportOptions: {
-                                rows: ':visible'
+                                columns: [1, 2, 3],
+                                rows: function(idx, data, node) {
+                                    const checkedIndexes = $('.checkbox-rekap:checked').closest('tr')
+                                        .map(function() {
+                                            return table.row(this).index();
+                                        }).get();
+                                    return checkedIndexes.includes(idx);
+                                },
+                                format: {
+                                    body: function(data, row, column, node) {
+                                        if ($(node).find('select').length) {
+                                            return $(node).find('select option:selected').text().trim();
+                                        }
+                                        return $(node).text().trim();
+                                    }
+                                }
                             },
-                             customize: function(doc) {
-                                doc.content[1].table.widths = ['10%', '30%', '30%', '30%'];
-                                doc.pageMargins = [20, 20, 20, 20];
-                                doc.defaultStyle.alignment = 'justify';
-                                doc.defaultStyle.fontSize = 10;
-                                doc.content[1].layout = {
-                                    hLineWidth: function() {
-                                        return 0.5;
-                                    },
-                                    vLineWidth: function() {
-                                        return 0.5;
-                                    },
-                                    hLineColor: function() {
-                                        return '#cccccc';
-                                    },
-                                    vLineColor: function() {
-                                        return '#cccccc';
-                                    },
-                                    paddingLeft: function() {
-                                        return 6;
-                                    },
-                                    paddingRight: function() {
-                                        return 6;
-                                    },
-                                };
-                                doc.styles.tableHeader = {
-                                    alignment: 'center',
-                                    bold: true,
-                                    fillColor: '#eeeeee',
-                                    color: 'black',
-                                    fontSize: 11
-                                };
+                            messageTop: function() {
+                                const dari = $('#dari-rekap').val();
+                                const sampai = $('#sampai-rekap').val();
+                                if (dari && sampai) return `Rekap (${dari} - ${sampai})`;
+                                if (dari) return `Rekap (Dari ${dari})`;
+                                if (sampai) return `Rekap (Sampai ${sampai})`;
+                                return 'Rekap';
+                            },
+                            action: function(e, dt, button, config) {
+                                let checked = $('.checkbox-rekap:checked').length;
+                                if (checked === 0) {
+                                    Swal.fire({
+                                        icon: 'warning',
+                                        title: 'Oops...',
+                                        text: 'Pilih setidaknya 1 data untuk di-export!',
+                                    });
+                                    return;
+                                }
+                                $.fn.dataTable.ext.buttons.excelHtml5.action.call(this, e, dt, button,
+                                    config);
                             }
                         },
                         {
@@ -174,7 +193,109 @@
                             className: 'btn btn-info btn-sm m-1',
                             text: 'Export CSV',
                             exportOptions: {
-                                rows: ':visible'
+                                columns: [1, 2, 3],
+                                rows: function(idx, data, node) {
+                                    const checkedIndexes = $('.checkbox-rekap:checked').closest('tr')
+                                        .map(function() {
+                                            return table.row(this).index();
+                                        }).get();
+                                    return checkedIndexes.includes(idx);
+                                },
+                                format: {
+                                    body: function(data, row, column, node) {
+                                        if ($(node).find('select').length) {
+                                            return $(node).find('select option:selected').text().trim();
+                                        }
+                                        return $(node).text().trim();
+                                    }
+                                }
+                            },
+                            messageTop: function() {
+                                const dari = $('#dari-pesanan').val();
+                                const sampai = $('#sampai-rekap').val();
+                                if (dari && sampai) return `Rekap (${dari} - ${sampai})`;
+                                if (dari) return `Rekap (Dari ${dari})`;
+                                if (sampai) return `Rekap (Sampai ${sampai})`;
+                                return 'Rekap';
+                            },
+                            action: function(e, dt, button, config) {
+                                let checked = $('.checkbox-rekap:checked').length;
+                                if (checked === 0) {
+                                    Swal.fire({
+                                        icon: 'warning',
+                                        title: 'Oops...',
+                                        text: 'Pilih setidaknya 1 data untuk di-export!',
+                                    });
+                                    return;
+                                }
+                                $.fn.dataTable.ext.buttons.csvHtml5.action.call(this, e, dt, button,
+                                    config);
+                            }
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            className: 'btn btn-danger btn-sm m-1',
+                            text: 'Export PDF',
+                            exportOptions: {
+                                columns: [1, 2, 3],
+                                rows: function(idx, data, node) {
+                                    const checkedIndexes = $('.checkbox-rekap:checked').closest('tr')
+                                        .map(function() {
+                                            return table.row(this).index();
+                                        }).get();
+                                    return checkedIndexes.includes(idx);
+                                },
+                                format: {
+                                    body: function(data, row, column, node) {
+                                        if ($(node).find('select').length) {
+                                            return $(node).find('select option:selected').text().trim();
+                                        }
+                                        return $(node).text().trim();
+                                    }
+                                }
+                            },
+                            customize: function(doc) {
+                                const dari = $('#dari-rekap').val();
+                                const sampai = $('#sampai-rekap').val();
+
+                                let headerText = 'Rekap';
+                                if (dari && sampai) headerText += ` (${dari} - ${sampai})`;
+                                else if (dari) headerText += ` (Dari ${dari})`;
+                                else if (sampai) headerText += ` (Sampai ${sampai})`;
+
+                                doc.content.unshift({
+                                    text: headerText,
+                                    fontSize: 14,
+                                    bold: true,
+                                    alignment: 'center',
+                                    margin: [0, 0, 0, 15],
+                                });
+
+                                let table = null;
+                                for (let i = 0; i < doc.content.length; i++) {
+                                    if (doc.content[i].table) {
+                                        table = doc.content[i].table;
+                                        break;
+                                    }
+                                }
+
+                                doc.pageMargins = [20, 20, 20, 30];
+                                doc.defaultStyle.alignment = 'center';
+                                doc.styles.tableHeader.alignment = 'center';
+                                table.widths = ['30%', '35%', '35%'];
+                            },
+                            action: function(e, dt, button, config) {
+                                let checked = $('.checkbox-rekap:checked').length;
+                                if (checked === 0) {
+                                    Swal.fire({
+                                        icon: 'warning',
+                                        title: 'Oops...',
+                                        text: 'Pilih setidaknya 1 data untuk di-export!',
+                                    });
+                                    return;
+                                }
+                                $.fn.dataTable.ext.buttons.pdfHtml5.action.call(this, e, dt, button,
+                                    config);
                             }
                         },
                         {
@@ -182,7 +303,7 @@
                             className: 'btn btn-secondary btn-sm m-1',
                             text: 'Print',
                             exportOptions: {
-                                rows: ':visible'
+                                columns: [1, 2, 3]
                             }
                         }
                     ],
@@ -197,15 +318,80 @@
                     }
                 });
 
-                // Filter berdasarkan tanggal
-                const filterInput = document.getElementById("tanggal");
-
-                filterInput.addEventListener("change", function() {
-                    const selectedDate = this.value;
-
-                    // Filter kolom tanggal (kolom ke-2 = index 1)
-                    table.column(1).search(selectedDate).draw();
+                $('#btnSelectAllRekap').on('change', function() {
+                    const isChecked = this.checked;
+                    $('.checkbox-rekap:visible').prop('checked', isChecked);
                 });
+
+                $('.checkbox-rekap').on('change', function() {
+                    const allChecked =
+                        $('.checkbox-rekap:visible').length === $('.checkbox-rekap:visible:checked').length;
+                    $('#btnSelectAllRekap').prop('checked', allChecked);
+                });
+
+                const dariInput = document.getElementById("dari-rekap");
+                const sampaiInput = document.getElementById("sampai-rekap");
+                const resetBtn = document.getElementById("resetFilter");
+
+                $.fn.dataTable.ext.search.push(function(settings, data) {
+                    const dariVal = dariInput.value;
+                    const sampaiVal = sampaiInput.value;
+
+                    function toYMDInt(txt) {
+                        if (!txt) return null;
+                        txt = txt.trim();
+
+                        if (txt.indexOf(' ') !== -1) txt = txt.split(' ')[0];
+
+                        if (/^\d{4}-\d{2}-\d{2}$/.test(txt)) {
+                            const [y, m, d] = txt.split('-');
+                            return parseInt(y + (m.padStart(2, '0')) + (d.padStart(2, '0')), 10);
+                        }
+
+                        if (/^\d{2}-\d{2}-\d{4}$/.test(txt)) {
+                            const [d, m, y] = txt.split('-');
+                            return parseInt(y + (m.padStart(2, '0')) + (d.padStart(2, '0')), 10);
+                        }
+
+                        const tryParts = txt.match(/\d{4}-\d{2}-\d{2}/);
+                        if (tryParts) {
+                            const [y, m, d] = tryParts[0].split('-');
+                            return parseInt(y + (m.padStart(2, '0')) + (d.padStart(2, '0')), 10);
+                        }
+
+                        return null;
+                    }
+
+                    const dariInt = toYMDInt(dariVal);
+                    const sampaiInt = toYMDInt(sampaiVal);
+
+                    const tanggalText = (data[1] || '').toString().trim();
+                    if (!tanggalText) return true;
+
+                    const rowInt = toYMDInt(tanggalText);
+                    if (!rowInt) return true;
+
+                    if (dariInt && rowInt < dariInt) return false;
+                    if (sampaiInt && rowInt > sampaiInt) return false;
+                    return true;
+                });
+
+                function applyFilter() {
+                    table.draw();
+                    $('#btnSelectAllRekap').prop('checked', false);
+                    $('.checkbox-rekap').prop('checked', false);
+                }
+
+                dariInput.addEventListener("change", applyFilter);
+                sampaiInput.addEventListener("change",
+                    applyFilter);
+
+                resetBtn.addEventListener("click", function() {
+                    dariInput.value = "";
+                    sampaiInput.value = "";
+                    table.draw();
+                });
+
             });
         </script>
     @endpush

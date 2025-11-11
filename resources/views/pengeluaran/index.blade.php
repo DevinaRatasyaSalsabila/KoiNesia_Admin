@@ -77,7 +77,7 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Daftar Pengeluaran</h5>
-            <div class="d-flex float-end gap-2">
+            <div class="gap-2 d-flex float-end">
                 <button type="button" class="btn btn-success" data-bs-toggle="modal"
                     data-bs-target="#tambah_pengeluaran">
                     <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
@@ -99,6 +99,7 @@
                         <tr>
                             <th>No</th>
                             <th>Nama Pengeluaran</th>
+                            <th>Keterangan</th>
                             <th>Nominal</th>
                             <th>Aksi</th>
                         </tr>
@@ -108,6 +109,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->nama_pengeluaran }}</td>
+                                <td>{{ $item->keterangan }}</td>
                                 <td>Rp{{ number_format($item->nominal, 0, ',', '.') }}</td>
                                 <td class="text-center">
                                     <form action="{{ route('pengeluaran.delete', $item->id) }}"
@@ -132,6 +134,7 @@
                         <tr>
                             <th>No</th>
                             <th>Nama Pengeluaran</th>
+                            <th>Keterangan</th>
                             <th>Nominal</th>
                             <th>Aksi</th>
                         </tr>
@@ -159,7 +162,22 @@
                     {
                         extend: 'pdfHtml5',
                         className: 'btn btn-danger btn-sm m-1',
-                        text: 'Export PDF'
+                        text: 'Export PDF',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3],
+                        },
+                        customize: function(doc) {
+                            doc.pageMargins = [20, 20, 20, 20];
+                            doc.defaultStyle.alignment = 'center';
+                            doc.content[1].table.widths = ['10%', '30%', '36%', '24%'];
+                            doc.content.splice(0, 0, {
+                                text: 'Data Pengeluaran',
+                                fontSize: 14,
+                                bold: true,
+                                alignment: 'center',
+                                margin: [0, 0, 0, 15]
+                            });
+                        }
                     },
                     {
                         extend: 'csvHtml5',

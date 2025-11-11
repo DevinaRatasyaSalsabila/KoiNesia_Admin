@@ -14,7 +14,6 @@ class RekapController extends Controller
      */
 public function index()
 {
-    // Ambil total penjualan per tanggal
     $penjualan = Pesanan::select(
         DB::raw('DATE(created_at) as tanggal'),
         DB::raw('SUM(nominal) as total_penjualan')
@@ -23,9 +22,8 @@ public function index()
         ->groupBy(DB::raw('DATE(created_at)'))
         ->orderBy('tanggal', 'asc')
         ->get()
-        ->keyBy('tanggal'); // biar gampang diakses pake tanggal
+        ->keyBy('tanggal'); 
 
-    // Ambil total pengeluaran per tanggal
     $pengeluaran = Pengeluaran::select(
         DB::raw('DATE(created_at) as tanggal'),
         DB::raw('SUM(nominal) as total_pengeluaran')
@@ -35,13 +33,11 @@ public function index()
         ->get()
         ->keyBy('tanggal');
 
-    // Gabungin tanggal dari dua-duanya
     $allDates = collect($penjualan->keys())
         ->merge($pengeluaran->keys())
         ->unique()
         ->sort();
 
-    // Bikin koleksi rekap final
     $rekap = $allDates->map(function ($tanggal) use ($penjualan, $pengeluaran) {
         return [
             'tanggal' => $tanggal,

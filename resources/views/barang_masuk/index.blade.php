@@ -77,7 +77,7 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Daftar Barang Masuk</h5>
-            <div class="d-flex float-end gap-2">
+            <div class="gap-2 d-flex float-end">
                 <a href="{{ url('barang-masuk/tambah') }}" class="btn btn-success">
                     <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
                 </a>
@@ -112,13 +112,11 @@
                                 <td>{{ $item->keterangan }}</td>
                                 <td class="text-center">
                                     <div class="gap-2 d-flex align-items-center">
-                                        <form
-                                            action="{{ route('barang-masuk.destroy', $item->id_pemasukan) }}"
+                                        <form action="{{ route('barang-masuk.destroy', $item->id_pemasukan) }}"
                                             class="delete-form" method="post">
                                             @csrf
                                             @method('delete')
-                                            <button class="btn btn-danger confirm-delete-button"
-                                                type="button">
+                                            <button class="btn btn-danger confirm-delete-button" type="button">
                                                 <i class="fadeIn animated bx bx-trash text-light"></i>
                                             </button>
                                         </form>
@@ -161,22 +159,50 @@
                 buttons: [{
                         extend: 'excelHtml5',
                         className: 'btn btn-success btn-sm m-1',
-                        text: 'Export Excel'
+                        text: 'Export Excel',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4],
+                        },
                     },
                     {
                         extend: 'pdfHtml5',
                         className: 'btn btn-danger btn-sm m-1',
-                        text: 'Export PDF'
+                        text: 'Export PDF',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4],
+                        },
+                        customize: function(doc) {
+                            // atur margin biar rapih
+                            doc.pageMargins = [20, 20, 20, 20];
+                            // biar text rata tengah semua
+                            doc.defaultStyle.alignment = 'center';
+                            // atur lebar tiap kolom
+                            doc.content[1].table.widths = ['10%', '20%', '25%', '20%', '25%'];
+                            // ubah judul PDF
+                            doc.content.splice(0, 0, {
+                                text: 'Data Barang Masuk',
+                                fontSize: 14,
+                                bold: true,
+                                alignment: 'center',
+                                margin: [0, 0, 0, 15]
+                            });
+                        }
                     },
                     {
                         extend: 'csvHtml5',
                         className: 'btn btn-info btn-sm m-1',
-                        text: 'Export CSV'
+                        text: 'Export CSV',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4],
+                        },
                     },
                     {
                         extend: 'print',
                         className: 'btn btn-secondary btn-sm m-1',
-                        text: 'Print'
+                        text: 'Print',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4],
+                        },
                     }
                 ],
                 language: {

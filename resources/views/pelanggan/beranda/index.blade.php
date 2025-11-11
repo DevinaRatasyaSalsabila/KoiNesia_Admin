@@ -78,7 +78,7 @@
             <div class="row d-flex align-items-center">
 
                 <!-- HERO IMAGE -->
-                <div class="col-md-7 mb-4 mb-md-0" data-aos="fade-right" data-aos-duration="1200">
+                <div class="mb-4 col-md-7 mb-md-0" data-aos="fade-right" data-aos-duration="1200">
                     <div class="text-center hero-4-img position-relative">
                         <img class="img-fluid floating-img"
                             src="{{ asset('files/images/koi-about.png') }}" alt="hero-image">
@@ -140,12 +140,12 @@
     </section> <!-- END HERO-4 -->
 
     <!-- HERO-4 -->
-    {{-- <section id="hero-4" class="bg-fixed hero-section division py-5">
+    {{-- <section id="hero-4" class="py-5 bg-fixed hero-section division">
         <div class="container">
             <div class="row d-flex align-items-center">
 
                 <!-- HERO IMAGE -->
-                <div class="col-md-7 mb-4 mb-md-0" data-aos="fade-right" data-aos-duration="1200">
+                <div class="mb-4 col-md-7 mb-md-0" data-aos="fade-right" data-aos-duration="1200">
                     <div class="text-center hero-4-img position-relative">
                         <img class="img-fluid floating-img"
                             src="{{ asset('files/images/koi-about.png') }}" alt="hero-image">
@@ -162,13 +162,13 @@
                 </div>
 
                 <!-- HERO TEXT -->
-                <div class="col-md-5 text-center text-md-start" data-aos="fade-left"
+                <div class="text-center col-md-5 text-md-start" data-aos="fade-left"
                     data-aos-duration="1200">
                     <div class="hero-4-txt white-color">
-                        <h2 class="fw-bold mb-0">Azza Koi</h2>
+                        <h2 class="mb-0 fw-bold">Azza Koi</h2>
                         <h3 class="text-warning fw-semibold">Farm</h3>
 
-                        <p class="p-md mt-3 mb-4">
+                        <p class="mt-3 mb-4 p-md">
                             Nikmati koleksi koi terbaik dengan warna memukau, sehat, dan dirawat dengan
                             penuh ketelatenan.
                         </p>
@@ -209,14 +209,14 @@
                             yang menambah nilai estetika pada kolam Anda.
                         </p>
 
-                        <div class="abox-2-wrapper ico-70 mt-4">
+                        <div class="mt-4 abox-2-wrapper ico-70">
                             <div class="text-center row">
                                 <div class="col-sm-3" data-aos="flip-left" data-aos-delay="200">
                                     <div class="abox-2">
                                         <div class="abox-2-ico grey-color">
                                             <i class="fa-solid fa-fish fs-1"></i>
                                         </div>
-                                        <h6 class="h6-lg mt-2">Kualitas Terjamin</h6>
+                                        <h6 class="mt-2 h6-lg">Kualitas Terjamin</h6>
                                     </div>
                                 </div>
 
@@ -225,7 +225,7 @@
                                         <div class="abox-2-ico grey-color">
                                             <i class="fa-regular fa-handshake fs-1"></i>
                                         </div>
-                                        <h6 class="h6-lg mt-2">Kepercayaan Pelanggan</h6>
+                                        <h6 class="mt-2 h6-lg">Kepercayaan Pelanggan</h6>
                                     </div>
                                 </div>
 
@@ -234,7 +234,7 @@
                                         <div class="abox-2-ico grey-color">
                                             <i class="fa-solid fa-hand-holding-dollar fs-1"></i>
                                         </div>
-                                        <h6 class="h6-lg mt-2">Harga Bersahabat</h6>
+                                        <h6 class="mt-2 h6-lg">Harga Bersahabat</h6>
                                     </div>
                                 </div>
 
@@ -243,7 +243,7 @@
                                         <div class="abox-2-ico grey-color">
                                             <i class="fa-regular fa-headphones fs-1"></i>
                                         </div>
-                                        <h6 class="h6-lg mt-2">Pelayanan Profesional</h6>
+                                        <h6 class="mt-2 h6-lg">Pelayanan Profesional</h6>
                                     </div>
                                 </div>
                             </div>
@@ -330,7 +330,7 @@
                                         <div class="mt-3 text-center">
                                             <button type="button"
                                                 class="shadow-none btn btn-danger w-100" disabled>
-                                                <i class="flaticon-error"></i> Stok Habis
+                                                <i class="flaticon-error"></i> Stok Kosong
                                             </button>
                                         </div>
                                     @endif
@@ -343,7 +343,7 @@
             @if (!empty(count($produk) == 4))
                 <div class="d-flex justify-content-center">
                     <a href="{{ route('produkLengkap') }}"
-                        class="btn btn-outline-secondary rounded-pill px-4 py-2 shadow-sm"
+                        class="px-4 py-2 shadow-sm btn btn-outline-secondary rounded-pill"
                         style="transition: all 0.3s ease; font-weight: 500; color: #b3140a;">
                         Selengkapnya
                     </a>
@@ -365,16 +365,16 @@
                         <ul class="text-center slides">
 
                             <li class="review-1">
-                                <div class="review-1-txt mx-auto" style="max-width:700px;">
+                                <div class="mx-auto review-1-txt" style="max-width:700px;">
                                     <img src="{{ asset('files/images/review-author-1.jpg') }}"
-                                        alt="pelanggan-azza" class="rounded-circle shadow mb-3"
+                                        alt="pelanggan-azza" class="mb-3 shadow rounded-circle"
                                         width="90" height="90">
 
                                     <p class="">“Ikan koi dari Azza Koi Farm benar-benar
                                         berkualitas! Warna ikannya cerah dan sehat semua. Pelayanannya
                                         juga cepat dan ramah, saya pasti akan beli lagi.”</p>
 
-                                    <div class="review-rating mb-2 text-warning">
+                                    <div class="mb-2 review-rating text-warning">
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
@@ -382,23 +382,23 @@
                                         <i class="fas fa-star-half-alt"></i>
                                     </div>
 
-                                    <p class="fw-semibold mb-0">Andi Prasetyo</p>
+                                    <p class="mb-0 fw-semibold">Andi Prasetyo</p>
                                     <small class="text-secondary">Pelanggan dari Surabaya</small>
                                 </div>
                             </li>
 
                             <!-- TESTIMONI 2 -->
                             <li class="review-1">
-                                <div class="review-1-txt mx-auto" style="max-width:700px;">
+                                <div class="mx-auto review-1-txt" style="max-width:700px;">
                                     <img src="{{ asset('files/images/review-author-2.jpg') }}"
-                                        alt="pelanggan-azza" class="rounded-circle shadow mb-3"
+                                        alt="pelanggan-azza" class="mb-3 shadow rounded-circle"
                                         width="90" height="90">
 
                                     <p class="">“Pesan koi jumbo di Azza Koi Farm ternyata
                                         gampang banget! Adminnya responsif dan ikan dikirim dalam
                                         kondisi segar. Recommended banget buat pecinta koi.”</p>
 
-                                    <div class="review-rating mb-2 text-warning">
+                                    <div class="mb-2 review-rating text-warning">
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
@@ -406,23 +406,23 @@
                                         <i class="fas fa-star"></i>
                                     </div>
 
-                                    <p class="fw-semibold mb-0">Siti Rahmawati</p>
+                                    <p class="mb-0 fw-semibold">Siti Rahmawati</p>
                                     <small class="text-secondary">Pelanggan dari Malang</small>
                                 </div>
                             </li>
 
                             <!-- TESTIMONI 3 -->
                             <li class="review-1">
-                                <div class="review-1-txt mx-auto" style="max-width:700px;">
+                                <div class="mx-auto review-1-txt" style="max-width:700px;">
                                     <img src="{{ asset('files/images/review-author-3.jpg') }}"
-                                        alt="pelanggan-azza" class="rounded-circle shadow mb-3"
+                                        alt="pelanggan-azza" class="mb-3 shadow rounded-circle"
                                         width="90" height="90">
 
                                     <p class="">“Saya kagum dengan hasil ternakan Azza Koi
                                         Farm. Varian ikannya lengkap dan kualitasnya bagus. Harga juga
                                         bersahabat, cocok buat pemula maupun kolektor.”</p>
 
-                                    <div class="review-rating mb-2 text-warning">
+                                    <div class="mb-2 review-rating text-warning">
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
@@ -430,7 +430,7 @@
                                         <i class="fas fa-star-half-alt"></i>
                                     </div>
 
-                                    <p class="fw-semibold mb-0"> Rizky Saputra</p>
+                                    <p class="mb-0 fw-semibold"> Rizky Saputra</p>
                                     <small class="text-secondary">Pelanggan dari Blitar</small>
                                 </div>
                             </li>
@@ -517,7 +517,7 @@
         <div class="container white-color">
             <div class="abox-4-wrapper ico-80">
 
-                <h2 class="mb-4 text-center">FAQ (Frequently Asked Questions)</h2>
+                <h2 class="mb-4 text-center">Sering Ditanyakan</h2>
                 <div class="container my-5 accordion" id="faqAccordion">
 
                     <!-- 6 -->
