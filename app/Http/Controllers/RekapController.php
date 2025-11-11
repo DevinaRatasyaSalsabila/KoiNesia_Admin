@@ -12,20 +12,39 @@ class RekapController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $pengeluaran = Pengeluaran::all();
+public function index()
+{
+    $penjualan = Pesanan::select(
+        DB::raw('DATE(created_at) as tanggal'),
+        DB::raw('SUM(nominal) as total_penjualan')
+    )
+        ->where('status', 'selesai')
+        ->groupBy(DB::raw('DATE(created_at)'))
+        ->orderBy('tanggal', 'asc')
+        ->get()
+        ->keyBy('tanggal');
 
-        $penjualan = Pesanan::select(
-            DB::raw('DATE(created_at) as tanggal'),
-            DB::raw('SUM(nominal) as total')
-        )
-            ->where('status', 'selesai')
-            ->groupBy(DB::raw('DATE(created_at)'))
-            ->orderBy('tanggal', 'asc')
-            ->get();
+    $pengeluaran = Pengeluaran::select(
+        DB::raw('DATE(created_at) as tanggal'),
+        DB::raw('SUM(nominal) as total_pengeluaran')
+    )
+        ->groupBy(DB::raw('DATE(created_at)'))
+        ->orderBy('tanggal', 'asc')
+        ->get()
+        ->keyBy('tanggal');
 
-        $rekap = $penjualan->zip($pengeluaran);
+    $allDates = collect($penjualan->keys())
+        ->merge($pengeluaran->keys())
+        ->unique()
+        ->sort();
+
+    $rekap = $allDates->map(function ($tanggal) use ($penjualan, $pengeluaran) {
+        return [
+            'tanggal' => $tanggal,
+            'penjualan' => $penjualan[$tanggal]->total_penjualan ?? 0,
+            'pengeluaran' => $pengeluaran[$tanggal]->total_pengeluaran ?? 0,
+        ];
+    });
 
         return view('rekap.index', compact('rekap'));
     }

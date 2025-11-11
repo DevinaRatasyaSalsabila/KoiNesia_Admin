@@ -215,7 +215,7 @@
                                         <div class="mt-3 text-center">
                                             <button type="button"
                                                 class="shadow-none btn btn-danger w-100" disabled>
-                                                <i class="flaticon-error"></i> Stok Habis
+                                                <i class="flaticon-error"></i> Stok Kosong
                                             </button>
                                         </div>
                                     @endif

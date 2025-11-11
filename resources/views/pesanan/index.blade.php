@@ -29,45 +29,39 @@
         </div>
     </div>
     <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">
-                Daftar Pesanan Terbaru
-                <button type="button" id="btnSelectAllPesanan" class="btn btn-secondary btn-sm">
-                    <i class="bi bi-check2-circle"></i>
-                    Pilih Semua
-                </button>
-            </h5>
-            <div class="d-flex float-end gap-2">
-                <div class="input-group" style="width: 420px;">
-                    <label for="tanggal" class="col-form-label me-2">Dari</label>
-                    <input type="date" id="dari-pesanan" class="form-control form-control-sm me-4">
-
-                    <label for="tanggal" class="col-form-label me-2">Sampai</label>
-                    <input type="date" id="sampai-pesanan" class="form-control form-control-sm">
-
-                    <button type="button" id="resetPesananFilter" class="btn btn-danger btn-sm ms-2">
-                        <i class="bi bi-arrow-counterclockwise"></i>
-                    </button>
+        <div class="card-header">
+            <div class="row gy-2 align-items-center">
+                <div class="flex-wrap gap-2 col-12 col-md-5 d-flex align-items-center">
+                    <h5 class="flex-shrink-0 mb-0 fw-semibold text-nowrap">Daftar Pesanan Terbaru</h5>
                 </div>
-                <!-- Tombol print dan pilih semua -->
-                {{-- <button type="button" id="btnPrintPesanan" class="btn btn-secondary btn-sm">
-                    <i class="bi bi-printer"></i>
-                </button>
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambah_pesanan">
-                    <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
-                </button> --}}
-                <!-- Tombol Print -->
-                <button type="button" id="btnPrintPesanan" class="btn btn-secondary btn-sm"
-                    data-bs-toggle="tooltip" data-bs-placement="top" title="Cetak Daftar Pesanan">
-                    <i class="bi bi-printer"></i>
-                </button>
 
-                <!-- Tombol Tambah Pesanan -->
-                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
-                    data-bs-target="#tambah_pesanan" data-bs-toggle="tooltip" data-bs-placement="top"
-                    title="Tambah Pesanan Baru">
-                    <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
-                </button>
+                <div class="col-12 col-md-7">
+                    <div class="flex-wrap gap-2 d-flex justify-content-md-end align-items-center">
+                        <div class="flex-wrap gap-2 d-flex align-items-center flex-grow-1 flex-md-grow-0">
+                            <label for="dari-pesanan" class="mb-0 col-form-label text-nowrap">Dari</label>
+                            <input type="date" id="dari-pesanan" class="form-control form-control-sm"
+                                style="width: auto; min-width: 130px;">
+                            <label for="sampai-pesanan" class="mb-0 col-form-label text-nowrap">Sampai</label>
+                            <input type="date" id="sampai-pesanan" class="form-control form-control-sm"
+                                style="width: auto; min-width: 130px;">
+                        </div>
+
+                        <div class="gap-2 d-flex align-items-center">
+                            <button type="button" id="resetPesananFilter" class="btn btn-danger btn-sm"
+                                title="Reset Filter">
+                                <i class="bi bi-arrow-counterclockwise"></i>
+                            </button>
+                            <button type="button" id="btnPrintPesanan" class="btn btn-secondary btn-sm"
+                                title="Cetak Daftar Pesanan">
+                                <i class="bi bi-printer"></i>
+                            </button>
+                            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#tambah_pesanan" title="Tambah Pesanan Baru">
+                                <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -76,7 +70,11 @@
                 <table id="tabel_pesanan" class="table table-striped table-bordered Pesanan">
                     <thead>
                         <tr>
-                            <th></th>
+                            <th class="text-center align-middle">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <input id="btnSelectAllPesanan" type="checkbox" class="form-check-input">
+                                </div>
+                            </th>
                             <th>Tanggal</th>
                             <th>Nama Pembeli</th>
                             <th>Nominal Pembelian</th>
@@ -216,13 +214,11 @@
                 const previous = select.data('previous'); // nilai sebelum diubah
                 const value = select.val();
 
-                // helper function untuk kirim ajax (DRY)
                 function sendUpdate(statusToSend) {
                     const id = select.data('id');
                     const url = updateStatusUrl.replace(':id', id);
                     const row = select.closest('tr');
 
-                    // disable select sementara biar ga double click
                     select.prop('disabled', true);
 
                     $.ajax({
@@ -241,14 +237,12 @@
                                 confirmButtonText: "Oke!"
                             });
 
-                            // kalau 'selesai', hapus row dari datatable (kalau memang mau)
                             if (statusToSend === 'selesai') {
                                 let table = $("#tabel_pesanan").DataTable();
                                 table.row(row).remove().draw(false);
                                 alert('Riwayat pesanan telah tersimpan');
                             }
 
-                            // update previous/data current ke nilai baru
                             select.data('previous', statusToSend);
                             select.prop('disabled', false);
                         },
@@ -259,14 +253,12 @@
                                 text: "Gagal mengubah status.",
                                 icon: "error"
                             });
-                            // revert ke previous karena gagal
                             select.val(previous);
                             select.prop('disabled', false);
                         }
                     });
                 }
 
-                // Konfirmasi tergantung value
                 if (value === 'proses') {
                     Swal.fire({
                         title: "Yakin mengganti status menjadi 'Diproses'?",
@@ -300,7 +292,6 @@
                         }
                     });
                 } else {
-                    // kalau ada status lain (contoh 'baru'), kita cuma update previous
                     select.data('previous', value);
                 }
             });
@@ -364,33 +355,185 @@
                     'tbody')[0];
                 const selectAllBtn = document.getElementById('btnSelectAllPesanan');
                 const printBtn = document.getElementById('btnPrintPesanan');
-                const resetBtn = document.getElementById('resetPesananFilter');
 
-                // 🗓️ Set default tanggal hari ini
-                const today = new Date().toISOString().split('T')[0];
-                dariInput.value = today;
-                sampaiInput.value = today;
+                var table = $('#tabel_pesanan').DataTable({
+                    responsive: true,
+                    dom: "<'row mb-3'<'col-md-6 d-flex align-items-center'B><'col-md-6 d-flex justify-content-end'f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row mt-3'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 d-flex justify-content-end'p>>",
+                    buttons: [{
+                            extend: 'excelHtml5',
+                            className: 'btn btn-success btn-sm m-1',
+                            text: 'Export Excel',
+                            exportOptions: {
+                                columns: [1, 2, 3, 4],
+                                rows: function(idx, data, node) {
+                                    return $(node).find('.checkbox-pesanan').prop('checked');
+                                },
+                                format: {
+                                    body: function(data, row, column, node) {
+                                        if ($(node).find('select').length) {
+                                            return $(node).find('select option:selected').text().trim();
+                                        }
+                                        return $(node).text().trim();
+                                    }
+                                }
+                            },
+                            messageTop: function() {
+                                const dari = $('#dari-pesanan').val();
+                                const sampai = $('#sampai-pesanan').val();
+                                if (dari && sampai) return `Data Pesanan (${dari} - ${sampai})`;
+                                if (dari) return `Data Pesanan (Dari ${dari})`;
+                                if (sampai) return `Data Pesanan (Sampai ${sampai})`;
+                                return 'Data Pesanan';
+                            },
+                            action: function(e, dt, button, config) {
+                                let checked = $('.checkbox-pesanan:checked').length;
+                                if (checked === 0) {
+                                    Swal.fire({
+                                        icon: 'warning',
+                                        title: 'Oops...',
+                                        text: 'Pilih setidaknya 1 data untuk di-export!',
+                                    });
+                                    return;
+                                }
+                                $.fn.dataTable.ext.buttons.excelHtml5.action.call(this, e, dt, button,
+                                    config);
+                            }
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            className: 'btn btn-danger btn-sm m-1',
+                            text: 'Export PDF',
+                            exportOptions: {
+                                columns: [1, 2, 3, 4],
+                                rows: function(idx, data, node) {
+                                    return $(node).find('.checkbox-pesanan').prop('checked');
+                                },
+                                format: {
+                                    body: function(data, row, column, node) {
+                                        if ($(node).find('select').length) {
+                                            return $(node).find('select option:selected').text().trim();
+                                        }
+                                        return $(node).text().trim();
+                                    }
+                                }
+                            },
+                            customize: function(doc) {
+                                doc.pageMargins = [20, 20, 20, 20];
+                                doc.defaultStyle.alignment = 'center';
+                                doc.content[1].table.widths = ['25%', '25%', '25%', '25%'];
 
-                // Fungsi filter berdasarkan range tanggal
-                function filterByDateRange() {
-                    const dari = new Date(dariInput.value);
-                    const sampai = new Date(sampaiInput.value);
+                                const dari = $('#dari-pesanan').val();
+                                const sampai = $('#sampai-pesanan').val();
 
-                    Array.from(tabel.rows).forEach(row => {
-                        const tanggalText = row.cells[1].textContent.trim();
+                                let headerText = 'Data Pesanan';
+                                if (dari && sampai) {
+                                    headerText += ` (${dari} - ${sampai})`;
+                                } else if (dari && !sampai) {
+                                    headerText += ` (Dari ${dari})`;
+                                } else if (!dari && sampai) {
+                                    headerText += ` (Sampai ${sampai})`;
+                                }
 
-                        // Ubah dari dd-mm-yyyy ke yyyy-mm-dd supaya bisa diproses
-                        const [day, month, year] = tanggalText.split('-');
-                        const tanggal = new Date(`${year}-${month}-${day}`);
-
-                        if (tanggal >= dari && tanggal <= sampai) {
-                            row.style.display = '';
-                        } else {
-                            row.style.display = 'none';
+                                doc.content.splice(0, 0, {
+                                    text: headerText,
+                                    fontSize: 14,
+                                    bold: true,
+                                    alignment: 'center',
+                                    margin: [0, 0, 0, 15]
+                                });
+                            },
+                            action: function(e, dt, button, config) {
+                                let checked = $('.checkbox-pesanan:checked').length;
+                                if (checked === 0) {
+                                    Swal.fire({
+                                        icon: 'warning',
+                                        title: 'Oops...',
+                                        text: 'Pilih setidaknya 1 data untuk di-export!',
+                                    });
+                                    return;
+                                }
+                                $.fn.dataTable.ext.buttons.pdfHtml5.action.call(this, e, dt, button,
+                                    config);
+                            }
+                        },
+                        {
+                            extend: 'csvHtml5',
+                            className: 'btn btn-info btn-sm m-1',
+                            text: 'Export CSV',
+                            exportOptions: {
+                                columns: [1, 2, 3, 4],
+                                rows: function(idx, data, node) {
+                                    return $(node).find('.checkbox-pesanan').prop('checked');
+                                },
+                                format: {
+                                    body: function(data, row, column, node) {
+                                        if ($(node).find('select').length) {
+                                            return $(node).find('select option:selected').text().trim();
+                                        }
+                                        return $(node).text().trim();
+                                    }
+                                }
+                            },
+                            messageTop: function() {
+                                const dari = $('#dari-pesanan').val();
+                                const sampai = $('#sampai-pesanan').val();
+                                if (dari && sampai) return `Data Pesanan (${dari} - ${sampai})`;
+                                if (dari) return `Data Pesanan (Dari ${dari})`;
+                                if (sampai) return `Data Pesanan (Sampai ${sampai})`;
+                                return 'Data Pesanan';
+                            },
+                            action: function(e, dt, button, config) {
+                                let checked = $('.checkbox-pesanan:checked').length;
+                                if (checked === 0) {
+                                    Swal.fire({
+                                        icon: 'warning',
+                                        title: 'Oops...',
+                                        text: 'Pilih setidaknya 1 data untuk di-export!',
+                                    });
+                                    return;
+                                }
+                                $.fn.dataTable.ext.buttons.csvHtml5.action.call(this, e, dt, button,
+                                    config);
+                            }
+                        },
+                    ],
+                    language: {
+                        search: "Cari:",
+                        lengthMenu: "Tampilkan _MENU_ data",
+                        info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                        paginate: {
+                            next: "Berikutnya",
+                            previous: "Sebelumnya"
                         }
-                    });
-                }
+                    }
+                });
 
+                $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                    const dari = dariInput.value ? new Date(dariInput.value) : null;
+                    const sampai = sampaiInput.value ? new Date(sampaiInput.value) : null;
+                    const tanggalText = data[1]; // Kolom tanggal
+                    const tanggalParts = tanggalText.split('-');
+                    let tanggal;
+
+                    if (tanggalParts[0].length === 2 && tanggalParts[2].length === 4) {
+                        tanggal = new Date(`${tanggalParts[2]}-${tanggalParts[1]}-${tanggalParts[0]}`);
+                    } else {
+                        tanggal = new Date(tanggalText);
+                    }
+
+                    if (!dari && !sampai) {
+                        return true;
+                    }
+                    if (dari && !sampai) {
+                        return tanggal >= dari;
+                    }
+                    if (!dari && sampai) {
+                        return tanggal <= sampai;
+                    }
+                    return tanggal >= dari && tanggal <= sampai;
+                });
 
                 // Event ketika tanggal diganti
                 dariInput.addEventListener('change', filterByDateRange);
@@ -398,19 +541,24 @@
 
                 // Reset ke hari ini
                 resetBtn.addEventListener('click', () => {
-                    dariInput.value = today;
-                    sampaiInput.value = today;
-                    filterByDateRange();
+                    dariInput.value = '';
+                    sampaiInput.value = '';
+
+                    $(dariInput).trigger('change');
+                    $(sampaiInput).trigger('change');
+
+                    table.draw();
                 });
 
-                // Pilih semua
-                selectAllBtn.addEventListener('click', () => {
-                    const checkboxes = document.querySelectorAll('.checkbox-pesanan');
-                    checkboxes.forEach(cb => {
-                        if (cb.closest('tr').style.display !== 'none') {
-                            cb.checked = true;
-                        }
-                    });
+                selectAllBtn.addEventListener('change', function() {
+                    const isChecked = this.checked;
+                    $('.checkbox-pesanan:visible').prop('checked', isChecked);
+                });
+
+                $('.checkbox-pesanan').on('change', function() {
+                    const allChecked =
+                        $('.checkbox-pesanan:visible').length === $('.checkbox-pesanan:visible:checked').length;
+                    $('#btnSelectAllPesanan').prop('checked', allChecked);
                 });
 
                 // Print data yang diceklis
