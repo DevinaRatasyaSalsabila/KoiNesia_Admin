@@ -865,7 +865,7 @@ body {
 }
 
 .bg-yellow {
-  background-color: #cfa116;
+  background-color: #ecbb28;
 }
 
 /*------------------------------------------*/
@@ -1324,8 +1324,8 @@ ul.txt-list {
 .scroll .yellow-hover:hover,
 .white-color .yellow-hover:hover {
   color: #333435 !important;
-  background-color: #cfa116;
-  border-color: #cfa116 !important;
+  background-color: #ecbb28;
+  border-color: #ecbb28 !important;
 }
 
 /*------------------------------------------*/
@@ -1768,7 +1768,7 @@ ul.txt-list {
 .brown-color .yellow-color,
 .coffee-color .yellow-color,
 .yellow-color span {
-  color: #cfa116;
+  color: #ecbb28;
 }
 
 /*------------------------------------------*/
@@ -1804,7 +1804,7 @@ ul.txt-list {
 }
 
 .stars-rating i {
-  color: #cfa116;
+  color: #ecbb28;
   font-size: 0.85rem;
   line-height: 1;
 }
@@ -2914,7 +2914,7 @@ span.item-code {
 
 .navik-menu.navik-yellow ul li:hover>a,
 .navik-menu.navik-yellow .mega-menu-heading a:hover {
-  color: #cfa116;
+  color: #ecbb28;
 }
 
 .navik-menu.navik-meat ul li:hover>a,
@@ -2947,7 +2947,7 @@ span.item-code {
 }
 
 #header-3 .navik-menu ul li.nav-btn.yellow-color>a {
-  color: #cfa116;
+  color: #ecbb28;
 }
 
 #header-3 .navik-menu ul li.nav-btn.red-color>a {
@@ -4408,7 +4408,7 @@ span.ico-holder {
 }
 
 .menu-3-list li:hover .menu-3-item-data {
-  background-color: #cfa116;
+  background-color: #ecbb28;
 }
 
 .item-data-meat-hover .menu-3-list li:hover .menu-3-item-data {
@@ -4980,7 +4980,7 @@ span.ico-holder {
 }
 
 .review-rating i {
-  color: #cfa116;
+  color: #ecbb28;
   font-size: 1.1rem;
   line-height: 1;
   margin: 0 1px;
@@ -6691,9 +6691,9 @@ select:-webkit-autofill:focus {
 
 .page-link:hover,
 .page-item.active .page-link {
-  background-color: #cfa116;
+  background-color: #ecbb28;
   color: #151515;
-  border-color: #cfa116;
+  border-color: #ecbb28;
   -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, .05);
   -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, .05);
   box-shadow: 0 5px 10px rgba(0, 0, 0, .05);
@@ -6864,7 +6864,7 @@ select:-webkit-autofill:focus {
 }
 
 #product-1-data .tabs-1 li.current {
-  background-color: #cfa116;
+  background-color: #ecbb28;
 }
 
 .tabs-2 li {

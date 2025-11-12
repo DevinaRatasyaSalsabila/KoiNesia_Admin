@@ -144,8 +144,8 @@
                                             <div class="col-md-12 col-lg-6">
                                                 <label for="">Nomor HP Penerima</label>
                                                 <div class="mb-3 input-group">
-                                                    <span class="input-group-text" id="basic-addon1">62</span>
-                                                    <input type="" class="form-control" placeholder="Username"
+                                                    <span class="input-group-text" id="basic-addon1">+62</span>
+                                                    <input type="" class="form-control" placeholder="8576880937"
                                                         name="telepon" aria-label="Masukkan Nomor Telepon"
                                                         aria-describedby="basic-addon1" required>
                                                 </div>

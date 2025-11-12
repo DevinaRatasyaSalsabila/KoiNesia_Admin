@@ -13,7 +13,7 @@
     <style>
         /* ✨ Animasi dan Style Tambahan */
         .fade-in {
-            animation: fadeIn .4s ease-in;
+            animation: fadeIn 0.4s ease-in;
         }
 
         @keyframes fadeIn {
@@ -36,6 +36,36 @@
             opacity: 0.9;
             transform: scale(1.03);
             transition: all 0.2s ease-in-out;
+        }
+
+        /* 🎨 Desain Search Box */
+        .search-box {
+            border: 2px solid #dc3545;
+            /* biru */
+            border-radius: 30px;
+            overflow: hidden;
+            background-color: white;
+        }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            padding: 10px 15px;
+            flex: 1;
+            border-radius: 30px 0 0 30px;
+        }
+
+        .search-box .btn-search {
+            background-color: #dc3545;
+            border: none;
+            padding: 10px 20px;
+            color: white;
+            border-radius: 0 30px 30px 0;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .search-box .btn-search:hover {
+            background-color: #dc3545;
         }
     </style>
     <div id="cart-page" class="page-hero-section division">
@@ -61,7 +91,7 @@
                                 </div>
                             </div>
                         </div>
-                        <h2 class="h2-xl">Produk</h2>
+                        {{-- <h2 class="h2-xl">Produk</h2> --}}
                     </div>
                 </div>
             </div>
@@ -139,24 +169,36 @@
             </div>
         </div>
     </section> --}}
+    <div class="container">
+        {{-- <div class="mb-5 row justify-content-start my-5">
+            <div class="col-lg-6 col-md-8">
+                <form id="searchForm" class="search-box d-flex">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Cari produk favorit kamu..."
+                        aria-label="Search" />
+                    <button type="submit" class="btn-search">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </form>
+            </div>
+        </div> --}}
+        <div class="mb-5 row justify-content-end my-5 fade-in">
+            <div class="col-lg-4 col-md-6">
+                <form id="searchForm" class="search-box d-flex align-items-center">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Cari produk favorit kamu..."
+                        aria-label="Search" />
+                    <button type="submit" class="btn-search d-flex align-items-center justify-content-center">
+                        <i class="bi bi-search fs-5"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
 
-    <section id="menu-6" class="wide-70 menu-section division">
+    </div>
+
+    <section id="menu-6" class="my-5 menu-section division">
         <div class="container">
 
             {{-- 🔍 Search Bar Modern --}}
-            <div class="mb-5 row justify-content-center">
-                <div class="col-lg-6 col-md-8">
-                    <form id="searchForm"
-                        class="overflow-hidden bg-white  border-2 shadow-sm d-flex rounded-pill border-warning">
-                        <input type="text" id="searchInput" class="border-0 form-control ps-4"
-                            placeholder="Cari produk favorit kamu..." aria-label="Search">
-                        <button type="submit" class="px-4 text-white btn btn-warning">
-                            <i class="flaticon-search"></i>
-                        </button>
-                    </form>
-                </div>
-            </div>
-
             <div class="row" id="produkContainer">
                 @if (!empty($produk))
                     @foreach ($produk as $prod)
@@ -187,7 +229,12 @@
                                     <div class="like-ico ico-25">
                                         <a href="#"><span class="flaticon-heart"></span></a>
                                     </div>
-                                    <h5 class="h5-sm nama-produk">{{ $prod->nama_produk }}</h5>
+                                    <h5 class="h5-sm nama-produk">
+                                        <a href="{{ url('produk/rinci/' . $prod->kode_produk) }}"
+                                            class="text-dark text-decoration-none hover-underline">
+                                            {{ $prod->nama_produk }}
+                                        </a>
+                                    </h5>
                                     <p class="grey-color deskripsi-produk">
                                         {{ \Illuminate\Support\Str::limit($prod->deskripsi_produk, 25) }}
                                     </p>
@@ -202,8 +249,7 @@
                                         <div class="add-to-cart bg-yellow ico-10">
                                             <button type="button"
                                                 class="shadow-none btn-cart-add-1 bg-yellow text-light ico-10 "
-                                                data-id="{{ $prod->kode_produk }}"
-                                                data-nama="{{ $prod->nama_produk }}"
+                                                data-id="{{ $prod->kode_produk }}" data-nama="{{ $prod->nama_produk }}"
                                                 data-harga="{{ $prod->harga_Satuan }}"
                                                 data-stok="{{ $prod->stok_produk }}"
                                                 data-ukuran="{{ $prod->ukuran_produk }}"
@@ -213,8 +259,7 @@
                                         </div>
                                     @else
                                         <div class="mt-3 text-center">
-                                            <button type="button"
-                                                class="shadow-none btn btn-danger w-100" disabled>
+                                            <button type="button" class="shadow-none btn btn-danger w-100" disabled>
                                                 <i class="flaticon-error"></i> Stok Kosong
                                             </button>
                                         </div>
@@ -264,7 +309,7 @@
                 function updateCartUI() {
                     const cartCount = document.getElementById('cart-count'); // desktop
                     const cartCountFixed = document.getElementById(
-                    'cart-count-fixed'); // mobile fixed
+                        'cart-count-fixed'); // mobile fixed
                     const cartIcon = document.getElementById('cart-icon');
                     const cartIconFixed = document.getElementById('cart-icon-fixed');
 

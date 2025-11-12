@@ -53,9 +53,9 @@
         /* Badge Koi agar tampil lembut */
         .price-badge-md {
             /* background: rgba(255, 255, 255, 0.85);
-                                        border-radius: 12px;
-                                        padding: 10px 20px;
-                                        backdrop-filter: blur(8px); */
+                                            border-radius: 12px;
+                                            padding: 10px 20px;
+                                            backdrop-filter: blur(8px); */
             animation: fadeInBadge 2s ease;
         }
 
@@ -80,8 +80,7 @@
                 <!-- HERO IMAGE -->
                 <div class="mb-4 col-md-7 mb-md-0" data-aos="fade-right" data-aos-duration="1200">
                     <div class="text-center hero-4-img position-relative">
-                        <img class="img-fluid floating-img"
-                            src="{{ asset('files/images/koi-about.png') }}" alt="hero-image">
+                        <img class="img-fluid floating-img" src="{{ asset('files/images/koi-about.png') }}" alt="hero-image">
 
                         <!-- Price Badge -->
                         <!-- Price Badge -->
@@ -189,8 +188,7 @@
                 <!-- Gambar -->
                 <div class="col-md-5 col-lg-6" data-aos="fade-right" data-aos-duration="1200">
                     <div class="mb-40 text-center about-3-img">
-                        <img class="img-fluid" src="{{ asset('files/images/about-8.png') }}"
-                            alt="about-image">
+                        <img class="img-fluid" src="{{ asset('files/images/about-8.png') }}" alt="about-image">
                     </div>
                 </div>
 
@@ -301,7 +299,14 @@
                                     <div class="like-ico ico-25">
                                         <a href="#"><span class="flaticon-heart"></span></a>
                                     </div>
-                                    <h5 class="h5-sm">{{ $prod->nama_produk }}</h5>
+                                    {{-- <h5 class="h5-sm">{{ $prod->nama_produk }}</h5> --}}
+                                    <h5 class="h5-sm nama-produk">
+                                        <a href="{{ url('produk/rinci/'. $prod->kode_produk) }}"
+                                            class="text-dark text-decoration-none hover-underline">
+                                            {{ $prod->nama_produk }}
+                                        </a>
+                                    </h5>
+
 
                                     <p class="grey-color">
                                         {{ \Illuminate\Support\Str::limit($prod->deskripsi_produk, 25) }}
@@ -317,8 +322,7 @@
                                         <div class="add-to-cart bg-yellow ico-10">
                                             <button type="button"
                                                 class="shadow-none btn-cart-add-1 bg-yellow text-light ico-10"
-                                                data-id="{{ $prod->kode_produk }}"
-                                                data-nama="{{ $prod->nama_produk }}"
+                                                data-id="{{ $prod->kode_produk }}" data-nama="{{ $prod->nama_produk }}"
                                                 data-harga="{{ $prod->harga_Satuan }}"
                                                 data-stok="{{ $prod->stok_produk }}"
                                                 data-ukuran="{{ $prod->ukuran_produk }}"
@@ -328,8 +332,7 @@
                                         </div>
                                     @else
                                         <div class="mt-3 text-center">
-                                            <button type="button"
-                                                class="shadow-none btn btn-danger w-100" disabled>
+                                            <button type="button" class="shadow-none btn btn-danger w-100" disabled>
                                                 <i class="flaticon-error"></i> Stok Kosong
                                             </button>
                                         </div>
@@ -366,9 +369,8 @@
 
                             <li class="review-1">
                                 <div class="mx-auto review-1-txt" style="max-width:700px;">
-                                    <img src="{{ asset('files/images/review-author-1.jpg') }}"
-                                        alt="pelanggan-azza" class="mb-3 shadow rounded-circle"
-                                        width="90" height="90">
+                                    <img src="{{ asset('files/images/review-author-1.jpg') }}" alt="pelanggan-azza"
+                                        class="mb-3 shadow rounded-circle" width="90" height="90">
 
                                     <p class="">“Ikan koi dari Azza Koi Farm benar-benar
                                         berkualitas! Warna ikannya cerah dan sehat semua. Pelayanannya
@@ -390,9 +392,8 @@
                             <!-- TESTIMONI 2 -->
                             <li class="review-1">
                                 <div class="mx-auto review-1-txt" style="max-width:700px;">
-                                    <img src="{{ asset('files/images/review-author-2.jpg') }}"
-                                        alt="pelanggan-azza" class="mb-3 shadow rounded-circle"
-                                        width="90" height="90">
+                                    <img src="{{ asset('files/images/review-author-2.jpg') }}" alt="pelanggan-azza"
+                                        class="mb-3 shadow rounded-circle" width="90" height="90">
 
                                     <p class="">“Pesan koi jumbo di Azza Koi Farm ternyata
                                         gampang banget! Adminnya responsif dan ikan dikirim dalam
@@ -414,9 +415,8 @@
                             <!-- TESTIMONI 3 -->
                             <li class="review-1">
                                 <div class="mx-auto review-1-txt" style="max-width:700px;">
-                                    <img src="{{ asset('files/images/review-author-3.jpg') }}"
-                                        alt="pelanggan-azza" class="mb-3 shadow rounded-circle"
-                                        width="90" height="90">
+                                    <img src="{{ asset('files/images/review-author-3.jpg') }}" alt="pelanggan-azza"
+                                        class="mb-3 shadow rounded-circle" width="90" height="90">
 
                                     <p class="">“Saya kagum dengan hasil ternakan Azza Koi
                                         Farm. Varian ikannya lengkap dan kualitasnya bagus. Harga juga
@@ -505,8 +505,8 @@
                 <div class="col-md-6">
                     <iframe
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3949.9320477314495!2d112.32966517412606!3d-8.108401881120022!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7895dae64834b5%3A0xfd3f89b1af065dcc!2sBasecamp%20Aza%20Koi%20Farms!5e0!3m2!1sid!2sid!4v1758073424053!5m2!1sid!2sid"
-                        width="100%" height="400" style="border:0;" allowfullscreen=""
-                        loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
 
             </div>
@@ -521,8 +521,7 @@
                 <div class="container my-5 accordion" id="faqAccordion">
 
                     <!-- 6 -->
-                    <div class="accordion-item"
-                        style="background-color: transparent; border: 1px solid #fff;">
+                    <div class="accordion-item" style="background-color: transparent; border: 1px solid #fff;">
                         <h2 class="accordion-header" id="headingSix">
                             <button class="text-white accordion-button collapsed" type="button"
                                 data-bs-toggle="collapse" data-bs-target="#faq6"
@@ -530,8 +529,7 @@
                                 Berapa biaya ongkir untuk pembelian ikan koi?
                             </button>
                         </h2>
-                        <div id="faq6" class="accordion-collapse collapse"
-                            data-bs-parent="#faqAccordion">
+                        <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                             <div class="text-white accordion-body">
                                 Ongkir bervariasi tergantung lokasi dan jumlah pembelian. Estimasi
                                 ongkir akan muncul
@@ -541,8 +539,7 @@
                     </div>
 
                     <!-- 7 -->
-                    <div class="accordion-item"
-                        style="background-color: transparent; border: 1px solid #fff;">
+                    <div class="accordion-item" style="background-color: transparent; border: 1px solid #fff;">
                         <h2 class="accordion-header" id="headingSeven">
                             <button class="text-white accordion-button collapsed" type="button"
                                 data-bs-toggle="collapse" data-bs-target="#faq7"
@@ -550,8 +547,7 @@
                                 Apakah bisa request ukuran atau jenis koi tertentu?
                             </button>
                         </h2>
-                        <div id="faq7" class="accordion-collapse collapse"
-                            data-bs-parent="#faqAccordion">
+                        <div id="faq7" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                             <div class="text-white accordion-body">
                                 Bisa. Silakan hubungi kami melalui WhatsApp atau form kontak, kami akan
                                 cek ketersediaan
@@ -561,8 +557,7 @@
                     </div>
 
                     <!-- 8 -->
-                    <div class="accordion-item"
-                        style="background-color: transparent; border: 1px solid #fff;">
+                    <div class="accordion-item" style="background-color: transparent; border: 1px solid #fff;">
                         <h2 class="accordion-header" id="headingEight">
                             <button class="text-white accordion-button collapsed" type="button"
                                 data-bs-toggle="collapse" data-bs-target="#faq8"
@@ -570,8 +565,7 @@
                                 Apakah ada perawatan khusus setelah koi sampai di rumah?
                             </button>
                         </h2>
-                        <div id="faq8" class="accordion-collapse collapse"
-                            data-bs-parent="#faqAccordion">
+                        <div id="faq8" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                             <div class="text-white accordion-body">
                                 Ya. Biarkan koi beradaptasi dengan air baru terlebih dahulu (proses
                                 aklimatisasi sekitar
@@ -581,8 +575,7 @@
                     </div>
 
                     <!-- 9 -->
-                    <div class="accordion-item"
-                        style="background-color: transparent; border: 1px solid #fff;">
+                    <div class="accordion-item" style="background-color: transparent; border: 1px solid #fff;">
                         <h2 class="accordion-header" id="headingNine">
                             <button class="text-white accordion-button collapsed" type="button"
                                 data-bs-toggle="collapse" data-bs-target="#faq9"
@@ -590,8 +583,7 @@
                                 Apakah ada diskon untuk pembelian dalam jumlah banyak (grosir)?
                             </button>
                         </h2>
-                        <div id="faq9" class="accordion-collapse collapse"
-                            data-bs-parent="#faqAccordion">
+                        <div id="faq9" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                             <div class="text-white accordion-body">
                                 Ada. Untuk pembelian dalam jumlah besar, silakan hubungi admin untuk
                                 mendapatkan harga
@@ -601,8 +593,7 @@
                     </div>
 
                     <!-- 10 -->
-                    <div class="accordion-item"
-                        style="background-color: transparent; border: 1px solid #fff;">
+                    <div class="accordion-item" style="background-color: transparent; border: 1px solid #fff;">
                         <h2 class="accordion-header" id="headingTen">
                             <button class="text-white accordion-button collapsed" type="button"
                                 data-bs-toggle="collapse" data-bs-target="#faq10"
@@ -610,8 +601,7 @@
                                 Apakah bisa datang langsung ke tempat untuk melihat koi?
                             </button>
                         </h2>
-                        <div id="faq10" class="accordion-collapse collapse"
-                            data-bs-parent="#faqAccordion">
+                        <div id="faq10" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                             <div class="text-white accordion-body">
                                 Bisa, tentu saja. Kami juga melayani kunjungan langsung ke farm/kolam
                                 dengan perjanjian

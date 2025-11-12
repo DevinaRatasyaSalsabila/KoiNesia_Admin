@@ -127,8 +127,8 @@
 
                             tbody.innerHTML += `
                 <tr class="${stokKosong ? 'opacity-50' : ''}">
-                    <td data-label="Pilih" class="text-center">
-                        <input type="checkbox" class="pilih-checkbox"
+                    <td data-label="Pilih" class="text-center fs-5">
+                        <input type="checkbox" class="pilih-checkbox fs-5"
                             data-index="${index}"
                             ${stokKosong ? "disabled" : (item.dipilih ? "checked" : "")}>
                     </td>

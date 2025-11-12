@@ -100,7 +100,7 @@ Route::get('/resi', function () {
 Route::post('/pesanan/tambah', [PesananController::class, 'store'])->name('pesanan.add');
 Route::put('/pesanan/update/{kode_pesanan}', [PesananController::class, 'update'])->name('pesanan.update');
 // Route::get('/detail', function () {
-//     return view('pelanggan.detail_produk.index'); // view form nanti
+//     return view('pelanggan.rinci.index'); // view form nanti
 // });
-
 // Route::get('/pelanggan/produk-lengkap', [PelangganController::class, 'produk_lengkap'])->name('produkLengkap');
+Route::get('/produk/rinci/{kode_produk}', [PelangganController::class, 'rinci'])->name('produkDetail');

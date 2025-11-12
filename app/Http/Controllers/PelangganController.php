@@ -38,6 +38,28 @@ class PelangganController extends Controller
         return view('pelanggan.beranda.index', compact('produk'));
     }
 
+    public function rinci($kode_produk)
+    {
+        // Ambil produk berdasarkan kode
+        $produk = DB::table('produk')->where('kode_produk', $kode_produk)->first();
+        $products =  DB::table('produk')->where('kode_produk', '!=', $kode_produk)
+            ->take(4)
+            ->get();
+
+        if (!$produk) {
+            abort(404, 'Produk tidak ditemukan');
+        }
+
+        // Ubah JSON ke array agar bisa dipakai untuk galeri gambar
+        $gambarArray = json_decode($produk->gambar_produk, true);
+        $gambarUtama = !empty($gambarArray)
+            ? asset('storage/produk/final/' . $gambarArray[0])
+            : asset('files/images/default.jpg');
+
+        // dd($produk);
+        return view('pelanggan.rinci.index', compact('produk', 'gambarArray', 'gambarUtama', 'products'));
+    }
+
     public function produk_lengkap()
     {
         $produk = DB::table('produk')->orderBy('created_at', 'desc')->get()->map(function ($item) {
