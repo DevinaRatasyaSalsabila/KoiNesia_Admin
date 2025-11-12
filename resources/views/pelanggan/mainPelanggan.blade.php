@@ -16,17 +16,19 @@
     <title>Azza Koi Farm</title>
 
     <!-- FAVICON AND TOUCH ICONS -->
-    <link rel="shortcut icon" href="{{ asset('files/images/favicon.ico') }}" type="image/x-icon">
-    <link rel="icon" href="{{ asset('files/images/favicon.ico') }}" type="image/x-icon">
-    <link rel="apple-touch-icon" sizes="152x152" href="{{ asset('files/images/apple-touch-icon-152x152.png') }}">
-    <link rel="apple-touch-icon" sizes="120x120" href="{{ asset('files/images/apple-touch-icon-120x120.png') }}">
-    <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('files/images/apple-touch-icon-76x76.png') }}">
-    <link rel="apple-touch-icon" href="{{ asset('files/images/apple-touch-icon.png') }}">
-    <link rel="icon" href="{{ asset('files/images/apple-touch-icon.png') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('files/images/logo.png') }}}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('files/images/logo.png') }}}" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="152x152" href="{{ asset('files/images/logo.png') }}">
+    <link rel="apple-touch-icon" sizes="120x120" href="{{ asset('files/images/logo.png') }}">
+    <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('files/images/logo.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('files/images/logo.png') }}">
+    <link rel="icon" href="{{ asset('files/images/logo.png') }}" type="image/x-icon">
 
     <!-- GOOGLE FONTS -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap"
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
 
@@ -34,7 +36,8 @@
     <link href="{{ asset('files/css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- FONT ICONS -->
-    <link href="https://use.fontawesome.com/releases/v5.11.0/css/all.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://use.fontawesome.com/releases/v5.11.0/css/all.css" rel="stylesheet"
+        crossorigin="anonymous">
     <link href="{{ asset('files/css/flaticon.css') }}" rel="stylesheet">
 
     <!-- PLUGINS STYLESHEET -->
@@ -48,11 +51,14 @@
     <!-- TEMPLATE CSS -->
     <link href="{{ asset('files/css/style.css') }}" rel="stylesheet">
 
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <!-- RESPONSIVE CSS -->
     <link href="{{ asset('files/css/responsive.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <!-- Bootstrap Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+        rel="stylesheet">
     <style>
         /* efek shake */
         @keyframes shake {
@@ -304,7 +310,8 @@
 
                             <!-- Footer Logo -->
                             <div class="footer-logo">
-                                <img src="{{ asset('files/images/logo.png') }}" alt="footer-logo" />
+                                <img src="{{ asset('files/images/logo.png') }}"
+                                    alt="footer-logo" />
                             </div>
 
                             <!-- Footer Copyright -->
@@ -320,14 +327,15 @@
 
                             {{-- <!-- Address -->
                             <p class="mt-10 p-xl">Los Angeles,</p> --}}
-                            <p class="p-xl">Lingkungan Klemunan, Klemunan, Kec. Wlingi, Kabupaten Blitar, Jawa Timur
+                            <p class="p-xl">Lingkungan Klemunan, Klemunan, Kec. Wlingi, Kabupaten
+                                Blitar, Jawa Timur
                                 66184</p>
 
                             {{-- <!-- Contacts -->
                             <p class="p-lg foo-email">Email: <a
                                     href="mailto:yourdomain@mail.com">hello@yourdomain.com</a></p> --}}
-                            <p class="p-lg">Call Now: <span class="yellow-color"><a
-                                        href="tel:081515725525">081515725525</a></span></p>
+                            <p class="p-lg">Telepon: <span class="yellow-color"><a
+                                        href="tel:083871992561">083871992561</a></span></p>
 
                         </div>
                     </div>
@@ -340,40 +348,43 @@
                             <ul class="clearfix text-center"
                                 style="display:flex; flex-wrap:wrap; justify-content:center; list-style:none; padding:15px; margin:0;">
 
-                                <li style="flex:0 0 33.33%; text-align:center; margin-bottom:15px;">
+                                <li
+                                    style="flex:0 0 33.33%; text-align:center; margin-bottom:15px;">
                                     <a href="#" target="_blank">
-                                        <img src="{{ asset('files/images/footer-ig.png') }}" alt="Instagram"
-                                            width="35" height="35">
+                                        <img src="{{ asset('files/images/footer-ig.png') }}"
+                                            alt="Instagram" width="35" height="35">
                                     </a>
                                 </li>
-                                <li style="flex:0 0 33.33%; text-align:center; margin-bottom:15px;">
+                                <li
+                                    style="flex:0 0 33.33%; text-align:center; margin-bottom:15px;">
                                     <a href="#" target="_blank">
-                                        <img src="{{ asset('files/images/footer-email.png') }}" alt="Email"
-                                            width="35" height="35">
+                                        <img src="{{ asset('files/images/footer-email.png') }}"
+                                            alt="Email" width="35" height="35">
                                     </a>
                                 </li>
-                                <li style="flex:0 0 33.33%; text-align:center; margin-bottom:15px;">
+                                <li
+                                    style="flex:0 0 33.33%; text-align:center; margin-bottom:15px;">
                                     <a href="#" target="_blank">
-                                        <img src="{{ asset('files/images/footer-tele.png') }}" alt="Telegram"
-                                            width="35" height="35">
-                                    </a>
-                                </li>
-                                <li style="flex:0 0 33.33%; text-align:center;">
-                                    <a href="#" target="_blank">
-                                        <img src="{{ asset('files/images/footer-youtube.png') }}" alt="YouTube"
-                                            width="35" height="35">
+                                        <img src="{{ asset('files/images/footer-tele.png') }}"
+                                            alt="Telegram" width="35" height="35">
                                     </a>
                                 </li>
                                 <li style="flex:0 0 33.33%; text-align:center;">
                                     <a href="#" target="_blank">
-                                        <img src="{{ asset('files/images/footer-facebook.png') }}" alt="Facebook"
-                                            width="35" height="35">
+                                        <img src="{{ asset('files/images/footer-youtube.png') }}"
+                                            alt="YouTube" width="35" height="35">
                                     </a>
                                 </li>
                                 <li style="flex:0 0 33.33%; text-align:center;">
                                     <a href="#" target="_blank">
-                                        <img src="{{ asset('files/images/footer-wa.png') }}" alt="WhatsApp"
-                                            width="35" height="35">
+                                        <img src="{{ asset('files/images/footer-facebook.png') }}"
+                                            alt="Facebook" width="35" height="35">
+                                    </a>
+                                </li>
+                                <li style="flex:0 0 33.33%; text-align:center;">
+                                    <a href="#" target="_blank">
+                                        <img src="{{ asset('files/images/footer-wa.png') }}"
+                                            alt="WhatsApp" width="35" height="35">
                                     </a>
                                 </li>
                             </ul>
@@ -388,6 +399,7 @@
 
     <!-- EXTERNAL SCRIPTS
         ============================================= -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="{{ asset('files/js/jquery-3.5.1.min.js') }}"></script>
     <script src="{{ asset('files/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('files/js/modernizr.custom.js') }}"></script>
@@ -405,7 +417,6 @@
     <script src="{{ asset('files/js/jquery.datetimepicker.full.js') }}"></script>
     <script src="{{ asset('files/js/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('files/js/jquery.ajaxchimp.min.js') }}"></script>
-
     <!-- Custom Script -->
     <script src="{{ asset('files/js/custom.js') }}"></script>
 

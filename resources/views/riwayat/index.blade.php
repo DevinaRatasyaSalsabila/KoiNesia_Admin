@@ -1,5 +1,89 @@
 @extends('main')
 @section('content')
+    <style>
+        /* === Panah dropdown berwarna biru soft === */
+        table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child::before,
+        table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child::before {
+            background: transparent !important;
+            /* hilangkan background */
+            color: #4da6ff !important;
+            /* panah biru soft */
+            border: none !important;
+            box-shadow: none !important;
+            font-weight: bold;
+            font-size: 18px;
+            line-height: 18px;
+        }
+
+        /* Saat baris terbuka (ikon berubah jadi -) */
+        table.dataTable.dtr-inline.collapsed>tbody>tr.parent>td:first-child::before,
+        table.dataTable.dtr-inline.collapsed>tbody>tr.parent>th:first-child::before {
+            color: #007bff !important;
+            /* biru sedikit lebih tua */
+        }
+
+        /* === Gaya isi dropdown (detail row) === */
+        table.dataTable tbody tr.child ul.dtr-details {
+            background: #f8fbff;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin: 10px 0;
+            border: 1px solid #e0ecff;
+        }
+
+        /* Gaya tiap baris data di dropdown */
+        table.dataTable tbody tr.child ul.dtr-details li {
+            margin-bottom: 6px;
+            font-size: 14px;
+            color: #333;
+            display: flex;
+            gap: 5px;
+        }
+
+        /* Judul kolom (label) */
+        table.dataTable tbody tr.child ul.dtr-details li span.dtr-title {
+            font-weight: 600;
+            color: #007bff;
+            margin-right: 5px;
+        }
+
+        /* Tambahkan tanda ":" otomatis setelah judul */
+        table.dataTable tbody tr.child ul.dtr-details li span.dtr-title::after {
+            content: ":";
+            margin-left: 2px;
+        }
+
+        /* Nilai data (isi kolom) */
+        table.dataTable tbody tr.child ul.dtr-details li span.dtr-data {
+            color: #444;
+        }
+    </style>
+    <style>
+        .card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            padding: 1rem 1.25rem;
+        }
+
+        @media (max-width: 768px) {
+            .card-header h5 {
+                text-align: center;
+                width: 100%;
+            }
+
+            .card-header input[type="date"] {
+                width: 100% !important;
+            }
+
+            .card-header .d-flex {
+                justify-content: center !important;
+            }
+
+            .card-header button {
+                width: 100%;
+            }
+        }
+    </style>
     <!--breadcrumb-->
     <div class="mb-3 page-breadcrumb d-none d-sm-flex align-items-center">
         <div class="breadcrumb-title pe-3">Riwayat Transaksi</div>

@@ -22,7 +22,7 @@ public function index()
         ->groupBy(DB::raw('DATE(created_at)'))
         ->orderBy('tanggal', 'asc')
         ->get()
-        ->keyBy('tanggal');
+        ->keyBy('tanggal'); 
 
     $pengeluaran = Pengeluaran::select(
         DB::raw('DATE(created_at) as tanggal'),
@@ -46,8 +46,9 @@ public function index()
         ];
     });
 
-        return view('rekap.index', compact('rekap'));
-    }
+    return view('rekap.index', compact('rekap'));
+}
+
 
     /**
      * Show the form for creating a new resource.

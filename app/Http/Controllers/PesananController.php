@@ -217,15 +217,6 @@ class PesananController extends Controller
 
             $pesananLama = Pesanan::where('kode_pesanan', $kode_pesanan)->get();
             $produkBaruIDs = $request->produk;
-            Log::info("📦 Produk baru dikirim dari form", ['produk_baru' => $produkBaruIDs]);
-
-            Log::info("📊 Pesanan lama sebelum update", $pesananLama->map(function ($p) {
-                return [
-                    'kode_produk' => $p->kode_produk,
-                    'jumlah' => $p->jumlah,
-                    'nominal' => $p->nominal,
-                ];
-            })->toArray());
 
             foreach ($request->produk as $i => $idProduk) {
                 $produk = Produk::find($idProduk);
@@ -234,12 +225,12 @@ class PesananController extends Controller
                 $qtyBaru = (int) ($request->jumlah[$i] ?? 1);
                 $subtotal = $produk->harga_Satuan * $qtyBaru;
 
+                // cari pesanan lama dengan produk yg sama
                 $pesananItem = $pesananLama->firstWhere('kode_produk', $produk->kode_produk);
                 $jumlahLama = $pesananItem ? $pesananItem->jumlah : 0;
 
-                $stokSebelum = $produk->stok_produk + $jumlahLama;
-
-                $stokBaru = $stokSebelum - $qtyBaru;
+                // hitung stok baru dengan cara yg benar
+                $stokBaru = $produk->stok_produk + $jumlahLama - $qtyBaru;
 
                 if ($stokBaru < 0) {
                     return back()->with('error', "Stok produk {$produk->nama_produk} tidak mencukupi!");
@@ -247,18 +238,16 @@ class PesananController extends Controller
 
                 $produk->update(['stok_produk' => $stokBaru]);
 
-                $pesananRecord = Pesanan::where('kode_pesanan', $kode_pesanan)
-                    ->where('kode_produk', $produk->kode_produk)
-                    ->first();
-
-                if ($pesananRecord) {
-                    $pesananRecord->update([
+                if ($pesananItem) {
+                    // update data pesanan lama
+                    $pesananItem->update([
                         'jumlah' => $qtyBaru,
                         'nominal' => $subtotal,
                         'id_pembeli' => $request->id_pembeli,
                         'updated_at' => now(),
                     ]);
                 } else {
+                    // buat pesanan baru (produk yang baru ditambahkan)
                     Pesanan::create([
                         'kode_pesanan' => $kode_pesanan,
                         'id_pembeli'   => $request->id_pembeli,
@@ -269,14 +258,24 @@ class PesananController extends Controller
                         'nominal'      => $subtotal,
                     ]);
 
-                    $produk->decrement('stok_produk', $qtyBaru);
+                    // stok baru udah dikalkulasi di atas, jadi gak usah decrement lagi
                 }
             }
 
+            // hapus produk yg gak ada lagi di pesanan baru
             $kodeProdukBaru = Produk::whereIn('id_produk', $produkBaruIDs)->pluck('kode_produk');
-            Pesanan::where('kode_pesanan', $kode_pesanan)
+            $pesananDihapus = Pesanan::where('kode_pesanan', $kode_pesanan)
                 ->whereNotIn('kode_produk', $kodeProdukBaru)
-                ->delete();
+                ->get();
+
+            // kembalikan stok produk yg dihapus
+            foreach ($pesananDihapus as $hapus) {
+                $produk = Produk::where('kode_produk', $hapus->kode_produk)->first();
+                if ($produk) {
+                    $produk->increment('stok_produk', $hapus->jumlah);
+                }
+                $hapus->delete();
+            }
 
             Log::info("✅ Update pesanan selesai", ['kode_pesanan' => $kode_pesanan]);
             return redirect()->route('pesanan.index')->with('success', 'Pesanan berhasil diperbarui!');
@@ -291,9 +290,25 @@ class PesananController extends Controller
 
     public function destroy($id)
     {
+        $pesanans = Pesanan::where('kode_pesanan', $id)->get();
+
+        if ($pesanans->isEmpty()) {
+            return back()->with('error', 'Pesanan tidak ditemukan.');
+        }
+
+        foreach ($pesanans as $p) {
+            $produk = Produk::where('kode_produk', $p->kode_produk)->first();
+
+            if ($produk) {
+                $produk->stok_produk += $p->jumlah;
+                $produk->save();
+            }
+        }
+
+        // hapus semua detail pesanan terkait
         Pesanan::where('kode_pesanan', $id)->delete();
 
-        return redirect()->back()->with('success', 'Pesanan berhasil dihapus.');
+        return back()->with('success', 'Pesanan berhasil dihapus dan stok produk dikembalikan.');
     }
 
     // public function print(Request $request)

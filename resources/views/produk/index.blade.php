@@ -1,6 +1,18 @@
 @extends('main')
 @section('content')
     <!-- Breadcrumb -->
+    @if (session('warning'))
+        <div class="alert alert-warning">{{ session('warning') }}</div>
+    @endif
+    @if (session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+    <script>
+         setTimeout(() => {
+            document.querySelectorAll('.alert').forEach(el => el.remove());
+        }, 5000);
+    </script>
+
     <div class="mb-3 page-breadcrumb d-none d-sm-flex align-items-center">
         <div class="breadcrumb-title pe-3 fw-bold fs-5 text-dark">Produk</div>
         <div class="ps-3">
@@ -16,25 +28,33 @@
     <!-- End Breadcrumb -->
 
     <!-- Pencarian dan Tombol Aksi -->
-    <div class="row align-items-center mb-4">
-        <div class="col-md-4">
+    <div class="row align-items-center mb-4 gy-3">
+        <!-- Kolom Search -->
+        <div class="col-12 col-md-6 col-lg-4">
             <div class="input-group shadow-sm rounded-3">
-                <span class="input-group-text bg-primary text-white"><i class="bx bx-search"></i></span>
+                <span class="input-group-text bg-primary text-white">
+                    <i class="bx bx-search"></i>
+                </span>
                 <input type="text" class="form-control" id="search-guru" placeholder="Cari produk berdasarkan nama..."
                     aria-label="Pencarian">
             </div>
         </div>
-        <div class="col-md-8 d-flex justify-content-end gap-2">
-            <a href="{{ url('produk/tambah') }}" class="btn btn-warning shadow-sm rounded-3" data-bs-toggle="tooltip"
-                title="Tambah Produk">
+
+        <!-- Kolom Tombol -->
+        <div class="col-12 col-md-6 col-lg-8 d-flex flex-wrap justify-content-md-end justify-content-center gap-2">
+            <a href="{{ url('produk/tambah') }}"
+                class="btn btn-warning shadow-sm rounded-3 d-flex align-items-center justify-content-center"
+                data-bs-toggle="tooltip" title="Tambah Produk">
                 <i class="bx bx-plus fs-5 text-light"></i>
             </a>
-            <button type="button" class="btn btn-secondary shadow-sm rounded-3" data-bs-toggle="modal"
-                data-bs-target="#importModal" title="Import Produk">
+            <button type="button"
+                class="btn btn-secondary shadow-sm rounded-3 d-flex align-items-center justify-content-center"
+                data-bs-toggle="modal" data-bs-target="#importModal" title="Import Produk">
                 <i class="bi bi-download"></i>
             </button>
         </div>
     </div>
+
 
     <!-- Loader -->
     <div id="loader" class="text-center my-5" style="display:none;">
@@ -140,14 +160,16 @@
                         let gambarHTML = "";
                         if (item.gambar_produk) {
                             const media = JSON.parse(item.gambar_produk);
-                            const firstImage = media.find(f => f.endsWith(".jpg") || f.endsWith(".jpeg") || f
+                            const firstImage = media.find(f => f.endsWith(".jpg") || f
+                                .endsWith(".jpeg") || f
                                 .endsWith(".png"));
-                            const firstVideo = media.find(f => f.endsWith(".mp4") || f.endsWith(".webm") || f
+                            const firstVideo = media.find(f => f.endsWith(".mp4") || f
+                                .endsWith(".webm") || f
                                 .endsWith(".ogg"));
                             if (firstImage) {
                                 gambarHTML = `
-                        <img src="/storage/produk/final/${firstImage}" 
-                             class="img-fluid rounded-3" 
+                        <img src="/storage/produk/final/${firstImage}"
+                             class="img-fluid rounded-3"
                              style="max-height:220px;object-fit:cover;">`;
                             } else if (firstVideo) {
                                 gambarHTML = `
@@ -179,12 +201,12 @@
                                     </span>
                                 </h6>
                                 <div class="gap-2 d-flex">
-                                    <a href="/produk/detail/${item.id_produk}" 
+                                    <a href="/produk/detail/${item.id_produk}"
                                        class="gap-2 px-3 shadow-sm btn btn-primary btn-sm d-flex align-items-center"
                                        data-bs-toggle="tooltip" title="Detail Produk">
                                        <i class="bx bx-info-circle fs-5"></i>
                                     </a>
-                                    <a href="/produk/edit/${item.id_produk}" 
+                                    <a href="/produk/edit/${item.id_produk}"
                                        class="px-3 shadow-sm btn btn-warning btn-sm"
                                        data-bs-toggle="tooltip" title="Edit Produk">
                                        <i class="bx bx-pencil fs-5 text-light"></i>
@@ -192,7 +214,7 @@
                                     <form action="/produk/delete/${item.id_produk}" method="POST" class="delete-form d-inline">
                                         @csrf
                                         @method('DELETE')
-                                       <button type="button" 
+                                       <button type="button"
     class="px-3 shadow-sm btn btn-danger btn-sm confirm-delete-button"
     data-bs-toggle="tooltip" title="Hapus Produk">
     <i class="bx bx-trash fs-5 text-light"></i>
@@ -235,7 +257,8 @@
                 // Filter (search)
                 document.getElementById("search-guru").addEventListener("input", function() {
                     const q = this.value.toLowerCase();
-                    filteredData = dataProduk.filter(p => p.nama_produk.toLowerCase().includes(q));
+                    filteredData = dataProduk.filter(p => p.nama_produk.toLowerCase()
+                        .includes(q));
                     currentPage = 1;
                     displayData(currentPage, filteredData);
                     setupPagination();

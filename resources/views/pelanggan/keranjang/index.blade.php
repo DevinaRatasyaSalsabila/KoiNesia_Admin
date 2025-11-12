@@ -23,7 +23,7 @@
                                 </div>
                             </div>
                         </div>
-                        <h2 class="h2-xl">Keranjang</h2>
+                        {{-- <h2 class="h2-xl">Keranjang</h2> --}}
                     </div>
                 </div>
             </div>

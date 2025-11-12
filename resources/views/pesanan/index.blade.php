@@ -515,7 +515,7 @@
                         },
                         {
                             extend: 'csvHtml5',
-                            className: 'btn btn-info text-light btn-sm m-1 text-light',
+                            className: 'btn btn-info text-light btn-sm m-1',
                             text: 'Export CSV'
                         },
                         {
