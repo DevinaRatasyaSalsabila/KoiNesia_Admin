@@ -391,7 +391,6 @@
                     sampaiInput.value = "";
                     table.draw();
                 });
-
             });
         </script>
     @endpush
