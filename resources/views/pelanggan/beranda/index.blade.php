@@ -301,7 +301,7 @@
                                     </div>
                                     {{-- <h5 class="h5-sm">{{ $prod->nama_produk }}</h5> --}}
                                     <h5 class="h5-sm nama-produk">
-                                        <a href="{{ url('produk/rinci/'. $prod->kode_produk) }}"
+                                        <a href="{{ url('pelanggan/produk/rinci/'. $prod->kode_produk) }}"
                                             class="text-dark text-decoration-none hover-underline">
                                             {{ $prod->nama_produk }}
                                         </a>

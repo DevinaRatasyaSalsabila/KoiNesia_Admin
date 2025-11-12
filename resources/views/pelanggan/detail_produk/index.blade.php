@@ -230,7 +230,7 @@
                                         <a href="#"><span class="flaticon-heart"></span></a>
                                     </div>
                                     <h5 class="h5-sm nama-produk">
-                                        <a href="{{ url('produk/rinci/' . $prod->kode_produk) }}"
+                                        <a href="{{ url('pelanggan/produk/rinci/' . $prod->kode_produk) }}"
                                             class="text-dark text-decoration-none hover-underline">
                                             {{ $prod->nama_produk }}
                                         </a>
