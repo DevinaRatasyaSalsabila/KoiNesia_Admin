@@ -70,9 +70,12 @@
                 <table id="tabel_pesanan" class="table table-striped table-bordered Pesanan">
                     <thead>
                         <tr>
-                            <th class="text-center align-middle">
-                                <div class="d-flex justify-content-center align-items-center">
-                                    <input id="btnSelectAllPesanan" type="checkbox" class="form-check-input">
+                            <th class="">
+                                <div class="">
+                                    <label class="m-0" style="cursor:pointer;">
+                                        <input id="selectAll" type="checkbox" class="form-check-input fs-5"
+                                            onclick="event.stopPropagation()">
+                                    </label>
                                 </div>
                             </th>
                             <th>Tanggal</th>
@@ -95,13 +98,12 @@
                             @endphp
                             <tr data-id="{{ $first->kode_pesanan }}">
                                 <td class="align-middle">
-                                    <div class="form-check">
-                                        <input class="form-check-input checkbox-pesanan" type="checkbox"
-                                            value="{{ $first->kode_pesanan }}">
-                                    </div>
+                                    {{-- <div class="form-check"> --}}
+                                    <input class="form-check-input checkbox-pesanan fs-5" type="checkbox"
+                                        value="{{ $first->kode_pesanan }}">
+                                    {{-- </div> --}}
                                 </td>
-                                <td class="align-middle"
-                                    data-tanggal="{{ $first->pesanan_created_at }}">
+                                <td class="align-middle" data-tanggal="{{ $first->pesanan_created_at }}">
                                     {{ \Carbon\Carbon::parse($first->pesanan_created_at)->format('d-m-Y') }}
                                 </td>
                                 <td class="align-middle">
@@ -149,20 +151,16 @@
                                             <i class="fadeIn animated bx bx-info-circle fs-6"></i>
                                         </a>
 
-                                        <form
-                                            action="{{ route('pesanan.delete', $first->kode_pesanan) }}"
-                                            method="POST"
+                                        <form action="{{ route('pesanan.delete', $first->kode_pesanan) }}" method="POST"
                                             class="p-0 m-0 d-flex align-items-center delete-form">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger">
-                                                <i
-                                                    class="fadeIn animated bx bx-trash text-light fs-6"></i>
+                                                <i class="fadeIn animated bx bx-trash text-light fs-6"></i>
                                             </button>
                                         </form>
 
-                                        <button type="button" class="btn btn-warning"
-                                            data-bs-toggle="modal"
+                                        <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                                             data-bs-target="#edit_pesanan_{{ $first->kode_pesanan }}">
                                             <i class="fadeIn animated bx bx-pencil text-light fs-6"></i>
                                         </button>
@@ -192,15 +190,15 @@
 
     @push('scripts')
         <script>
-            $(document).ready(function() {
-                var table = $('#tabel_pesanan').DataTable({
-                    lengthChange: false,
-                    buttons: ['copy', 'excel', 'pdf', 'print']
-                });
+            // $(document).ready(function() {
+            //     var table = $('#tabel_pesanan').DataTable({
+            //         lengthChange: false,
+            //         buttons: ['copy', 'excel', 'pdf', 'print']
+            //     });
 
-                table.buttons().container()
-                    .appendTo('#tabel_pesanan_wrapper .col-md-6:eq(0)');
-            });
+            //     table.buttons().container()
+            //         .appendTo('#tabel_pesanan_wrapper .col-md-6:eq(0)');
+            // });
 
             let updateStatusUrl = "{{ route('pesanan.updateStatus', ':id') }}";
 
@@ -347,158 +345,40 @@
                 select.addEventListener('change', () => updateColor(select));
             });
         </script>
-        <script>
+        {{-- <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const dariInput = document.getElementById('dari-pesanan');
                 const sampaiInput = document.getElementById('sampai-pesanan');
-                const tabel = document.getElementById('tabel_pesanan').getElementsByTagName(
-                    'tbody')[0];
-                const selectAllBtn = document.getElementById('btnSelectAllPesanan');
+                const selectAllBtn = document.getElementById('selectAll');
                 const printBtn = document.getElementById('btnPrintPesanan');
 
+                // ✅ Inisialisasi DataTable + export buttons
                 var table = $('#tabel_pesanan').DataTable({
                     responsive: true,
                     dom: "<'row mb-3'<'col-md-6 d-flex align-items-center'B><'col-md-6 d-flex justify-content-end'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row mt-3'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 d-flex justify-content-end'p>>",
                     buttons: [{
-                            extend: 'excelHtml5',
-                            className: 'btn btn-success btn-sm m-1',
-                            text: 'Export Excel',
-                            exportOptions: {
-                                columns: [1, 2, 3, 4],
-                                rows: function(idx, data, node) {
-                                    return $(node).find('.checkbox-pesanan').prop('checked');
-                                },
-                                format: {
-                                    body: function(data, row, column, node) {
-                                        if ($(node).find('select').length) {
-                                            return $(node).find('select option:selected').text().trim();
-                                        }
-                                        return $(node).text().trim();
-                                    }
-                                }
-                            },
-                            messageTop: function() {
-                                const dari = $('#dari-pesanan').val();
-                                const sampai = $('#sampai-pesanan').val();
-                                if (dari && sampai) return `Data Pesanan (${dari} - ${sampai})`;
-                                if (dari) return `Data Pesanan (Dari ${dari})`;
-                                if (sampai) return `Data Pesanan (Sampai ${sampai})`;
-                                return 'Data Pesanan';
-                            },
-                            action: function(e, dt, button, config) {
-                                let checked = $('.checkbox-pesanan:checked').length;
-                                if (checked === 0) {
-                                    Swal.fire({
-                                        icon: 'warning',
-                                        title: 'Oops...',
-                                        text: 'Pilih setidaknya 1 data untuk di-export!',
-                                    });
-                                    return;
-                                }
-                                $.fn.dataTable.ext.buttons.excelHtml5.action.call(this, e, dt, button,
-                                    config);
-                            }
+                            extend: 'copy',
+                            text: 'Copy'
                         },
                         {
-                            extend: 'pdfHtml5',
-                            className: 'btn btn-danger btn-sm m-1',
-                            text: 'Export PDF',
-                            exportOptions: {
-                                columns: [1, 2, 3, 4],
-                                rows: function(idx, data, node) {
-                                    return $(node).find('.checkbox-pesanan').prop('checked');
-                                },
-                                format: {
-                                    body: function(data, row, column, node) {
-                                        if ($(node).find('select').length) {
-                                            return $(node).find('select option:selected').text().trim();
-                                        }
-                                        return $(node).text().trim();
-                                    }
-                                }
-                            },
-                            customize: function(doc) {
-                                doc.pageMargins = [20, 20, 20, 20];
-                                doc.defaultStyle.alignment = 'center';
-                                doc.content[1].table.widths = ['25%', '25%', '25%', '25%'];
-
-                                const dari = $('#dari-pesanan').val();
-                                const sampai = $('#sampai-pesanan').val();
-
-                                let headerText = 'Data Pesanan';
-                                if (dari && sampai) {
-                                    headerText += ` (${dari} - ${sampai})`;
-                                } else if (dari && !sampai) {
-                                    headerText += ` (Dari ${dari})`;
-                                } else if (!dari && sampai) {
-                                    headerText += ` (Sampai ${sampai})`;
-                                }
-
-                                doc.content.splice(0, 0, {
-                                    text: headerText,
-                                    fontSize: 14,
-                                    bold: true,
-                                    alignment: 'center',
-                                    margin: [0, 0, 0, 15]
-                                });
-                            },
-                            action: function(e, dt, button, config) {
-                                let checked = $('.checkbox-pesanan:checked').length;
-                                if (checked === 0) {
-                                    Swal.fire({
-                                        icon: 'warning',
-                                        title: 'Oops...',
-                                        text: 'Pilih setidaknya 1 data untuk di-export!',
-                                    });
-                                    return;
-                                }
-                                $.fn.dataTable.ext.buttons.pdfHtml5.action.call(this, e, dt, button,
-                                    config);
-                            }
+                            extend: 'excel',
+                            text: 'Excel'
                         },
                         {
-                            extend: 'csvHtml5',
-                            className: 'btn btn-info btn-sm m-1',
-                            text: 'Export CSV',
-                            exportOptions: {
-                                columns: [1, 2, 3, 4],
-                                rows: function(idx, data, node) {
-                                    return $(node).find('.checkbox-pesanan').prop('checked');
-                                },
-                                format: {
-                                    body: function(data, row, column, node) {
-                                        if ($(node).find('select').length) {
-                                            return $(node).find('select option:selected').text().trim();
-                                        }
-                                        return $(node).text().trim();
-                                    }
-                                }
-                            },
-                            messageTop: function() {
-                                const dari = $('#dari-pesanan').val();
-                                const sampai = $('#sampai-pesanan').val();
-                                if (dari && sampai) return `Data Pesanan (${dari} - ${sampai})`;
-                                if (dari) return `Data Pesanan (Dari ${dari})`;
-                                if (sampai) return `Data Pesanan (Sampai ${sampai})`;
-                                return 'Data Pesanan';
-                            },
-                            action: function(e, dt, button, config) {
-                                let checked = $('.checkbox-pesanan:checked').length;
-                                if (checked === 0) {
-                                    Swal.fire({
-                                        icon: 'warning',
-                                        title: 'Oops...',
-                                        text: 'Pilih setidaknya 1 data untuk di-export!',
-                                    });
-                                    return;
-                                }
-                                $.fn.dataTable.ext.buttons.csvHtml5.action.call(this, e, dt, button,
-                                    config);
-                            }
+                            extend: 'pdf',
+                            text: 'PDF'
                         },
+                        {
+                            extend: 'print',
+                            text: 'Print Semua'
+                        }
                     ],
+                    columnDefs: [{
+                        orderable: false,
+                        targets: 0
+                    }],
                     language: {
                         search: "Cari:",
                         lengthMenu: "Tampilkan _MENU_ data",
@@ -510,61 +390,57 @@
                     }
                 });
 
-                $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                // ✅ Filter berdasarkan rentang tanggal
+                function filterByDate(settings, data, dataIndex) {
                     const dari = dariInput.value ? new Date(dariInput.value) : null;
                     const sampai = sampaiInput.value ? new Date(sampaiInput.value) : null;
-                    const tanggalText = data[1]; // Kolom tanggal
-                    const tanggalParts = tanggalText.split('-');
-                    let tanggal;
+                    const tanggal = new Date(data[1]); // Kolom ke-1 = tanggal pesanan
 
-                    if (tanggalParts[0].length === 2 && tanggalParts[2].length === 4) {
-                        tanggal = new Date(`${tanggalParts[2]}-${tanggalParts[1]}-${tanggalParts[0]}`);
-                    } else {
-                        tanggal = new Date(tanggalText);
-                    }
-
-                    if (!dari && !sampai) {
+                    if ((dari === null && sampai === null) ||
+                        (dari === null && tanggal <= sampai) ||
+                        (sampai === null && tanggal >= dari) ||
+                        (tanggal >= dari && tanggal <= sampai)) {
                         return true;
                     }
-                    if (dari && !sampai) {
-                        return tanggal >= dari;
-                    }
-                    if (!dari && sampai) {
-                        return tanggal <= sampai;
-                    }
-                    return tanggal >= dari && tanggal <= sampai;
-                });
+                    return false;
+                }
 
-                // Event ketika tanggal diganti
-                dariInput.addEventListener('change', filterByDateRange);
-                sampaiInput.addEventListener('change', filterByDateRange);
+                // Daftarkan custom filter ke DataTables
+                $.fn.dataTable.ext.search.push(filterByDate);
 
-                // Reset ke hari ini
-                resetBtn.addEventListener('click', () => {
-                    dariInput.value = '';
-                    sampaiInput.value = '';
+                // Jalankan filter setiap kali tanggal berubah
+                dariInput.addEventListener('change', () => table.draw());
+                sampaiInput.addEventListener('change', () => table.draw());
 
-                    $(dariInput).trigger('change');
-                    $(sampaiInput).trigger('change');
+                // ✅ Fungsi update select all
+                function updateSelectAllState() {
+                    const allVisible = $('.checkbox-pesanan:visible').length;
+                    const checkedVisible = $('.checkbox-pesanan:visible:checked').length;
+                    $('#selectAll').prop('checked', allVisible > 0 && allVisible === checkedVisible);
+                }
 
-                    table.draw();
-                });
-
-                selectAllBtn.addEventListener('change', function() {
+                // ✅ Klik select all
+                $('#selectAll').on('change', function() {
                     const isChecked = this.checked;
                     $('.checkbox-pesanan:visible').prop('checked', isChecked);
                 });
 
-                $('.checkbox-pesanan').on('change', function() {
-                    const allChecked =
-                        $('.checkbox-pesanan:visible').length === $('.checkbox-pesanan:visible:checked').length;
-                    $('#btnSelectAllPesanan').prop('checked', allChecked);
+                // ✅ Update setiap kali tabel digambar ulang
+                table.on('draw', function() {
+                    $('.checkbox-pesanan').off('change').on('change', function() {
+                        updateSelectAllState();
+                    });
+                    updateSelectAllState();
                 });
 
-                // Print data yang diceklis
+                // ✅ Jalankan sekali di awal
+                $('.checkbox-pesanan').on('change', function() {
+                    updateSelectAllState();
+                });
+
+                // ✅ Tombol print khusus data terpilih
                 printBtn.addEventListener('click', () => {
-                    const checkedRows = Array.from(document.querySelectorAll(
-                            '.checkbox-pesanan:checked'))
+                    const checkedRows = Array.from(document.querySelectorAll('.checkbox-pesanan:checked'))
                         .map(cb => cb.closest('tr'));
 
                     if (checkedRows.length === 0) {
@@ -572,18 +448,17 @@
                         return;
                     }
 
-                    // Buat halaman print sederhana
                     const printWindow = window.open('', '', 'width=800,height=600');
                     printWindow.document.write('<html><head><title>Print Pesanan</title>');
                     printWindow.document.write(
                         '<style>table{width:100%;border-collapse:collapse;}th,td{border:1px solid #333;padding:6px;text-align:left;}</style>'
-                    );
+                        );
                     printWindow.document.write('</head><body>');
                     printWindow.document.write('<h3>Data Pesanan Terpilih</h3>');
                     printWindow.document.write('<table>');
                     printWindow.document.write(
                         '<tr><th>Tanggal</th><th>Nama Pembeli</th><th>Nominal Pembelian</th><th>Status</th></tr>'
-                    );
+                        );
 
                     checkedRows.forEach(row => {
                         printWindow.document.write('<tr>' +
@@ -598,11 +473,153 @@
                     printWindow.document.close();
                     printWindow.print();
                 });
+            });
+        </script> --}}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const dariInput = document.getElementById('dari-pesanan');
+                const sampaiInput = document.getElementById('sampai-pesanan');
+                const selectAllBtn = document.getElementById('selectAll');
+                const printBtn = document.getElementById('btnPrintPesanan');
 
-                // Jalankan filter pertama kali (hari ini)
-                filterByDateRange();
+                // ✅ Inisialisasi DataTable dengan export button styled
+                var table = $('#tabel_pesanan').DataTable({
+                    responsive: true,
+                    dom: "<'row mb-3'<'col-md-6 d-flex align-items-center'B><'col-md-6 d-flex justify-content-end'f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row mt-3'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 d-flex justify-content-end'p>>",
+                    buttons: [{
+                            extend: 'excelHtml5',
+                            className: 'btn btn-success btn-sm m-1',
+                            text: 'Export Excel'
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            className: 'btn btn-danger btn-sm m-1',
+                            text: 'Export PDF',
+                            exportOptions: {
+                                columns: [0, 1, 2, 3] // pilih kolom yang mau diexport
+                            },
+                            customize: function(doc) {
+                                doc.pageMargins = [20, 20, 20, 20];
+                                doc.defaultStyle.alignment = 'center';
+                                doc.content[1].table.widths = ['10%', '30%', '36%', '24%'];
+                                doc.content.splice(0, 0, {
+                                    text: 'Data Pesanan',
+                                    fontSize: 14,
+                                    bold: true,
+                                    alignment: 'center',
+                                    margin: [0, 0, 0, 15]
+                                });
+                            }
+                        },
+                        {
+                            extend: 'csvHtml5',
+                            className: 'btn btn-info text-light btn-sm m-1 text-light',
+                            text: 'Export CSV'
+                        },
+                        {
+                            extend: 'print',
+                            className: 'btn btn-secondary text-light btn-sm m-1',
+                            text: 'Print Semua'
+                        }
+                    ],
+                    columnDefs: [{
+                        orderable: false,
+                        targets: 0
+                    }],
+                    language: {
+                        search: "Cari:",
+                        lengthMenu: "Tampilkan _MENU_ data",
+                        info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                        paginate: {
+                            next: "Berikutnya",
+                            previous: "Sebelumnya"
+                        }
+                    }
+                });
+
+                // ✅ Filter berdasarkan tanggal
+                function filterByDate(settings, data, dataIndex) {
+                    const dari = dariInput.value ? new Date(dariInput.value) : null;
+                    const sampai = sampaiInput.value ? new Date(sampaiInput.value) : null;
+                    const tanggal = new Date(data[1]); // Kolom ke-1 = tanggal pesanan
+
+                    if ((dari === null && sampai === null) ||
+                        (dari === null && tanggal <= sampai) ||
+                        (sampai === null && tanggal >= dari) ||
+                        (tanggal >= dari && tanggal <= sampai)) {
+                        return true;
+                    }
+                    return false;
+                }
+
+                $.fn.dataTable.ext.search.push(filterByDate);
+                dariInput.addEventListener('change', () => table.draw());
+                sampaiInput.addEventListener('change', () => table.draw());
+
+                // ✅ Checkbox select all
+                function updateSelectAllState() {
+                    const allVisible = $('.checkbox-pesanan:visible').length;
+                    const checkedVisible = $('.checkbox-pesanan:visible:checked').length;
+                    $('#selectAll').prop('checked', allVisible > 0 && allVisible === checkedVisible);
+                }
+
+                $('#selectAll').on('change', function() {
+                    const isChecked = this.checked;
+                    $('.checkbox-pesanan:visible').prop('checked', isChecked);
+                });
+
+                table.on('draw', function() {
+                    $('.checkbox-pesanan').off('change').on('change', function() {
+                        updateSelectAllState();
+                    });
+                    updateSelectAllState();
+                });
+
+                $('.checkbox-pesanan').on('change', function() {
+                    updateSelectAllState();
+                });
+
+                // ✅ Print hanya data yang dipilih
+                printBtn.addEventListener('click', () => {
+                    const checkedRows = Array.from(document.querySelectorAll('.checkbox-pesanan:checked'))
+                        .map(cb => cb.closest('tr'));
+
+                    if (checkedRows.length === 0) {
+                        alert('Pilih data pesanan yang ingin dicetak terlebih dahulu!');
+                        return;
+                    }
+
+                    const printWindow = window.open('', '', 'width=800,height=600');
+                    printWindow.document.write('<html><head><title>Print Pesanan</title>');
+                    printWindow.document.write(
+                        '<style>table{width:100%;border-collapse:collapse;}th,td{border:1px solid #333;padding:6px;text-align:left;}</style>'
+                        );
+                    printWindow.document.write('</head><body>');
+                    printWindow.document.write('<h3>Data Pesanan Terpilih</h3>');
+                    printWindow.document.write('<table>');
+                    printWindow.document.write(
+                        '<tr><th>Tanggal</th><th>Nama Pembeli</th><th>Nominal Pembelian</th><th>Status</th></tr>'
+                        );
+
+                    checkedRows.forEach(row => {
+                        printWindow.document.write('<tr>' +
+                            '<td>' + row.cells[1].textContent + '</td>' +
+                            '<td>' + row.cells[2].textContent + '</td>' +
+                            '<td>' + row.cells[3].textContent + '</td>' +
+                            '<td>' + row.cells[4].textContent + '</td>' +
+                            '</tr>');
+                    });
+
+                    printWindow.document.write('</table></body></html>');
+                    printWindow.document.close();
+                    printWindow.print();
+                });
             });
         </script>
+
+
         <script>
             document.getElementById('btnPrintPesanan').addEventListener('click', function() {
                 let terpilih = [];

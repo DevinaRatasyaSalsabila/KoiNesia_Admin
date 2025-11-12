@@ -132,7 +132,7 @@
                     },
                     {
                         extend: 'csvHtml5',
-                        className: 'btn btn-info btn-sm m-1',
+                        className: 'btn btn-info text-light btn-sm m-1',
                         text: 'Export CSV',
                         exportOptions: {
                             columns: [0, 1, 2, 3, 4],
@@ -140,7 +140,7 @@
                     },
                     {
                         extend: 'print',
-                        className: 'btn btn-secondary btn-sm m-1',
+                        className: 'btn btn-secondary text-light btn-sm m-1',
                         text: 'Print',
                         exportOptions: {
                             columns: [0, 1, 2, 3, 4],
