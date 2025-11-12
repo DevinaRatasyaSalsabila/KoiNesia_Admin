@@ -25,28 +25,30 @@ class LoginController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-public function submit(Request $request)
-{
-    $request->validate([
-        'email' => 'required|email|max:90',
-        'password' => 'required|min:5'
-    ]);
+    public function submit(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|max:90',
+            'password' => 'required|min:5'
+        ]);
 
-     $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)->first();
 
-      if ($user && Hash::check($request->password, $user->password)) {
-        Auth::login($user);
-        return redirect()->route('dashboard')->with('success', 'Login berhasil');
+        if ($user && Hash::check($request->password, $user->password)) {
+            Auth::login($user);
+            return redirect()->route('dashboard')->with('success', 'Login berhasil');
+        }
+
+        return back()->withErrors([
+            'login_error' => 'Email atau password salah, silahkan periksa kembali.'
+        ]);
     }
 
-    return back()->withErrors([
-        'login_error' => 'Email atau password salah, silahkan periksa kembali.'
-    ]);
-}
-
-    public function logout()
+    public function logout(Request $request)
     {
         Auth::logout();
-        return redirect('/')->with('success', 'Logout berhasil');
+        $request->session()->invalidate(); // Invalidate the current session
+        $request->session()->regenerateToken();
+        return redirect('/login')->with('success', 'Logout berhasil');
     }
 }
