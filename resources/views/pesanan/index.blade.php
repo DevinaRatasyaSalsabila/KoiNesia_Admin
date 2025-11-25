@@ -491,14 +491,17 @@
                     buttons: [{
                             extend: 'excelHtml5',
                             className: 'btn btn-success btn-sm m-1',
-                            text: 'Export Excel'
+                            text: 'Export Excel',
+                            exportOptions: {    
+                                columns: [0, 1, 2, 3]
+                            }
                         },
                         {
                             extend: 'pdfHtml5',
                             className: 'btn btn-danger btn-sm m-1',
                             text: 'Export PDF',
                             exportOptions: {
-                                columns: [0, 1, 2, 3] // pilih kolom yang mau diexport
+                                columns: [0, 1, 2, 3]
                             },
                             customize: function(doc) {
                                 doc.pageMargins = [20, 20, 20, 20];

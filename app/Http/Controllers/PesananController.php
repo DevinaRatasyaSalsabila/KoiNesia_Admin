@@ -161,6 +161,115 @@ class PesananController extends Controller
         }
     }
 
+    public function update(Request $request, string $kode_pesanan)
+    {
+        Log::info("🔄 Mulai update pesanan: {$kode_pesanan}", ['request' => $request->all()]);
+
+        try {
+            $request->validate([
+                'id_pembeli' => 'required|exists:pembeli,id_pembeli',
+                'produk'     => 'required|array',
+                'jumlah'     => 'required|array',
+            ]);
+
+            $pesananLama = Pesanan::where('kode_pesanan', $kode_pesanan)->get();
+            $produkBaruIDs = $request->produk;
+
+            // VARIABEL UNTUK PESAN WHATSAPP
+            $detailPesanan = "";
+            $totalHarga = 0;
+
+            foreach ($request->produk as $i => $idProduk) {
+                $produk = Produk::find($idProduk);
+                if (!$produk) continue;
+
+                $qtyBaru = (int) ($request->jumlah[$i] ?? 1);
+                $subtotal = $produk->harga_Satuan * $qtyBaru;
+
+                // --- cari pesanan lama ---
+                $pesananItem = $pesananLama->firstWhere('kode_produk', $produk->kode_produk);
+                $jumlahLama = $pesananItem ? $pesananItem->jumlah : 0;
+
+                // --- hitung stok baru ---
+                $stokBaru = $produk->stok_produk + $jumlahLama - $qtyBaru;
+
+                if ($stokBaru < 0) {
+                    return back()->with('error', "Stok produk {$produk->nama_produk} tidak mencukupi!");
+                }
+
+                $produk->update(['stok_produk' => $stokBaru]);
+
+                if ($pesananItem) {
+                    // update pesanan lama
+                    $pesananItem->update([
+                        'jumlah' => $qtyBaru,
+                        'nominal' => $subtotal,
+                        'id_pembeli' => $request->id_pembeli,
+                        'updated_at' => now(),
+                    ]);
+                } else {
+                    // buat pesanan baru
+                    Pesanan::create([
+                        'kode_pesanan' => $kode_pesanan,
+                        'id_pembeli'   => $request->id_pembeli,
+                        'user_id'      => Auth::id() ?? 0,
+                        'status'       => 'baru',
+                        'kode_produk'  => $produk->kode_produk,
+                        'jumlah'       => $qtyBaru,
+                        'nominal'      => $subtotal,
+                    ]);
+                }
+
+                // ---- BUILD DETAIL PESANAN UNTUK WA ----
+                $detailPesanan .= "- {$produk->nama_produk} x{$qtyBaru} = Rp " . number_format($subtotal, 0, ',', '.') . "\n";
+                $totalHarga += $subtotal;
+            }
+
+            // --- hapus produk yang dikeluarkan dari pesanan ---
+            $kodeProdukBaru = Produk::whereIn('id_produk', $produkBaruIDs)->pluck('kode_produk');
+            $pesananDihapus = Pesanan::where('kode_pesanan', $kode_pesanan)
+                ->whereNotIn('kode_produk', $kodeProdukBaru)
+                ->get();
+
+            foreach ($pesananDihapus as $hapus) {
+                $produk = Produk::where('kode_produk', $hapus->kode_produk)->first();
+                if ($produk) {
+                    $produk->increment('stok_produk', $hapus->jumlah);
+                }
+                $hapus->delete();
+            }
+
+            // ===============================
+            // 📩 KIRIM PESAN WHATSAPP
+            // ================================
+            $pembeli = Pembeli::find($request->id_pembeli);
+            $no_hp = $pembeli->no_hp;
+
+            if (substr($no_hp, 0, 1) === '0') {
+                $no_hp = '+62' . substr($no_hp, 1);
+            }
+
+            $pesan = "Halo *{$pembeli->nama_pembeli}*, pesanan kamu di Azza Koi Farm telah diperbarui 🐟✨\n\n"
+                . "Kode Pesanan: *{$kode_pesanan}*\n\n"
+                . "Detail pesanan terbaru:\n"
+                . $detailPesanan . "\n"
+                . "Total terbaru: *Rp " . number_format($totalHarga, 0, ',', '.') . "*\n\n"
+                . "Terima kasih sudah order! ❤️";
+
+            $this->apicall($no_hp, $pesan);
+
+            Log::info("✅ Update pesanan selesai", ['kode_pesanan' => $kode_pesanan]);
+            return redirect()->route('pesanan.index')->with('success', 'Pesanan berhasil diperbarui!');
+        } catch (\Exception $e) {
+            Log::error("❌ Gagal update pesanan", [
+                'kode_pesanan' => $kode_pesanan,
+                'error' => $e->getMessage(),
+            ]);
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui pesanan!');
+        }
+    }
+
+
     private function apicall($no_hp, $pesan)
     {
         $client = new Client();
@@ -202,90 +311,6 @@ class PesananController extends Controller
     public function edit(string $id)
     {
         //
-    }
-
-    public function update(Request $request, string $kode_pesanan)
-    {
-        Log::info("🔄 Mulai update pesanan: {$kode_pesanan}", ['request' => $request->all()]);
-
-        try {
-            $request->validate([
-                'id_pembeli' => 'required|exists:pembeli,id_pembeli',
-                'produk'     => 'required|array',
-                'jumlah'     => 'required|array',
-            ]);
-
-            $pesananLama = Pesanan::where('kode_pesanan', $kode_pesanan)->get();
-            $produkBaruIDs = $request->produk;
-
-            foreach ($request->produk as $i => $idProduk) {
-                $produk = Produk::find($idProduk);
-                if (!$produk) continue;
-
-                $qtyBaru = (int) ($request->jumlah[$i] ?? 1);
-                $subtotal = $produk->harga_Satuan * $qtyBaru;
-
-                // cari pesanan lama dengan produk yg sama
-                $pesananItem = $pesananLama->firstWhere('kode_produk', $produk->kode_produk);
-                $jumlahLama = $pesananItem ? $pesananItem->jumlah : 0;
-
-                // hitung stok baru dengan cara yg benar
-                $stokBaru = $produk->stok_produk + $jumlahLama - $qtyBaru;
-
-                if ($stokBaru < 0) {
-                    return back()->with('error', "Stok produk {$produk->nama_produk} tidak mencukupi!");
-                }
-
-                $produk->update(['stok_produk' => $stokBaru]);
-
-                if ($pesananItem) {
-                    // update data pesanan lama
-                    $pesananItem->update([
-                        'jumlah' => $qtyBaru,
-                        'nominal' => $subtotal,
-                        'id_pembeli' => $request->id_pembeli,
-                        'updated_at' => now(),
-                    ]);
-                } else {
-                    // buat pesanan baru (produk yang baru ditambahkan)
-                    Pesanan::create([
-                        'kode_pesanan' => $kode_pesanan,
-                        'id_pembeli'   => $request->id_pembeli,
-                        'user_id'      => Auth::id() ?? 0,
-                        'status'       => 'baru',
-                        'kode_produk'  => $produk->kode_produk,
-                        'jumlah'       => $qtyBaru,
-                        'nominal'      => $subtotal,
-                    ]);
-
-                    // stok baru udah dikalkulasi di atas, jadi gak usah decrement lagi
-                }
-            }
-
-            // hapus produk yg gak ada lagi di pesanan baru
-            $kodeProdukBaru = Produk::whereIn('id_produk', $produkBaruIDs)->pluck('kode_produk');
-            $pesananDihapus = Pesanan::where('kode_pesanan', $kode_pesanan)
-                ->whereNotIn('kode_produk', $kodeProdukBaru)
-                ->get();
-
-            // kembalikan stok produk yg dihapus
-            foreach ($pesananDihapus as $hapus) {
-                $produk = Produk::where('kode_produk', $hapus->kode_produk)->first();
-                if ($produk) {
-                    $produk->increment('stok_produk', $hapus->jumlah);
-                }
-                $hapus->delete();
-            }
-
-            Log::info("✅ Update pesanan selesai", ['kode_pesanan' => $kode_pesanan]);
-            return redirect()->route('pesanan.index')->with('success', 'Pesanan berhasil diperbarui!');
-        } catch (\Exception $e) {
-            Log::error("❌ Gagal update pesanan", [
-                'kode_pesanan' => $kode_pesanan,
-                'error' => $e->getMessage(),
-            ]);
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui pesanan!');
-        }
     }
 
     public function destroy($id)

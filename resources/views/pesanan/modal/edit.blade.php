@@ -38,12 +38,12 @@
                                                 [Rp{{ number_format($p->harga_Satuan, 0, ',', '.') }}
                                                 =>
                                                 {{ $p->stok_produk }}]
-                                            </option>
+                                            </option>stok_produk
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="col-md-3 d-flex align-items-center">
-                                    <input type="number" name="jumlah[]" class="form-control me-2"
+                                    <input type="number" name="jumlah[]" class="form-control me-2" max="{{ $p->stok_produk }}"
                                         value="{{ $pd->jumlah }}" min="1">
                                     <button type="button"
                                         class="btn btn-danger btn-sm remove-produk">✖</button>

@@ -457,13 +457,13 @@
                         <li>
                             <a href="{{ route('riwayat.index') }}">
                                 <i class="material-icons-outlined">arrow_right</i>
-                                Riwayat Transaksi
+                               Rekap Penjualan
                             </a>
                         </li>
                         <li>
                             <a href="{{ route('rekap.index') }}">
                                 <i class="material-icons-outlined">arrow_right</i>
-                                Rekap Penjualan
+                                Riwayat Transaksi
                             </a>
                         </li>
                     </ul>
