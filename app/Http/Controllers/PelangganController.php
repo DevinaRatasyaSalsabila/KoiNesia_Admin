@@ -141,18 +141,19 @@ class PelangganController extends Controller
             ]);
         }
 
-        $pesan = "Halo *{$pembeli->nama_pembeli}*, terima kasih sudah order di Azza Koi Farm 🐟✨\n\n"
-            . "Kode Pesanan: *{$kodePesanan}*\n\n"
-            . "Detail pesanan kamu:\n"
-            . "{$detailPesanan}\n"
-            . "Total: *Rp " . number_format($totalHarga, 0, ',', '.') . "*\n\n"
-            . "Pesananmu sudah masuk dan akan segera diproses ya 👍";
+        $pesan =
+            "📦 *Pesanan Baru - Azza Koi Farm*\n\n" .
+            "*Nama:* {$pembeli->nama_pembeli}\n" .
+            "*Kode Pesanan:* {$kodePesanan}\n" .
+            "*Total:* Rp " . number_format($totalHarga, 0, ',', '.') . "\n\n" .
+            "*Detail Pesanan:*\n{$detailPesanan}\n\n" .
+            "⏳ Pesanan kamu belum diproses. Mohon selesaikan pembayaran terlebih dahulu.\n" ;
 
         $this->apicall($telepon, $pesan);
 
         Log::info("Pesanan {$kodePesanan} berhasil dibuat dan dikirim ke WhatsApp.");
 
-        return back()->with('success', 'Pesanan berhasil dikirim ke admin via WhatsApp!');
+        return redirect()->route('dashboard.pelanggan')->with('success', 'Pesanan berhasil dikirim ke admin via WhatsApp!');
     }
 
     private function apicall($telepon, $pesan)

@@ -244,10 +244,10 @@
                         </li>
 
                         <!-- HEADER BUTTON  -->
-                        <li class="nav-btn yellow-color">
+                        {{-- <li class="nav-btn yellow-color">
                             <a href="https://wa.me/6283871992564?text=Halo%20kak%20aku%20mau%20nanya~"
                                 target="_blank">08459348594</a>
-                        </li>
+                        </li> --}}
 
                         <li class="basket-ico ico-30" id="cart-icon">
                             <a href="{{ route('keranjang') }}">

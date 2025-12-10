@@ -225,12 +225,21 @@
                                 <div class="d-flex align-items-center gap-3"> <input type="number" min="1"
                                         max="{{ $produk->stok_produk }}" value="1"
                                         class="form-control w-25 text-center" />
-                                    <button type="button" class="btn btn-cart-add-1 text-white fw-semibold px-4"
+                                    <button type="button" class="btn btn-cart-add-1 text-white fw-semibold btn-sm"
                                         style="background-color: #ecbb28" data-id="{{ $produk->kode_produk }}"
                                         data-nama="{{ $produk->nama_produk }}" data-harga="{{ $produk->harga_Satuan }}"
                                         data-stok="{{ $produk->stok_produk }}" data-ukuran="{{ $produk->ukuran_produk }}"
-                                        data-gambar="{{ $gambarUtama }}"> <i class="flaticon-shopping-bag me-2"></i>
-                                        Keranjang </button>
+                                        data-gambar="{{ $gambarUtama }}"> <i class="flaticon-shopping-bag"></i>
+                                        {{-- Keranjang --}}
+                                    </button>
+                                    <button type="button" class="btn btn-buy-1 text-white fw-semibold btn-sm"
+                                        style="background-color: #ec2828" data-id="{{ $produk->kode_produk }}"
+                                        data-nama="{{ $produk->nama_produk }}" data-harga="{{ $produk->harga_Satuan }}"
+                                        data-stok="{{ $produk->stok_produk }}" data-ukuran="{{ $produk->ukuran_produk }}"
+                                        data-gambar="{{ $gambarUtama }}">
+                                        <i class="flaticon-buy me-2"></i>
+                                        Beli Sekarang
+                                    </button>
                                 </div>
                             @else
                                 <button class="btn btn-danger mt-2" disabled> <i class="flaticon-error"></i> Stok Kosong
@@ -413,6 +422,47 @@
     </section>
 
     @push('script')
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+
+                // AMBIL DATA CHECKOUT SEKARANG
+                let checkout = JSON.parse(localStorage.getItem("checkout")) || [];
+
+                // ==========================================================
+                // 1. FUNGSI - KLIK BELI SEKARANG (btn-buy-1)
+                // ==========================================================
+                const buyButtons = document.querySelectorAll(".btn-buy-1");
+
+                buyButtons.forEach(btn => {
+                    btn.addEventListener("click", function() {
+
+                        // produk dari dataset tombol
+                        const produk = {
+                            id: this.dataset.id,
+                            nama: this.dataset.nama,
+                            harga: parseInt(this.dataset.harga),
+                            stok: parseInt(this.dataset.stok),
+                            ukuran: this.dataset.ukuran,
+                            gambar: this.dataset.gambar,
+                            qty: 1,
+                            dipilih: true
+                        };
+
+                        // kosongkan checkout lama (karena ini "Beli Sekarang", hanya 1 item)
+                        checkout = [];
+                        checkout.push(produk);
+
+                        // simpan ke localStorage
+                        localStorage.setItem("checkout", JSON.stringify(checkout));
+
+                        // redirect ke halaman format pesanan
+                       window.location.href = "{{ route('format') }}";
+                        // ganti dengan route pesanan kamu bila berbeda
+                    });
+                });
+
+            });
+        </script>
         <script>
             function gantiMedia(src, isVideo) {
                 const container = document.querySelector('#gambarUtama');
