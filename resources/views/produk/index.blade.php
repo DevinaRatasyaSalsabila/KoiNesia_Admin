@@ -1,5 +1,63 @@
 @extends('main')
 @section('content')
+    <style>
+        /* === Panah dropdown berwarna biru soft === */
+        table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child::before,
+        table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child::before {
+            background: transparent !important;
+            /* hilangkan background */
+            color: #4da6ff !important;
+            /* panah biru soft */
+            border: none !important;
+            box-shadow: none !important;
+            font-weight: bold;
+            font-size: 18px;
+            line-height: 18px;
+        }
+
+        /* Saat baris terbuka (ikon berubah jadi -) */
+        table.dataTable.dtr-inline.collapsed>tbody>tr.parent>td:first-child::before,
+        table.dataTable.dtr-inline.collapsed>tbody>tr.parent>th:first-child::before {
+            color: #007bff !important;
+            /* biru sedikit lebih tua */
+        }
+
+        /* === Gaya isi dropdown (detail row) === */
+        table.dataTable tbody tr.child ul.dtr-details {
+            background: #f8fbff;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin: 10px 0;
+            border: 1px solid #e0ecff;
+        }
+
+        /* Gaya tiap baris data di dropdown */
+        table.dataTable tbody tr.child ul.dtr-details li {
+            margin-bottom: 6px;
+            font-size: 14px;
+            color: #333;
+            display: flex;
+            gap: 5px;
+        }
+
+        /* Judul kolom (label) */
+        table.dataTable tbody tr.child ul.dtr-details li span.dtr-title {
+            font-weight: 600;
+            color: #007bff;
+            margin-right: 5px;
+        }
+
+        /* Tambahkan tanda ":" otomatis setelah judul */
+        table.dataTable tbody tr.child ul.dtr-details li span.dtr-title::after {
+            content: ":";
+            margin-left: 2px;
+        }
+
+        /* Nilai data (isi kolom) */
+        table.dataTable tbody tr.child ul.dtr-details li span.dtr-data {
+            color: #444;
+        }
+    </style>
     <!-- Breadcrumb -->
     @if (session('warning'))
         <div class="alert alert-warning">{{ session('warning') }}</div>
@@ -8,7 +66,7 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
     <script>
-         setTimeout(() => {
+        setTimeout(() => {
             document.querySelectorAll('.alert').forEach(el => el.remove());
         }, 5000);
     </script>
@@ -28,7 +86,7 @@
     <!-- End Breadcrumb -->
 
     <!-- Pencarian dan Tombol Aksi -->
-    <div class="row align-items-center mb-4 gy-3">
+    {{-- <div class="row align-items-center mb-4 gy-3">
         <!-- Kolom Search -->
         <div class="col-12 col-md-6 col-lg-4">
             <div class="input-group shadow-sm rounded-3">
@@ -53,26 +111,41 @@
                 <i class="bi bi-download"></i>
             </button>
         </div>
-    </div>
+    </div> --}}
 
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Daftar Pengeluaran</h5>
+            <div class="gap-2 d-flex float-end">
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambah_pengeluaran">
+                    <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
+                </button>
 
-    <!-- Loader -->
-    <div id="loader" class="text-center my-5" style="display:none;">
-        <div class="spinner-border text-primary" role="status"></div>
-        <p class="mt-2 text-muted">Memuat data produk...</p>
-    </div>
-
-    <!-- Daftar Produk -->
-    <div class="row row-cols-1 row-cols-md-3 g-4" id="produk-container">
-        @foreach ($produk as $item)
-            @php
-                $media = json_decode($item->gambar_produk, true);
-            @endphp
-            <div class="col">
-                <div class="card shadow-sm border-0 rounded-4 produk-card h-100">
-                    <div class="text-center p-3 bg-light rounded-top-4">
-                        @if (!empty($media))
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
+                    data-bs-target="#importModal">
+                    <i class="bi bi-download"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Daftar Produk -->
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="tabel_produk" class="table table-striped table-bordered">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Gambar/Media</th>
+                            <th scope="col">Nama Produk</th>
+                            <th scope="col">Ukuran</th>
+                            <th scope="col">Stok</th>
+                            <th scope="col">Harga</th>
+                            <th scope="col">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($produk as $index => $item)
                             @php
+                                $media = json_decode($item->gambar_produk, true);
                                 $firstImage = collect($media)->first(
                                     fn($f) => Str::endsWith($f, ['.jpg', '.jpeg', '.png']),
                                 );
@@ -80,53 +153,112 @@
                                     ? null
                                     : collect($media)->first(fn($f) => Str::endsWith($f, ['.mp4', '.webm', '.ogg']));
                             @endphp
-                            @if ($firstImage)
-                                <img src="{{ asset('storage/produk/final/' . $firstImage) }}" class="img-fluid rounded-3"
-                                    style="max-height:220px; object-fit:cover;">
-                            @elseif ($firstVideo)
-                                <video class="rounded-3" controls style="max-height:220px;">
-                                    <source src="{{ asset('storage/produk/final/' . $firstVideo) }}">
-                                </video>
-                            @endif
-                        @endif
-                    </div>
-                    <div class="card-body text-center">
-                        <h5 class="fw-bold text-dark">{{ $item->nama_produk }}</h5>
-                        <p class="text-muted mb-1">Ukuran: {{ $item->ukuran_produk }}</p>
-                        <span class="badge bg-secondary mb-2">Stok: {{ $item->stok_produk }}</span>
-                        <h6 class="fw-bold mb-3">
-                            <span class="text-primary">Rp{{ number_format($item->harga_Satuan, 0, ',', '.') }}</span>
-                        </h6>
-                        <div class="d-flex justify-content-center gap-2">
-                            <a href="{{ url('produk/detail', $item->id_produk) }}"
-                                class="btn btn-primary btn-sm rounded-3 shadow-sm" title="Detail Produk">
-                                <i class="bx bx-info-circle"></i>
-                            </a>
-                            <a href="{{ url('produk/edit', $item->id_produk) }}"
-                                class="btn btn-warning btn-sm rounded-3 shadow-sm" title="Edit Produk">
-                                <i class="bx bx-pencil text-light"></i>
-                            </a>
-                            <form action="{{ route('produk.delete', $item->id_produk) }}" method="POST"
-                                class="delete-form d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="button"
-                                    class="btn btn-danger btn-sm rounded-3 shadow-sm confirm-delete-button"
-                                    title="Hapus Produk">
-                                    <i class="bx bx-trash text-light"></i>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+                            <tr>
+                                <th scope="row">{{ $index + 1 }}</th>
+                                <td class="text-center">
+                                    @if ($firstImage)
+                                        <img src="{{ asset('storage/produk/final/' . $firstImage) }}" alt="Produk"
+                                            style="max-height:80px; object-fit:cover;">
+                                    @elseif ($firstVideo)
+                                        <video style="max-height:80px;" controls>
+                                            <source src="{{ asset('storage/produk/final/' . $firstVideo) }}">
+                                        </video>
+                                    @else
+                                        <span class="text-muted">Tidak ada media</span>
+                                    @endif
+                                </td>
+                                <td>{{ $item->nama_produk }}</td>
+                                <td>{{ $item->ukuran_produk }}</td>
+                                <td>{{ $item->stok_produk }}</td>
+                                <td>Rp{{ number_format($item->harga_Satuan, 0, ',', '.') }}</td>
+                                <td class="text-center">
+                                    <a href="{{ url('produk/detail', $item->id_produk) }}" class="btn btn-primary btn-sm"
+                                        title="Detail Produk">
+                                        <i class="bx bx-info-circle"></i>
+                                    </a>
+                                    <a href="{{ url('produk/edit', $item->id_produk) }}" class="btn btn-warning btn-sm"
+                                        title="Edit Produk">
+                                        <i class="bx bx-pencil text-light"></i>
+                                    </a>
+                                    <form action="{{ route('produk.delete', $item->id_produk) }}" method="POST"
+                                        class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" class="btn btn-danger btn-sm confirm-delete-button"
+                                            title="Hapus Produk">
+                                            <i class="bx bx-trash text-light"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
-        @endforeach
+        </div>
+    </div>
     </div>
 
-    <!-- Pagination -->
-    <div class="d-flex justify-content-center mt-4" id="pagination-controls"></div>
 
     @push('scripts')
+        <script>
+            $(document).ready(function() {
+                $('#tabel_produk').DataTable({
+                    responsive: true,
+                    dom: "<'row mb-3'<'col-md-6 d-flex align-items-center'B><'col-md-6 d-flex justify-content-end'f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row mt-3'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 d-flex justify-content-end'p>>",
+                    buttons: [{
+                            extend: 'excelHtml5',
+                            className: 'btn btn-success btn-sm m-1',
+                            text: 'Export Excel'
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            className: 'btn btn-danger btn-sm m-1',
+                            text: 'Export PDF',
+                            exportOptions: {
+                                columns: [0, 1, 2, 3, 4, 5]
+                            },
+                            customize: function(doc) {
+                                doc.pageMargins = [20, 20, 20, 20];
+                                doc.defaultStyle.alignment = 'center';
+                                doc.content.splice(0, 0, {
+                                    text: 'Data Produk',
+                                    fontSize: 14,
+                                    bold: true,
+                                    alignment: 'center',
+                                    margin: [0, 0, 0, 15]
+                                });
+                            }
+                        },
+                        {
+                            extend: 'csvHtml5',
+                            className: 'btn btn-info text-light btn-sm m-1',
+                            text: 'Export CSV'
+                        },
+                        {
+                            extend: 'print',
+                            className: 'btn btn-secondary text-light btn-sm m-1',
+                            text: 'Print'
+                        }
+                    ],
+                    language: {
+                        search: "Cari:",
+                        lengthMenu: "Tampilkan _MENU_ data",
+                        info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                        paginate: {
+                            next: "Berikutnya",
+                            previous: "Sebelumnya"
+                        }
+                    }
+                });
+            });
+        </script>
+    @endpush
+
+
+    {{-- @push('scripts')
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 const dataProduk = @json($produk);
@@ -333,4 +465,4 @@
     @endpush
 
     @include('produk.modal.import')
-@endsection
+@endsection --}}

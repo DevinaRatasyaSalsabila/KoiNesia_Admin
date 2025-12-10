@@ -126,23 +126,6 @@
                                             {{ ($first->status ?? '') == 'selesai' ? 'selected' : '' }}>
                                             Selesai</option>
                                     </select>
-                                    {{-- <div class="status-wrapper">
-                                        <select class="form-select update-status-select fw-bold"
-                                            data-id="{{ $first->kode_pesanan }}">
-                                            <option value="baru" data-color="#0d6efd"
-                                                {{ ($first->status ?? '') == 'baru' ? 'selected' : '' }}>
-                                                Baru
-                                            </option>
-                                            <option value="proses" data-color="#ffc107" onclick="Status()"
-                                                {{ ($first->status ?? '') == 'proses' ? 'selected' : '' }}>
-                                                Diproses
-                                            </option>
-                                            <option value="selesai" data-color="#198754"
-                                                {{ ($first->status ?? '') == 'selesai' ? 'selected' : '' }}>
-                                                Selesai
-                                            </option>
-                                        </select>
-                                    </div> --}}
                                 </td>
                                 <td class="align-middle">
                                     <div class="gap-2 d-flex align-items-center">
@@ -190,16 +173,6 @@
 
     @push('scripts')
         <script>
-            // $(document).ready(function() {
-            //     var table = $('#tabel_pesanan').DataTable({
-            //         lengthChange: false,
-            //         buttons: ['copy', 'excel', 'pdf', 'print']
-            //     });
-
-            //     table.buttons().container()
-            //         .appendTo('#tabel_pesanan_wrapper .col-md-6:eq(0)');
-            // });
-
             let updateStatusUrl = "{{ route('pesanan.updateStatus', ':id') }}";
 
             // Simpan previous value ketika user fokus ke select (untuk revert kalau cancel)
@@ -294,38 +267,6 @@
                 }
             });
 
-            // $(document).on('change', '.update-status-select', function() {
-            //     let id = $(this).data('id');
-            //     let status = $(this).val();
-            //     let url = updateStatusUrl.replace(':id', id);
-
-            //     // simpan referensi row tabel
-            //     let row = $(this).closest('tr');
-
-            //     $.ajax({
-            //         url: url,
-            //         type: 'POST',
-            //         data: {
-            //             status: status,
-            //             _token: '{{ csrf_token() }}'
-            //         },
-            //         success: function(res) {
-            //             console.log('Status updated:', res);
-
-            //             if (status === 'selesai') {
-            //                 // hapus row dari DataTable
-            //                 let table = $("#tabel_pesanan").DataTable();
-            //                 table.row(row).remove().draw(false);
-
-            //                 // tampilkan alert bawaan JS
-            //                 alert('Riwayat pesanan telah tersimpan');
-            //             }
-            //         },
-            //         error: function(err) {
-            //             console.log(err.responseJSON);
-            //         }
-            //     });
-            // });
 
             document.querySelectorAll('.update-status-select').forEach(select => {
                 const updateColor = (el) => {
@@ -345,136 +286,6 @@
                 select.addEventListener('change', () => updateColor(select));
             });
         </script>
-        {{-- <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const dariInput = document.getElementById('dari-pesanan');
-                const sampaiInput = document.getElementById('sampai-pesanan');
-                const selectAllBtn = document.getElementById('selectAll');
-                const printBtn = document.getElementById('btnPrintPesanan');
-
-                // ✅ Inisialisasi DataTable + export buttons
-                var table = $('#tabel_pesanan').DataTable({
-                    responsive: true,
-                    dom: "<'row mb-3'<'col-md-6 d-flex align-items-center'B><'col-md-6 d-flex justify-content-end'f>>" +
-                        "<'row'<'col-sm-12'tr>>" +
-                        "<'row mt-3'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 d-flex justify-content-end'p>>",
-                    buttons: [{
-                            extend: 'copy',
-                            text: 'Copy'
-                        },
-                        {
-                            extend: 'excel',
-                            text: 'Excel'
-                        },
-                        {
-                            extend: 'pdf',
-                            text: 'PDF'
-                        },
-                        {
-                            extend: 'print',
-                            text: 'Print Semua'
-                        }
-                    ],
-                    columnDefs: [{
-                        orderable: false,
-                        targets: 0
-                    }],
-                    language: {
-                        search: "Cari:",
-                        lengthMenu: "Tampilkan _MENU_ data",
-                        info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-                        paginate: {
-                            next: "Berikutnya",
-                            previous: "Sebelumnya"
-                        }
-                    }
-                });
-
-                // ✅ Filter berdasarkan rentang tanggal
-                function filterByDate(settings, data, dataIndex) {
-                    const dari = dariInput.value ? new Date(dariInput.value) : null;
-                    const sampai = sampaiInput.value ? new Date(sampaiInput.value) : null;
-                    const tanggal = new Date(data[1]); // Kolom ke-1 = tanggal pesanan
-
-                    if ((dari === null && sampai === null) ||
-                        (dari === null && tanggal <= sampai) ||
-                        (sampai === null && tanggal >= dari) ||
-                        (tanggal >= dari && tanggal <= sampai)) {
-                        return true;
-                    }
-                    return false;
-                }
-
-                // Daftarkan custom filter ke DataTables
-                $.fn.dataTable.ext.search.push(filterByDate);
-
-                // Jalankan filter setiap kali tanggal berubah
-                dariInput.addEventListener('change', () => table.draw());
-                sampaiInput.addEventListener('change', () => table.draw());
-
-                // ✅ Fungsi update select all
-                function updateSelectAllState() {
-                    const allVisible = $('.checkbox-pesanan:visible').length;
-                    const checkedVisible = $('.checkbox-pesanan:visible:checked').length;
-                    $('#selectAll').prop('checked', allVisible > 0 && allVisible === checkedVisible);
-                }
-
-                // ✅ Klik select all
-                $('#selectAll').on('change', function() {
-                    const isChecked = this.checked;
-                    $('.checkbox-pesanan:visible').prop('checked', isChecked);
-                });
-
-                // ✅ Update setiap kali tabel digambar ulang
-                table.on('draw', function() {
-                    $('.checkbox-pesanan').off('change').on('change', function() {
-                        updateSelectAllState();
-                    });
-                    updateSelectAllState();
-                });
-
-                // ✅ Jalankan sekali di awal
-                $('.checkbox-pesanan').on('change', function() {
-                    updateSelectAllState();
-                });
-
-                // ✅ Tombol print khusus data terpilih
-                printBtn.addEventListener('click', () => {
-                    const checkedRows = Array.from(document.querySelectorAll('.checkbox-pesanan:checked'))
-                        .map(cb => cb.closest('tr'));
-
-                    if (checkedRows.length === 0) {
-                        alert('Pilih data pesanan yang ingin dicetak terlebih dahulu!');
-                        return;
-                    }
-
-                    const printWindow = window.open('', '', 'width=800,height=600');
-                    printWindow.document.write('<html><head><title>Print Pesanan</title>');
-                    printWindow.document.write(
-                        '<style>table{width:100%;border-collapse:collapse;}th,td{border:1px solid #333;padding:6px;text-align:left;}</style>'
-                        );
-                    printWindow.document.write('</head><body>');
-                    printWindow.document.write('<h3>Data Pesanan Terpilih</h3>');
-                    printWindow.document.write('<table>');
-                    printWindow.document.write(
-                        '<tr><th>Tanggal</th><th>Nama Pembeli</th><th>Nominal Pembelian</th><th>Status</th></tr>'
-                        );
-
-                    checkedRows.forEach(row => {
-                        printWindow.document.write('<tr>' +
-                            '<td>' + row.cells[1].textContent + '</td>' +
-                            '<td>' + row.cells[2].textContent + '</td>' +
-                            '<td>' + row.cells[3].textContent + '</td>' +
-                            '<td>' + row.cells[4].textContent + '</td>' +
-                            '</tr>');
-                    });
-
-                    printWindow.document.write('</table></body></html>');
-                    printWindow.document.close();
-                    printWindow.print();
-                });
-            });
-        </script> --}}
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const dariInput = document.getElementById('dari-pesanan');
