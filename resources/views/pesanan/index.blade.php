@@ -129,21 +129,27 @@
                                 </td>
                                 <td class="align-middle">
                                     <div class="gap-2 d-flex align-items-center">
+                                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#kirimPesan">
+                                            <i class="fadeIn animated bx bxl-whatsapp text-light fs-6"></i>
+                                        </button>
+
                                         <a href="{{ route('pesanan.detail', $first->kode_pesanan) }}"
                                             class="btn btn-primary btn-sm">
                                             <i class="fadeIn animated bx bx-info-circle fs-6"></i>
                                         </a>
 
+
                                         <form action="{{ route('pesanan.delete', $first->kode_pesanan) }}" method="POST"
                                             class="p-0 m-0 d-flex align-items-center delete-form">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">
+                                            <button type="submit" class="btn btn-danger btn-sm">
                                                 <i class="fadeIn animated bx bx-trash text-light fs-6"></i>
                                             </button>
                                         </form>
 
-                                        <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#edit_pesanan_{{ $first->kode_pesanan }}">
                                             <i class="fadeIn animated bx bx-pencil text-light fs-6"></i>
                                         </button>

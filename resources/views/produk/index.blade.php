@@ -1,63 +1,5 @@
 @extends('main')
 @section('content')
-    <style>
-        /* === Panah dropdown berwarna biru soft === */
-        table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child::before,
-        table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child::before {
-            background: transparent !important;
-            /* hilangkan background */
-            color: #4da6ff !important;
-            /* panah biru soft */
-            border: none !important;
-            box-shadow: none !important;
-            font-weight: bold;
-            font-size: 18px;
-            line-height: 18px;
-        }
-
-        /* Saat baris terbuka (ikon berubah jadi -) */
-        table.dataTable.dtr-inline.collapsed>tbody>tr.parent>td:first-child::before,
-        table.dataTable.dtr-inline.collapsed>tbody>tr.parent>th:first-child::before {
-            color: #007bff !important;
-            /* biru sedikit lebih tua */
-        }
-
-        /* === Gaya isi dropdown (detail row) === */
-        table.dataTable tbody tr.child ul.dtr-details {
-            background: #f8fbff;
-            border-radius: 10px;
-            padding: 15px 20px;
-            margin: 10px 0;
-            border: 1px solid #e0ecff;
-        }
-
-        /* Gaya tiap baris data di dropdown */
-        table.dataTable tbody tr.child ul.dtr-details li {
-            margin-bottom: 6px;
-            font-size: 14px;
-            color: #333;
-            display: flex;
-            gap: 5px;
-        }
-
-        /* Judul kolom (label) */
-        table.dataTable tbody tr.child ul.dtr-details li span.dtr-title {
-            font-weight: 600;
-            color: #007bff;
-            margin-right: 5px;
-        }
-
-        /* Tambahkan tanda ":" otomatis setelah judul */
-        table.dataTable tbody tr.child ul.dtr-details li span.dtr-title::after {
-            content: ":";
-            margin-left: 2px;
-        }
-
-        /* Nilai data (isi kolom) */
-        table.dataTable tbody tr.child ul.dtr-details li span.dtr-data {
-            color: #444;
-        }
-    </style>
     <!-- Breadcrumb -->
     @if (session('warning'))
         <div class="alert alert-warning">{{ session('warning') }}</div>
@@ -115,14 +57,16 @@
 
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Daftar Pengeluaran</h5>
+            <h5 class="mb-0">Daftar Produk</h5>
             <div class="gap-2 d-flex float-end">
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambah_pengeluaran">
-                    <i class="fadeIn animated bx bx-add-to-queue text-light"></i>
-                </button>
-
-                <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
-                    data-bs-target="#importModal">
+                <a href="{{ url('produk/tambah') }}"
+                    class="btn btn-success btn-sm shadow-sm rounded-3 d-flex align-items-center justify-content-center"
+                    data-bs-toggle="tooltip" title="Tambah Produk">
+                    <i class="bx bx-plus fs-5 text-light"></i>
+                </a>
+                <button type="button"
+                    class="btn btn-secondary btn-sm shadow-sm rounded-3 d-flex align-items-center justify-content-center"
+                    data-bs-toggle="modal" data-bs-target="#importModal" title="Import Produk">
                     <i class="bi bi-download"></i>
                 </button>
             </div>
@@ -131,7 +75,7 @@
         <div class="card-body">
             <div class="table-responsive">
                 <table id="tabel_produk" class="table table-striped table-bordered">
-                    <thead class="table-light">
+                    <thead>
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Gambar/Media</th>
@@ -466,3 +410,4 @@
 
     @include('produk.modal.import')
 @endsection --}}
+@endsection
