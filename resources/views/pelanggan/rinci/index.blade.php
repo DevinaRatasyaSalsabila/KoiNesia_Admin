@@ -224,7 +224,7 @@
                             @if ($produk->stok_produk > 0)
                                 <div class="d-flex align-items-center gap-3"> <input type="number" min="1"
                                         max="{{ $produk->stok_produk }}" value="1"
-                                        class="form-control w-25 text-center" />
+                                       class="form-control w-25 text-center qty-input" />
                                     <button type="button" class="btn btn-cart-add-1 text-white fw-semibold btn-sm"
                                         style="background-color: #ecbb28" data-id="{{ $produk->kode_produk }}"
                                         data-nama="{{ $produk->nama_produk }}" data-harga="{{ $produk->harga_Satuan }}"
@@ -389,7 +389,7 @@
                                                 data-stok="{{ $product->stok_produk }}"
                                                 data-ukuran="{{ $product->ukuran_produk }}"
                                                 data-gambar="{{ $gambarUtama }}">
-                                                <i class="flaticon-shopping-bag"></i> Keranjang
+                                                <i class="flaticon-shopping-bag"></i>
                                             </button>
                                         </div>
                                     @else
@@ -444,7 +444,7 @@
                             stok: parseInt(this.dataset.stok),
                             ukuran: this.dataset.ukuran,
                             gambar: this.dataset.gambar,
-                            qty: 1,
+                           qty: this.closest(".d-flex").querySelector(".qty-input").value,
                             dipilih: true
                         };
 
@@ -460,7 +460,6 @@
                         // ganti dengan route pesanan kamu bila berbeda
                     });
                 });
-
             });
         </script>
         <script>
@@ -468,15 +467,15 @@
                 const container = document.querySelector('#gambarUtama');
                 if (isVideo) {
                     container.outerHTML = `
-            <video id="gambarUtama" class="img-fluid rounded shadow-sm mb-3" 
+            <video id="gambarUtama" class="img-fluid rounded shadow-sm mb-3"
                    style="max-height: 400px; object-fit: contain;" controls autoplay>
                 <source src="${src}" type="video/mp4">
                 Browser kamu tidak mendukung video tag.
             </video>`;
                 } else {
                     container.outerHTML = `
-            <img id="gambarUtama" src="${src}" 
-                 class="img-fluid rounded shadow-sm mb-3" 
+            <img id="gambarUtama" src="${src}"
+                 class="img-fluid rounded shadow-sm mb-3"
                  style="max-height: 400px; object-fit: contain;">`;
                 }
             }

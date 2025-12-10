@@ -177,7 +177,7 @@
                         }
                     });
                     totalKeseluruhanEl.textContent = "Rp " + new Intl.NumberFormat('id-ID').format(
-                    totalKeseluruhan);
+                        totalKeseluruhan);
                 }
 
                 function attachListeners() {
@@ -200,22 +200,28 @@
                     });
 
                     document.querySelectorAll(".qty-input").forEach(input => {
-                        input.addEventListener("input", () => {
+
+                        function validateQty() {
                             const index = input.dataset.index;
                             let newQty = parseInt(input.value);
+
                             if (isNaN(newQty) || newQty < 1) newQty = 1;
                             if (newQty > cart[index].stok) newQty = cart[index].stok;
+
+                            input.value = newQty; // 🔥 <- WAJIB, biar gak bisa lewat stok
+
                             cart[index].qty = newQty;
 
-                            // update subtotal row ini langsung
                             const subtotalEl = input.closest("tr").querySelector(".subtotal");
-                            subtotalEl.textContent = "Rp " + new Intl.NumberFormat('id-ID').format(
-                                cart[index].harga * newQty);
+                            subtotalEl.textContent =
+                                "Rp " + new Intl.NumberFormat("id-ID").format(cart[index].harga * newQty);
 
-                            // simpan ke localStorage & update total keseluruhan
                             localStorage.setItem("cart", JSON.stringify(cart));
                             hitungTotal();
-                        });
+                        }
+
+                        input.addEventListener("input", validateQty);
+                        input.addEventListener("change", validateQty); // 🔥 <- Tambahan penting
                     });
                 }
 

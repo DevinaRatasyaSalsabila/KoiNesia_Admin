@@ -1,5 +1,42 @@
 @extends('main')
 @section('content')
+    <style>
+        #miniCarousel {
+    position: relative; /* penting biar child absolute nempel ke sini */
+    overflow: hidden;   /* biar ga keluar-keluar */
+}
+
+/* tombol panah */
+.custom-prev,
+.custom-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #00000070;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    font-size: 22px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 5; /* cukup kecil biar ga nutup navbar */
+}
+
+.custom-prev {
+    left: 10px;
+}
+
+.custom-next {
+    right: 10px;
+}
+
+.custom-prev:hover,
+.custom-next:hover {
+    background: #000000a0;
+}
+
+    </style>
+
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
         <div class="breadcrumb-title pe-3">Detail Produk</div>
         <div class="ps-3">
@@ -25,21 +62,45 @@
         <div class="col-12">
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
-                    @if (!empty($gambarArray))
-                        @foreach ($gambarArray as $file)
-                            @if (Str::endsWith($file, ['.jpg', '.jpeg', '.png']))
-                                <img src="{{ asset('storage/produk/final/' . $file) }}" class="img-fluid rounded-3"
-                                    style="max-height:280px;object-fit:cover;">
-                            @elseif(Str::endsWith($file, ['.mp4', '.webm', '.ogg']))
-                                <div class="video-container">
-                                    <video class="video-preview" controls>
-                                        <source src="{{ asset('storage/produk/final/' . $file) }}">
-                                        Browser anda tidak mendukung pemutaran video 😭
-                                    </video>
+                    <div id="miniCarousel" class="carousel slide" data-bs-ride="false">
+                        <div class="carousel-inner">
+
+                            @php $first = true; @endphp
+
+                            @foreach ($gambarArray as $file)
+                                @php
+                                    $isImage = Str::endsWith($file, ['.jpg', '.jpeg', '.png']);
+                                    $isVideo = Str::endsWith($file, ['.mp4', '.webm', '.ogg']);
+                                @endphp
+
+                                <div class="carousel-item {{ $first ? 'active' : '' }}">
+                                    @if ($isImage)
+                                        <img src="{{ asset('storage/produk/final/' . $file) }}" class="rounded-3"
+                                            style="max-height:280px; object-fit:cover;">
+                                    @elseif($isVideo)
+                                        <video controls class="rounded-3"
+                                            style="max-height:280px; width:auto; max-width:100%; object-fit:cover;">
+                                            <source src="{{ asset('storage/produk/final/' . $file) }}">
+                                            Browser kamu tidak mendukung video 😭
+                                        </video>
+                                    @endif
                                 </div>
-                            @endif
-                        @endforeach
-                    @endif
+
+                                @php $first = false; @endphp
+                            @endforeach
+
+                        </div>
+
+                        <!-- CUSTOM BUTTON LEFT -->
+                        <button class="custom-prev" type="button" data-bs-target="#miniCarousel" data-bs-slide="prev">
+                            &lt;
+                        </button>
+
+                        <!-- CUSTOM BUTTON RIGHT -->
+                        <button class="custom-next" type="button" data-bs-target="#miniCarousel" data-bs-slide="next">
+                            &gt;
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

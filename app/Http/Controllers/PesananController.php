@@ -136,7 +136,7 @@ class PesananController extends Controller
             $produk->stok_produk -= $qty;
             $produk->save();
 
-            $detailPesanan .= "- {$produk->nama_pembeli} x{$qty} = Rp " . number_format($subtotal, 0, ',', '.') . "\n";
+            $detailPesanan .= "- {$produk->nama_produk} x{$qty} = Rp ". number_format($subtotal, 0, ',', '.') . "\n";
         }
 
         $pembeli = Pembeli::find($request->id_pembeli);
@@ -145,12 +145,12 @@ class PesananController extends Controller
             $no_hp = '+62' . substr($no_hp, 1);
         }
 
-        $pesan = "Halo *{$pembeli->nama_pembeli}*, terima kasih sudah order di Azza Koi Farm 🐟✨\n\n"
-            . "Kode Pesanan: {$kodePesanan}\n\n"
-            . "Detail pesanan kamu:\n"
-            . $detailPesanan . "\n"
-            . "Total: *Rp " . number_format($totalHarga, 0, ',', '.') . "*\n\n"
-            . "Pesananmu saat ini sudah masuk dan akan segera diproses ya 👍";
+        $pesan =    "📦 *Pesanan Baru - Azza Koi Farm*\n\n" .
+            "*Nama:* {$pembeli->nama_pembeli}\n" .
+            "*Kode Pesanan:* {$kodePesanan}\n" .
+            "*Total:* Rp " . number_format($totalHarga, 0, ',', '.') . "\n\n" .
+            "*Detail Pesanan:*\n{$detailPesanan}\n\n"
+            . "Silakan melakukan pembayaran terlebih dahulu. Setelah pembayaran dikonfirmasi, pesanan Anda akan segera diproses.";
 
         $this->apicall($no_hp, $pesan);
 

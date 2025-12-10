@@ -147,7 +147,7 @@ class PelangganController extends Controller
             "*Kode Pesanan:* {$kodePesanan}\n" .
             "*Total:* Rp " . number_format($totalHarga, 0, ',', '.') . "\n\n" .
             "*Detail Pesanan:*\n{$detailPesanan}\n\n" .
-            "⏳ Pesanan kamu belum diproses. Mohon selesaikan pembayaran terlebih dahulu.\n" ;
+            "Silakan melakukan pembayaran terlebih dahulu. Setelah pembayaran dikonfirmasi, pesanan Anda akan segera diproses." ;
 
         $this->apicall($telepon, $pesan);
 

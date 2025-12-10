@@ -25,10 +25,8 @@
     <link rel="icon" href="{{ asset('files/images/logo.png') }}" type="image/x-icon">
 
     <!-- GOOGLE FONTS -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-        rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap"
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
 
@@ -36,8 +34,7 @@
     <link href="{{ asset('files/css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- FONT ICONS -->
-    <link href="https://use.fontawesome.com/releases/v5.11.0/css/all.css" rel="stylesheet"
-        crossorigin="anonymous">
+    <link href="https://use.fontawesome.com/releases/v5.11.0/css/all.css" rel="stylesheet" crossorigin="anonymous">
     <link href="{{ asset('files/css/flaticon.css') }}" rel="stylesheet">
 
     <!-- PLUGINS STYLESHEET -->
@@ -54,11 +51,9 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <!-- RESPONSIVE CSS -->
     <link href="{{ asset('files/css/responsive.css') }}" rel="stylesheet">
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <!-- Bootstrap Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
-        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         /* efek shake */
         @keyframes shake {
@@ -233,14 +228,15 @@
                         </li>
 
                         <li>
-                            <a class="nav-link" href="#tentangKami">Tentang Kami</a>
+                            <a class="nav-link"
+                                @if (Request::routeIs('dashboard.pelanggan')) href="#tentangKami" @else href="{{ route('dashboard.pelanggan') }}#tentangKami" @endif>Tentang Kami</a>
                         </li>
 
                         <li>
-                            <a class="nav-link" href="#produk">Produk</a>
+                            <a class="nav-link" @if (Request::routeIs('dashboard.pelanggan')) href="#produk" @else href="{{ route('dashboard.pelanggan') }}#produk" @endif >Produk</a>
                         </li>
                         <li>
-                            <a class="nav-link" href="#kontak">Kontak</a>
+                            <a class="nav-link" @if (Request::routeIs('dashboard.pelanggan')) href="#kontak" @else href="{{ route('dashboard.pelanggan') }}#kontak" @endif>Kontak</a>
                         </li>
 
                         <!-- HEADER BUTTON  -->
@@ -310,8 +306,7 @@
 
                             <!-- Footer Logo -->
                             <div class="footer-logo">
-                                <img src="{{ asset('files/images/logo.png') }}"
-                                    alt="footer-logo" />
+                                <img src="{{ asset('files/images/logo.png') }}" alt="footer-logo" />
                             </div>
 
                             <!-- Footer Copyright -->
@@ -335,7 +330,7 @@
                             <p class="p-lg foo-email">Email: <a
                                     href="mailto:yourdomain@mail.com">hello@yourdomain.com</a></p> --}}
                             <p class="p-lg">Telepon: <span class="yellow-color"><a
-                                        href="tel:083871992561">083871992561</a></span></p>
+                                        href="tel:0895622273292">0895622273292</a></span></p>
 
                         </div>
                     </div>
@@ -348,43 +343,41 @@
                             <ul class="clearfix text-center"
                                 style="display:flex; flex-wrap:wrap; justify-content:center; list-style:none; padding:15px; margin:0;">
 
-                                <li
-                                    style="flex:0 0 33.33%; text-align:center; margin-bottom:15px;">
-                                    <a href="#" target="_blank">
-                                        <img src="{{ asset('files/images/footer-ig.png') }}"
-                                            alt="Instagram" width="35" height="35">
+                                <li style="flex:0 0 33.33%; text-align:center; margin-bottom:15px;">
+                                    <a href="https://www.youtube.com/redirect?event=channel_description&redir_token=QUFFLUhqbGNOUnN3WFpqaExYQVg2aHpoY29BX3p1d2p2d3xBQ3Jtc0ttOXBxcGdUUEhLb2xhRWJhazJDMFJBd1ViQ0p4d2xSRjExSHNjdnBWWkpIUVJhWVZnSi1xWVhiZkFzNG9QN2tKS0h0b1JLN082d0dkb21RZy1Vd1FRejQzd2drSkFXMWNkWC03RDFKZ2hsdVAwWURYcw&q=https%3A%2F%2Fwww.instagram.com%2Freel%2FCwVHAC0BVju%2F%3Figshid%3DMzRlODBiNWFlZA%3D%3D" target="_blank">
+                                        <img src="{{ asset('files/images/footer-ig.png') }}" alt="Instagram"
+                                            width="35" height="35">
                                     </a>
                                 </li>
-                                <li
-                                    style="flex:0 0 33.33%; text-align:center; margin-bottom:15px;">
-                                    <a href="#" target="_blank">
-                                        <img src="{{ asset('files/images/footer-email.png') }}"
-                                            alt="Email" width="35" height="35">
+                               
+                                <li style="flex:0 0 33.33%; text-align:center;">
+                                    <a href="https://wa.me/62895622273292" target="_blank">
+                                        <img src="{{ asset('files/images/footer-wa.png') }}" alt="WhatsApp"
+                                            width="35" height="35">
                                     </a>
                                 </li>
-                                <li
-                                    style="flex:0 0 33.33%; text-align:center; margin-bottom:15px;">
+                                <li style="flex:0 0 33.33%; text-align:center; margin-bottom:15px;">
                                     <a href="#" target="_blank">
-                                        <img src="{{ asset('files/images/footer-tele.png') }}"
-                                            alt="Telegram" width="35" height="35">
+                                        <img src="{{ asset('files/images/footer-tele.png') }}" alt="Telegram"
+                                            width="35" height="35">
                                     </a>
                                 </li>
                                 <li style="flex:0 0 33.33%; text-align:center;">
-                                    <a href="#" target="_blank">
-                                        <img src="{{ asset('files/images/footer-youtube.png') }}"
-                                            alt="YouTube" width="35" height="35">
+                                    <a href="https://www.youtube.com/@AzzaKoifarms1" target="_blank">
+                                        <img src="{{ asset('files/images/footer-youtube.png') }}" alt="YouTube"
+                                            width="35" height="35">
                                     </a>
                                 </li>
                                 <li style="flex:0 0 33.33%; text-align:center;">
-                                    <a href="#" target="_blank">
-                                        <img src="{{ asset('files/images/footer-facebook.png') }}"
-                                            alt="Facebook" width="35" height="35">
+                                    <a href="https://www.facebook.com/share/14PaBkJmQYe/" target="_blank">
+                                        <img src="{{ asset('files/images/footer-facebook.png') }}" alt="Facebook"
+                                            width="35" height="35">
                                     </a>
                                 </li>
-                                <li style="flex:0 0 33.33%; text-align:center;">
+                                 <li style="flex:0 0 33.33%; text-align:center; margin-bottom:15px;">
                                     <a href="#" target="_blank">
-                                        <img src="{{ asset('files/images/footer-wa.png') }}"
-                                            alt="WhatsApp" width="35" height="35">
+                                        <img src="{{ asset('files/images/footer-email.png') }}" alt="Email"
+                                            width="35" height="35">
                                     </a>
                                 </li>
                             </ul>

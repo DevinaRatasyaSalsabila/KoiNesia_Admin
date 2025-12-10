@@ -480,9 +480,9 @@
                                 <h5 class="mb-1 fw-bold">
                                     Kontak
                                 </h5>
-                                <p class="mb-0">WhatsApp: +62 82 142 222 142<br>
+                                <p class="mb-0">WhatsApp: +62895622273292<br>
                                     Instagram:
-                                    @azzakoifarm_
+                                    @azzakoifarms
                                 </p>
                             </div>
                         </div>

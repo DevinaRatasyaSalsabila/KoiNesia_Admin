@@ -1,5 +1,56 @@
 @extends('main')
 @section('content')
+    <style>
+        table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child::before,
+        table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child::before {
+            content: "▶";
+            background: transparent !important;
+            color: #4da6ff !important;
+            border: none !important;
+            box-shadow: none !important;
+            font-weight: bold;
+            font-size: 18px;
+            line-height: 18px;
+        }
+
+        table.dataTable.dtr-inline.collapsed>tbody>tr.parent>td:first-child::before,
+        table.dataTable.dtr-inline.collapsed>tbody>tr.parent>th:first-child::before {
+            content: "▼";
+            color: #007bff !important;
+        }
+
+        table.dataTable tbody tr.child ul.dtr-details {
+            background: #f8fbff;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin: 10px 0;
+            border: 1px solid #e0ecff;
+        }
+
+        table.dataTable tbody tr.child ul.dtr-details li {
+            margin-bottom: 6px;
+            font-size: 14px;
+            color: #333;
+            display: flex;
+            gap: 5px;
+        }
+
+        table.dataTable tbody tr.child ul.dtr-details li span.dtr-title {
+            font-weight: 600;
+            color: #007bff;
+            margin-right: 5px;
+        }
+
+        table.dataTable tbody tr.child ul.dtr-details li span.dtr-title::after {
+            content: ":";
+            margin-left: 2px;
+        }
+
+        table.dataTable tbody tr.child ul.dtr-details li span.dtr-data {
+            color: #444;
+        }
+    </style>
+
     <!-- Breadcrumb -->
     @if (session('warning'))
         <div class="alert alert-warning">{{ session('warning') }}</div>
@@ -8,7 +59,7 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
     <script>
-         setTimeout(() => {
+        setTimeout(() => {
             document.querySelectorAll('.alert').forEach(el => el.remove());
         }, 5000);
     </script>
@@ -55,72 +106,101 @@
         </div>
     </div>
 
-
     <!-- Loader -->
     <div id="loader" class="text-center my-5" style="display:none;">
         <div class="spinner-border text-primary" role="status"></div>
         <p class="mt-2 text-muted">Memuat data produk...</p>
     </div>
 
-    <!-- Daftar Produk -->
-    <div class="row row-cols-1 row-cols-md-3 g-4" id="produk-container">
-        @foreach ($produk as $item)
-            @php
-                $media = json_decode($item->gambar_produk, true);
-            @endphp
-            <div class="col">
-                <div class="card shadow-sm border-0 rounded-4 produk-card h-100">
-                    <div class="text-center p-3 bg-light rounded-top-4">
-                        @if (!empty($media))
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class=" my-1">Daftar Barang</h5>
+            <div class="gap-2 d-flex float-end" id="exportContainer"></div>
+        </div>
+
+        <div id="produk-container" class="card-body">
+            <div class="table-responsive">
+                <table id="example2" class="table table-bordered table-stripped">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Gambar</th>
+                            <th>Jenis ikan</th>
+                            <th>Stok</th>
+                            <th>Harga</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($produk as $item)
                             @php
-                                $firstImage = collect($media)->first(
-                                    fn($f) => Str::endsWith($f, ['.jpg', '.jpeg', '.png']),
-                                );
-                                $firstVideo = $firstImage
-                                    ? null
-                                    : collect($media)->first(fn($f) => Str::endsWith($f, ['.mp4', '.webm', '.ogg']));
+                                $media = json_decode($item->gambar_produk, true);
                             @endphp
-                            @if ($firstImage)
-                                <img src="{{ asset('storage/produk/final/' . $firstImage) }}" class="img-fluid rounded-3"
-                                    style="max-height:220px; object-fit:cover;">
-                            @elseif ($firstVideo)
-                                <video class="rounded-3" controls style="max-height:220px;">
-                                    <source src="{{ asset('storage/produk/final/' . $firstVideo) }}">
-                                </video>
-                            @endif
-                        @endif
-                    </div>
-                    <div class="card-body text-center">
-                        <h5 class="fw-bold text-dark">{{ $item->nama_produk }}</h5>
-                        <p class="text-muted mb-1">Ukuran: {{ $item->ukuran_produk }}</p>
-                        <span class="badge bg-secondary mb-2">Stok: {{ $item->stok_produk }}</span>
-                        <h6 class="fw-bold mb-3">
-                            <span class="text-primary">Rp{{ number_format($item->harga_Satuan, 0, ',', '.') }}</span>
-                        </h6>
-                        <div class="d-flex justify-content-center gap-2">
-                            <a href="{{ url('produk/detail', $item->id_produk) }}"
-                                class="btn btn-primary btn-sm rounded-3 shadow-sm" title="Detail Produk">
-                                <i class="bx bx-info-circle"></i>
-                            </a>
-                            <a href="{{ url('produk/edit', $item->id_produk) }}"
-                                class="btn btn-warning btn-sm rounded-3 shadow-sm" title="Edit Produk">
-                                <i class="bx bx-pencil text-light"></i>
-                            </a>
-                            <form action="{{ route('produk.delete', $item->id_produk) }}" method="POST"
-                                class="delete-form d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="button"
-                                    class="btn btn-danger btn-sm rounded-3 shadow-sm confirm-delete-button"
-                                    title="Hapus Produk">
-                                    <i class="bx bx-trash text-light"></i>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>
+                                    @if (!empty($media))
+                                        @php
+                                            $firstImage = collect($media)->first(
+                                                fn($f) => Str::endsWith($f, ['.jpg', '.jpeg', '.png']),
+                                            );
+                                            $firstVideo = $firstImage
+                                                ? null
+                                                : collect($media)->first(
+                                                    fn($f) => Str::endsWith($f, ['.mp4', '.webm', '.ogg']),
+                                                );
+                                        @endphp
+                                        @if ($firstImage)
+                                            <img src="{{ asset('storage/produk/final/' . $firstImage) }}"
+                                                class="img-fluid rounded-3" style="max-height:110px; object-fit:cover;">
+                                        @elseif ($firstVideo)
+                                            <video class="rounded-3" controls style="max-height:110px;">
+                                                <source src="{{ asset('storage/produk/final/' . $firstVideo) }}">
+                                            </video>
+                                        @endif
+                                    @endif
+                                </td>
+                                <td>{{ $item->nama_produk }} - {{ $item->ukuran_produk }}</td>
+                                <td>{{ $item->stok_produk }}</td>
+                                <td>Rp{{ number_format($item->harga_Satuan, 0, ',', '.') }}</td>
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <a href="{{ url('produk/detail', $item->id_produk) }}"
+                                            class="btn btn-primary btn-sm rounded-3 shadow-sm" title="Detail Produk">
+                                            <i class="bx bx-info-circle"></i>
+                                        </a>
+                                        <a href="{{ url('produk/edit', $item->id_produk) }}"
+                                            class="btn btn-warning btn-sm rounded-3 shadow-sm" title="Edit Produk">
+                                            <i class="bx bx-pencil text-light"></i>
+                                        </a>
+                                        <form action="{{ route('produk.delete', $item->id_produk) }}" method="POST"
+                                            class="delete-form d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button"
+                                                class="btn btn-danger btn-sm rounded-3 shadow-sm confirm-delete-button"
+                                                title="Hapus Produk">
+                                                <i class="bx bx-trash text-light"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>No</th>
+                            <th>Gambar</th>
+                            <th>Jenis ikan</th>
+                            <th>Stok</th>
+                            <th>Harga</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
-        @endforeach
+        </div>
     </div>
 
     <!-- Pagination -->
@@ -128,6 +208,40 @@
 
     @push('scripts')
         <script>
+            var table = $('#example2').DataTable({
+                responsive: true,
+                searching: false,
+                dom: "<'row mb-3'<'col-md-6 d-flex align-items-center'><'col-md-6 d-flex justify-content-end'>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row mt-3'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 d-flex justify-content-end'p>>",
+                language: {
+                    search: "Cari:",
+                    lengthMenu: "Tampilkan _MENU_ data",
+                    info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                    paginate: {
+                        next: "Berikutnya",
+                        previous: "Sebelumnya"
+                    }
+                }
+            });
+
+            // fungsi konversi gambar → base64
+            function getBase64Image(img) {
+                return new Promise((resolve) => {
+                    let canvas = document.createElement("canvas");
+                    canvas.width = img.naturalWidth;
+                    canvas.height = img.naturalHeight;
+
+                    let ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0);
+
+                    resolve(canvas.toDataURL("image/png"));
+                });
+            }
+
+            // pindah tombol export ke container custom
+            table.buttons().container().appendTo('#exportContainer');
+
             document.addEventListener("DOMContentLoaded", function() {
                 const dataProduk = @json($produk);
                 const itemsPerPage = 6;
@@ -155,7 +269,7 @@
 
                 // Render kartu produk
                 function renderCards(pageData) {
-                    container.innerHTML = "";
+                    // container.innerHTML = "";
                     pageData.forEach(item => {
                         let gambarHTML = "";
                         if (item.gambar_produk) {
@@ -215,10 +329,10 @@
                                         @csrf
                                         @method('DELETE')
                                        <button type="button"
-    class="px-3 shadow-sm btn btn-danger btn-sm confirm-delete-button"
-    data-bs-toggle="tooltip" title="Hapus Produk">
-    <i class="bx bx-trash fs-5 text-light"></i>
-</button>
+                                            class="px-3 shadow-sm btn btn-danger btn-sm confirm-delete-button"
+                                            data-bs-toggle="tooltip" title="Hapus Produk">
+                                            <i class="bx bx-trash fs-5 text-light"></i>
+                                        </button>
                                     </form>
                                 </div>
                             </div>
@@ -246,8 +360,8 @@
 
                         btn.addEventListener("click", function() {
                             currentPage = i;
-                            displayData(currentPage, filteredData);
-                            setupPagination();
+                            // displayData(currentPage, filteredData);
+                            // setupPagination();
                         });
 
                         pagination.appendChild(btn);
@@ -260,13 +374,13 @@
                     filteredData = dataProduk.filter(p => p.nama_produk.toLowerCase()
                         .includes(q));
                     currentPage = 1;
-                    displayData(currentPage, filteredData);
-                    setupPagination();
+                    // displayData(currentPage, filteredData);
+                    // setupPagination();
                 });
 
                 // Inisialisasi awal
-                displayData(currentPage, filteredData);
-                setupPagination();
+                // displayData(currentPage, filteredData);
+                // setupPagination();
             });
 
             $(document).on('click', '.confirm-delete-button', function(e) {
@@ -307,7 +421,6 @@
                 });
             @endif
         </script>
-
 
         <style>
             /* Efek Hover Kartu */
