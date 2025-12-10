@@ -7,7 +7,9 @@ use App\Models\Pesanan;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
 
 
@@ -79,7 +81,58 @@ class PelangganController extends Controller
 
     public function format()
     {
-        return view('pelanggan.format.index');
+        // INISIALISASI DULU
+        $provinces = [];
+
+        $response = Http::withHeaders([
+            'Accept' => 'application/json',
+            'key' => 'rCXIPJpe6e8d9ab9144644b2QLBozKTJ',
+        ])->get('https://rajaongkir.komerce.id/api/v1/destination/province');
+
+        if ($response->successful()) {
+            $provinces = $response->json()['data'] ?? [];
+        }
+
+        return view('pelanggan.format.index', compact('provinces'));
+    }
+
+
+    public function getCities($provinceId)
+    {
+        // Mengambil data kota berdasarkan ID provinsi dari API Raja Ongkir
+        $response = Http::withHeaders([
+
+            //headers yang diperlukan untuk API Raja Ongkir
+            'Accept' => 'application/json',
+            'key' => 'rCXIPJpe6e8d9ab9144644b2QLBozKTJ',
+
+        ])->get("https://rajaongkir.komerce.id/api/v1/destination/city/{$provinceId}");
+
+        if ($response->successful()) {
+
+            // Mengambil data kota dari respons JSON
+            // Jika 'data' tidak ada, inisialisasi dengan array kosong
+            return response()->json($response->json()['data'] ?? []);
+        }
+    }
+
+    public function getDistricts($cityId)
+    {
+        // Mengambil data kecamatan berdasarkan ID kota dari API Raja Ongkir
+        $response = Http::withHeaders([
+
+            //headers yang diperlukan untuk API Raja Ongkir
+            'Accept' => 'application/json',
+            'key' => 'rCXIPJpe6e8d9ab9144644b2QLBozKTJ',
+
+        ])->get("https://rajaongkir.komerce.id/api/v1/destination/district/{$cityId}");
+
+        if ($response->successful()) {
+
+            // Mengambil data kecamatan dari respons JSON
+            // Jika 'data' tidak ada, inisialisasi dengan array kosong
+            return response()->json($response->json()['data'] ?? []);
+        }
     }
 
     // public function kirim(Request $request)
@@ -155,23 +208,32 @@ class PelangganController extends Controller
     //     return back()->with('success', 'Pesanan berhasil dikirim ke admin via WhatsApp!');
     // }
 
+    public function checkOngkir(Request $request)
+    {
+        $response = Http::asForm()->withHeaders([
+
+            //headers yang diperlukan untuk API Raja Ongkir
+            'Accept' => 'application/json',
+            'key'    => 'rCXIPJpe6e8d9ab9144644b2QLBozKTJ',
+
+        ])->post('https://rajaongkir.komerce.id/api/v1/calculate/domestic-cost', [
+            'origin'      => 3916, // ID kecamatan Diwek (ganti sesuai kebutuhan)
+            'destination' => $request->input('district_id'), // ID kecamatan tujuan
+            'weight'      => $request->input('weight'), // Berat dalam gram
+            'courier'     => $request->input('courier'), // Kode kurir (jne, tiki, pos)
+        ]);
+
+        if ($response->successful()) {
+
+            // Mengambil data ongkos kirim dari respons JSON
+            // Jika 'data' tidak ada, inisialisasi dengan array kosong
+            return $response->json()['data'] ?? [];
+        }
+    }
+
     public function kirim(Request $request)
     {
         Log::info("Pesanan diterima dari pelanggan:", $request->all());
-
-        // $request->validate([
-        //     'nama_pembeli' => 'required|string|max:100',
-        //     'alamat'       => 'required|string',
-        //     'telepon'      => 'required|string',
-        //     'produk'       => 'required|array|min:1',
-        //     'produk.*.id'     => 'required|string',
-        //     'produk.*.nama'   => 'required|string',
-        //     'produk.*.qty'    => 'required|integer|min:1',
-        //     'produk.*.harga'  => 'required|integer|min:1',
-
-        //     // 🔥 VALIDASI FILE BUKTI
-        //     'bukti' => 'required|image|mimes:jpg,jpeg,png|max:3000',
-        // ]);
 
         $telepon = preg_replace('/\D/', '', $request->telepon);
 
@@ -183,9 +245,6 @@ class PelangganController extends Controller
             $telepon = '0' . $telepon;
         }
 
-        // ============================================
-        // 🔧 SIMPAN DATA PEMBELI
-        // ============================================
         $pembeli = Pembeli::firstOrCreate(
             ['no_hp' => $telepon],
             [
@@ -202,17 +261,21 @@ class PelangganController extends Controller
         }
 
         $kodePesanan = 'PESN-' . date('dm') . '-' . date('Hi') . '-' . Str::upper(Str::random(3));
-        $totalHarga = 0;
+
+        $totalBarang = 0;
         $detailPesanan = "";
 
         foreach ($request->produk as $p) {
 
             $nominal = $p['qty'] * $p['harga'];
-            $totalHarga += $nominal;
+            $totalBarang += $nominal;
 
-            $detailPesanan .= "- {$p['nama']} ({$p['qty']}x) = Rp " . number_format($nominal, 0, ',', '.') . "\n";
+            $detailPesanan .=
+                "• {$p['nama']}\n" .
+                "   Harga: Rp " . number_format($p['harga'], 0, ',', '.') . "\n" .
+                "   Qty: {$p['qty']}\n" .
+                "   Subtotal: Rp " . number_format($nominal, 0, ',', '.') . "\n\n";
 
-            // simpan ke tabel pesanan (per produk)
             Pesanan::create([
                 "kode_pesanan" => $kodePesanan,
                 "kode_produk"  => $p['id'],
@@ -220,39 +283,45 @@ class PelangganController extends Controller
                 "nominal"      => $nominal,
                 "id_pembeli"   => $pembeli->id_pembeli,
                 "user_id"      => auth()->id() ?? 1,
-
-                // 🔥 simpan bukti untuk pesanan ini
                 "bukti"        => $namaFileBukti,
-
-                // status awal masih pending menunggu admin cek
                 "status"       => "baru",
             ]);
         }
 
+        $ongkir = intval($request->ongkir_fix ?? 0);
+        $totalKeseluruhan = $totalBarang + $ongkir;
         $pesanWA =
             "📦 *Pesanan Baru - Azza Koi Farm*\n\n" .
             "*Nama:* {$pembeli->nama_pembeli}\n" .
-            "*Kode Pesanan:* {$kodePesanan}\n" .
-            "*Total:* Rp " . number_format($totalHarga, 0, ',', '.') . "\n\n" .
-            "*Detail:*\n{$detailPesanan}\n" .
-            "📎 *Bukti Pembayaran sudah diupload*\n" .
-            "⏳ Mohon tunggu, admin sedang mengecek mutasi pembayaran kamu.";
+            "*Kode Pesanan:* {$kodePesanan}\n\n" .
+
+            "*Rincian Produk:*\n{$detailPesanan}" .
+
+            "💰 *Total Barang:* Rp " . number_format($totalBarang, 0, ',', '.') . "\n" .
+            "🚚 *Ongkir:* Rp " . number_format($ongkir, 0, ',', '.') . "\n" .
+            "🧾 *Total Keseluruhan:* Rp " . number_format($totalKeseluruhan, 0, ',', '.') . "\n\n" .
+
+            "📎 *Bukti pembayaran sudah diupload*\n" .
+            "⏳ Admin akan segera mengecek mutasi pembayaran.";
 
         $this->apicall($telepon, $pesanWA);
-
         $pesanAdmin =
             "📥 *Pesanan Masuk*\n\n" .
-            "Kode: {$kodePesanan}\n" .
-            "Nama: {$pembeli->nama_pembeli}\n" .
-            "Total: Rp " . number_format($totalHarga, 0, ',', '.') . "\n\n" .
-            "Silakan cek bukti pembayaran di panel admin.\n";
+            "*Kode:* {$kodePesanan}\n" .
+            "*Nama:* {$pembeli->nama_pembeli}\n\n" .
+
+            "*Rincian Produk:*\n{$detailPesanan}" .
+
+            "💰 *Total Barang:* Rp " . number_format($totalBarang, 0, ',', '.') . "\n" .
+            "🚚 *Ongkir:* Rp " . number_format($ongkir, 0, ',', '.') . "\n" .
+            "🧾 *Total Keseluruhan:* Rp " . number_format($totalKeseluruhan, 0, ',', '.') . "\n\n" .
+            "Cek bukti pembayaran di panel admin.";
 
         $this->apicall("ADMIN_NUMBER", $pesanAdmin);
 
-        Log::info("Pesanan {$kodePesanan} berhasil dibuat dan bukti disimpan: {$namaFileBukti}");
-
-        return back()->with('success', 'Pesanan berhasil dikirim & bukti pembayaran diupload!');
+        return Redirect()->route('dashboard.pelanggan')->with('success', 'Pesanan berhasil dikirim!');
     }
+
 
 
     private function apicall($telepon, $pesan)

@@ -11,6 +11,7 @@
     <meta name="keywords"
         content="Jthemes, Food, Fast Food, Restaurant, Pizzeria, Restaurant Menu, Pizza, Burger, Sushi, Steak, Grill, Snack">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- SITE TITLE -->
     <title>Azza Koi Farm</title>
@@ -25,10 +26,8 @@
     <link rel="icon" href="{{ asset('files/images/logo.png') }}" type="image/x-icon">
 
     <!-- GOOGLE FONTS -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-        rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap"
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
 
@@ -36,8 +35,7 @@
     <link href="{{ asset('files/css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- FONT ICONS -->
-    <link href="https://use.fontawesome.com/releases/v5.11.0/css/all.css" rel="stylesheet"
-        crossorigin="anonymous">
+    <link href="https://use.fontawesome.com/releases/v5.11.0/css/all.css" rel="stylesheet" crossorigin="anonymous">
     <link href="{{ asset('files/css/flaticon.css') }}" rel="stylesheet">
 
     <!-- PLUGINS STYLESHEET -->
@@ -54,11 +52,9 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <!-- RESPONSIVE CSS -->
     <link href="{{ asset('files/css/responsive.css') }}" rel="stylesheet">
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <!-- Bootstrap Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
-        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         /* efek shake */
         @keyframes shake {
@@ -245,8 +241,7 @@
 
                         <!-- HEADER BUTTON  -->
                         <li class="nav-btn yellow-color">
-                            <a href="#"
-                                target="_blank">Login</a>
+                            <a href="#" target="_blank">Login</a>
                         </li>
 
                         <li class="basket-ico ico-30" id="cart-icon">
@@ -310,8 +305,7 @@
 
                             <!-- Footer Logo -->
                             <div class="footer-logo">
-                                <img src="{{ asset('files/images/logo.png') }}"
-                                    alt="footer-logo" />
+                                <img src="{{ asset('files/images/logo.png') }}" alt="footer-logo" />
                             </div>
 
                             <!-- Footer Copyright -->
@@ -348,43 +342,40 @@
                             <ul class="clearfix text-center"
                                 style="display:flex; flex-wrap:wrap; justify-content:center; list-style:none; padding:15px; margin:0;">
 
-                                <li
-                                    style="flex:0 0 33.33%; text-align:center; margin-bottom:15px;">
+                                <li style="flex:0 0 33.33%; text-align:center; margin-bottom:15px;">
                                     <a href="#" target="_blank">
-                                        <img src="{{ asset('files/images/footer-ig.png') }}"
-                                            alt="Instagram" width="35" height="35">
+                                        <img src="{{ asset('files/images/footer-ig.png') }}" alt="Instagram"
+                                            width="35" height="35">
                                     </a>
                                 </li>
-                                <li
-                                    style="flex:0 0 33.33%; text-align:center; margin-bottom:15px;">
+                                <li style="flex:0 0 33.33%; text-align:center; margin-bottom:15px;">
                                     <a href="#" target="_blank">
-                                        <img src="{{ asset('files/images/footer-email.png') }}"
-                                            alt="Email" width="35" height="35">
+                                        <img src="{{ asset('files/images/footer-email.png') }}" alt="Email"
+                                            width="35" height="35">
                                     </a>
                                 </li>
-                                <li
-                                    style="flex:0 0 33.33%; text-align:center; margin-bottom:15px;">
+                                <li style="flex:0 0 33.33%; text-align:center; margin-bottom:15px;">
                                     <a href="#" target="_blank">
-                                        <img src="{{ asset('files/images/footer-tele.png') }}"
-                                            alt="Telegram" width="35" height="35">
+                                        <img src="{{ asset('files/images/footer-tele.png') }}" alt="Telegram"
+                                            width="35" height="35">
                                     </a>
                                 </li>
                                 <li style="flex:0 0 33.33%; text-align:center;">
                                     <a href="#" target="_blank">
-                                        <img src="{{ asset('files/images/footer-youtube.png') }}"
-                                            alt="YouTube" width="35" height="35">
+                                        <img src="{{ asset('files/images/footer-youtube.png') }}" alt="YouTube"
+                                            width="35" height="35">
                                     </a>
                                 </li>
                                 <li style="flex:0 0 33.33%; text-align:center;">
                                     <a href="#" target="_blank">
-                                        <img src="{{ asset('files/images/footer-facebook.png') }}"
-                                            alt="Facebook" width="35" height="35">
+                                        <img src="{{ asset('files/images/footer-facebook.png') }}" alt="Facebook"
+                                            width="35" height="35">
                                     </a>
                                 </li>
                                 <li style="flex:0 0 33.33%; text-align:center;">
                                     <a href="#" target="_blank">
-                                        <img src="{{ asset('files/images/footer-wa.png') }}"
-                                            alt="WhatsApp" width="35" height="35">
+                                        <img src="{{ asset('files/images/footer-wa.png') }}" alt="WhatsApp"
+                                            width="35" height="35">
                                     </a>
                                 </li>
                             </ul>
