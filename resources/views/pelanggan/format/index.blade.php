@@ -132,7 +132,7 @@
                 </div>
             </div>
 
-           
+
 
             <div class="container">
                 <div class="row">
@@ -312,6 +312,9 @@
                                                                 <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg"
                                                                     alt="QRIS" class="img-fluid mb-3"
                                                                     style="max-width: 250px;">
+                                                                <h4 id="total-qris" class="mt-3 text-center">
+                                                                    Total Pembayaran: Rp 0
+                                                                </h4>
                                                                 <p class="text-muted">Setelah melakukan pembayaran, klik
                                                                     tombol
                                                                     <b>Selanjutnya</b>.
@@ -334,7 +337,8 @@
                                                 </div>
                                                 <!-- MODAL UPLOAD BUKTI PEMBAYARAN -->
                                                 <div class="modal fade" id="uploadModal" tabindex="-1">
-                                                    <div class="modal-dialog modal-dialog-centered">
+                                                    <div
+                                                        class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                                         <div class="modal-content">
 
                                                             <div class="modal-header">
@@ -549,13 +553,16 @@
 
         <script>
             window.showQris = function() {
-                let totalFix = localStorage.getItem("total_fix_semua") || 0;
 
-                // Tambahkan di bawah QR code
-                $(".modal-body").append(
-                    `<h4 class="mt-3">Total Pembayaran: <b>Rp ${new Intl.NumberFormat('id-ID').format(totalFix)}</b></h4>`
-                );
+                let totalBarang = window.totalBarang || 0;
+                let ongkir = parseInt(localStorage.getItem("ongkir_fix") || 0);
+                let totalFix = totalBarang + ongkir;
 
+                // UPDATE LANGSUNG TANPA APPEND
+                document.getElementById("total-qris").innerHTML =
+                    `Total Pembayaran: <b>Rp ${new Intl.NumberFormat('id-ID').format(totalFix)}</b>`;
+
+                // Tampilkan modal QRIS
                 var qrisModal = new bootstrap.Modal(document.getElementById('qrisModal'));
                 qrisModal.show();
             };
@@ -565,7 +572,7 @@
                 var qrisModal = bootstrap.Modal.getInstance(document.getElementById('qrisModal'));
                 qrisModal.hide();
 
-                // Buka modal upload
+                // Buka modal upload bukti bayar
                 var uploadModal = new bootstrap.Modal(document.getElementById('uploadModal'));
                 uploadModal.show();
             }
@@ -576,6 +583,7 @@
                 img.style.display = 'block';
             }
         </script>
+
 
 
         <script>
