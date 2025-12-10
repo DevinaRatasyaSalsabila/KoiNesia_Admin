@@ -100,3 +100,6 @@ Route::get('/resi', function () {
 Route::post('/pesanan/tambah', [PesananController::class, 'store'])->name('pesanan.add');
 Route::put('/pesanan/update/{kode_pesanan}', [PesananController::class, 'update'])->name('pesanan.update');
 Route::get('pelanggan/produk/rinci/{kode_produk}', [PelangganController::class, 'rinci'])->name('produkDetail');
+
+
+

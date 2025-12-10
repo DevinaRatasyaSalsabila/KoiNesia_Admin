@@ -82,22 +82,97 @@ class PelangganController extends Controller
         return view('pelanggan.format.index');
     }
 
+    // public function kirim(Request $request)
+    // {
+    //     Log::info("Pesanan diterima dari pelanggan:", $request->all());
+
+    //     $request->validate([
+    //         'nama_pembeli' => 'required|string|max:100',
+    //         'alamat' => 'required|string',
+    //         'telepon' => 'required|string',
+    //         'produk' => 'required|array|min:1',
+    //         'produk.*.id' => 'required|string',
+    //         'produk.*.qty' => 'required|integer|min:1',
+    //         'produk.*.harga' => 'required|integer|min:1',
+    //     ]);
+
+    //     $nama_pembeli = $request->nama_pembeli;
+    //     $alamat = $request->alamat;
+    //     $telepon = preg_replace('/\D/', '', $request->telepon);
+
+    //     if (str_starts_with($telepon, '62')) {
+    //         $telepon = '0' . substr($telepon, 2);
+    //     } elseif (str_starts_with($telepon, '+62')) {
+    //         $telepon = '0' . substr($telepon, 3);
+    //     } elseif (!str_starts_with($telepon, '0')) {
+    //         $telepon = '0' . $telepon;
+    //     }
+
+    //     Log::info("Nomor telepon setelah normalisasi:", ['telepon' => $telepon]);
+
+    //     $pembeli = Pembeli::firstOrCreate(
+    //         ['no_hp' => $telepon],
+    //         [
+    //             'nama_pembeli' => $nama_pembeli,
+    //             'alamat' => $alamat,
+    //         ]
+    //     );
+
+    //     Log::info("Data pembeli digunakan:", $pembeli->toArray());
+
+    //     $kodePesanan = 'PESN-' . date('dm') . '-' . date('Hi') . '-' . Str::upper(Str::random(3));
+    //     $totalHarga = 0;
+    //     $detailPesanan = "";
+
+    //     foreach ($request->produk as $p) {
+    //         $nominal = $p['qty'] * $p['harga'];
+    //         $totalHarga += $nominal;
+
+    //         $detailPesanan .= "- {$p['nama']} ({$p['qty']}x) = Rp " . number_format($nominal, 0, ',', '.') . "\n";
+
+    //         // 🧾 Simpan ke tabel pesanan
+    //         Pesanan::create([
+    //             "kode_pesanan" => $kodePesanan,
+    //             "kode_produk"  => $p['id'],
+    //             "jumlah"       => $p['qty'],
+    //             "nominal"      => $nominal,
+    //             "id_pembeli"   => $pembeli->id_pembeli,
+    //             "user_id"      => auth()->id() ?? 1,
+    //         ]);
+    //     }
+
+    //     $pesan = "Halo *{$pembeli->nama_pembeli}*, terima kasih sudah order di Azza Koi Farm 🐟✨\n\n"
+    //         . "Kode Pesanan: *{$kodePesanan}*\n\n"
+    //         . "Detail pesanan kamu:\n"
+    //         . "{$detailPesanan}\n"
+    //         . "Total: *Rp " . number_format($totalHarga, 0, ',', '.') . "*\n\n"
+    //         . "Pesananmu sudah masuk dan akan segera diproses ya 👍";
+
+    //     $this->apicall($telepon, $pesan);
+
+    //     Log::info("Pesanan {$kodePesanan} berhasil dibuat dan dikirim ke WhatsApp.");
+
+    //     return back()->with('success', 'Pesanan berhasil dikirim ke admin via WhatsApp!');
+    // }
+
     public function kirim(Request $request)
     {
         Log::info("Pesanan diterima dari pelanggan:", $request->all());
 
-        $request->validate([
-            'nama_pembeli' => 'required|string|max:100',
-            'alamat' => 'required|string',
-            'telepon' => 'required|string',
-            'produk' => 'required|array|min:1',
-            'produk.*.id' => 'required|string',
-            'produk.*.qty' => 'required|integer|min:1',
-            'produk.*.harga' => 'required|integer|min:1',
-        ]);
+        // $request->validate([
+        //     'nama_pembeli' => 'required|string|max:100',
+        //     'alamat'       => 'required|string',
+        //     'telepon'      => 'required|string',
+        //     'produk'       => 'required|array|min:1',
+        //     'produk.*.id'     => 'required|string',
+        //     'produk.*.nama'   => 'required|string',
+        //     'produk.*.qty'    => 'required|integer|min:1',
+        //     'produk.*.harga'  => 'required|integer|min:1',
 
-        $nama_pembeli = $request->nama_pembeli;
-        $alamat = $request->alamat;
+        //     // 🔥 VALIDASI FILE BUKTI
+        //     'bukti' => 'required|image|mimes:jpg,jpeg,png|max:3000',
+        // ]);
+
         $telepon = preg_replace('/\D/', '', $request->telepon);
 
         if (str_starts_with($telepon, '62')) {
@@ -108,29 +183,36 @@ class PelangganController extends Controller
             $telepon = '0' . $telepon;
         }
 
-        Log::info("Nomor telepon setelah normalisasi:", ['telepon' => $telepon]);
-
+        // ============================================
+        // 🔧 SIMPAN DATA PEMBELI
+        // ============================================
         $pembeli = Pembeli::firstOrCreate(
             ['no_hp' => $telepon],
             [
-                'nama_pembeli' => $nama_pembeli,
-                'alamat' => $alamat,
+                'nama_pembeli' => $request->nama_pembeli,
+                'alamat'       => $request->alamat,
             ]
         );
 
-        Log::info("Data pembeli digunakan:", $pembeli->toArray());
+        $namaFileBukti = null;
+
+        if ($request->hasFile('bukti')) {
+            $namaFileBukti = time() . '_' . $request->file('bukti')->getClientOriginalName();
+            $request->file('bukti')->storeAs('bukti', $namaFileBukti, 'public');
+        }
 
         $kodePesanan = 'PESN-' . date('dm') . '-' . date('Hi') . '-' . Str::upper(Str::random(3));
         $totalHarga = 0;
         $detailPesanan = "";
 
         foreach ($request->produk as $p) {
+
             $nominal = $p['qty'] * $p['harga'];
             $totalHarga += $nominal;
 
             $detailPesanan .= "- {$p['nama']} ({$p['qty']}x) = Rp " . number_format($nominal, 0, ',', '.') . "\n";
 
-            // 🧾 Simpan ke tabel pesanan
+            // simpan ke tabel pesanan (per produk)
             Pesanan::create([
                 "kode_pesanan" => $kodePesanan,
                 "kode_produk"  => $p['id'],
@@ -138,22 +220,40 @@ class PelangganController extends Controller
                 "nominal"      => $nominal,
                 "id_pembeli"   => $pembeli->id_pembeli,
                 "user_id"      => auth()->id() ?? 1,
+
+                // 🔥 simpan bukti untuk pesanan ini
+                "bukti"        => $namaFileBukti,
+
+                // status awal masih pending menunggu admin cek
+                "status"       => "baru",
             ]);
         }
 
-        $pesan = "Halo *{$pembeli->nama_pembeli}*, terima kasih sudah order di Azza Koi Farm 🐟✨\n\n"
-            . "Kode Pesanan: *{$kodePesanan}*\n\n"
-            . "Detail pesanan kamu:\n"
-            . "{$detailPesanan}\n"
-            . "Total: *Rp " . number_format($totalHarga, 0, ',', '.') . "*\n\n"
-            . "Pesananmu sudah masuk dan akan segera diproses ya 👍";
+        $pesanWA =
+            "📦 *Pesanan Baru - Azza Koi Farm*\n\n" .
+            "*Nama:* {$pembeli->nama_pembeli}\n" .
+            "*Kode Pesanan:* {$kodePesanan}\n" .
+            "*Total:* Rp " . number_format($totalHarga, 0, ',', '.') . "\n\n" .
+            "*Detail:*\n{$detailPesanan}\n" .
+            "📎 *Bukti Pembayaran sudah diupload*\n" .
+            "⏳ Mohon tunggu, admin sedang mengecek mutasi pembayaran kamu.";
 
-        $this->apicall($telepon, $pesan);
+        $this->apicall($telepon, $pesanWA);
 
-        Log::info("Pesanan {$kodePesanan} berhasil dibuat dan dikirim ke WhatsApp.");
+        $pesanAdmin =
+            "📥 *Pesanan Masuk*\n\n" .
+            "Kode: {$kodePesanan}\n" .
+            "Nama: {$pembeli->nama_pembeli}\n" .
+            "Total: Rp " . number_format($totalHarga, 0, ',', '.') . "\n\n" .
+            "Silakan cek bukti pembayaran di panel admin.\n";
 
-        return back()->with('success', 'Pesanan berhasil dikirim ke admin via WhatsApp!');
+        $this->apicall("ADMIN_NUMBER", $pesanAdmin);
+
+        Log::info("Pesanan {$kodePesanan} berhasil dibuat dan bukti disimpan: {$namaFileBukti}");
+
+        return back()->with('success', 'Pesanan berhasil dikirim & bukti pembayaran diupload!');
     }
+
 
     private function apicall($telepon, $pesan)
     {

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('kode_produk');
             $table->unsignedBigInteger('user_id');
             $table->enum('status', ['baru', 'proses', 'selesai'])->default('baru');
+            $table->string('bukti')->nullable();
             $table->integer('jumlah');
             $table->integer('nominal');
             $table->timestamps();

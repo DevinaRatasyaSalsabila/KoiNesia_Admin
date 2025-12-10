@@ -113,7 +113,7 @@
         </div>
     </div>
 
-    <form action="{{ route('pesanan.kirim') }}" method="POST" class="row">
+    <form action="{{ route('pesanan.kirim') }}" method="POST" class="row" enctype="multipart/form-data">
         @csrf
         <section class="wide-100 cart-page division">
             <div class="container">
@@ -156,6 +156,18 @@
                                             <label for="">Alamat Lengkap</label>
                                             <textarea name="alamat" class="form-control " placeholder="Masukkan Alamat Lengkap" required></textarea>
                                         </div>
+
+                                        {{-- <div class="mb-3 col-md-12">
+                                            <label for="bukti_transfer" class="fw-bold">Upload Bukti Pembayaran</label>
+                                            <input type="file" name="bukti_transfer" class="form-control"
+                                                accept="image/*" required onchange="previewBukti(event)">
+                                            <small class="text-muted">Format: JPG, PNG. Ukuran maksimal 2MB.</small>
+
+                                            <div class="mt-3 text-center">
+                                                <img id="previewImage" src="#" alt="Preview Bukti Transfer"
+                                                    style="display:none; max-width: 250px; border-radius: 10px;">
+                                            </div>
+                                        </div> --}}
 
                                         <div class="text-center col-md-12">
                                             <div class="sending-msg"><span class="loading"></span></div>
@@ -204,10 +216,86 @@
                             </tr>
                             <tr>
                                 <td colspan="5" class="text-end">
-                                    <button type="submit" class="btn btn-lg btn-meat ">
+                                    {{-- <button type="submit" class="btn btn-lg btn-meat ">
+                                        <i class="fa-brands fa-whatsapp"></i>
+                                        Kirim Pesanan
+                                    </button> --}}
+                                    <button type="button" onclick="showQris()" class="btn btn-lg btn-meat">
                                         <i class="fa-brands fa-whatsapp"></i>
                                         Kirim Pesanan
                                     </button>
+                                    <!-- MODAL QRIS -->
+                                    <div class="modal fade" id="qrisModal" tabindex="-1">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content text-center">
+
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Scan & Bayar dengan QRIS</h5>
+                                                    <button type="button" class="btn-close"
+                                                        data-bs-dismiss="modal"></button>
+                                                </div>
+
+                                                <div class="modal-body">
+                                                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" alt="QRIS" class="img-fluid mb-3"
+                                                        style="max-width: 250px;">
+                                                    <p class="text-muted">Setelah melakukan pembayaran, klik tombol
+                                                        <b>Selanjutnya</b>.
+                                                    </p>
+                                                </div>
+
+                                                <div class="modal-footer d-flex justify-content-between">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Batal</button>
+
+                                                    <!-- Tombol Selanjutnya -->
+                                                    <button type="button" class="btn btn-meat" onclick="nextToUpload()">
+                                                        Selanjutnya
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- MODAL UPLOAD BUKTI PEMBAYARAN -->
+                                    <div class="modal fade" id="uploadModal" tabindex="-1">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Upload Bukti Pembayaran</h5>
+                                                    <button type="button" class="btn-close"
+                                                        data-bs-dismiss="modal"></button>
+                                                </div>
+
+                                                <div class="modal-body">
+
+                                                    <label class="fw-bold">Upload Bukti Transfer</label>
+                                                    <input type="file" name="bukti_transfer" class="form-control"
+                                                        accept="image/*" required onchange="previewBukti(event)">
+
+                                                    <small class="text-muted">Format: JPG, PNG. Maks 2MB.</small>
+
+                                                    <div class="mt-3 text-center">
+                                                        <img id="previewImage" src="#" alt="Preview Bukti"
+                                                            style="display:none; max-width: 250px; border-radius: 10px;">
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="modal-footer">
+                                                    <button class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Batal</button>
+
+                                                    <!-- SUBMIT PESANAN -->
+                                                    <button type="submit" class="btn btn-meat">
+                                                        Konfirmasi Pesanan
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </td>
                             </tr>
                         </thead>
@@ -218,6 +306,64 @@
     </form>
 
     @push('script')
+        <script>
+            function previewBukti(event) {
+                const img = document.getElementById('previewImage');
+                img.src = URL.createObjectURL(event.target.files[0]);
+                img.style.display = 'block';
+            }
+        </script>
+
+        <script>
+            function showQris() {
+                var qrisModal = new bootstrap.Modal(document.getElementById('qrisModal'));
+                qrisModal.show();
+            }
+
+            function nextToUpload() {
+                // Tutup QRIS
+                var qrisModal = bootstrap.Modal.getInstance(document.getElementById('qrisModal'));
+                qrisModal.hide();
+
+                // Buka modal upload
+                var uploadModal = new bootstrap.Modal(document.getElementById('uploadModal'));
+                uploadModal.show();
+            }
+
+            function previewBukti(event) {
+                const img = document.getElementById('previewImage');
+                img.src = URL.createObjectURL(event.target.files[0]);
+                img.style.display = 'block';
+            }
+        </script>
+
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                // Ambil data user sebelumnya
+                const savedData = JSON.parse(localStorage.getItem("userCheckoutForm")) || {};
+
+                // isi otomatis jika ada data
+                if (savedData.nama) document.querySelector('input[name="nama_pembeli"]').value = savedData.nama;
+                if (savedData.telepon) document.querySelector('input[name="telepon"]').value = savedData.telepon;
+                if (savedData.alamat) document.querySelector('textarea[name="alamat"]').value = savedData.alamat;
+
+                // Simpan otomatis setiap user mengetik
+                const inputs = document.querySelectorAll(
+                    'input[name="nama_pembeli"], input[name="telepon"], textarea[name="alamat"]');
+                inputs.forEach(input => {
+                    input.addEventListener("input", function() {
+                        let newData = {
+                            nama: document.querySelector('input[name="nama_pembeli"]').value,
+                            telepon: document.querySelector('input[name="telepon"]').value,
+                            alamat: document.querySelector('textarea[name="alamat"]').value
+                        };
+                        localStorage.setItem("userCheckoutForm", JSON.stringify(newData));
+                    });
+                });
+            });
+        </script>
+
         <script>
             document.addEventListener("DOMContentLoaded", () => {
                 let checkout = JSON.parse(localStorage.getItem("checkout")) || [];
