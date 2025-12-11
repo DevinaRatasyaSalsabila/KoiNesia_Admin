@@ -229,21 +229,28 @@
                         </li>
 
                         <li>
-                            <a class="nav-link" href="#tentangKami">Tentang Kami</a>
+                            <a class="nav-link"
+                                @if (Request::routeIs('dashboard.pelanggan')) href="#tentangKami" @else href="{{ route('dashboard.pelanggan') }}#tentangKami" @endif>Tentang
+                                Kami</a>
                         </li>
 
                         <li>
-                            <a class="nav-link" href="#produk">Produk</a>
+                            <a class="nav-link"
+                                @if (Request::routeIs('dashboard.pelanggan')) href="#produk" @else href="{{ route('dashboard.pelanggan') }}#produk" @endif>Produk</a>
                         </li>
                         <li>
-                            <a class="nav-link" href="#kontak">Kontak</a>
+                            <a class="nav-link"
+                                @if (Request::routeIs('dashboard.pelanggan')) href="#kontak" @else href="{{ route('dashboard.pelanggan') }}#kontak" @endif>Kontak</a>
                         </li>
 
                         <!-- HEADER BUTTON  -->
                         <li class="nav-btn yellow-color">
-                            <a href="#" target="_blank">Login</a>
+                              @if (Auth::guard('pembeli')->check())
+                                {{ Auth::guard('pembeli')->user()->nama_pembeli }}
+                            @else
+                                <a href="{{ route('registrasi.buyer') }}">Login</a>
+                            @endif
                         </li>
-
                         <li class="basket-ico ico-30" id="cart-icon">
                             <a href="{{ route('keranjang') }}">
                                 <span class="ico-holder">
@@ -329,7 +336,7 @@
                             <p class="p-lg foo-email">Email: <a
                                     href="mailto:yourdomain@mail.com">hello@yourdomain.com</a></p> --}}
                             <p class="p-lg">Telepon: <span class="yellow-color"><a
-                                        href="tel:083871992561">083871992561</a></span></p>
+                                        href="tel:0895622273292">0895622273292</a></span></p>
 
                         </div>
                     </div>
@@ -343,14 +350,15 @@
                                 style="display:flex; flex-wrap:wrap; justify-content:center; list-style:none; padding:15px; margin:0;">
 
                                 <li style="flex:0 0 33.33%; text-align:center; margin-bottom:15px;">
-                                    <a href="#" target="_blank">
+                                    <a href="https://www.youtube.com/redirect?event=channel_description&redir_token=QUFFLUhqbGNOUnN3WFpqaExYQVg2aHpoY29BX3p1d2p2d3xBQ3Jtc0ttOXBxcGdUUEhLb2xhRWJhazJDMFJBd1ViQ0p4d2xSRjExSHNjdnBWWkpIUVJhWVZnSi1xWVhiZkFzNG9QN2tKS0h0b1JLN082d0dkb21RZy1Vd1FRejQzd2drSkFXMWNkWC03RDFKZ2hsdVAwWURYcw&q=https%3A%2F%2Fwww.instagram.com%2Freel%2FCwVHAC0BVju%2F%3Figshid%3DMzRlODBiNWFlZA%3D%3D"
+                                        target="_blank">
                                         <img src="{{ asset('files/images/footer-ig.png') }}" alt="Instagram"
                                             width="35" height="35">
                                     </a>
                                 </li>
-                                <li style="flex:0 0 33.33%; text-align:center; margin-bottom:15px;">
-                                    <a href="#" target="_blank">
-                                        <img src="{{ asset('files/images/footer-email.png') }}" alt="Email"
+                                <li style="flex:0 0 33.33%; text-align:center;">
+                                    <a href="https://wa.me/62895622273292" target="_blank">
+                                        <img src="{{ asset('files/images/footer-wa.png') }}" alt="WhatsApp"
                                             width="35" height="35">
                                     </a>
                                 </li>
@@ -361,20 +369,20 @@
                                     </a>
                                 </li>
                                 <li style="flex:0 0 33.33%; text-align:center;">
-                                    <a href="#" target="_blank">
+                                    <a href="https://www.youtube.com/@AzzaKoifarms1" target="_blank">
                                         <img src="{{ asset('files/images/footer-youtube.png') }}" alt="YouTube"
                                             width="35" height="35">
                                     </a>
                                 </li>
                                 <li style="flex:0 0 33.33%; text-align:center;">
-                                    <a href="#" target="_blank">
+                                    <a href="https://www.facebook.com/share/14PaBkJmQYe/" target="_blank">
                                         <img src="{{ asset('files/images/footer-facebook.png') }}" alt="Facebook"
                                             width="35" height="35">
                                     </a>
                                 </li>
-                                <li style="flex:0 0 33.33%; text-align:center;">
+                                <li style="flex:0 0 33.33%; text-align:center; margin-bottom:15px;">
                                     <a href="#" target="_blank">
-                                        <img src="{{ asset('files/images/footer-wa.png') }}" alt="WhatsApp"
+                                        <img src="{{ asset('files/images/footer-email.png') }}" alt="Email"
                                             width="35" height="35">
                                     </a>
                                 </li>

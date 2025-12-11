@@ -365,8 +365,8 @@
                                 <img src="{{ asset('template/assets/images/avatars/01.png') }}"
                                     class="p-1 mb-3 shadow rounded-circle" width="90" height="90"
                                     alt="">
-                                @if (Auth::check())
-                                    <h5 class="mb-0 user-name fw-bold">Hello, {{ auth()->user()->nama }}</h5>
+                               @if (Auth::guard('web')->check())
+                                    <h5 class="mb-0 user-name fw-bold">Hello,  {{ Auth::guard('web')->user()->name }}</h5>
                                 @else
                                     <h5 class="mb-0 user-name fw-bold">Hello, user</h5>
                                 @endif
@@ -710,10 +710,10 @@
 
 
     <!--start switcher-->
-    <button class="bottom-0 gap-2 m-3 btn btn-primary position-fixed end-0 d-flex align-items-center" type="button"
+    {{-- <button class="bottom-0 gap-2 m-3 btn btn-primary position-fixed end-0 d-flex align-items-center" type="button"
         data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop">
         <i class="material-icons-outlined">tune</i>Customize
-    </button>
+    </button> --}}
 
     <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="staticBackdrop">
         <div class="offcanvas-header border-bottom h-70 justify-content-between">

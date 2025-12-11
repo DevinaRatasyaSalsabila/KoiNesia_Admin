@@ -272,6 +272,7 @@
             flex-direction: column;
             gap: 3px;
             font-size: 9px;
+            text-shadow: -1px -1px 0 #ffffff, 1px -1px 0 #ffffff, -1px 1px 0 #ffffff, 1px 1px 0 #ffffff;
         }
 
         .social a {
@@ -324,6 +325,8 @@
         .form-info p {
             margin: 3px 0;
             font-weight: 600;
+            color: black;
+            text-shadow: -0.5px -0.5px 0 #ffffff, 0.5px -0.5px 0 #ffffff, -0.5px 0.5px 0 #ffffff, 0.5px 0.5px 0 #ffffff;
         }
 
         .form-info hr {
@@ -350,6 +353,7 @@
             border: 1px solid black;
             padding: 3px;
             text-align: center;
+            text-shadow: -0.5px -0.5px 0 #ffffff, 0.5px -0.5px 0 #ffffff, -0.5px 0.5px 0 #ffffff, 0.5px 0.5px 0 #ffffff;
         }
 
         .produk-list th {
@@ -374,6 +378,7 @@
             color: white;
             text-align: center;
             margin-top: 2px;
+            text-shadow: -1px -1px 0 #000000, 1px -1px 0 #000000, -1px 1px 0 #000000, 1px 1px 0 #000000;
         }
 
         @media print {
@@ -406,13 +411,11 @@
                     <a href="#"><img
                             src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png">Azzakoifarms</a>
                     <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733585.png">089562227329</a>
-                    <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733585.png">081516725525</a>
                     <a href="#"><img
                             src="https://cdn-icons-png.flaticon.com/512/732/732200.png">azzaaidakhmad@gmail.com</a>
                 </div>
             </div>
 
-            <!-- PEMBATAS -->
             <div class="divider"></div>
 
             <!-- BAGIAN KANAN -->

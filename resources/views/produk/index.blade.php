@@ -1,5 +1,56 @@
 @extends('main')
 @section('content')
+    <style>
+        table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child::before,
+        table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child::before {
+            content: "▶";
+            background: transparent !important;
+            color: #4da6ff !important;
+            border: none !important;
+            box-shadow: none !important;
+            font-weight: bold;
+            font-size: 18px;
+            line-height: 18px;
+        }
+
+        table.dataTable.dtr-inline.collapsed>tbody>tr.parent>td:first-child::before,
+        table.dataTable.dtr-inline.collapsed>tbody>tr.parent>th:first-child::before {
+            content: "▼";
+            color: #007bff !important;
+        }
+
+        table.dataTable tbody tr.child ul.dtr-details {
+            background: #f8fbff;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin: 10px 0;
+            border: 1px solid #e0ecff;
+        }
+
+        table.dataTable tbody tr.child ul.dtr-details li {
+            margin-bottom: 6px;
+            font-size: 14px;
+            color: #333;
+            display: flex;
+            gap: 5px;
+        }
+
+        table.dataTable tbody tr.child ul.dtr-details li span.dtr-title {
+            font-weight: 600;
+            color: #007bff;
+            margin-right: 5px;
+        }
+
+        table.dataTable tbody tr.child ul.dtr-details li span.dtr-title::after {
+            content: ":";
+            margin-left: 2px;
+        }
+
+        table.dataTable tbody tr.child ul.dtr-details li span.dtr-data {
+            color: #444;
+        }
+    </style>
+
     <!-- Breadcrumb -->
     @if (session('warning'))
         <div class="alert alert-warning">{{ session('warning') }}</div>
@@ -231,7 +282,7 @@
 
                 // Render kartu produk
                 function renderCards(pageData) {
-                    container.innerHTML = "";
+                    // container.innerHTML = "";
                     pageData.forEach(item => {
                         let gambarHTML = "";
                         if (item.gambar_produk) {
@@ -291,10 +342,10 @@
                                         @csrf
                                         @method('DELETE')
                                        <button type="button"
-    class="px-3 shadow-sm btn btn-danger btn-sm confirm-delete-button"
-    data-bs-toggle="tooltip" title="Hapus Produk">
-    <i class="bx bx-trash fs-5 text-light"></i>
-</button>
+                                            class="px-3 shadow-sm btn btn-danger btn-sm confirm-delete-button"
+                                            data-bs-toggle="tooltip" title="Hapus Produk">
+                                            <i class="bx bx-trash fs-5 text-light"></i>
+                                        </button>
                                     </form>
                                 </div>
                             </div>
@@ -322,8 +373,8 @@
 
                         btn.addEventListener("click", function() {
                             currentPage = i;
-                            displayData(currentPage, filteredData);
-                            setupPagination();
+                            // displayData(currentPage, filteredData);
+                            // setupPagination();
                         });
 
                         pagination.appendChild(btn);
@@ -336,13 +387,13 @@
                     filteredData = dataProduk.filter(p => p.nama_produk.toLowerCase()
                         .includes(q));
                     currentPage = 1;
-                    displayData(currentPage, filteredData);
-                    setupPagination();
+                    // displayData(currentPage, filteredData);
+                    // setupPagination();
                 });
 
                 // Inisialisasi awal
-                displayData(currentPage, filteredData);
-                setupPagination();
+                // displayData(currentPage, filteredData);
+                // setupPagination();
             });
 
             $(document).on('click', '.confirm-delete-button', function(e) {
@@ -383,7 +434,6 @@
                 });
             @endif
         </script>
-
 
         <style>
             /* Efek Hover Kartu */

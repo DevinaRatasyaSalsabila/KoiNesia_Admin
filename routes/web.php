@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BarangMasukController;
+use App\Http\Controllers\BuyerController;
 use App\Http\Controllers\DasboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PelangganController;
@@ -17,6 +18,13 @@ use Illuminate\Support\Facades\Route;
 // Login
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/loginsubmit', [LoginController::class, 'submit'])->name('login.submit');
+
+//login + regis buyer
+Route::get('/registrasi/buyer', [BuyerController::class, 'index'])->name('registrasi.buyer');
+Route::post('/registrasi/submit', [BuyerController::class, 'regisSubmit'])->name('registrasi.submit');
+
+Route::get('/login/buyer', [BuyerController::class, 'login'])->name('login.buyer');
+Route::post('/login/submit', [BuyerController::class, 'loginSubmit'])->name('login.submit.buyer');
 
 Route::middleware(['middlewareLogin'])->group(function () {
     //dashboard

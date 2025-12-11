@@ -2,19 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class Pembeli extends Model
+class Pembeli extends Authenticatable
 {
+    use HasFactory, Notifiable;
+
     protected $table = 'pembeli';
     protected $primaryKey = 'id_pembeli';
 
-    public $incrementing = true;
-    protected $keyType = 'int';
-
     protected $fillable = [
         'nama_pembeli',
-        'alamat',
+        'email',
         'no_hp',
+        'alamat',
     ];
 }

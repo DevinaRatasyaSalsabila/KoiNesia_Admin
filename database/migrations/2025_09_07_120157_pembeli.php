@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('pembeli', function (Blueprint $table) {
             $table->id('id_pembeli');
+            $table->string('email')->unique()->nullable();
             $table->string('nama_pembeli');
             $table->string('no_hp', 16);
-            $table->text('alamat');
+            $table->text('alamat')->nullable();
             $table->timestamps();
         });
     }
