@@ -118,13 +118,20 @@
                                         data-id="{{ $first->kode_pesanan }}">
                                         <option value="baru" data-color="#0d6efd"
                                             {{ ($first->status ?? '') == 'baru' ? 'selected' : '' }}>
-                                            Baru</option>
+                                            Baru
+                                        </option>
                                         <option value="proses" data-color="#ffc107"
                                             {{ ($first->status ?? '') == 'proses' ? 'selected' : '' }}>
-                                            Diproses</option>
+                                            Diproses
+                                        </option>
                                         <option value="selesai" data-color="#198754"
                                             {{ ($first->status ?? '') == 'selesai' ? 'selected' : '' }}>
-                                            Selesai</option>
+                                            Selesai
+                                        </option>
+                                        <option value="batalkan" data-color="#198754"
+                                            {{ ($first->status ?? '') == 'batalkan' ? 'selected' : '' }}>
+                                            Batalkan
+                                        </option>
                                     </select>
                                 </td>
                                 <td class="align-middle">
@@ -206,16 +213,21 @@
                             _token: '{{ csrf_token() }}'
                         },
                         success: function(res) {
-                            console.log('Status updated:', res);
                             Swal.fire({
                                 title: "Berhasil!",
-                                text: `Status telah diubah menjadi '${statusToSend}'.`,
+                                text: `Status telah diubah.`,
                                 icon: "success",
-                                confirmButtonText: "Oke!"
                             });
 
+                            let table = $("#tabel_pesanan").DataTable();
+
+                            // Jika status = batalkan → hapus row dari tabel
+                            if (res.deleted) {
+                                table.row(row).remove().draw(false);
+                                return;
+                            }
+
                             if (statusToSend === 'selesai') {
-                                let table = $("#tabel_pesanan").DataTable();
                                 table.row(row).remove().draw(false);
                                 alert('Riwayat pesanan telah tersimpan');
                             }
@@ -268,6 +280,22 @@
                             select.val(previous);
                         }
                     });
+                } else if (value === 'batalkan') {
+                    Swal.fire({
+                        title: "Batalkan pesanan?",
+                        text: "Stok akan dikembalikan dan pesanan akan terhapus permanen.",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Ya, batalkan!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            sendUpdate('batalkan');
+                        } else {
+                            select.val(previous);
+                        }
+                    });
                 } else {
                     select.data('previous', value);
                 }
@@ -309,7 +337,7 @@
                             extend: 'excelHtml5',
                             className: 'btn btn-success btn-sm m-1',
                             text: 'Export Excel',
-                            exportOptions: {    
+                            exportOptions: {
                                 columns: [0, 1, 2, 3]
                             }
                         },
@@ -415,13 +443,13 @@
                     printWindow.document.write('<html><head><title>Print Pesanan</title>');
                     printWindow.document.write(
                         '<style>table{width:100%;border-collapse:collapse;}th,td{border:1px solid #333;padding:6px;text-align:left;}</style>'
-                        );
+                    );
                     printWindow.document.write('</head><body>');
                     printWindow.document.write('<h3>Data Pesanan Terpilih</h3>');
                     printWindow.document.write('<table>');
                     printWindow.document.write(
                         '<tr><th>Tanggal</th><th>Nama Pembeli</th><th>Nominal Pembelian</th><th>Status</th></tr>'
-                        );
+                    );
 
                     checkedRows.forEach(row => {
                         printWindow.document.write('<tr>' +

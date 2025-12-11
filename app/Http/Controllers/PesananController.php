@@ -85,22 +85,51 @@ class PesananController extends Controller
         $pesanan = Pesanan::where('kode_pesanan', $id)->firstOrFail();
 
         $status = $request->status;
-        Pesanan::where('kode_pesanan', $id)->update(['status' => $status]);
-        $pembeli = Pembeli::find($pesanan->id_pembeli);
 
+        // Jika status = batalkan → kembalikan stok + hapus pesanan
+        if ($status === 'batalkan') {
+
+            // Ambil daftar item yang dipesan
+            $items = Pesanan::where('kode_pesanan', $pesanan->kode_pesanan)->get();
+
+            foreach ($items as $item) {
+                Produk::where('kode_produk', $item->kode_produk)
+                    ->increment('stok_produk', $item->jumlah);
+            }
+
+
+            // Kirim pesan WA pembatalan
+            $pembeli = Pembeli::find($pesanan->id_pembeli);
+            $no_hp = $pembeli->no_hp;
+            if (substr($no_hp, 0, 1) === '0') {
+                $no_hp = '+62' . substr($no_hp, 1);
+            }
+
+            $pesan = "Halo *{$pembeli->nama_pembeli}*, pesanan dengan kode *{$pesanan->kode_pesanan}* telah dibatalkan.\n\n Terima kasih 🙏";
+
+            $this->apicall($no_hp, $pesan);
+
+            // Hapus pesanan
+            $pesanan->delete();
+
+            return response()->json(['success' => true, 'deleted' => true]);
+        }
+
+        // Jika bukan batalkan → update status biasa
+        Pesanan::where('kode_pesanan', $id)->update(['status' => $status]);
+
+        $pembeli = Pembeli::find($pesanan->id_pembeli);
         $no_hp = $pembeli->no_hp;
         if (substr($no_hp, 0, 1) === '0') {
             $no_hp = '+62' . substr($no_hp, 1);
         }
 
-        // bikin isi pesan WA
-        $pesan = "Halo *{$pembeli->nama_pembeli}*, saat ini pesanan dengan kode *{$pesanan->kode_pesanan}* statusnya sudah diupdate menjadi *{$status}*.\n\n"
-            . "Terima kasih sudah order di Azza Koi Farm 🐟✨";
-
+        $pesan = "Halo *{$pembeli->nama_pembeli}*, status pesanan *{$pesanan->kode_pesanan}* kini *{$status}*.\n\nTerima kasih 🐟✨";
         $this->apicall($no_hp, $pesan);
 
-        return response()->json(['success' => true, 'status' => $pesanan->status]);
+        return response()->json(['success' => true]);
     }
+
 
     /**
      * Store a newly created resource in storage.

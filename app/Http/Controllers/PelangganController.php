@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pembeli;
 use App\Models\Pesanan;
+use App\Models\Produk;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\DB;
@@ -286,6 +287,8 @@ class PelangganController extends Controller
                 "bukti"        => $namaFileBukti,
                 "status"       => "baru",
             ]);
+            Produk::where('kode_produk', $p['id'])
+                ->decrement('stok_produk', $p['qty']);
         }
 
         $ongkir = intval($request->ongkir_fix ?? 0);
