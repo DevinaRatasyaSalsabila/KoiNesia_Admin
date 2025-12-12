@@ -37,7 +37,7 @@ class BuyerController extends Controller
         ]);
 
         $pembeli = Pembeli::where('nama_pembeli', $request->nama_pembeli)
-            ->orWhere('no_hp', '+62' . $request->no_hp)
+            ->where('no_hp', '+62' . $request->no_hp)
             ->first();
 
         if ($pembeli) {
