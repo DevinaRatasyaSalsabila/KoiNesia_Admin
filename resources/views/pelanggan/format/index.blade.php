@@ -132,8 +132,6 @@
                 </div>
             </div>
 
-
-
             <div class="container">
                 <div class="row">
                     <div class="col-lg-4">
@@ -365,6 +363,9 @@
 
                                                             </div>
 
+                                                            {{-- ngirim produk ke controller --}}
+                                                            <div id="produk-container"></div>
+
                                                             <div class="modal-footer">
                                                                 <button class="btn btn-secondary"
                                                                     data-bs-dismiss="modal">Batal</button>
@@ -374,7 +375,6 @@
                                                                     Konfirmasi Pesanan
                                                                 </button>
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -712,6 +712,27 @@
                         inputNama.classList.add("produk-hidden");
                         form.appendChild(inputNama);
                     });
+                });
+            });
+        </script>
+
+        {{-- buat ngirim produk --}}
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                let checkout = JSON.parse(localStorage.getItem("checkout")) || [];
+                const container = document.getElementById("produk-container");
+
+                // bersihin dulu
+                container.innerHTML = "";
+
+                // generate hidden input ke dalam form
+                checkout.forEach(item => {
+                    container.innerHTML += `
+            <input type="hidden" name="produk[${item.id}][id]" value="${item.id}">
+            <input type="hidden" name="produk[${item.id}][nama]" value="${item.nama}">
+            <input type="hidden" name="produk[${item.id}][qty]" value="${item.qty}">
+            <input type="hidden" name="produk[${item.id}][harga]" value="${item.harga}">
+        `;
                 });
             });
         </script>
