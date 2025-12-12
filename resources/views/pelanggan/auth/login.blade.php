@@ -77,9 +77,9 @@
                                 <form class="row g-3" action="{{ route('login.submit.buyer') }}" method="POST">
                                     @csrf
                                     <div class="col-12">
-                                        <label for="inputEmailAddress" class="form-label">Email</label>
-                                        <input type="email" class="form-control" id="inputEmailAddress"
-                                            placeholder="Masukkan Email" name="email">
+                                        <label for="inputEmailAddress" class="form-label">Nama</label>
+                                        <input type="text" class="form-control" id="inputEmailAddress"
+                                            placeholder="Masukkan Email" name="nama_pembeli" required>
                                     </div>
                                     <div class="col-12">
                                         <label for="inputChoosePassword" class="form-label">Nomor HP</label>

@@ -32,11 +32,11 @@ class BuyerController extends Controller
     public function loginSubmit(Request $request)
     {
         $request->validate([
-            'email' => 'required',
+            'nama_pembeli' => 'required',
             'no_hp' => 'required',
         ]);
 
-        $pembeli = Pembeli::where('email', $request->email)
+        $pembeli = Pembeli::where('nama_pembeli', $request->nama_pembeli)
             ->orWhere('no_hp', '+62' . $request->no_hp)
             ->first();
 
