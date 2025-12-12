@@ -2,39 +2,41 @@
 @section('content')
     <style>
         #miniCarousel {
-    position: relative; /* penting biar child absolute nempel ke sini */
-    overflow: hidden;   /* biar ga keluar-keluar */
-}
+            position: relative;
+            /* penting biar child absolute nempel ke sini */
+            overflow: hidden;
+            /* biar ga keluar-keluar */
+        }
 
-/* tombol panah */
-.custom-prev,
-.custom-next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: #00000070;
-    color: white;
-    border: none;
-    padding: 8px 14px;
-    font-size: 22px;
-    border-radius: 50%;
-    cursor: pointer;
-    z-index: 5; /* cukup kecil biar ga nutup navbar */
-}
+        /* tombol panah */
+        .custom-prev,
+        .custom-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #00000070;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            font-size: 22px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 5;
+            /* cukup kecil biar ga nutup navbar */
+        }
 
-.custom-prev {
-    left: 10px;
-}
+        .custom-prev {
+            left: 10px;
+        }
 
-.custom-next {
-    right: 10px;
-}
+        .custom-next {
+            right: 10px;
+        }
 
-.custom-prev:hover,
-.custom-next:hover {
-    background: #000000a0;
-}
-
+        .custom-prev:hover,
+        .custom-next:hover {
+            background: #000000a0;
+        }
     </style>
 
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
@@ -64,43 +66,56 @@
                 <div class="card-body">
                     <div id="miniCarousel" class="carousel slide" data-bs-ride="false">
                         <div class="carousel-inner">
-
-                            @php $first = true; @endphp
-
+                            @php
+                                $first = true;
+                                $index = 0;
+                            @endphp
                             @foreach ($gambarArray as $file)
                                 @php
                                     $isImage = Str::endsWith($file, ['.jpg', '.jpeg', '.png']);
                                     $isVideo = Str::endsWith($file, ['.mp4', '.webm', '.ogg']);
                                 @endphp
-
-                                <div class="carousel-item {{ $first ? 'active' : '' }}">
+                                <div class="carousel-item {{ $first ? 'active' : '' }}" data-index="{{ $index }}">
                                     @if ($isImage)
-                                        <img src="{{ asset('storage/produk/final/' . $file) }}" class="rounded-3"
-                                            style="max-height:280px; object-fit:cover;">
+                                        <img src="{{ asset('storage/produk/final/' . $file) }}"
+                                            class="rounded-3 d-block mx-auto" style="max-height:280px; object-fit:cover;">
                                     @elseif($isVideo)
-                                        <video controls class="rounded-3"
+                                        <video controls class="rounded-3 d-block mx-auto"
                                             style="max-height:280px; width:auto; max-width:100%; object-fit:cover;">
                                             <source src="{{ asset('storage/produk/final/' . $file) }}">
-                                            Browser kamu tidak mendukung video 😭
+                                            Browser Anda tidak mendukung video
                                         </video>
                                     @endif
                                 </div>
-
-                                @php $first = false; @endphp
+                                @php
+                                    $first = false;
+                                    $index++;
+                                @endphp
                             @endforeach
-
                         </div>
 
-                        <!-- CUSTOM BUTTON LEFT -->
-                        <button class="custom-prev" type="button" data-bs-target="#miniCarousel" data-bs-slide="prev">
-                            &lt;
-                        </button>
-
-                        <!-- CUSTOM BUTTON RIGHT -->
-                        <button class="custom-next" type="button" data-bs-target="#miniCarousel" data-bs-slide="next">
-                            &gt;
-                        </button>
+                        <button class="custom-prev" type="button" data-bs-target="#miniCarousel"
+                            data-bs-slide="prev">&lt;</button>
+                        <button class="custom-next" type="button" data-bs-target="#miniCarousel"
+                            data-bs-slide="next">&gt;</button>
                     </div>
+
+                    <div class="d-flex justify-content-center mt-3 gap-2">
+                        @php $thumbIndex = 0; @endphp
+                        @foreach ($gambarArray as $file)
+                            @php
+                                $isImage = Str::endsWith($file, ['.jpg', '.jpeg', '.png']);
+                            @endphp
+                            @if ($isImage)
+                                <img src="{{ asset('storage/produk/final/' . $file) }}"
+                                    class="thumb-img rounded {{ $thumbIndex == 0 ? 'active-thumb' : '' }}"
+                                    data-bs-target="#miniCarousel" data-bs-slide-to="{{ $thumbIndex }}"
+                                    style="width:60px; height:60px; object-fit:cover; cursor:pointer; opacity: {{ $thumbIndex == 0 ? '1' : '0.5' }};">
+                            @endif
+                            @php $thumbIndex++; @endphp
+                        @endforeach
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -169,4 +184,19 @@
             </button>
         </div>
     </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const carousel = document.getElementById('miniCarousel');
+            const thumbs = document.querySelectorAll('.thumb-img');
+
+            carousel.addEventListener('slid.bs.carousel', function(e) {
+                const activeIndex = e.to;
+                thumbs.forEach((thumb, i) => {
+                    thumb.style.opacity = (i === activeIndex) ? '1' : '0.5';
+                });
+            });
+        });
+    </script>
 @endsection
