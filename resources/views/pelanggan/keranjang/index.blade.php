@@ -69,21 +69,21 @@
                         </td>
                     </tr>
                     <tr>
-@php
-    $user = Auth::guard('web')->user() ?? Auth::guard('pembeli')->user();
-@endphp
+                        @php
+                            $user = Auth::guard('web')->user() ?? Auth::guard('pembeli')->user();
+                        @endphp
 
-<td colspan="5" class="text-end">
-    @if ($user)
-        <a href="{{ route('format') }}" class="btn btn-lg btn-meat">
-            Lanjutkan Pemesanan
-        </a>
-    @else
-        <a href="{{ route('registrasi.buyer') }}" class="btn btn-lg btn-meat">
-            Silakan Login untuk Melanjutkan
-        </a>
-    @endif
-</td>
+                        <td colspan="5" class="text-end">
+                            @if ($user)
+                                <a href="{{ route('format') }}" class="btn btn-lg btn-meat">
+                                    Lanjutkan Pemesanan
+                                </a>
+                            @else
+                                <a href="{{ route('registrasi.buyer') }}" class="btn btn-lg btn-meat">
+                                    Silakan Login untuk Melanjutkan
+                                </a>
+                            @endif
+                        </td>
                     </tr>
                 </thead>
             </table>
@@ -129,7 +129,7 @@
                 function renderCart() {
                     tbody.innerHTML = "";
                     if (cart.length === 0) {
-                        tbody.innerHTML = "<tr><td colspan='6' class='text-center'>Keranjang kosong</td></tr>";
+                        tbody.innerHTML = "<tr><td colspan='7' class='text-center'>Keranjang kosong</td></tr>";
                     } else {
                         cart.forEach((item, index) => {
                             const total = item.harga * item.qty;

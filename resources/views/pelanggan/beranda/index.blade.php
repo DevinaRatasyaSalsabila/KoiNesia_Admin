@@ -53,9 +53,9 @@
         /* Badge Koi agar tampil lembut */
         .price-badge-md {
             /* background: rgba(255, 255, 255, 0.85);
-                                            border-radius: 12px;
-                                            padding: 10px 20px;
-                                            backdrop-filter: blur(8px); */
+                                                    border-radius: 12px;
+                                                    padding: 10px 20px;
+                                                    backdrop-filter: blur(8px); */
             animation: fadeInBadge 2s ease;
         }
 
@@ -301,7 +301,7 @@
                                     </div>
                                     {{-- <h5 class="h5-sm">{{ $prod->nama_produk }}</h5> --}}
                                     <h5 class="h5-sm nama-produk">
-                                        <a href="{{ url('pelanggan/produk/rinci/'. $prod->kode_produk) }}"
+                                        <a href="{{ url('pelanggan/produk/rinci/' . $prod->kode_produk) }}"
                                             class="text-dark text-decoration-none hover-underline">
                                             {{ $prod->nama_produk }}
                                         </a>
@@ -632,10 +632,15 @@
                             stok: parseInt(this.dataset.stok),
                             ukuran: this.dataset.ukuran,
                             gambar: this.dataset.gambar,
-                            qty: 1
+                            qty: 1,
+                            addedAt: Date.now()
                         };
 
-                        if (!cart.find(item => item.id === produk.id)) {
+                        const existing = cart.find(item => item.id === produk.id);
+                        if (existing) {
+                            existing.qty += 1;
+                            existing.addedAt = Date.now();
+                        } else {
                             cart.push(produk);
                         }
 
@@ -663,6 +668,15 @@
                     });
                 }
 
+                function cleanupCart() {
+                    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+                    const now = Date.now();
+                    cart = cart.filter(item => (now - item.addedAt) < 24 * 60 * 60 * 1000);
+                    localStorage.setItem("cart", JSON.stringify(cart));
+                }
+
+                // panggil di awal
+                cleanupCart();
                 updateCartUI(); // init badge
             });
         </script>
@@ -672,5 +686,3 @@
         </script>
     @endpush
 @endsection
-
-{{-- kurang itu efek bergetar pas nambah ke keranjang, admin ttp sama kurangny --}}
