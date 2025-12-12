@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('nama_pembeli');
             $table->string('no_hp', 16);
             $table->text('alamat')->nullable();
+            // $table->json('alamat')->nullable();
             $table->timestamps();
         });
     }

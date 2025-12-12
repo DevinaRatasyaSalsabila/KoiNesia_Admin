@@ -3,7 +3,6 @@
 
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="author" content="Jthemes" />
@@ -48,6 +47,8 @@
 
     <!-- TEMPLATE CSS -->
     <link href="{{ asset('files/css/style.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.3/dist/sweetalert2.min.css
+    " rel="stylesheet">
 
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <!-- RESPONSIVE CSS -->
@@ -106,7 +107,6 @@
 </head>
 
 <body>
-
     <!-- PRELOADER SPINNER
   ============================================= -->
     <div id="loader-wrapper">
@@ -124,67 +124,46 @@
   ============================================= -->
     <header id="header-1" class="header navik-header header-shadow center-menu-1 header-transparent">
         <div class="container">
-
-
             <!-- NAVIGATION MENU -->
             <div class="navik-header-container">
-
-
                 <!-- CALL BUTTON -->
                 <div class="callusbtn"><a href="tel:0859348539"><i class="fas fa-phone"></i></a></div>
-
-
                 <!-- LOGO IMAGE -->
                 <div class="logo" data-mobile-logo="{{ asset('files/images/logo.png') }}"
                     data-sticky-logo="{{ asset('files/images/logo-3.png') }}">
                     <a href="#hero-9">
                         <img src="{{ asset('files/images/logo.png') }}" alt="header-logo" /></a>
                 </div>
-
-
                 <!-- BURGER MENU -->
                 <div class="burger-menu">
                     <div class="line-menu line-half first-line"></div>
                     <div class="line-menu"></div>
                     <div class="line-menu line-half last-line"></div>
                 </div>
-
-
                 <!-- MAIN MENU -->
                 <nav class="navik-menu menu-caret navik-meat">
                     <ul class="top-list">
-
                         <!-- DROPDOWN MENU -->
                         <li>
                             <a href="#">Beranda</a>
                         </li>
-
                         <!-- Tentang Kami -->
                         <li class="mega-menu">
                             <a href="#">Tentang Kami</a>
                         </li> <!-- END MEGA MENU -->
-
                     </ul>
                     <ul>
-
                         <!-- DROPDOWN MENU -->
                         <li>
                             <a href="#">Produk</a>
                         </li>
-
                         <!-- DROPDOWN MENU -->
                         <li>
                             <a href="#">Kontak</a>
                         </li>
-
-
                     </ul>
                 </nav> <!-- END MAIN MENU -->
-
-
             </div> <!-- END NAVIGATION MENU -->
-
-
         </div> <!-- End container -->
     </header> <!-- END HEADER-1 --> --}}
 
@@ -243,14 +222,39 @@
                                 @if (Request::routeIs('dashboard.pelanggan')) href="#kontak" @else href="{{ route('dashboard.pelanggan') }}#kontak" @endif>Kontak</a>
                         </li>
 
-                        <!-- HEADER BUTTON  -->
-                        <li class="nav-btn yellow-color">
-                              @if (Auth::guard('pembeli')->check())
-                                {{ Auth::guard('pembeli')->user()->nama_pembeli }}
+                        <li class="nav-btn yellow-color dropdown">
+                            @php
+                                $user = null;
+                                $userGuard = null;
+
+                                if (Auth::guard('web')->check()) {
+                                    $user = Auth::guard('web')->user();
+                                    $userGuard = 'web';
+                                } elseif (Auth::guard('pembeli')->check()) {
+                                    $user = Auth::guard('pembeli')->user();
+                                    $userGuard = 'pembeli';
+                                }
+                            @endphp
+
+                            @if ($user)
+                                <a class="dropdown-toggle" href="#" role="button" id="userDropdown"
+                                    data-bs-toggle="dropdown" aria-expanded="false"
+                                    style="font-size: 20px; font-weight: bold;">
+                                    {{ $user?->name ?? $user?->nama_pembeli }}
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                                    <li>
+                                        <form action="{{ route('logout') }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="dropdown-item">Logout</button>
+                                        </form>
+                                    </li>
+                                </ul>
                             @else
                                 <a href="{{ route('registrasi.buyer') }}">Login</a>
                             @endif
                         </li>
+
                         <li class="basket-ico ico-30" id="cart-icon">
                             <a href="{{ route('keranjang') }}">
                                 <span class="ico-holder">
@@ -403,6 +407,7 @@
     <script src="{{ asset('files/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('files/js/modernizr.custom.js') }}"></script>
     <script src="{{ asset('files/js/jquery.easing.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.3/dist/sweetalert2.all.min.js"></script>
     <script src="{{ asset('files/js/jquery.appear.js') }}"></script>
     <script src="{{ asset('files/js/jquery.scrollto.js') }}"></script>
     <script src="{{ asset('files/js/menu.js') }}"></script>
@@ -445,11 +450,6 @@
       })();
   </script>
   -->
-
-
-
 </body>
-
-
 
 </html>

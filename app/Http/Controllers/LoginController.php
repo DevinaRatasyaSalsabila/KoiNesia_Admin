@@ -35,7 +35,7 @@ class LoginController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if ($user && Hash::check($request->password, $user->password)) {
-           Auth::guard('web')->login($user);
+            Auth::guard('web')->login($user);
             return redirect()->route('dashboard')->with('success', 'Login berhasil');
         }
 
@@ -44,9 +44,18 @@ class LoginController extends Controller
         ]);
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        Auth::logout();
-        return redirect('/')->with('success', 'Logout berhasil');
+        if (Auth::guard('web')->check()) {
+            Auth::guard('web')->logout();
+            return redirect()->route('login')->with('success', 'Berhasil logout!');
+        }
+
+        if (Auth::guard('pembeli')->check()) {
+            Auth::guard('pembeli')->logout();
+            return redirect()->route('login.buyer')->with('success', 'Berhasil logout!');
+        }
+
+        return redirect()->route('login');
     }
 }

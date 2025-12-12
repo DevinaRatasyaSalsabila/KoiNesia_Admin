@@ -225,18 +225,19 @@
                                 <div class="d-flex align-items-center gap-3"> <input type="number" min="1"
                                         max="{{ $produk->stok_produk }}" value="1"
                                         class="form-control w-25 text-center" />
-                                    <button type="button" class="btn btn-cart-add-1 text-white fw-semibold px-4"
+                                    <button type="button" class="btn btn-cart-add-1 text-white fw-semibold btn-sm"
                                         style="background-color: #ecbb28" data-id="{{ $produk->kode_produk }}"
                                         data-nama="{{ $produk->nama_produk }}" data-harga="{{ $produk->harga_Satuan }}"
                                         data-stok="{{ $produk->stok_produk }}" data-ukuran="{{ $produk->ukuran_produk }}"
                                         data-gambar="{{ $gambarUtama }}"> <i class="flaticon-shopping-bag"></i>
                                         {{-- Keranjang --}}
                                     </button>
-                                    <button type="button" class="btn btn-buy-1 text-white fw-semibold btn-sm"
+                                    <button type="button" class="btn btn-buy-1 text-white fw-semibold btn-sm buy-btn"
                                         style="background-color: #ec2828" data-id="{{ $produk->kode_produk }}"
                                         data-nama="{{ $produk->nama_produk }}" data-harga="{{ $produk->harga_Satuan }}"
                                         data-stok="{{ $produk->stok_produk }}" data-ukuran="{{ $produk->ukuran_produk }}"
-                                        data-gambar="{{ $gambarUtama }}">
+                                        data-gambar="{{ $gambarUtama }}"
+                                        data-logged="{{ Auth::guard('web')->check() || Auth::guard('pembeli')->check() ? 'yes' : 'no' }}">
                                         <i class="flaticon-buy me-2"></i>
                                         Beli Sekarang
                                     </button>
@@ -309,8 +310,6 @@
 
     <section id="menu-6" class="bg-lightgrey wide-70 menu-section division">
         <div class="container">
-
-
             <!-- SECTION TITLE -->
             <div class="row">
                 <div class="col-lg-10 offset-lg-1">
@@ -389,7 +388,7 @@
                                                 data-stok="{{ $product->stok_produk }}"
                                                 data-ukuran="{{ $product->ukuran_produk }}"
                                                 data-gambar="{{ $gambarUtama }}">
-                                                <i class="flaticon-shopping-bag"></i>
+                                                <i class="flaticon-shopping-bag"></i> Keranjang
                                             </button>
                                         </div>
                                     @else
@@ -422,6 +421,45 @@
     </section>
 
     @push('script')
+        <script>
+            document.querySelectorAll('.btn-buy-1').forEach(btn => {
+                btn.addEventListener('click', function() {
+
+                    const isLogged = this.dataset.logged === 'yes';
+                    if (!isLogged) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "Silakan mendaftarkan akun terlebih dahulu sebelum melakukan pembelian.",
+                            footer: '<a href="{{ route('registrasi.buyer') }}">Registrasi</a>'
+                        });
+                        return; // stop execution kalau belum login
+                    }
+
+                    // produk dari dataset tombol
+                    const produk = {
+                        id: this.dataset.id,
+                        nama: this.dataset.nama,
+                        harga: parseInt(this.dataset.harga),
+                        stok: parseInt(this.dataset.stok),
+                        ukuran: this.dataset.ukuran,
+                        gambar: this.dataset.gambar,
+                        qty: 1,
+                        dipilih: true
+                    };
+
+                    // kosongkan checkout lama (karena ini "Beli Sekarang", hanya 1 item)
+                    let checkout = [];
+                    checkout.push(produk);
+
+                    // simpan ke localStorage
+                    localStorage.setItem("checkout", JSON.stringify(checkout));
+
+                    // redirect ke halaman format pesanan
+                    window.location.href = "{{ route('format') }}";
+                });
+            });
+        </script>
         <script>
             function gantiMedia(src, isVideo) {
                 const container = document.querySelector('#gambarUtama');

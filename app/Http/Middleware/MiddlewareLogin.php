@@ -16,9 +16,13 @@ class MiddlewareLogin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check()) {
-            return redirect()->route('login')
-                ->with('error', 'Anda harus login terlebih dahulu!');
+          if (Auth::guard('web')->check()) {
+            return $next($request);
+        }
+
+        // Cek guard pembeli
+        if (Auth::guard('pembeli')->check()) {
+            return $next($request);
         }
 
         return $next($request);

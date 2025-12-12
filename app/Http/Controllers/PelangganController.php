@@ -256,9 +256,9 @@ class PelangganController extends Controller
 
         $namaFileBukti = null;
 
-        if ($request->hasFile('bukti')) {
-            $namaFileBukti = time() . '_' . $request->file('bukti')->getClientOriginalName();
-            $request->file('bukti')->storeAs('bukti', $namaFileBukti, 'public');
+        if ($request->hasFile('bukti_transfer')) {
+            $namaFileBukti = time() . '_' . $request->file('bukti_transfer')->getClientOriginalName();
+            $request->file('bukti_transfer')->storeAs('bukti', $namaFileBukti, 'public');
         }
 
         $kodePesanan = 'PESN-' . date('dm') . '-' . date('Hi') . '-' . Str::upper(Str::random(3));
@@ -325,8 +325,6 @@ class PelangganController extends Controller
         return Redirect()->route('dashboard.pelanggan')->with('success', 'Pesanan berhasil dikirim!');
     }
 
-
-
     private function apicall($telepon, $pesan)
     {
         $client = new Client();
@@ -346,34 +344,6 @@ class PelangganController extends Controller
             Log::info('WA API response: ' . $response->getBody());
         } catch (\Exception $e) {
             Log::error('WA API error: ' . $e->getMessage());
-        }
-    }
-
-    public function startService()
-    {
-        $client = new \GuzzleHttp\Client();
-        $url = 'https://apiwa.smkpgriwlingi.sch.id/api/serviceStart';
-
-        $data = [
-            'apiKey' => env('WHAPI_KEY', 'f60d05297f0af62109d4ec9ec274bd32'),
-        ];
-
-        try {
-            $response = $client->post($url, ['form_params' => $data]);
-            $body = json_decode($response->getBody(), true);
-
-            // log hasil
-            Log::info('Service start response: ' . $response->getBody());
-
-            // kalau sukses, bisa aja redirect sambil kasih pesan
-            if (isset($body['code']) && $body['code'] == 200) {
-                return back()->with('success', 'WA Service berhasil dihidupkan!');
-            }
-
-            return back()->with('error', 'Gagal start service: ' . $response->getBody());
-        } catch (\Exception $e) {
-            Log::error('Error starting WA service: ' . $e->getMessage());
-            return back()->with('error', 'Error: ' . $e->getMessage());
         }
     }
 
