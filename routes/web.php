@@ -15,18 +15,19 @@ use App\Http\Controllers\RiwayatController;
 use App\Http\Controllers\SellerAPIController;
 use Illuminate\Support\Facades\Route;
 
-// Login
-Route::get('/login', [LoginController::class, 'index'])->name('login');
-Route::post('/loginsubmit', [LoginController::class, 'submit'])->name('login.submit');
-
-//login + regis buyer
-Route::get('/registrasi/buyer', [BuyerController::class, 'index'])->name('registrasi.buyer');
-Route::post('/registrasi/submit', [BuyerController::class, 'regisSubmit'])->name('registrasi.submit');
-
-Route::get('/login/buyer', [BuyerController::class, 'login'])->name('login.buyer');
-Route::post('/login/submit', [BuyerController::class, 'loginSubmit'])->name('login.submit.buyer');
+Route::get('/', [PelangganController::class, 'beranda'])->name('dashboard.pelanggan');
 
 Route::middleware(['middlewareLogin'])->group(function () {
+    //login
+    Route::get('/login', [LoginController::class, 'index'])->name('login');
+    Route::post('/loginsubmit', [LoginController::class, 'submit'])->name('login.submit');
+
+    //login + regis buyer
+    Route::get('/registrasi/buyer', [BuyerController::class, 'index'])->name('registrasi.buyer');
+    Route::post('/registrasi/submit', [BuyerController::class, 'regisSubmit'])->name('registrasi.submit');
+    Route::get('/login/buyer', [BuyerController::class, 'login'])->name('login.buyer');
+    Route::post('/login/submit', [BuyerController::class, 'loginSubmit'])->name('login.submit.buyer');
+
     //dashboard
     Route::get('/dashboard', [DasboardController::class, 'index'])->name('dashboard');
 
@@ -82,23 +83,14 @@ Route::middleware(['middlewareLogin'])->group(function () {
     //rekap
     Route::get('rekap', [RekapController::class, 'index'])->name('rekap.index');
     Route::get('/rekap/filter', [RekapController::class, 'filter'])->name('rekap.filter');
-});
-//tes api wa
-Route::get('/form-wa', function () {
-    return view('form-wa'); // view form nanti
-});
 
-Route::post('/kirim-wa', [SellerAPIController::class, 'pesan'])->name('kirim.wa');
-
-
-
-Route::get('/', [PelangganController::class, 'beranda'])->name('dashboard.pelanggan');
-Route::prefix('pelanggan')->group(function () {
-    Route::get('/keranjang', [PelangganController::class, 'keranjang'])->name('keranjang');
-    Route::get('/keranjang/pesanan', [PelangganController::class, 'format'])->name('format');
-    // Route::get('/produk', [PelangganController::class, 'produkLengkap'])->name('produkLengkap');
-    Route::get('/produk-lengkap', [PelangganController::class, 'produk_lengkap'])->name('produkLengkap');
-    Route::post('/pesanan/kirim', [PelangganController::class, 'kirim'])->name('pesanan.kirim');
+    Route::prefix('pelanggan')->group(function () {
+        Route::get('/keranjang', [PelangganController::class, 'keranjang'])->name('keranjang');
+        Route::get('/keranjang/pesanan', [PelangganController::class, 'format'])->name('format');
+        // Route::get('/produk', [PelangganController::class, 'produkLengkap'])->name('produkLengkap');
+        Route::get('/produk-lengkap', [PelangganController::class, 'produk_lengkap'])->name('produkLengkap');
+        Route::post('/pesanan/kirim', [PelangganController::class, 'kirim'])->name('pesanan.kirim');
+    });
 });
 
 Route::get('/resi', function () {

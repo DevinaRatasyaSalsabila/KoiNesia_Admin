@@ -95,6 +95,14 @@
                                 $totalNominal = $items->sum(function ($r) {
                                     return isset($r->nominal) ? (float) $r->nominal : 0;
                                 });
+
+                                $wa = preg_replace('/\D/', '', $first->no_hp);
+
+                                if (str_starts_with($wa, '0')) {
+                                    $wa = '62' . substr($wa, 1);
+                                } elseif (str_starts_with($wa, '+62')) {
+                                }
+                                 $pesan = "Halo kak, terkait pesanan *{$first->kode_pesanan}* ....";
                             @endphp
                             <tr data-id="{{ $first->kode_pesanan }}">
                                 <td class="align-middle">
@@ -136,10 +144,10 @@
                                 </td>
                                 <td class="align-middle">
                                     <div class="gap-2 d-flex align-items-center">
-                                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#kirimPesan">
+                                        <a href="https://wa.me/{{ $wa }}?text={{ urlencode($pesan) }}" target="_blank"
+                                            class="btn btn-success btn-sm">
                                             <i class="fadeIn animated bx bxl-whatsapp text-light fs-6"></i>
-                                        </button>
+                                        </a>
 
                                         <a href="{{ route('pesanan.detail', $first->kode_pesanan) }}"
                                             class="btn btn-primary btn-sm">
