@@ -365,8 +365,9 @@
                                 <img src="{{ asset('template/assets/images/avatars/01.png') }}"
                                     class="p-1 mb-3 shadow rounded-circle" width="90" height="90"
                                     alt="">
-                               @if (Auth::guard('web')->check())
-                                    <h5 class="mb-0 user-name fw-bold">Hello,  {{ Auth::guard('web')->user()->name }}</h5>
+                                @if (Auth::guard('web')->check())
+                                    <h5 class="mb-0 user-name fw-bold">Hello, {{ Auth::guard('web')->user()->name }}
+                                    </h5>
                                 @else
                                     <h5 class="mb-0 user-name fw-bold">Hello, user</h5>
                                 @endif
@@ -457,17 +458,26 @@
                         <li>
                             <a href="{{ route('riwayat.index') }}">
                                 <i class="material-icons-outlined">arrow_right</i>
-                               Rekap Penjualan
+                                Riwayat Transaksi
                             </a>
                         </li>
                         <li>
                             <a href="{{ route('rekap.index') }}">
                                 <i class="material-icons-outlined">arrow_right</i>
-                                Riwayat Transaksi
+                                Rekap Penjualan
                             </a>
                         </li>
                     </ul>
                     <!--end navigation-->
+                </li>
+
+                <li>
+                    <a href="{{ route('pengaturan.index') }}">
+                        <div class="parent-icon">
+                            <i class="material-icons-outlined">settings</i>
+                        </div>
+                        <div class="menu-title">Pengaturan</div>
+                    </a>
                 </li>
             </ul>
         </div>
@@ -793,8 +803,8 @@
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
     {{-- select 2 --}}
     <script src="
-                        https://cdn.jsdelivr.net/npm/sweetalert2@11.26.3/dist/sweetalert2.all.min.js
-                        "></script>
+                            https://cdn.jsdelivr.net/npm/sweetalert2@11.26.3/dist/sweetalert2.all.min.js
+                            "></script>
     <script src="{{ asset('template/assets/plugins/select2/js/select2-custom.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="{{ asset('template/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js') }}"></script>

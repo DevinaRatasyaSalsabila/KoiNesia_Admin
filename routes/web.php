@@ -7,6 +7,7 @@ use App\Http\Controllers\DasboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PembeliController;
+use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\PengeluaranController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\PesananController;
@@ -104,3 +105,7 @@ Route::get('pelanggan/produk/rinci/{kode_produk}', [PelangganController::class, 
 Route::get('/cities/{provinceId}', [PelangganController::class, 'getCities']);
 Route::get('/districts/{cityId}', [PelangganController::class, 'getDistricts']);
 Route::post('/check-ongkir', [PelangganController::class, 'checkOngkir']);
+
+Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan.index');
+Route::post('/pengaturan/update', [PengaturanController::class, 'update'])
+    ->name('pengaturan.update');

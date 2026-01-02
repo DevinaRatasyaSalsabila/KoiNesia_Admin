@@ -301,15 +301,20 @@
                                                         <div class="modal-content text-center">
 
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title">Scan & Bayar dengan QRIS</h5>
+                                                                <h5 class="modal-title">Scan & Bayar</h5>
                                                                 <button type="button" class="btn-close"
                                                                     data-bs-dismiss="modal"></button>
                                                             </div>
 
                                                             <div class="modal-body">
-                                                                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg"
-                                                                    alt="QRIS" class="img-fluid mb-3"
-                                                                    style="max-width: 250px;">
+                                                                @if (!empty($pengaturan?->gambar))
+                                                                    <img src="{{ asset('storage/' . $pengaturan->gambar) }}"
+                                                                        alt="QR Pembayaran" class="img-fluid mb-3"
+                                                                        style="max-width: 250px;">
+                                                                @else
+                                                                    <p class="text-muted">QR Pembayaran Belum Tersedia</p>
+                                                                @endif
+
                                                                 <h4 id="total-qris" class="mt-3 text-center">
                                                                     Total Pembayaran: Rp 0
                                                                 </h4>

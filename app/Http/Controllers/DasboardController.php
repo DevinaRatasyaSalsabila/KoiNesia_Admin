@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pembeli;
+use App\Models\Pengaturan;
 use App\Models\Pengeluaran;
 use App\Models\Pesanan;
 use App\Models\Produk;
@@ -17,10 +18,11 @@ class DasboardController extends Controller
      */
     public function index()
     {
+        $pengaturan = Pengaturan::first();
         $produk = Produk::all();
         $pesanan = Pesanan::all();
         $pesananSelesai = Pesanan::where('status', 'selesai')->sum('jumlah');
-// dd($pesananSelesai);
+        // dd($pesananSelesai);
         $PesanBaru = Pesanan::select('kode_pesanan', DB::raw('MAX(created_at) as created_at'))
             ->groupBy('kode_pesanan')
             ->orderByDesc('created_at')
@@ -95,7 +97,7 @@ class DasboardController extends Controller
             ->sum('nominal');
 
 
-        return view('dashboard.index', compact('produk', 'pesanan', 'pesananSelesai', 'pesananNew', 'penjualanData', 'PengeluaranData', 'pendapatanPerBulan'));
+        return view('dashboard.index', compact('produk', 'pesanan', 'pesananSelesai', 'pesananNew', 'penjualanData', 'PengeluaranData', 'pendapatanPerBulan', 'pengaturan'));
     }
 
     /**

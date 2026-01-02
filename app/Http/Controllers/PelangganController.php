@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pembeli;
+use App\Models\Pengaturan;
 use App\Models\Pesanan;
 use App\Models\Produk;
 use Illuminate\Http\Request;
@@ -82,6 +83,8 @@ class PelangganController extends Controller
 
     public function format()
     {
+
+        $pengaturan = Pengaturan::first();
         // INISIALISASI DULU
         $provinces = [];
 
@@ -94,7 +97,8 @@ class PelangganController extends Controller
             $provinces = $response->json()['data'] ?? [];
         }
 
-        return view('pelanggan.format.index', compact('provinces'));
+
+        return view('pelanggan.format.index', compact('provinces', 'pengaturan'));
     }
 
 

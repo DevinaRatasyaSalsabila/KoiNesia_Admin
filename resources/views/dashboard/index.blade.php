@@ -13,6 +13,22 @@
         </div>
     </div>
     <!--end breadcrumb-->
+    @php
+        $tampilAlert = !$pengaturan || empty($pengaturan->gambar);
+    @endphp
+
+    @if ($tampilAlert)
+        <div class="alert alert-warning alert-dismissible fade show">
+            <div>
+                {{-- <span class="material-icons-outlined">
+                    info 
+                </span> --}}
+                 Isi pengaturan gambar QR pembayaran terlebih dahulu
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
 
     <div class="row g-3">
         <!-- Statistik -->
@@ -99,8 +115,8 @@
                         <div class="d-flex flex-column gap-3">
                             @forelse ($pesananNew as $item)
                                 <div class="d-flex align-items-center gap-3 flex-wrap">
-                                    <img src="{{ asset('storage/produk/final/' . $item->gambar) }}"
-                                        width="70" class="rounded-3 shadow-sm" alt="Produk">
+                                    <img src="{{ asset('storage/produk/final/' . $item->gambar) }}" width="70"
+                                        class="rounded-3 shadow-sm" alt="Produk">
                                     <div class="flex-grow-1">
                                         <h6 class="mb-0 fw-bold">{{ $item->kode_pesanan }}</h6>
                                         <p class="mb-0 text-muted small">
